@@ -1,0 +1,6 @@
+doc_id,title,product_line,version,status,author,date,location
+COACH-MR-2026-0306-D1,CoachForce 市场调研报告（草稿 v1）,coachforce,v1,draft,陈思远,2026-03-06,products/coachforce/market-research-report-draft-v1.md
+COACH-MR-2026-0324-D2,CoachForce 市场调研报告（草稿 v2）,coachforce,v2,draft,陈思远,2026-03-24,products/coachforce/market-research-report-draft-v2.md
+COACH-MR-2026-0408-F,CoachForce 市场调研报告（最终版）,coachforce,v3,final,陈思远,2026-04-08,products/coachforce/market-research-report-final.md
+ATLAS-MR-2026-0215-F,市场调研报告（Atlas）,atlas,v2,final,"赵佳琪;沈亦菲",2026-02-15,products/atlas/market-research-report.md
+NOVA-CI-2026-0110,Nova 客户访谈纪要,nova,v1,final,李雨桐,2026-01-10,products/nova/customer-interview-notes.md

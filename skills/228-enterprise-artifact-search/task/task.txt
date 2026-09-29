@@ -1,0 +1,8 @@
+## Background
+Our company's internal knowledge platform holds a large accumulation of cross-product-line documents, chat logs, meeting minutes, and PR records, with each product line having its own archive directory. Product teams are doing quarterly retrospectives and need to find the sources of key conclusions in this historical material.
+
+## Task
+Search the enterprise materials for the market-research report for the CoachForce product line: find the final version of the report (careful to distinguish drafts — same-named research reports from other product lines don't count), confirm its document ID, identify the report's author and the key reviewers who gave substantive review feedback, and output their employee IDs. Every conclusion must point to a source — which document, which meeting minutes, or which chat log. Write all output in English.
+
+## Materials
+Dataset at data/enterprise/: products/ (artifact archives per product line, including CoachForce product files), archives/docs/ (documents), channels/ (chat logs), meetings/ (meeting minutes), employees.csv (employee directory mapping names to eid_ employee IDs).

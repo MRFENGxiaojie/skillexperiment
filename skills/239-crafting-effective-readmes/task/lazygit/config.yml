@@ -1,0 +1,19 @@
+# lazygit 配置
+gui:
+  theme:
+    lightTheme: false
+    activeBorderColor:
+      - green
+      - bold
+    inactiveBorderColor:
+      - white
+git:
+  paging:
+    colorArg: always
+    pager: delta --dark --paging=never
+  log:
+    showWholeGraph: true
+keybinding:
+  universal:
+    quit: q
+    return: <esc>

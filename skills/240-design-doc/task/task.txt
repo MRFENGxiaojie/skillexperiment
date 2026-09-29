@@ -1,0 +1,8 @@
+## Background
+Our team is building an order-search service: sync order data from Postgres to Elasticsearch to give ops a full-text search.
+
+## Task
+This feature spans three teams (transactions, search, infrastructure), will run long-term in production, and order data contains sensitive info like customer names and phone numbers. Help me write a design doc: overall goals, scope, the data-sync approach, the search API, monitoring and alerting, and whatever else should be there. Before writing, first judge whether this project is worth documenting and at what granularity — my judgment is it's worth it at this size, but keep the length under control, back the decisions with reasoning, and don't dump implementation details. We haven't set sync-latency or query-performance targets yet — give me measurable suggested values. Write all output in English.
+
+## Materials
+None

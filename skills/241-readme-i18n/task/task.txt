@@ -1,0 +1,17 @@
+## Background
+Our open-source CLI tool pymo-cli is on GitHub, and we want to add Chinese documentation to the repo.
+
+## Task
+Help me translate the README into Chinese and add a language switcher (more languages may be added later, so leave the switcher structure extensible). When translating: keep code blocks, commands, badges, and URLs exactly as-is; don't translate the project name pymo-cli; anchor links in the body must still work after translation. When done, tell me which files were created or updated and whether any terms were deliberately left untranslated. Write all output in English.
+
+## Materials
+Existing README.md excerpt:
+# pymo-cli
+[![CI](https://img.shields.io/github/actions/workflow/status/example/pymo-cli/ci.yml)](https://github.com/example/pymo-cli)
+## Installation
+```bash
+npm install -g pymo-cli
+```
+See [Usage](#usage) for examples.
+## Usage
+Run `pymo-cli run --config config.yaml`.

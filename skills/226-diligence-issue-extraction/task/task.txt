@@ -1,0 +1,12 @@
+## Background
+We represent the buyer acquiring a SaaS company, deal code AUR-2026, structured as an asset deal; the seller has a dissolution plan post-closing. The virtual data room is open and we have full access; we need a due-diligence review to inform the deal team.
+
+## Task
+Go through the whole data room: first take a directory inventory and note which requested categories have no corresponding materials; filter for files worth close review by materiality threshold (review contracts top-down by amount, not every contract line-by-line); extract issues from each file against the common concerns for its category, mark severity, and give a handling suggestion for each issue; pay special attention to liabilities the buyer may inherit under an asset deal. Organize the output in our internal memo format, noting the source material for every issue. Write all output in English.
+
+## Materials
+Data room directory: data/vdr/. Archived by category: 01-Corporate (articles, shareholders agreement, option table), 02-Contracts (12 customer and supplier contracts, amounts from $50K to $2M, including 2 major-customer contracts), 03-IP (IP assignments and open-source statements), 04-Employment (executive employment agreements and non-compete clauses), 05-Litigation (litigation files).
+
+House practice config (read these before extracting issues):
+- .claude/plugins/config/claude-for-legal/corporate-legal/CLAUDE.md - categories, materiality thresholds, memo format
+- .claude/plugins/config/claude-for-legal/corporate-legal/deals/AUR-2026/deal-context.md - deal-specific context for AUR-2026

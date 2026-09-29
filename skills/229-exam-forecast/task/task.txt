@@ -1,0 +1,8 @@
+## Background
+I'm a second-year law student; the final exam in Contracts is taught by Professor Chen. I have her past three final exams from the same course over three years, and want to plan revision priorities from them.
+
+## Task
+Help me analyze these three past exams: for each, the question-type structure, the knowledge-point coverage proportions, the density of fact patterns, recurring tested points, and habitual traps; then compare across years to see which patterns are stable and which change annually; combined with this semester's syllabus, give a prediction of this exam's focus — the weights of each knowledge point, likely question-type combinations, points needing special attention, and revision time allocation. Clearly state this is a sample-based weighted inference, not exam prediction; every conclusion must be grounded in the specific samples. Write all output in English.
+
+## Materials
+Three past exams: data/past-exams/2023-final.md, 2024-final.md, 2025-final.md (text versions; no original PDFs). Note the 2025 exam was open-book; this semester is closed-book.

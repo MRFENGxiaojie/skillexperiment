@@ -1,0 +1,8 @@
+## Background
+I've organized my dotfiles into a repository; it's how I quickly restore my environment on a new machine.
+
+## Task
+Help me write a README explaining: what's in this repository, why it's organized this way, how to get started on a new machine (how to run the install script), and the pitfalls and gotchas I've hit. This repo is mainly maintained by and for me, but colleagues might look at it later — don't make it too academic, keep it practical. Write all output in English.
+
+## Materials
+Repository contents: zsh config (.zshrc, custom aliases), git config (.gitconfig, global ignore), terminal tool config (starship, tmux, lazygit), a one-click install script install.sh, and an example dotfiles/ directory.
