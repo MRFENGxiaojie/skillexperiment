@@ -1,0 +1,27 @@
+## Background
+Our admin dashboard is being restyled with Tailwind, and the project is already upgraded to v4. A "data card" component is reused across multiple pages and needs a unified style.
+
+## Task
+Help me finish this styling: first define design tokens in CSS — theme colors, spacing, and fonts with semantic naming, and the colors must support both light and dark themes; the card grid must be mobile-first (single column on phones, multiple columns on desktop), and the statistics and charts inside a card should respond to the card's own width rather than screen breakpoints; support dark mode toggled manually by the user; extract repeated class combinations shared by multiple cards into components; give complete copy-pasteable class strings for each element, plus the token and component definitions, and explain the rationale for key choices (for example, container queries vs viewport breakpoints here). Write all output in English.
+
+## Materials
+Example card structure:
+```
+<div class="card">
+  <div class="card-header"><span>本月支出</span><button>详情</button></div>
+  <div class="stat">¥12,480</div>
+  <div class="chart"><!-- 图表占位 --></div>
+  <div class="footer"><span>较上月 +8.2%</span></div>
+</div>
+```
+## Deliverables
+First read the provided example card file `card.html` in the current working directory. Then write a new file named `styles.css` in the current working directory (workspace root) and update `card.html` to apply the finished class strings plus a manual dark-mode toggle.
+
+`styles.css` must contain:
+- an `@theme` block with semantic tokens: `--color-*` (light and dark values, authored in OKLCH), `--spacing-*`, and `--font-*`
+- a `.dark` block remapping the color tokens and an `@custom-variant dark` declaration (class-based manual toggle, not system preference)
+- the card grid as mobile-first: `grid-cols-1` base, then `sm:grid-cols-2`, then `lg:grid-cols-3`
+- card-internal styles that respond to the card's own width using a named container `@container/card` and container breakpoints such as `@sm/card:`
+- extracted repeated card components under `@layer components` using `@apply`
+
+Update `card.html` so the markup uses the `card-grid` and `card-chart` classes, the chart wrapper gets `h-full w-full`, and the dark-mode toggle calls `classList.toggle("dark", ...)`. Do not create any `tailwind.config.js` or `tailwind.config.ts`. In your final reply, explain the container-query vs viewport-breakpoint rationale and include a "verification method" section describing what to observe in the browser.

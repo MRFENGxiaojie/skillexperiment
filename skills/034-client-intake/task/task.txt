@@ -1,0 +1,23 @@
+## Background
+I'm a student at a law school legal aid clinic with three new-client intakes scheduled back-to-back this afternoon. Clinic procedure requires: intake interview information organized into intake summaries, cross-area issues flagged, any deadlines recorded in a format that can be entered directly into the system (`/legal-clinic:deadlines --add`), and a conflict check across the three clients. Note I don't decide whether to take a case — that's the professor's call; I don't give legal advice, only collect and organize information.
+
+## Task
+Complete the intake for all three clients: one intake summary per client (key facts, legal issues, red flags, deadlines, referral suggestions), a conflict check between the three clients, and a deadlines block covering all deadlines. Write all output in English.
+
+## Materials
+The following is what each client has told us; use it directly without asking for confirmation.
+
+### Client 1 Maria Gonzalez
+Rents at 1420 Park Ave, Oakland CA 94606, monthly rent $1,850. Landlord James Kowalski texted her to move out within 7 days, saying "the apartment is for family use only, and having your boyfriend live with you violates the agreement." The lease is a written one-year lease (starting 2026-01-15) that does not prohibit visitors or cohabitants. Boyfriend Carlos has been staying 2-3 nights a week since March, pays no rent, and has no formal sublease relationship. In early May the landlord said at the apartment door, "If you don't move out, I'll call immigration to check your status." Maria is a DACA holder with legal status. The eviction hearing is set for next Wednesday (2026-08-26) at 9:00 AM at Alameda County Superior Court. Maria has screenshots (in English) of all the landlord's threatening texts on her phone and can provide them. Also, in the past three months the landlord entered her apartment twice without notice to fix pipes; once she found her closet had been gone through, but the landlord denied it.
+
+### Client 2 José Alvarez
+Has worked as a dishwasher at a Chinese restaurant in Oakland for over three years, full-time. Since May the boss has paid no wages, leaving three months' pay ($4,200 in total) unpaid, saying "you signed a verbal agreement — without a contract you can't sue." In mid-June José scalded his left hand with hot water in the kitchen; the boss told him to "just rest a couple days on your own," filed no workers' compensation claim, and gave him no injury claim paperwork. José's wife is undocumented and their two children attend local schools. José heard the boss plans to move the restaurant to Sacramento and reopen at the end of August, and he worries "once the shop moves, the person disappears." José kept no shift schedule but has the boss's bank transfer records (paid on time monthly for the first 30 months, stopped since May) and a photo taken on the day of the burn.
+
+### Client 3 Aisha Thompson
+Married with two young children (ages 4 and 6), sells handmade accessories at a stall to supplement income. Wants to consult about divorce; says husband David pushed her during an argument last weekend and she hit a table corner. She called the police but filed no protective order; police made a report (she didn't note the number and says she'll look for it). David threatened, "Divorce is fine, but you won't take a single child." Aisha mentioned the stall's vendor license is in David's name, as is the family's only car, and she worries about her livelihood after divorce. The children's school starts next week and she wants housing arrangements settled before then. She has no separate bank account.
+
+## Output requirements
+- Write the three intake summaries separately, each including: client situation, legal issues, key facts, red flags and cross-area issues (UNCERTAIN/referral markers), deadlines
+- Conflict check: for each pair of the three clients, assess whether an interest conflict exists (e.g., joint parties, relatives, adverse relationship) and explicitly record the check result
+- Output all deadlines as `/legal-clinic:deadlines --add` blocks (dates stated in the materials go directly in due=; derived deadlines are marked [VERIFY — student + supervisor compute])
+- End with a student-facing checklist and a next-step decision tree

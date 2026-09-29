@@ -1,0 +1,19 @@
+## Background
+Our product must ship version 2.0 before December 31 — a hard deadline promised to investors. Launch criteria: core features work under the new architecture, and the first 1,000 users complete registration.
+
+## Task
+Work backwards from this goal to produce a complete plan. The team is 8 people (3 backend, 2 frontend, 1 design, 1 QA, 1 product) starting from today. Requirements: derive 5-10 key milestones backward from the launch date, each with a clear deliverable; mark which tasks must be serial, which can be parallel, and which must wait for multiple earlier tasks to finish; identify the critical path that determines the schedule; finally assess whether this timeline is feasible — leave ample buffer in estimates. If the backcast shows there isn't enough time, say so directly and give adjustment options (cut scope, add people, change the date) rather than forcing a plan that looks feasible. Write all output in English.
+
+## Materials
+None
+
+## Working requirements
+Work in the current working directory. First read `template.md` and `rubric_roadmap_backcast.json` (both are provided in the working directory). Then build the complete backcast plan and write it to `roadmap-backcast-plan.md` in the working directory.
+
+Your final reply must contain the COMPLETE plan text - the final reply is what gets graded, so do not end with a summary or a file pointer. Anchor every item to this task's concrete facts and use the template/rubric vocabulary:
+- Target outcome: version 2.0 (write "2.0") shipped by December 31 (write "31") with the first 1,000 users completing registration (write "1000" at least once, e.g. "1,000 (1000) users"); define explicit "success criteria" (use that exact phrase).
+- 5-10 milestones, each with "deliverable", "owner", "duration" and "dependencies".
+- Dependency mapping that names each dependency type with the exact words "sequential", "parallel", "converging", "diverging".
+- Identify the "critical path"; compare required time against "available time"; add "buffer" of at least "30%".
+- Give a feasibility verdict (the word "feasib" appears in it); if the timeline is tight, present the three options "reduce scope", "add resources", "extend deadline".
+- Self-check with the rubric and state the minimum average score target "3.5".

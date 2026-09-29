@@ -1,0 +1,8 @@
+## Background
+We have a case, acme-v-brightline, already filed and docketed (matter is logged). Next week we're filing a summary-judgment motion.
+
+## Task
+Help me write the argument section on "whether the contract was validly modified" and the opening paragraphs of the statement of facts. For the facts I have timeline materials and key documents in the matter directory — cite the source when referencing; where I haven't given you a fact or a statute in full, mark it with a placeholder rather than inventing it. The case's factual theory is in the case theory file — cross-check it before writing so the brief doesn't contradict the theory. Before finalizing, mark the sources of the precedent cases you rely on so the partner can verify. Write all output in English.
+
+## Materials
+Matter directory: matter/acme-v-brightline/ under this task's directory (contains case theory, timeline, key contracts and correspondence, prior pleadings from both sides; the matter registration is in matter/_log.yaml)

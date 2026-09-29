@@ -1,0 +1,770 @@
+skill: 029-tpl-situacao-deployment-devops
+version: 2
+total_items: 41
+criteria:
+- id: C01
+  category: format
+  fatal: false
+  text: The run produces a risk assessment document listing the current 
+    deployment risks and their handling.
+  anchor: Check workspace filesystem for the risk doc (reference path 
+    docs/01-risk-assessment.md).
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Existing Risks
+    llm:
+      question: The run produces a risk assessment document listing the current 
+        deployment risks and their handling.
+      evidence: Check workspace filesystem for the risk doc (reference path 
+        docs/01-risk-assessment.md).
+      source: output
+      needle: Existing Risks
+- id: C02
+  category: format
+  fatal: false
+  text: The run produces a database migration strategy document.
+  anchor: Check workspace filesystem for the migration doc (reference path 
+    docs/02-migration-strategy.md).
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: migration
+    llm:
+      question: The run produces a database migration strategy document.
+      evidence: Check workspace filesystem for the migration doc (reference path
+        docs/02-migration-strategy.md).
+      source: output
+      needle: migration
+- id: C03
+  category: format
+  fatal: false
+  text: The run produces a rollback runbook document.
+  anchor: Check workspace filesystem for the rollback runbook (reference path 
+    docs/03-rollback-runbook.md).
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: rollback
+    llm:
+      question: The run produces a rollback runbook document.
+      evidence: Check workspace filesystem for the rollback runbook (reference 
+        path docs/03-rollback-runbook.md).
+      source: output
+      needle: rollback
+- id: C04
+  category: format
+  fatal: false
+  text: The run produces a complete Deployment Record document for this release.
+  anchor: Check workspace filesystem for the deployment record (reference path 
+    docs/04-deployment-record-v2.1.md).
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Deployment Record
+    llm:
+      question: The run produces a complete Deployment Record document for this 
+        release.
+      evidence: Check workspace filesystem for the deployment record (reference 
+        path docs/04-deployment-record-v2.1.md).
+      source: output
+      needle: Deployment Record
+- id: C05
+  category: format
+  fatal: false
+  text: The run produces a GitHub Actions CI workflow file.
+  anchor: Check workspace .github/workflows/ci.yml exists.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: npm ci
+    llm:
+      question: The run produces a GitHub Actions CI workflow file.
+      evidence: Check workspace .github/workflows/ci.yml exists.
+      source: output
+      needle: npm ci
+- id: C06
+  category: format
+  fatal: false
+  text: The run produces a GitHub Actions deployment workflow file.
+  anchor: Check workspace .github/workflows/deploy.yml exists.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: deploy-production
+    llm:
+      question: The run produces a GitHub Actions deployment workflow file.
+      evidence: Check workspace .github/workflows/deploy.yml exists.
+      source: output
+      needle: deploy-production
+- id: C07
+  category: format
+  fatal: false
+  text: The run produces a GitHub Actions rollback workflow file.
+  anchor: Check workspace .github/workflows/rollback.yml exists.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: workflow_dispatch
+    llm:
+      question: The run produces a GitHub Actions rollback workflow file.
+      evidence: Check workspace .github/workflows/rollback.yml exists.
+      source: output
+      needle: workflow_dispatch
+- id: C08
+  category: format
+  fatal: false
+  text: 'The run creates the deploy script that the pipeline template requires (SKILL.md:
+    ''create them before using the template as-is'').'
+  anchor: Check workspace scripts/deploy.sh exists.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: deploy.sh
+    llm:
+      question: 'The run creates the deploy script that the pipeline template requires
+        (SKILL.md: ''create them before using the template as-is'').'
+      evidence: Check workspace scripts/deploy.sh exists.
+      source: output
+      needle: deploy.sh
+- id: C09
+  category: format
+  fatal: false
+  text: 'The run creates the health-verification script that the pipeline template
+    requires (SKILL.md: ''create them before using the template as-is'').'
+  anchor: Check workspace scripts/verify-health.sh exists.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: verify-health.sh
+    llm:
+      question: 'The run creates the health-verification script that the pipeline
+        template requires (SKILL.md: ''create them before using the template as-is'').'
+      evidence: Check workspace scripts/verify-health.sh exists.
+      source: output
+      needle: verify-health.sh
+- id: C10
+  category: coverage
+  fatal: false
+  text: The run produces at least three executable shell scripts under scripts/ 
+    (deploy, verify-health, plus migration/smoke/backup/notify helpers).
+  anchor: Glob the workspace scripts/ directory and count .sh files.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: (?s)(?=.*deploy\.sh)(?=.*verify-health\.sh)(?=.*migrate\.sh)
+    llm:
+      question: The run produces at least three executable shell scripts under 
+        scripts/ (deploy, verify-health, plus migration/smoke/backup/notify 
+        helpers).
+      evidence: Glob the workspace scripts/ directory and count .sh files.
+      source: output
+      needle: scripts/
+- id: C11
+  category: content
+  fatal: false
+  text: The risk assessment ranks the committed-secrets leak as a P0/critical 
+    blocker to resolve before anything else.
+  anchor: In docs/01-risk-assessment.md, look for the severity section labeling 
+    the secrets issue P0/critical.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Critical
+    llm:
+      question: The risk assessment ranks the committed-secrets leak as a 
+        P0/critical blocker to resolve before anything else.
+      evidence: In docs/01-risk-assessment.md, look for the severity section 
+        labeling the secrets issue P0/critical.
+      source: output
+      needle: Critical
+- id: C12
+  category: content
+  fatal: false
+  text: The risk assessment mandates rotating all exposed secrets as the fix for
+    the leaked .env.
+  anchor: In docs/01-risk-assessment.md, look for a rotation instruction for 
+    leaked credentials.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: rotation|rotate|rotating
+    llm:
+      question: The risk assessment mandates rotating all exposed secrets as the
+        fix for the leaked .env.
+      evidence: In docs/01-risk-assessment.md, look for a rotation instruction 
+        for leaked credentials.
+      source: output
+      needle: rotation|rotate|rotating
+- id: C13
+  category: content
+  fatal: false
+  text: The risk assessment requires creating a staging environment that mirrors
+    production (environment parity).
+  anchor: In docs/01-risk-assessment.md, look for the staging section stating 
+    staging must mirror/equal production.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Create a staging environment
+    llm:
+      question: The risk assessment requires creating a staging environment that
+        mirrors production (environment parity).
+      evidence: In docs/01-risk-assessment.md, look for the staging section 
+        stating staging must mirror/equal production.
+      source: output
+      needle: Create a staging environment
+- id: C14
+  category: content
+  fatal: false
+  text: The risk assessment flags running npm install on the production server 
+    as the wrong pattern and plans to deploy built images instead.
+  anchor: In docs/01-risk-assessment.md, look for a risk mentioning npm install 
+    on the server.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: npm install
+    llm:
+      question: The risk assessment flags running npm install on the production 
+        server as the wrong pattern and plans to deploy built images instead.
+      evidence: In docs/01-risk-assessment.md, look for a risk mentioning npm 
+        install on the server.
+      source: output
+      needle: npm install
+- id: C16
+  category: content
+  fatal: false
+  text: The migration strategy separates migration from code deploy using the 
+    expand-contract pattern.
+  anchor: In docs/02-migration-strategy.md, look for expand-contract 
+    terminology.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: expand-contract
+    llm:
+      question: The migration strategy separates migration from code deploy 
+        using the expand-contract pattern.
+      evidence: In docs/02-migration-strategy.md, look for expand-contract 
+        terminology.
+      source: output
+      needle: expand-contract
+- id: C17
+  category: content
+  fatal: false
+  text: The CI workflow builds an immutable artifact tagged with the git SHA.
+  anchor: In .github/workflows/ci.yml, look for the github.sha image tag.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: github.sha
+    llm:
+      question: The CI workflow builds an immutable artifact tagged with the git
+        SHA.
+      evidence: In .github/workflows/ci.yml, look for the github.sha image tag.
+      source: output
+      needle: github.sha
+- id: C19
+  category: content
+  fatal: false
+  text: The production deployment job runs in a protected environment that 
+    requires manual approval.
+  anchor: 'In .github/workflows/deploy.yml, look for ''environment: production'' on
+    the production job.'
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: 'environment: production'
+    llm:
+      question: The production deployment job runs in a protected environment 
+        that requires manual approval.
+      evidence: 'In .github/workflows/deploy.yml, look for ''environment: production''
+        on the production job.'
+      source: output
+      needle: 'environment: production'
+- id: C20
+  category: content
+  fatal: false
+  text: The production deployment depends on the staging deployment, so staging 
+    runs before production.
+  anchor: In .github/workflows/deploy.yml, look at the production job's needs 
+    list for deploy-staging.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: 'needs: deploy-staging'
+    llm:
+      question: The production deployment depends on the staging deployment, so 
+        staging runs before production.
+      evidence: In .github/workflows/deploy.yml, look at the production job's 
+        needs list for deploy-staging.
+      source: output
+      needle: 'needs: deploy-staging'
+- id: C21
+  category: content
+  fatal: false
+  text: The rollback workflow is exposed as a manual workflow_dispatch entry 
+    point.
+  anchor: In .github/workflows/rollback.yml, look for the workflow_dispatch 
+    trigger.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: workflow_dispatch
+    llm:
+      question: The rollback workflow is exposed as a manual workflow_dispatch 
+        entry point.
+      evidence: In .github/workflows/rollback.yml, look for the 
+        workflow_dispatch trigger.
+      source: output
+      needle: workflow_dispatch
+- id: C22
+  category: content
+  fatal: false
+  text: Database migration is a separate pipeline step that runs before the 
+    application code is deployed.
+  anchor: In .github/workflows/deploy.yml, look for a migrate.sh step in its own
+    job before the deploy step.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: migrate.sh
+    llm:
+      question: Database migration is a separate pipeline step that runs before 
+        the application code is deployed.
+      evidence: In .github/workflows/deploy.yml, look for a migrate.sh step in 
+        its own job before the deploy step.
+      source: output
+      needle: migrate.sh
+- id: C23
+  category: content
+  fatal: false
+  text: The deploy script rolls hosts one at a time and only proceeds after each
+    host passes a /health check.
+  anchor: In scripts/deploy.sh, look for the per-host /health check in the 
+    rolling loop.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: /health
+    llm:
+      question: The deploy script rolls hosts one at a time and only proceeds 
+        after each host passes a /health check.
+      evidence: In scripts/deploy.sh, look for the per-host /health check in the
+        rolling loop.
+      source: output
+      needle: /health
+- id: C25
+  category: boundary
+  fatal: false
+  text: The health check treats 200 as healthy and 503 as draining/unhealthy, 
+    covering the degraded edge case.
+  anchor: In scripts/verify-health.sh, look for handling of HTTP 503 in addition
+    to 200.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: '503'
+    llm:
+      question: The health check treats 200 as healthy and 503 as 
+        draining/unhealthy, covering the degraded edge case.
+      evidence: In scripts/verify-health.sh, look for handling of HTTP 503 in 
+        addition to 200.
+      source: output
+      needle: '503'
+- id: C26
+  category: content
+  fatal: false
+  text: The Deployment Record timeline includes the database migration step.
+  anchor: In docs/04-deployment-record-v2.1.md, look in the timeline for the 
+    migration step.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: migration|migrate
+    llm:
+      question: The Deployment Record timeline includes the database migration 
+        step.
+      evidence: In docs/04-deployment-record-v2.1.md, look in the timeline for 
+        the migration step.
+      source: output
+      needle: migration|migrate
+- id: C27
+  category: content
+  fatal: false
+  text: The Deployment Record timeline includes the rolling update step.
+  anchor: In docs/04-deployment-record-v2.1.md, look in the timeline for the 
+    rolling update step.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: rolling update|rolling deployment
+    llm:
+      question: The Deployment Record timeline includes the rolling update step.
+      evidence: In docs/04-deployment-record-v2.1.md, look in the timeline for 
+        the rolling update step.
+      source: output
+      needle: rolling update|rolling deployment
+- id: C28
+  category: content
+  fatal: false
+  text: The Deployment Record timeline includes the smoke test step after 
+    rollout.
+  anchor: In docs/04-deployment-record-v2.1.md, look in the timeline for the 
+    smoke test step.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: smoke test|smoke
+    llm:
+      question: The Deployment Record timeline includes the smoke test step 
+        after rollout.
+      evidence: In docs/04-deployment-record-v2.1.md, look in the timeline for 
+        the smoke test step.
+      source: output
+      needle: smoke test|smoke
+- id: C29
+  category: content
+  fatal: false
+  text: The Deployment Record defines alert thresholds for error rate above 1%.
+  anchor: In docs/04-deployment-record-v2.1.md, look for the error-rate 
+    threshold in the monitoring/checklist section.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: 1%
+    llm:
+      question: The Deployment Record defines alert thresholds for error rate 
+        above 1%.
+      evidence: In docs/04-deployment-record-v2.1.md, look for the error-rate 
+        threshold in the monitoring/checklist section.
+      source: output
+      needle: 1%
+- id: C30
+  category: coverage
+  fatal: false
+  text: The pre-deploy checklist in the record covers the rollback-readiness 
+    category alongside code/environment/monitoring.
+  anchor: In docs/04-deployment-record-v2.1.md, look for the rollback-readiness 
+    checklist section.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Rollback rehearsal
+    llm:
+      question: The pre-deploy checklist in the record covers the 
+        rollback-readiness category alongside code/environment/monitoring.
+      evidence: In docs/04-deployment-record-v2.1.md, look for the 
+        rollback-readiness checklist section.
+      source: output
+      needle: Rollback rehearsal
+- id: C31
+  category: content
+  fatal: false
+  text: The record keeps risky new features behind a feature flag that defaults 
+    to off.
+  anchor: In docs/04-deployment-record-v2.1.md, look for the feature flag item.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: feature flag
+    llm:
+      question: The record keeps risky new features behind a feature flag that 
+        defaults to off.
+      evidence: In docs/04-deployment-record-v2.1.md, look for the feature flag 
+        item.
+      source: output
+      needle: feature flag
+- id: C34
+  category: evidence
+  fatal: false
+  text: The record documents post-deploy health verification (verify-health.sh) 
+    as an executed verification step.
+  anchor: In docs/04-deployment-record-v2.1.md, look for verify-health usage in 
+    the timeline.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: verify-health
+    llm:
+      question: The record documents post-deploy health verification 
+        (verify-health.sh) as an executed verification step.
+      evidence: In docs/04-deployment-record-v2.1.md, look for verify-health 
+        usage in the timeline.
+      source: output
+      needle: verify-health
+- id: C35
+  category: process
+  fatal: false
+  text: The record treats a monitoring dashboard showing a pre-deploy baseline 
+    as a go-live precondition.
+  anchor: In docs/04-deployment-record-v2.1.md, look for the monitoring-baseline
+    checklist item.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: baseline
+    llm:
+      question: The record treats a monitoring dashboard showing a pre-deploy 
+        baseline as a go-live precondition.
+      evidence: In docs/04-deployment-record-v2.1.md, look for the 
+        monitoring-baseline checklist item.
+      source: output
+      needle: baseline
+- id: C38
+  category: termination
+  fatal: false
+  text: The migration strategy halts the deploy (does not deploy code) if the 
+    migration step fails.
+  anchor: In docs/02-migration-strategy.md, look for the migration-failure stop 
+    instruction.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Abort before
+    llm:
+      question: The migration strategy halts the deploy (does not deploy code) 
+        if the migration step fails.
+      evidence: In docs/02-migration-strategy.md, look for the migration-failure
+        stop instruction.
+      source: output
+      needle: Abort before
+- id: C39
+  category: termination
+  fatal: false
+  text: The plan gates production on rotated secrets — nothing ships until the 
+    leaked secrets are rotated.
+  anchor: In docs/01-risk-assessment.md, look for the 'no go-live without 
+    rotation' gate.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: must not proceed
+    llm:
+      question: The plan gates production on rotated secrets — nothing ships 
+        until the leaked secrets are rotated.
+      evidence: In docs/01-risk-assessment.md, look for the 'no go-live without 
+        rotation' gate.
+      source: output
+      needle: must not proceed
+- id: C41
+  category: negative
+  fatal: false
+  text: Build/install steps (npm ci) run in CI, not on production servers — the 
+    pipeline deploys built artifacts.
+  anchor: In .github/workflows/ci.yml, look for the npm ci install step in CI.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: npm ci
+    llm:
+      question: Build/install steps (npm ci) run in CI, not on production 
+        servers — the pipeline deploys built artifacts.
+      evidence: In .github/workflows/ci.yml, look for the npm ci install step in
+        CI.
+      source: output
+      needle: npm ci
+- id: C42
+  category: process
+  fatal: false
+  text: The run produces a quality-gates checklist that must pass before 
+    release, and stops on any failure.
+  anchor: Look in the run's overview/README (reference README.md) for the 
+    quality gates section.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: quality gates
+    llm:
+      question: The run produces a quality-gates checklist that must pass before
+        release, and stops on any failure.
+      evidence: Look in the run's overview/README (reference README.md) for the 
+        quality gates section.
+      source: output
+      needle: quality gates
+- id: C43
+  category: format
+  fatal: false
+  text: The final output includes a 'Deployment Record' section per the skill's 
+    OUTPUT FORMAT.
+  anchor: Search the agent's final output for the Deployment Record heading.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Deployment Record
+    llm:
+      question: The final output includes a 'Deployment Record' section per the 
+        skill's OUTPUT FORMAT.
+      evidence: Search the agent's final output for the Deployment Record 
+        heading.
+      source: output
+      needle: Deployment Record
+- id: C44
+  category: content
+  fatal: false
+  text: The record identifies the release version as v2.1.
+  anchor: Search the final output for the version token v2.1.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: v2.1
+    llm:
+      question: The record identifies the release version as v2.1.
+      evidence: Search the final output for the version token v2.1.
+      source: output
+      needle: v2.1
+- id: C48
+  category: content
+  fatal: false
+  text: The post-deploy metrics are observed over a 15-minute window.
+  anchor: Search the final output for the 15-min observation marker.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: 15 min
+    llm:
+      question: The post-deploy metrics are observed over a 15-minute window.
+      evidence: Search the final output for the 15-min observation marker.
+      source: output
+      needle: 15 min
+- id: C49
+  category: content
+  fatal: false
+  text: The post-deploy metrics include error rate.
+  anchor: Search the final output metrics section for 'Error rate'.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Error rate
+    llm:
+      question: The post-deploy metrics include error rate.
+      evidence: Search the final output metrics section for 'Error rate'.
+      source: output
+      needle: Error rate
+- id: C50
+  category: content
+  fatal: false
+  text: The post-deploy metrics include P95 latency.
+  anchor: Search the final output for 'P95'.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: P95
+    llm:
+      question: The post-deploy metrics include P95 latency.
+      evidence: Search the final output for 'P95'.
+      source: output
+      needle: P95
+- id: C51
+  category: content
+  fatal: false
+  text: The post-deploy metrics include CPU utilization.
+  anchor: Search the final output for 'CPU'.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: CPU
+    llm:
+      question: The post-deploy metrics include CPU utilization.
+      evidence: Search the final output for 'CPU'.
+      source: output
+      needle: CPU
+- id: C52
+  category: content
+  fatal: false
+  text: The record ends with an explicit deployment status conclusion 
+    (success/failed/rolled back).
+  anchor: Search the final output for the status marker.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Status
+    llm:
+      question: The record ends with an explicit deployment status conclusion 
+        (success/failed/rolled back).
+      evidence: Search the final output for the status marker.
+      source: output
+      needle: Status

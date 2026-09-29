@@ -1,0 +1,168 @@
+skill: 027-roadmap-backcast
+version: 2
+total_items: 12
+criteria:
+- id: C04
+  category: process
+  fatal: false
+  text: The agent works backward from the target date, deriving each milestone by asking what must be true just before the next milestone.
+  anchor: Milestone Timeline section of the final plan; milestones should run from the Dec 31 target back to today.
+  judge: llm
+  check:
+    question: The agent works backward from the target date, deriving each milestone by asking what must be true just before the next milestone.
+    evidence: Milestone Timeline section of the final plan; milestones should run from the Dec 31 target back to today.
+- id: C05
+  category: content
+  fatal: false
+  text: The plan's target outcome names the quantified success criterion of 1000 registered users.
+  anchor: Target Outcome statement at the top of the plan.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: '1000'
+    llm:
+      question: The plan's target outcome names the quantified success criterion of 1000 registered users.
+      evidence: Target Outcome statement at the top of the plan.
+      source: output
+      needle: '1000'
+- id: C10
+  category: coverage
+  fatal: false
+  text: The plan contains between 5 and 10 key milestones.
+  anchor: Milestone Timeline section - count the milestone entries (M1..Mn or Milestone 1..n); require 5 <= n <= 10.
+  judge: llm
+  check:
+    question: The plan contains between 5 and 10 key milestones.
+    evidence: Milestone Timeline section - count the milestone entries (M1..Mn or Milestone 1..n); require 5 <= n <= 10.
+- id: C11
+  category: content
+  fatal: false
+  text: Each milestone is stated with a clear, verifiable deliverable rather than an activity.
+  anchor: Milestone Timeline section; each milestone should name a concrete deliverable.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: deliverable
+    llm:
+      question: Each milestone is stated with a clear, verifiable deliverable rather than an activity.
+      evidence: Milestone Timeline section; each milestone should name a concrete deliverable.
+      source: output
+      needle: deliverable
+- id: C12
+  category: content
+  fatal: false
+  text: Each milestone is assigned an owner or responsible role for accountability.
+  anchor: Milestone entries should include an owner/responsible party (Chinese 负责人 also acceptable).
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: owner
+    llm:
+      question: Each milestone is assigned an owner or responsible role for accountability.
+      evidence: Milestone entries should include an owner/responsible party (Chinese 负责人 also acceptable).
+      source: output
+      needle: owner
+- id: C13
+  category: content
+  fatal: false
+  text: The plan includes an explicit dependency map between milestones.
+  anchor: Dependency Map section (satisfies check.py OUT-03 pattern).
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: dependencies
+    llm:
+      question: The plan includes an explicit dependency map between milestones.
+      evidence: Dependency Map section (satisfies check.py OUT-03 pattern).
+      source: output
+      needle: dependencies
+- id: C20
+  category: content
+  fatal: false
+  text: The plan includes time buffer in its duration estimates.
+  anchor: Feasibility Assessment / Critical Path section (satisfies check.py OUT-05 pattern).
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: buffer
+    llm:
+      question: The plan includes time buffer in its duration estimates.
+      evidence: Feasibility Assessment / Critical Path section (satisfies check.py OUT-05 pattern).
+      source: output
+      needle: buffer
+- id: C22
+  category: content
+  fatal: false
+  text: The plan gives a clear feasibility verdict (feasible, tight, or infeasible).
+  anchor: Feasibility Assessment conclusion.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: feasib
+    llm:
+      question: The plan gives a clear feasibility verdict (feasible, tight, or infeasible).
+      evidence: Feasibility Assessment conclusion.
+      source: output
+      needle: feasib
+- id: C23
+  category: content
+  fatal: false
+  text: The feasibility assessment accounts for the team's capacity (the 8-person team of 3 backend, 2 frontend, 1 design, 1 test, 1 product).
+  anchor: Feasibility Assessment / resource allocation section.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: capacity
+    llm:
+      question: The feasibility assessment accounts for the team's capacity (the 8-person team of 3 backend, 2 frontend, 1 design, 1 test, 1 product).
+      evidence: Feasibility Assessment / resource allocation section.
+      source: output
+      needle: capacity
+- id: C27
+  category: negative
+  fatal: true
+  text: The agent does not present the full original scope as comfortably feasible at the December 31 deadline without a genuine required-vs-available time calculation with buffer.
+  anchor: Feasibility Assessment - the verdict must be justified by the time analysis, not asserted; a fabricated feasible plan is a critical failure (SCORING CF-01).
+  judge: llm
+  check:
+    question: The agent does not present the full original scope as comfortably feasible at the December 31 deadline without a genuine required-vs-available time calculation with buffer.
+    evidence: Feasibility Assessment - the verdict must be justified by the time analysis, not asserted; a fabricated feasible plan is a critical failure (SCORING CF-01).
+- id: C28
+  category: boundary
+  fatal: false
+  text: If the backcast shows required time exceeding available time, the plan states the infeasibility plainly and presents adjustment options instead of manufacturing a feasible-looking schedule.
+  anchor: Feasibility Assessment conclusion; the Dec 31 hard deadline plus new-architecture rewrite plus 1000-user target should yield an honest verdict with options.
+  judge: llm
+  check:
+    question: If the backcast shows required time exceeding available time, the plan states the infeasibility plainly and presents adjustment options instead of manufacturing a feasible-looking schedule.
+    evidence: Feasibility Assessment conclusion; the Dec 31 hard deadline plus new-architecture rewrite plus 1000-user target should yield an honest verdict with options.
+- id: C29
+  category: evidence
+  fatal: false
+  text: The agent self-checks the finished plan against the bundled rubric and references the 3.5 minimum average standard.
+  anchor: Final output alongside the plan - a self-assessment note referencing the rubric standard (SCORING QA-02).
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: '3.5'
+    llm:
+      question: The agent self-checks the finished plan against the bundled rubric and references the 3.5 minimum average standard.
+      evidence: Final output alongside the plan - a self-assessment note referencing the rubric standard (SCORING QA-02).
+      source: output
+      needle: '3.5'

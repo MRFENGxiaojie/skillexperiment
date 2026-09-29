@@ -1,0 +1,8 @@
+## Background
+We're releasing v2.1 to production next week. The current state is very primitive: SSH into the server, git pull + npm install, then restart; DB migration and code deployment happen in the same step; there's no staging environment; and a colleague once wrote secrets into .env and committed it to the repo (someone has already cloned it).
+
+## Task
+Help us professionalize this release. First list the existing risks by severity with a handling approach for each; then give a CI/CD pipeline plan (build immutable artifacts, per-environment deployment, manual approval for production); servers must update smoothly without downtime; health checks and monitoring/alerting are preconditions for release; write a rollback procedure and rehearse it on staging first, keeping recovery within 10 minutes. Finally write the complete release record for this launch: version and changes, pre-release checklist, deployment timeline (migration, rolling update, smoke test), metrics to watch for 15 minutes after release, and the final conclusion. Avoid Friday and peak hours for the release window. Write all output in English.
+
+## Materials
+None

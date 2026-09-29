@@ -1,0 +1,410 @@
+skill: 034-client-intake
+version: 2
+total_items: 26
+criteria:
+- id: C01
+  category: format
+  fatal: false
+  text: The run produces at least three separate intake summary files under intake-summaries/, one per client.
+  anchor: Inspect the workspace directory intake-summaries/ and count the .md summary files.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: count
+      what: intake-summaries/*.md
+      op: ge
+      n: 3
+    llm:
+      question: The run produces at least three separate intake summary files under intake-summaries/, one per client.
+      evidence: Inspect the workspace directory intake-summaries/ and count the .md summary files.
+      source: workspace
+      path: intake-summaries/*.md
+- id: C07
+  category: content
+  fatal: false
+  text: José's summary records the oral-agreement / no-written-contract dispute with the employer.
+  anchor: Look in José's summary for the oral-agreement dispute.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: oral
+    llm:
+      question: José's summary records the oral-agreement / no-written-contract dispute with the employer.
+      evidence: Look in José's summary for the oral-agreement dispute.
+      source: output
+      needle: oral
+- id: C09
+  category: content
+  fatal: false
+  text: Aisha Thompson's summary records the domestic violence incident and the police report.
+  anchor: Look in Aisha's summary for the DV police report.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: police report|police-report
+    llm:
+      question: Aisha Thompson's summary records the domestic violence incident and the police report.
+      evidence: Look in Aisha's summary for the DV police report.
+      source: output
+      needle: police report|police-report
+- id: C13
+  category: content
+  fatal: false
+  text: Cross-practice-area flags carry the UNCERTAIN marker (or an explicit referral marker) per the task requirement.
+  anchor: Look in any cross-practice-area flags section for the UNCERTAIN marker.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: UNCERTAIN
+    llm:
+      question: Cross-practice-area flags carry the UNCERTAIN marker (or an explicit referral marker) per the task requirement.
+      evidence: Look in any cross-practice-area flags section for the UNCERTAIN marker.
+      source: output
+      needle: UNCERTAIN
+- id: C14
+  category: content
+  fatal: false
+  text: The output performs an explicit conflict check covering the intake clients (the three-client pairwise conflict check).
+  anchor: Look in the final output for the conflict-check section covering the three clients.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: conflict check
+    llm:
+      question: The output performs an explicit conflict check covering the intake clients (the three-client pairwise conflict check).
+      evidence: Look in the final output for the conflict-check section covering the three clients.
+      source: output
+      needle: conflict check
+- id: C15
+  category: content
+  fatal: false
+  text: The conflict check explicitly records the pairwise result that no conflict exists among the three clients.
+  anchor: Look in the conflict-check section for an explicit pairwise result (no conflict among Maria, José, Aisha).
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: no conflict
+    llm:
+      question: The conflict check explicitly records the pairwise result that no conflict exists among the three clients.
+      evidence: Look in the conflict-check section for an explicit pairwise result (no conflict among Maria, José, Aisha).
+      source: output
+      needle: no conflict
+- id: C16
+  category: content
+  fatal: false
+  text: All surfaced deadlines are emitted as /legal-clinic:deadlines --add blocks (Step 7 required deliverable).
+  anchor: Look in each summary's 'Deadlines to log' section and the final reply for /legal-clinic:deadlines --add blocks.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: /legal-clinic:deadlines --add
+    llm:
+      question: All surfaced deadlines are emitted as /legal-clinic:deadlines --add blocks (Step 7 required deliverable).
+      evidence: Look in each summary's 'Deadlines to log' section and the final reply for /legal-clinic:deadlines --add blocks.
+      source: output
+      needle: /legal-clinic:deadlines --add
+- id: C17
+  category: format
+  fatal: false
+  text: Each deadline block follows the template field structure, including the warnings=[14,7,3,1] field.
+  anchor: Look at a deadline block in the final reply for the warnings field with values 14,7,3,1.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: warnings=[14,7,3,1]
+    llm:
+      question: Each deadline block follows the template field structure, including the warnings=[14,7,3,1] field.
+      evidence: Look at a deadline block in the final reply for the warnings field with values 14,7,3,1.
+      source: output
+      needle: warnings=[14,7,3,1]
+- id: C19
+  category: content
+  fatal: false
+  text: Computed/jurisdictional deadlines carry the marker '[VERIFY — student + supervisor compute]' per the task rule.
+  anchor: Look at José's and Aisha's deadline blocks for the VERIFY marker.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: '[VERIFY — student + supervisor compute]'
+    llm:
+      question: Computed/jurisdictional deadlines carry the marker '[VERIFY — student + supervisor compute]' per the task rule.
+      evidence: Look at José's and Aisha's deadline blocks for the VERIFY marker.
+      source: output
+      needle: '[VERIFY — student + supervisor compute]'
+- id: C20
+  category: format
+  fatal: false
+  text: 'Each summary opens with the header ''# Intake Summary: [client name]''.'
+  anchor: Look at the top of each summary for the 'Intake Summary:' header.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: 'Intake Summary:'
+    llm:
+      question: 'Each summary opens with the header ''# Intake Summary: [client name]''.'
+      evidence: Look at the top of each summary for the 'Intake Summary:' header.
+      source: output
+      needle: 'Intake Summary:'
+- id: C21
+  category: format
+  fatal: false
+  text: Each summary carries the '[AI-ASSISTED DRAFT — requires student analysis and attorney review]' disclaimer.
+  anchor: Look in each summary for the AI-ASSISTED DRAFT disclaimer line.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: AI-ASSISTED DRAFT
+    llm:
+      question: Each summary carries the '[AI-ASSISTED DRAFT — requires student analysis and attorney review]' disclaimer.
+      evidence: Look in each summary for the AI-ASSISTED DRAFT disclaimer line.
+      source: output
+      needle: AI-ASSISTED DRAFT
+- id: C23
+  category: evidence
+  fatal: false
+  text: Legal citations in the summaries carry provenance tags, with the default '[model knowledge — verify]' applied where no source is confirmed.
+  anchor: Look at citations in 'Legal issues identified' and 'Jurisdictional notes' for provenance tags.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: '[model knowledge — verify]'
+    llm:
+      question: Legal citations in the summaries carry provenance tags, with the default '[model knowledge — verify]' applied where no source is confirmed.
+      evidence: Look at citations in 'Legal issues identified' and 'Jurisdictional notes' for provenance tags.
+      source: output
+      needle: '[model knowledge — verify]'
+- id: C24
+  category: format
+  fatal: false
+  text: Each summary includes a 'Legal issues identified' section.
+  anchor: Look in each summary for the 'Legal issues identified' section header.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Legal issues identified
+    llm:
+      question: Each summary includes a 'Legal issues identified' section.
+      evidence: Look in each summary for the 'Legal issues identified' section header.
+      source: output
+      needle: Legal issues identified
+- id: C25
+  category: format
+  fatal: false
+  text: Each summary includes a 'Key facts' section.
+  anchor: Look in each summary for the 'Key facts' section header.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Key facts
+    llm:
+      question: Each summary includes a 'Key facts' section.
+      evidence: Look in each summary for the 'Key facts' section header.
+      source: output
+      needle: Key facts
+- id: C26
+  category: format
+  fatal: false
+  text: Each summary includes a 'Deadlines to log' section holding the deadline blocks.
+  anchor: Look in each summary for the 'Deadlines to log' section header.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Deadlines to log
+    llm:
+      question: Each summary includes a 'Deadlines to log' section holding the deadline blocks.
+      evidence: Look in each summary for the 'Deadlines to log' section header.
+      source: output
+      needle: Deadlines to log
+- id: C27
+  category: format
+  fatal: false
+  text: Each summary includes a 'Triage' classification section.
+  anchor: Look in each summary for the 'Triage' section header.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Triage
+    llm:
+      question: Each summary includes a 'Triage' classification section.
+      evidence: Look in each summary for the 'Triage' section header.
+      source: output
+      needle: Triage
+- id: C29
+  category: format
+  fatal: false
+  text: Each summary includes a 'Cross-practice-area flags' subsection listing issues outside the primary practice area.
+  anchor: Look in each summary for the 'Cross-practice-area flags' subsection.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Cross-practice-area flags
+    llm:
+      question: Each summary includes a 'Cross-practice-area flags' subsection listing issues outside the primary practice area.
+      evidence: Look in each summary for the 'Cross-practice-area flags' subsection.
+      source: output
+      needle: Cross-practice-area flags
+- id: C30
+  category: process
+  fatal: false
+  text: The agent checks for the clinic config under legal-clinic/ (CLAUDE.md or practice-area guides) before proceeding with the intake.
+  anchor: Search the tool log for a Read/Glob targeting the config path containing 'legal-clinic'.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_contains
+      cmd: legal-clinic
+    llm:
+      question: The agent checks for the clinic config under legal-clinic/ (CLAUDE.md or practice-area guides) before proceeding with the intake.
+      evidence: Search the tool log for a Read/Glob targeting the config path containing 'legal-clinic'.
+      source: tool_log
+      pattern: legal-clinic
+- id: C31
+  category: tool
+  fatal: false
+  text: The agent writes the intake summaries to the intake-summaries/ directory (Write operations).
+  anchor: Search the tool log for a Write operation targeting intake-summaries/.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_contains
+      cmd: intake-summaries
+    llm:
+      question: The agent writes the intake summaries to the intake-summaries/ directory (Write operations).
+      evidence: Search the tool log for a Write operation targeting intake-summaries/.
+      source: tool_log
+      pattern: intake-summaries
+- id: C32
+  category: process
+  fatal: false
+  text: The clinic-config check happens before the summaries are written to intake-summaries/.
+  anchor: In the tool log, confirm the config check ('legal-clinic') precedes the intake-summaries writes.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_order
+      cmds:
+      - legal-clinic
+      - intake-summaries
+    llm:
+      question: The clinic-config check happens before the summaries are written to intake-summaries/.
+      evidence: In the tool log, confirm the config check ('legal-clinic') precedes the intake-summaries writes.
+      source: tool_log
+      pattern: legal-clinic|intake-summaries
+- id: C33
+  category: boundary
+  fatal: false
+  text: When no clinic config is mounted, the summary notes 'Clinic config not loaded — generic defaults applied.' at the top.
+  anchor: Look at the top of the first summary for the clinic-config fallback note.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Clinic config not loaded — generic defaults applied.
+    llm:
+      question: When no clinic config is mounted, the summary notes 'Clinic config not loaded — generic defaults applied.' at the top.
+      evidence: Look at the top of the first summary for the clinic-config fallback note.
+      source: output
+      needle: Clinic config not loaded — generic defaults applied.
+- id: C34
+  category: boundary
+  fatal: false
+  text: Conflicts are surfaced for professor review and not resolved by the agent.
+  anchor: Look for conflict-flag wording that surfaces the issue for professor review.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: professor review
+    llm:
+      question: Conflicts are surfaced for professor review and not resolved by the agent.
+      evidence: Look for conflict-flag wording that surfaces the issue for professor review.
+      source: output
+      needle: professor review
+- id: C35
+  category: content
+  fatal: false
+  text: The output closes with the next-steps decision tree.
+  anchor: Look at the end of the reply for the next-steps decision tree.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: decision tree
+    llm:
+      question: The output closes with the next-steps decision tree.
+      evidence: Look at the end of the reply for the next-steps decision tree.
+      source: output
+      needle: decision tree
+- id: C36
+  category: content
+  fatal: false
+  text: The output ends with a verification checklist for the student (Verification prompts).
+  anchor: Look at the end of the reply for the student verification checklist section.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Verification prompts
+    llm:
+      question: The output ends with a verification checklist for the student (Verification prompts).
+      evidence: Look at the end of the reply for the student verification checklist section.
+      source: output
+      needle: Verification prompts
+- id: C37
+  category: negative
+  fatal: false
+  text: The output does not invent deadlines beyond those actually surfaced in the client materials (no fabricated deadline blocks).
+  anchor: 'Judgment: compare the emitted deadline blocks against the deadlines surfaced in the client materials in task.txt.'
+  judge: llm
+  check:
+    question: The output does not invent deadlines beyond those actually surfaced in the client materials (no fabricated deadline blocks).
+    evidence: 'Judgment: compare the emitted deadline blocks against the deadlines surfaced in the client materials in task.txt.'
+- id: C38
+  category: negative
+  fatal: false
+  text: The agent uses only the allowed tools (Read, Write, Glob, Grep) and does not invoke disallowed tools or commands.
+  anchor: 'Judgment: review the tool log for any tool usage outside Read, Write, Glob, Grep.'
+  judge: llm
+  check:
+    question: The agent uses only the allowed tools (Read, Write, Glob, Grep) and does not invoke disallowed tools or commands.
+    evidence: 'Judgment: review the tool log for any tool usage outside Read, Write, Glob, Grep.'

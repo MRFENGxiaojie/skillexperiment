@@ -1,0 +1,379 @@
+skill: 037-brief-section-drafter
+version: 2
+total_items: 24
+criteria:
+- id: C03
+  category: coverage
+  fatal: false
+  text: The agent consults all five matter materials (case-theory, timeline, contract, emails, pleadings).
+  anchor: count occurrences of the matter slug in the tool_log; all five matter files must be read at least once.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: count
+      what: acme-v-brightline
+      op: ge
+      n: 5
+    llm:
+      question: The agent consults all five matter materials (case-theory, timeline, contract, emails, pleadings).
+      evidence: count occurrences of the matter slug in the tool_log; all five matter files must be read at least once.
+      source: tool_log
+      pattern: acme-v-brightline
+- id: C06
+  category: process
+  fatal: false
+  text: The agent addresses the forum's local rules or standing orders for length, formatting, and citation rather than relying on unverified preferences.
+  anchor: drafting notes mention 'local rule(s)' or standing-order limits.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: local rule
+    llm:
+      question: The agent addresses the forum's local rules or standing orders for length, formatting, and citation rather than relying on unverified preferences.
+      evidence: drafting notes mention 'local rule(s)' or standing-order limits.
+      source: output
+      needle: local rule
+- id: C07
+  category: content
+  fatal: false
+  text: The argument section rests on Supply Agreement §7.2's signed-writing requirement for any modification.
+  anchor: final output cites §7.2.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: §7.2
+    llm:
+      question: The argument section rests on Supply Agreement §7.2's signed-writing requirement for any modification.
+      evidence: final output cites §7.2.
+      source: output
+      needle: §7.2
+- id: C08
+  category: content
+  fatal: false
+  text: The draft identifies the Supply Agreement's net-30 payment term (§4.2) as the baseline the modification claim must overcome.
+  anchor: final output contains 'net-30'.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: net-30
+    llm:
+      question: The draft identifies the Supply Agreement's net-30 payment term (§4.2) as the baseline the modification claim must overcome.
+      evidence: final output contains 'net-30'.
+      source: output
+      needle: net-30
+- id: C09
+  category: content
+  fatal: false
+  text: The argument contends the 2026-02-03 email exchange did not effect a modification of the payment terms.
+  anchor: final output references the 2026-02-03 email date.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: '2026-02-03'
+    llm:
+      question: The argument contends the 2026-02-03 email exchange did not effect a modification of the payment terms.
+      evidence: final output references the 2026-02-03 email date.
+      source: output
+      needle: '2026-02-03'
+- id: C11
+  category: content
+  fatal: false
+  text: The draft references the unpaid invoices (10258, 10264, 10279) and the $48,500.00 total.
+  anchor: final output contains the dollar figure 48,500.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: numeric_threshold
+      in: output
+      key: 48,500
+      op: eq
+      n: 48500
+    llm:
+      question: The draft references the unpaid invoices (10258, 10264, 10279) and the $48,500.00 total.
+      evidence: final output contains the dollar figure 48,500.
+      source: output
+      needle: 48,500
+- id: C12
+  category: content
+  fatal: false
+  text: The argument engages Brightline's claimed 60-day terms counterargument rather than ignoring it.
+  anchor: final output references the '60-day' claim.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: 60-day
+    llm:
+      question: The argument engages Brightline's claimed 60-day terms counterargument rather than ignoring it.
+      evidence: final output references the '60-day' claim.
+      source: output
+      needle: 60-day
+- id: C13
+  category: content
+  fatal: false
+  text: The statement of facts cites the Supply Agreement to the record with a Bates number (AG-0001).
+  anchor: final output contains AG-0001 as a record cite.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: AG-0001
+    llm:
+      question: The statement of facts cites the Supply Agreement to the record with a Bates number (AG-0001).
+      evidence: final output contains AG-0001 as a record cite.
+      source: output
+      needle: AG-0001
+- id: C14
+  category: content
+  fatal: false
+  text: The statement of facts attributes the 'we can be flexible on timing' language to the 2026-02-03 email with a record cite.
+  anchor: final output quotes or paraphrases 'flexible on timing' with attribution.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: flexible on timing
+    llm:
+      question: The statement of facts attributes the 'we can be flexible on timing' language to the 2026-02-03 email with a record cite.
+      evidence: final output quotes or paraphrases 'flexible on timing' with attribution.
+      source: output
+      needle: flexible on timing
+- id: C15
+  category: process
+  fatal: false
+  text: 'The draft uses [VERIFY: ...] markers for factual assertions not confirmed against the record.'
+  anchor: final output contains at least one [VERIFY marker.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: '[VERIFY'
+    llm:
+      question: 'The draft uses [VERIFY: ...] markers for factual assertions not confirmed against the record.'
+      evidence: final output contains at least one [VERIFY marker.
+      source: output
+      needle: '[VERIFY'
+- id: C16
+  category: boundary
+  fatal: false
+  text: 'Facts or authority the user did not supply are marked with [CITE NEEDED: ...] rather than invented.'
+  anchor: final output contains at least one [CITE NEEDED marker.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: '[CITE NEEDED'
+    llm:
+      question: 'Facts or authority the user did not supply are marked with [CITE NEEDED: ...] rather than invented.'
+      evidence: final output contains at least one [CITE NEEDED marker.
+      source: output
+      needle: '[CITE NEEDED'
+- id: C17
+  category: format
+  fatal: false
+  text: Every citation carries a source-attribution tag from the skill's taxonomy, such as [user provided] for record-derived cites.
+  anchor: final output contains a [user provided] tag on record-derived citations.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: '[user provided]'
+    llm:
+      question: Every citation carries a source-attribution tag from the skill's taxonomy, such as [user provided] for record-derived cites.
+      evidence: final output contains a [user provided] tag on record-derived citations.
+      source: output
+      needle: '[user provided]'
+- id: C21
+  category: format
+  fatal: false
+  text: The Drafting Notes include an 'Open questions for the partner' field.
+  anchor: final output contains the 'Open questions for the partner' label.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Open questions for the partner
+    llm:
+      question: The Drafting Notes include an 'Open questions for the partner' field.
+      evidence: final output contains the 'Open questions for the partner' label.
+      source: output
+      needle: Open questions for the partner
+- id: C22
+  category: format
+  fatal: false
+  text: The Drafting Notes state the number of record cites flagged for verification ('Record cites to verify').
+  anchor: final output contains the 'Record cites to verify' label.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Record cites to verify
+    llm:
+      question: The Drafting Notes state the number of record cites flagged for verification ('Record cites to verify').
+      evidence: final output contains the 'Record cites to verify' label.
+      source: output
+      needle: Record cites to verify
+- id: C23
+  category: format
+  fatal: false
+  text: The output carries the 'Cite check before filing' warning that citations are unverified against a primary source.
+  anchor: final output contains the 'Cite check before filing' heading.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Cite check before filing
+    llm:
+      question: The output carries the 'Cite check before filing' warning that citations are unverified against a primary source.
+      evidence: final output contains the 'Cite check before filing' heading.
+      source: output
+      needle: Cite check before filing
+- id: C24
+  category: format
+  fatal: false
+  text: The output states the work is a draft only and not a filing.
+  anchor: final output contains the phrase 'not a filing'.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: not a filing
+    llm:
+      question: The output states the work is a draft only and not a filing.
+      evidence: final output contains the phrase 'not a filing'.
+      source: output
+      needle: not a filing
+- id: C25
+  category: format
+  fatal: false
+  text: The Drafting Notes include a 'Length:' field comparing the draft to the applicable length norm.
+  anchor: final output contains the 'Length:' field.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: 'Length:'
+    llm:
+      question: The Drafting Notes include a 'Length:' field comparing the draft to the applicable length norm.
+      evidence: final output contains the 'Length:' field.
+      source: output
+      needle: 'Length:'
+- id: C26
+  category: negative
+  fatal: true
+  text: The draft does not place quotation marks around words attributed to the record unless the exact passage is in the supplied materials.
+  anchor: semantic judgment by reviewer comparing quoted language against emails.md/timeline.md; no deterministic probe.
+  judge: llm
+  check:
+    question: The draft does not place quotation marks around words attributed to the record unless the exact passage is in the supplied materials.
+    evidence: semantic judgment by reviewer comparing quoted language against emails.md/timeline.md; no deterministic probe.
+- id: C27
+  category: negative
+  fatal: false
+  text: Any case authority recalled from the model's training data is tagged [model knowledge — verify] and never presented as confirmed.
+  anchor: final output contains a [model knowledge tag on recalled authority.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: '[model knowledge'
+    llm:
+      question: Any case authority recalled from the model's training data is tagged [model knowledge — verify] and never presented as confirmed.
+      evidence: final output contains a [model knowledge tag on recalled authority.
+      source: output
+      needle: '[model knowledge'
+- id: C28
+  category: evidence
+  fatal: false
+  text: For citations whose source text was not retrievable, the agent uses 'could not check' language rather than claiming 'confirmed'.
+  anchor: final output contains the phrase 'could not check'.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: could not check
+    llm:
+      question: For citations whose source text was not retrievable, the agent uses 'could not check' language rather than claiming 'confirmed'.
+      evidence: final output contains the phrase 'could not check'.
+      source: output
+      needle: could not check
+- id: C29
+  category: negative
+  fatal: false
+  text: The agent does not refuse to draft on the ground the matter is unintaken, because acme-v-brightline is present in _log.yaml.
+  anchor: semantic judgment; absence of the 'Run /litigation-legal:matter-intake first' refusal.
+  judge: llm
+  check:
+    question: The agent does not refuse to draft on the ground the matter is unintaken, because acme-v-brightline is present in _log.yaml.
+    evidence: semantic judgment; absence of the 'Run /litigation-legal:matter-intake first' refusal.
+- id: C30
+  category: coverage
+  fatal: false
+  text: The output contains a Statement of Facts section.
+  anchor: final output contains the 'Statement of Facts' section heading.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Statement of Facts
+    llm:
+      question: The output contains a Statement of Facts section.
+      evidence: final output contains the 'Statement of Facts' section heading.
+      source: output
+      needle: Statement of Facts
+- id: C31
+  category: coverage
+  fatal: false
+  text: The output contains the Argument section on the modification issue.
+  anchor: final output contains an 'Argument' section heading or label.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Argument
+    llm:
+      question: The output contains the Argument section on the modification issue.
+      evidence: final output contains an 'Argument' section heading or label.
+      source: output
+      needle: Argument
+- id: C32
+  category: process
+  fatal: false
+  text: When the plugin firm config is not mounted, the Drafting Notes state 'Firm config not loaded — house style defaults per this skill applied.'
+  anchor: final output contains the 'Firm config not loaded' note.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Firm config not loaded
+    llm:
+      question: When the plugin firm config is not mounted, the Drafting Notes state 'Firm config not loaded — house style defaults per this skill applied.'
+      evidence: final output contains the 'Firm config not loaded' note.
+      source: output
+      needle: Firm config not loaded

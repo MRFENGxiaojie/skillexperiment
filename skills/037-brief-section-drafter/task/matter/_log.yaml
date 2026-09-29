@@ -1,0 +1,28 @@
+# Matters log — litigation-legal
+# One entry per intaken matter. Conflict check runs against this file.
+
+- slug: acme-v-brightline
+  matter_id: LG-2026-0147
+  caption: Acme Manufacturing, Inc. v. Brightline Distribution, LLC
+  court: U.S. District Court, Northern District of Texas
+  case_no: 3:26-cv-01032-K
+  side: plaintiff
+  type: contract
+  status: active
+  intake_date: 2026-07-01
+  next_deadline: 2026-08-14
+  next_deadline_desc: Summary judgment motion due (memorandum + appendix)
+  case_theory_file: matter/acme-v-brightline/case-theory.md
+  client_contact: K. Nakamura (Acme GC)
+  related: [acme-overdue-invoices]
+
+- slug: acme-overdue-invoices
+  matter_id: LG-2026-0122
+  caption: Acme demand letter — Brightline overdue invoices
+  court: n/a (pre-litigation demand)
+  case_no: n/a
+  side: plaintiff
+  type: contract
+  status: demand-issued
+  intake_date: 2026-06-02
+  related: [acme-v-brightline]
