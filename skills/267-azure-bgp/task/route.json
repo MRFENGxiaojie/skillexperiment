@@ -1,0 +1,43 @@
+{
+  "route_tables": {
+    "hub-east_defaultRouteTable": {
+      "static_routes": [],
+      "propagated_routes": [
+        { "prefix": "10.10.0.0/16", "next_hop": "vnet:app-east", "origin": "vnet connection", "as_path": null, "stable": true },
+        { "prefix": "10.11.0.0/16", "next_hop": "vnet:db-east", "origin": "vnet connection", "as_path": null, "stable": true },
+        { "prefix": "10.1.0.0/16", "next_hop": "branch:er-hk", "origin": "BGP (ExpressRoute)", "as_path": "65002", "stable": false, "flap_observed": true, "last_down": "2026-07-28T03:12:41Z", "last_up": "2026-07-28T03:14:02Z" },
+        { "prefix": "10.0.0.0/16", "next_hop": "hub-west", "origin": "BGP (via hub-to-hub)", "as_path": "65001", "stable": false, "flap_observed": true, "last_down": "2026-07-28T03:10:11Z", "last_up": "2026-07-28T03:11:30Z" },
+        { "prefix": "10.20.0.0/16", "next_hop": "hub-west", "origin": "BGP (via hub-to-hub)", "as_path": null, "stable": true }
+      ]
+    },
+    "hub-west_defaultRouteTable": {
+      "static_routes": [],
+      "propagated_routes": [
+        { "prefix": "10.20.0.0/16", "next_hop": "vnet:app-west", "origin": "vnet connection", "as_path": null, "stable": true },
+        { "prefix": "10.0.0.0/16", "next_hop": "branch:site-sg", "origin": "BGP (VPN)", "as_path": "65001", "stable": true },
+        { "prefix": "10.1.0.0/16", "next_hop": "hub-east", "origin": "BGP (via hub-to-hub)", "as_path": "65002", "stable": false, "flap_observed": true, "last_down": "2026-07-28T03:13:20Z", "last_up": "2026-07-28T03:14:40Z" },
+        { "prefix": "10.10.0.0/16", "next_hop": "hub-east", "origin": "BGP (via hub-to-hub)", "as_path": null, "stable": true },
+        { "prefix": "10.11.0.0/16", "next_hop": "hub-east", "origin": "BGP (via hub-to-hub)", "as_path": null, "stable": true }
+      ]
+    }
+  },
+  "bgp_peer_tables": {
+    "hub-east_bgp_table": {
+      "learned": [
+        { "prefix": "10.1.0.0/16", "from": "er-hk", "as_path": "65002", "local_pref": 100, "selected": true, "flapping": true },
+        { "prefix": "10.1.0.0/16", "from": "hub-west", "as_path": "65002", "local_pref": 100, "selected": false, "flapping": true, "note": "与 ER 直连路由同 AS 路径长度，按 preference 规则摇摆" },
+        { "prefix": "10.0.0.0/16", "from": "hub-west", "as_path": "65001", "local_pref": 100, "selected": true, "flapping": true },
+        { "prefix": "10.10.0.0/16", "from": "local vnet", "as_path": null, "selected": true }
+      ]
+    },
+    "hub-west_bgp_table": {
+      "learned": [
+        { "prefix": "10.0.0.0/16", "from": "site-sg", "as_path": "65001", "local_pref": 100, "selected": true },
+        { "prefix": "10.1.0.0/16", "from": "hub-east", "as_path": "65002", "local_pref": 100, "selected": true, "flapping": true },
+        { "prefix": "10.1.0.0/16", "from": "site-sg", "as_path": "65002", "local_pref": 100, "selected": false, "flapping": true, "note": "site-sg 转告的 ER 前缀与 hub-east 直通路由竞争，选择结果随时间片切换" },
+        { "prefix": "10.10.0.0/16", "from": "hub-east", "as_path": null, "selected": true, "leak": "see route_leaks.json" }
+      ]
+    }
+  },
+  "reported_issue": "hub-east 与 hub-west 之间、以及两个分支连接上的 BGP 路由持续抖动（约每 2-4 分钟一轮 withdraw/update），涉及 10.1.0.0/16 与 10.0.0.0/16。"
+}

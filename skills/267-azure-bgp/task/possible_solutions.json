@@ -1,0 +1,53 @@
+{
+  "proposals": [
+    {
+      "id": "P-01",
+      "proposed_by": "同事A",
+      "summary": "关闭 hub-east 与 hub-west 之间的 BGP 对等（disable BGP on the hub-to-hub connection）",
+      "details": "认为抖动源于 hub 间 BGP 互相通告，关掉后 hub 间路由改走静态/系统路由。",
+      "azure_applicability": "unknown"
+    },
+    {
+      "id": "P-02",
+      "proposed_by": "同事B",
+      "summary": "断开两个 vhub 之间的对等连接（disconnect / delete the vhub-to-vhub connection）",
+      "details": "彻底切断 hub 间路由交换，分支与 VNet 全部本地收敛。",
+      "azure_applicability": "unknown"
+    },
+    {
+      "id": "P-03",
+      "proposed_by": "同事C",
+      "summary": "调整 BGP 定时器（keepalive 30s→10s、hold 90s→30s）加快抖动收敛",
+      "details": "认为抖动是探测超时造成，缩短定时器可快速收敛。",
+      "azure_applicability": "unknown"
+    },
+    {
+      "id": "P-04",
+      "proposed_by": "同事A",
+      "summary": "用路由表 + No Peering 标签隔离 VNet 到分支的传播",
+      "details": "将 app-east/db-east 连接移入独立路由表，用 No Peering 标签禁止其传播到 branch，阻断 LEAK-01/03。",
+      "azure_applicability": "unknown"
+    },
+    {
+      "id": "P-05",
+      "proposed_by": "同事B",
+      "summary": "在 ExpressRoute 侧继续加长 AS 路径预处理，让 hub-west 不再把 10.1.0.0/16 转给 site-sg",
+      "details": "认为 10.1.0.0/16 抖动源于两条等长路径竞争，继续 prepend 压低 cloud 侧偏好。",
+      "azure_applicability": "unknown"
+    },
+    {
+      "id": "P-06",
+      "proposed_by": "同事C",
+      "summary": "给两个 hub 设置不同的 hub routing preference weight 打破偏好环",
+      "details": "把 hub-east/hub-west 的 routing preference 或 weight 改成不同值，让等长 AS 路径路由有确定性选择。",
+      "azure_applicability": "unknown"
+    },
+    {
+      "id": "P-07",
+      "proposed_by": "网络组",
+      "summary": "为 site-sg 配置路由过滤，拒绝 10.10.0.0/16、10.11.0.0/16 等 cloud VNet 前缀",
+      "details": "在 site-sg 本地 BGP 过滤器按前缀列表过滤，作为应急止血措施。",
+      "azure_applicability": "unknown"
+    }
+  ]
+}

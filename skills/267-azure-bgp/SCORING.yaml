@@ -1,0 +1,339 @@
+skill: 267-azure-bgp
+version: 2
+total_items: 21
+criteria:
+- id: C07
+  category: process
+  fatal: false
+  text: The agent sanity-checks the inputs per Step 1 (all referenced ASNs exist in topology.json, provider/customer and peer relationships are symmetric, no preference self-loop) and confirms the data
+    passes before proceeding.
+  anchor: Agent output — the input sanity-check section
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: self-loop|symmetric|sanity
+    llm:
+      question: The agent sanity-checks the inputs per Step 1 (all referenced ASNs exist in topology.json, provider/customer and peer relationships are symmetric, no preference self-loop) and confirms the
+        data passes before proceeding.
+      evidence: Agent output — the input sanity-check section
+      source: output
+      needle: self-loop|symmetric|sanity
+- id: C08
+  category: process
+  fatal: true
+  text: The agent detects the BGP oscillation and attributes it to a preference cycle (ASN → preferred next-hop) involving hub-east and hub-west.
+  anchor: Agent output — oscillation / preference-cycle conclusion
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: preference cycle|oscillation
+    llm:
+      question: The agent detects the BGP oscillation and attributes it to a preference cycle (ASN → preferred next-hop) involving hub-east and hub-west.
+      evidence: Agent output — oscillation / preference-cycle conclusion
+      source: output
+      needle: preference cycle|oscillation
+- id: C09
+  category: content
+  fatal: false
+  text: The agent identifies 10.1.0.0/16 as one of the prefixes caught in the hub-east/hub-west preference cycle.
+  anchor: Agent output — oscillation section, listed flap-cycle prefixes
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: 10.1.0.0/16
+    llm:
+      question: The agent identifies 10.1.0.0/16 as one of the prefixes caught in the hub-east/hub-west preference cycle.
+      evidence: Agent output — oscillation section, listed flap-cycle prefixes
+      source: output
+      needle: 10.1.0.0/16
+- id: C10
+  category: content
+  fatal: false
+  text: The agent identifies 10.0.0.0/16 as one of the prefixes caught in the hub-east/hub-west preference cycle.
+  anchor: Agent output — oscillation section, listed flap-cycle prefixes
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: 10.0.0.0/16
+    llm:
+      question: The agent identifies 10.0.0.0/16 as one of the prefixes caught in the hub-east/hub-west preference cycle.
+      evidence: Agent output — oscillation section, listed flap-cycle prefixes
+      source: output
+      needle: 10.0.0.0/16
+- id: C12
+  category: content
+  fatal: false
+  text: The agent reports route leak LEAK-02 (ExpressRoute prefix 10.1.0.0/16 leaking to VPN site site-sg) and notes its critical severity.
+  anchor: Agent output — route leak section, LEAK-02 entry
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: LEAK-02
+    llm:
+      question: The agent reports route leak LEAK-02 (ExpressRoute prefix 10.1.0.0/16 leaking to VPN site site-sg) and notes its critical severity.
+      evidence: Agent output — route leak section, LEAK-02 entry
+      source: output
+      needle: LEAK-02
+- id: C14
+  category: content
+  fatal: true
+  text: The agent explains the leaks using the valley-free rule — a route learned from a provider/peer (ExpressRoute er-hk) exported to a peer (VPN site-sg) is a leak, while customer/VNet-learned routes
+    are not valley-free violations by themselves.
+  anchor: Agent output — valley-free / route leak analysis
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: valley-free
+    llm:
+      question: The agent explains the leaks using the valley-free rule — a route learned from a provider/peer (ExpressRoute er-hk) exported to a peer (VPN site-sg) is a leak, while customer/VNet-learned
+        routes are not valley-free violations by themselves.
+      evidence: Agent output — valley-free / route leak analysis
+      source: output
+      needle: valley-free
+- id: C16
+  category: content
+  fatal: false
+  text: The agent presents Virtual WAN routing intent as the preferred Tier 1 fix (it overrides BGP path selection and enforces deterministic forwarding).
+  anchor: Agent output — ranked fix recommendation
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: routing intent
+    llm:
+      question: The agent presents Virtual WAN routing intent as the preferred Tier 1 fix (it overrides BGP path selection and enforces deterministic forwarding).
+      evidence: Agent output — ranked fix recommendation
+      source: output
+      needle: routing intent
+- id: C17
+  category: boundary
+  fatal: false
+  text: The agent notes that the task inputs do not state routing-intent availability, so it assumes routing intent is unavailable and proceeds to Tier 2/3 fixes.
+  anchor: Agent output — fix recommendation, routing-intent availability note
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: unavailable|not stated|not specified|not shown|not indicated|unknown
+    llm:
+      question: The agent notes that the task inputs do not state routing-intent availability, so it assumes routing intent is unavailable and proceeds to Tier 2/3 fixes.
+      evidence: Agent output — fix recommendation, routing-intent availability note
+      source: output
+      needle: unavailable|not stated|not specified|not shown|not indicated|unknown
+- id: C18
+  category: content
+  fatal: false
+  text: The agent recommends Tier 2 export/route policy fixes (filtering peer-learned routes before re-advertising, no-export communities) to break the cycle and enforce valley-free exports.
+  anchor: Agent output — Tier 2 fix recommendation
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: no-export|export policy|export filter|export control|export scope|re-export
+    llm:
+      question: The agent recommends Tier 2 export/route policy fixes (filtering peer-learned routes before re-advertising, no-export communities) to break the cycle and enforce valley-free exports.
+      evidence: Agent output — Tier 2 fix recommendation
+      source: output
+      needle: no-export|export policy|export filter|export control|export scope|re-export
+- id: C19
+  category: content
+  fatal: false
+  text: The agent explains the Tier 2 filtering mechanism with the cycle-collapse reasoning (filtering one hub's peer-learned route removes one leg of the preference cycle).
+  anchor: Agent output — Tier 2 mechanism explanation
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: filter
+    llm:
+      question: The agent explains the Tier 2 filtering mechanism with the cycle-collapse reasoning (filtering one hub's peer-learned route removes one leg of the preference cycle).
+      evidence: Agent output — Tier 2 mechanism explanation
+      source: output
+      needle: filter
+- id: C20
+  category: content
+  fatal: false
+  text: The agent presents Tier 3 User Defined Routes (UDR) as an alternative that forces a deterministic next hop independent of BGP decisions.
+  anchor: Agent output — Tier 3 / UDR section
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: UDR
+    llm:
+      question: The agent presents Tier 3 User Defined Routes (UDR) as an alternative that forces a deterministic next hop independent of BGP decisions.
+      evidence: Agent output — Tier 3 / UDR section
+      source: output
+      needle: UDR
+- id: C21
+  category: content
+  fatal: false
+  text: The agent states the UDR trade-off — it is a data-plane fix that masks the control-plane issue rather than a policy fix.
+  anchor: Agent output — UDR trade-off statement
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: masks
+    llm:
+      question: The agent states the UDR trade-off — it is a data-plane fix that masks the control-plane issue rather than a policy fix.
+      evidence: Agent output — UDR trade-off statement
+      source: output
+      needle: masks
+- id: C22
+  category: format
+  fatal: false
+  text: The agent ranks the recommended fixes by tier, labeling them Tier 1, Tier 2, and Tier 3.
+  anchor: Agent output — fix recommendation structure
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Tier 1|Tier 2|Tier 3
+    llm:
+      question: The agent ranks the recommended fixes by tier, labeling them Tier 1, Tier 2, and Tier 3.
+      evidence: Agent output — fix recommendation structure
+      source: output
+      needle: Tier 1|Tier 2|Tier 3
+- id: C27
+  category: content
+  fatal: false
+  text: The agent classifies proposal P-05 (extend AS-path prepending on the ExpressRoute device) as not a valid Azure-side fix — it is on-prem router manipulation and does not stop hub-west exporting the
+    leaked prefix to site-sg.
+  anchor: Agent output — proposal classification for P-05
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: P-05
+    llm:
+      question: The agent classifies proposal P-05 (extend AS-path prepending on the ExpressRoute device) as not a valid Azure-side fix — it is on-prem router manipulation and does not stop hub-west exporting
+        the leaked prefix to site-sg.
+      evidence: Agent output — proposal classification for P-05
+      source: output
+      needle: P-05
+- id: C28
+  category: content
+  fatal: false
+  text: The agent classifies proposal P-06 (give the two hubs different routing-preference weights) as valid — it makes equal-length path selection deterministic and breaks the preference cycle.
+  anchor: Agent output — proposal classification for P-06
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: P-06
+    llm:
+      question: The agent classifies proposal P-06 (give the two hubs different routing-preference weights) as valid — it makes equal-length path selection deterministic and breaks the preference cycle.
+      evidence: Agent output — proposal classification for P-06
+      source: output
+      needle: P-06
+- id: C31
+  category: content
+  fatal: false
+  text: The agent explains that Azure BGP sessions and peering are part of the provider-managed, SLA-backed control plane that customers control via routing policy, not via session existence.
+  anchor: Agent output — Prohibited Fixes explanation
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: SLA|control plane|customer-controllable
+    llm:
+      question: The agent explains that Azure BGP sessions and peering are part of the provider-managed, SLA-backed control plane that customers control via routing policy, not via session existence.
+      evidence: Agent output — Prohibited Fixes explanation
+      source: output
+      needle: SLA|control plane|customer-controllable
+- id: C33
+  category: content
+  fatal: false
+  text: The agent names the specific ASN or preference edge involved (on-prem ASNs 65001/65002 or hub peer ASNs 65520/65521) as the edge to filter or override.
+  anchor: Agent output — conclusion naming the specific ASN/preference edge
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: 65001|65002|65520|65521
+    llm:
+      question: The agent names the specific ASN or preference edge involved (on-prem ASNs 65001/65002 or hub peer ASNs 65520/65521) as the edge to filter or override.
+      evidence: Agent output — conclusion naming the specific ASN/preference edge
+      source: output
+      needle: 65001|65002|65520|65521
+- id: C34
+  category: evidence
+  fatal: false
+  text: The agent cites the observed flap evidence (e.g., hub-east↔hub-west BGP flapping with 10.1.0.0/16 and 10.0.0.0/16 in the flap cycle) as corroboration for the oscillation diagnosis.
+  anchor: Agent output — oscillation section, flap evidence cited from preferences.json/route.json
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: flapping|flaps|flap cycle
+    llm:
+      question: The agent cites the observed flap evidence (e.g., hub-east↔hub-west BGP flapping with 10.1.0.0/16 and 10.0.0.0/16 in the flap cycle) as corroboration for the oscillation diagnosis.
+      evidence: Agent output — oscillation section, flap evidence cited from preferences.json/route.json
+      source: output
+      needle: flapping|flaps|flap cycle
+- id: C35
+  category: evidence
+  fatal: false
+  text: The agent grounds the valley-free/leak reasoning in the Gao–Rexford model and/or RFC 4271.
+  anchor: Agent output — route leak analysis, reference citation
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Gao|RFC 4271
+    llm:
+      question: The agent grounds the valley-free/leak reasoning in the Gao–Rexford model and/or RFC 4271.
+      evidence: Agent output — route leak analysis, reference citation
+      source: output
+      needle: Gao|RFC 4271
+- id: C36
+  category: format
+  fatal: false
+  text: The output marks each proposal verdict with the terms valid/invalid.
+  anchor: Agent output — proposal classification section
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: valid|invalid
+    llm:
+      question: The output marks each proposal verdict with the terms valid/invalid.
+      evidence: Agent output — proposal classification section
+      source: output
+      needle: valid|invalid
+- id: C37
+  category: negative
+  fatal: true
+  text: The agent does not propose on-premises router configuration changes or topology destruction as the recommended fix.
+  anchor: Agent output — recommended fixes; verify no on-prem config (site-sg / ER device) or topology removal is adopted as the fix
+  judge: llm
+  check:
+    question: The agent does not propose on-premises router configuration changes or topology destruction as the recommended fix.
+    evidence: Agent output — recommended fixes; verify no on-prem config (site-sg / ER device) or topology removal is adopted as the fix

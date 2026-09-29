@@ -1,0 +1,55 @@
+{
+  "hub_to_hub": {
+    "connection_name": "hub-east-to-hub-west",
+    "type": "vhub-to-vhub (transit)",
+    "bgp_exchange_enabled": true,
+    "route_propagation": ["defaultRouteTable", "hubBgp"],
+    "status": "Established"
+  },
+  "vnet_connections": [
+    {
+      "name": "app-east",
+      "hub": "hub-east",
+      "route_table_association": "defaultRouteTable",
+      "propagates_to": ["defaultRouteTable"],
+      "propagation_labels": []
+    },
+    {
+      "name": "db-east",
+      "hub": "hub-east",
+      "route_table_association": "defaultRouteTable",
+      "propagates_to": ["defaultRouteTable"],
+      "propagation_labels": []
+    },
+    {
+      "name": "app-west",
+      "hub": "hub-west",
+      "route_table_association": "defaultRouteTable",
+      "propagates_to": ["defaultRouteTable"],
+      "propagation_labels": []
+    }
+  ],
+  "branch_connections": [
+    {
+      "name": "conn-site-sg",
+      "hub": "hub-west",
+      "type": "vpn-site",
+      "route_table_association": "defaultRouteTable",
+      "propagates_to": ["defaultRouteTable", "hubBgp"],
+      "propagation_labels": []
+    },
+    {
+      "name": "conn-er-hk",
+      "hub": "hub-east",
+      "type": "expressroute",
+      "route_table_association": "defaultRouteTable",
+      "propagates_to": ["defaultRouteTable", "hubBgp"],
+      "propagation_labels": []
+    }
+  ],
+  "route_tables": {
+    "hub-east": ["defaultRouteTable", "routeTable-east-internal"],
+    "hub-west": ["defaultRouteTable"]
+  },
+  "notes": "所有连接都挂在 defaultRouteTable 并默认向 hubBgp 传播；没有任何连接使用 No Peering 标签做隔离。"
+}

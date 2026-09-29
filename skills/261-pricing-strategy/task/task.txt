@@ -1,0 +1,8 @@
+## Background
+We built an AI customer-service bot SaaS for small and mid-sized businesses. The features are stable and we're ready to start charging, but we've never set any pricing.
+
+## Task
+Help us design a pricing structure: how many tiers, what metric to bill on (seats vs message volume — we haven't decided), and how much to charge per tier; ideally include the key points for a pricing page too. We mainly benchmark against Intercom and Zendesk, and the core value customers report is saving support-staff hours. We haven't measured trial-to-paid conversion, monthly churn, or average revenue per account — estimate a reasonable range by industry convention; don't invent precise numbers. Write all output in English.
+
+## Materials
+None

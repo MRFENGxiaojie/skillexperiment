@@ -1,0 +1,54 @@
+{
+  "hub_routing_preferences": {
+    "hub-east": { "preference": "ASPath", "weight": 0 },
+    "hub-west": { "preference": "ASPath", "weight": 0 },
+    "notes": "两个 hub 的 hub routing preference 均为 ASPath 且权重相同；BGP 在选择路由时按 AS 路径长度排序，长度相同时依赖接收顺序/稳定性处理。"
+  },
+  "bgp_timers": {
+    "keepalive_seconds": 30,
+    "hold_seconds": 90,
+    "notes": "Azure Virtual WAN 的 BGP keepalive/hold 定时器由平台托管，租户无法修改。"
+  },
+  "as_path_prepending": [
+    {
+      "connection": "conn-er-hk",
+      "prepends": 2,
+      "notes": "运维在 ExpressRoute 本地设备上对 hub-east 方向做了 2 次 AS 路径加长，目的是压低 ER 前缀在 cloud 侧的偏好。"
+    }
+  ],
+  "route_priority_details": {
+    "hub-east": {
+      "expressroute_vs_vpn": "ExpressRoute 优先于 VPN",
+      "onprem_same_prefix_from_two_peers": "AS 路径较短者优先；相同时按 hub routing preference 规则"
+    },
+    "hub-west": {
+      "expressroute_vs_vpn": "VPN 优先于 ExpressRoute",
+      "onprem_same_prefix_from_two_peers": "AS 路径较短者优先；相同时按 hub routing preference 规则"
+    }
+  },
+  "bgp_peer_state": {
+    "hub-east_to_er-hk": {
+      "peer_ip": "172.16.1.2",
+      "state": "Established",
+      "flapping": true,
+      "flaps_last_hour": 9,
+      "prefixes_received": 42,
+      "prefixes_advertised": ["10.1.0.0/16", "10.10.0.0/16", "10.11.0.0/16", "10.200.0.0/24"]
+    },
+    "hub-west_to_site-sg": {
+      "peer_ip": "172.16.0.1",
+      "state": "Established",
+      "flapping": false,
+      "flaps_last_hour": 0,
+      "prefixes_received": 41,
+      "prefixes_advertised": ["10.0.0.0/16", "10.20.0.0/16", "10.1.0.0/16", "10.10.0.0/16"]
+    },
+    "hub-east_to_hub-west": {
+      "state": "Established",
+      "flapping": true,
+      "flaps_last_hour": 15,
+      "routes_in_flap_cycle": ["10.1.0.0/16", "10.0.0.0/16"],
+      "notes": "两个 vhub 之间通过 hub-to-hub BGP 互相重新通告对方学到的 on-prem 前缀，且两侧偏好完全相同，疑似形成路由偏好环。"
+    }
+  }
+}

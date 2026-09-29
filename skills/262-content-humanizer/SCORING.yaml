@@ -1,0 +1,291 @@
+skill: 262-content-humanizer
+version: 2
+total_items: 20
+criteria:
+- id: E01
+  category: evidence
+  fatal: false
+  text: The agent runs the bundled scorer scripts/humanizer_scorer.py to verify the rewrite's humanity.
+  anchor: Search tool_log.jsonl for a Bash call containing 'humanizer_scorer'.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_contains
+      cmd: humanizer_scorer
+    llm:
+      question: The agent runs the bundled scorer scripts/humanizer_scorer.py to verify the rewrite's humanity.
+      evidence: Search tool_log.jsonl for a Bash call containing 'humanizer_scorer'.
+      source: tool_log
+      pattern: humanizer_scorer
+- id: E02
+  category: evidence
+  fatal: false
+  text: 'The scorer''s numeric result is visible in the run — the human-readable ''Humanity score: N/100'' output line (or the --json score field) appears.'
+  anchor: Look in agent output.txt and in Bash tool results for the scorer's 'Humanity score' output line.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Humanity score
+    llm:
+      question: 'The scorer''s numeric result is visible in the run — the human-readable ''Humanity score: N/100'' output line (or the --json score field) appears.'
+      evidence: Look in agent output.txt and in Bash tool results for the scorer's 'Humanity score' output line.
+      source: output
+      needle: Humanity score
+- id: A01
+  category: content
+  fatal: false
+  text: The audit scores the detected AI patterns with the severity markers 🔴 (critical) / 🟡 (medium) / 🟢 (minor).
+  anchor: Look in the agent's output for any of the markers 🔴, 🟡, 🟢 attached to flagged patterns.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: '[🔴🟡🟢]'
+    llm:
+      question: The audit scores the detected AI patterns with the severity markers 🔴 (critical) / 🟡 (medium) / 🟢 (minor).
+      evidence: Look in the agent's output for any of the markers 🔴, 🟡, 🟢 attached to flagged patterns.
+      source: output
+      needle: '[🔴🟡🟢]'
+- id: A02
+  category: content
+  fatal: false
+  text: The change-list deliverable frames each edit as a pattern category plus its fix, echoing the task's '模式类别 + 怎么改' contract (the output uses terms like 套路词, 空话, 模式类别, or 怎么改).
+  anchor: Look in the agent's output for the change-list section using category + fix framing; the tokens 套路词/空话/模式类别/怎么改.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: cliché|cliche|empty words|pattern category|how to change
+    llm:
+      question: The change-list deliverable frames each edit as a pattern category plus its fix, echoing the task's '模式类别 + 怎么改' contract (the output uses terms like 套路词, 空话, 模式类别, or 怎么改).
+      evidence: Look in the agent's output for the change-list section using category + fix framing; the tokens 套路词/空话/模式类别/怎么改.
+      source: output
+      needle: cliché|cliche|empty words|pattern category|how to change
+- id: A03
+  category: format
+  fatal: false
+  text: Each change-list entry follows the skill's annotation format '[category] 🟢/🟡/🔴 — the pattern as written — the fix'.
+  anchor: Look for entries matching '[...] <severity emoji> ... — ... — ...' inside the change list.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: \[[^\]]{1,20}\].{0,20}[🟢🟡🔴].{0,60}—
+    llm:
+      question: Each change-list entry follows the skill's annotation format '[category] 🟢/🟡/🔴 — the pattern as written — the fix'.
+      evidence: Look for entries matching '[...] <severity emoji> ... — ... — ...' inside the change list.
+      source: output
+      needle: \[[^\]]{1,20}\].{0,20}[🟢🟡🔴].{0,60}—
+- id: R01
+  category: content
+  fatal: false
+  text: The deliverable includes the complete rewritten draft of the blog, retaining the article title '为什么客服团队应该自动化'.
+  anchor: Look in the agent's output for the rewritten article with its title intact.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: draft_blog.md
+      needle: Why customer[- ]?service[- ]?teams should automate
+    llm:
+      question: The deliverable includes the complete rewritten draft of the blog, retaining the article title '为什么客服团队应该自动化'.
+      evidence: Look in the agent's output for the rewritten article with its title intact.
+      source: workspace
+      path: draft_blog.md
+      needle: Why customer[- ]?service[- ]?teams should automate
+- id: R03
+  category: content
+  fatal: false
+  text: The rewritten draft preserves the statistic '60%' (the share of repetitive queries) unchanged.
+  anchor: Look in the delivered rewrite for '60%'.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: 60%
+    llm:
+      question: The rewritten draft preserves the statistic '60%' (the share of repetitive queries) unchanged.
+      evidence: Look in the delivered rewrite for '60%'.
+      source: output
+      needle: 60%
+- id: R04
+  category: content
+  fatal: false
+  text: The rewritten draft preserves the response-time data '从 4 小时降至 20 分钟' unchanged.
+  anchor: Look in the delivered rewrite for '从 4 小时降至 20 分钟'.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: draft_blog.md
+      needle: from 4 hours to 20 minutes
+    llm:
+      question: The rewritten draft preserves the response-time data '从 4 小时降至 20 分钟' unchanged.
+      evidence: Look in the delivered rewrite for '从 4 小时降至 20 分钟'.
+      source: workspace
+      path: draft_blog.md
+      needle: from 4 hours to 20 minutes
+- id: R06
+  category: content
+  fatal: false
+  text: The rewritten draft preserves the 2023 workload statistic '70% 的重复工单' unchanged.
+  anchor: Look in the delivered rewrite for '70% 的重复工单'.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: draft_blog.md
+      needle: 70%
+    llm:
+      question: The rewritten draft preserves the 2023 workload statistic '70% 的重复工单' unchanged.
+      evidence: Look in the delivered rewrite for '70% 的重复工单'.
+      source: workspace
+      path: draft_blog.md
+      needle: 70%
+- id: R07
+  category: content
+  fatal: false
+  text: The rewritten draft preserves the team-size change '从 15 人缩减至 9 人' unchanged.
+  anchor: Look in the delivered rewrite for '从 15 人缩减至 9 人'.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: draft_blog.md
+      needle: from 15 people to 9
+    llm:
+      question: The rewritten draft preserves the team-size change '从 15 人缩减至 9 人' unchanged.
+      evidence: Look in the delivered rewrite for '从 15 人缩减至 9 人'.
+      source: workspace
+      path: draft_blog.md
+      needle: from 15 people to 9
+- id: R08
+  category: content
+  fatal: false
+  text: The rewritten draft preserves the NPS figures 'NPS 从 38 提升至 52' unchanged.
+  anchor: Look in the delivered rewrite for 'NPS 从 38 提升至 52'.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: draft_blog.md
+      needle: NPS rose from 38 to 52
+    llm:
+      question: The rewritten draft preserves the NPS figures 'NPS 从 38 提升至 52' unchanged.
+      evidence: Look in the delivered rewrite for 'NPS 从 38 提升至 52'.
+      source: workspace
+      path: draft_blog.md
+      needle: NPS rose from 38 to 52
+- id: R09
+  category: content
+  fatal: false
+  text: The rewritten draft preserves the 24/7 coverage claim '7×24' unchanged.
+  anchor: Look in the delivered rewrite for '7×24'.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: draft_blog.md
+      needle: 7x24|7×24
+    llm:
+      question: The rewritten draft preserves the 24/7 coverage claim '7×24' unchanged.
+      evidence: Look in the delivered rewrite for '7×24'.
+      source: workspace
+      path: draft_blog.md
+      needle: 7x24|7×24
+- id: R10
+  category: content
+  fatal: false
+  text: The rewritten draft keeps the two anonymous case references '某电商平台' and '某 SaaS 公司' without naming real companies.
+  anchor: Look in the delivered rewrite for '某电商平台' and '某 SaaS 公司'.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: draft_blog.md
+      needle: an e-commerce platform|a SaaS company
+    llm:
+      question: The rewritten draft keeps the two anonymous case references '某电商平台' and '某 SaaS 公司' without naming real companies.
+      evidence: Look in the delivered rewrite for '某电商平台' and '某 SaaS 公司'.
+      source: workspace
+      path: draft_blog.md
+      needle: an e-commerce platform|a SaaS company
+- id: R12
+  category: content
+  fatal: false
+  text: The audit or change list flags the uncited sourcing '根据行业报告' as a specificity/sourcing gap rather than asserting it as a verified fact.
+  anchor: Look in the audit or change list for a note about the '根据行业报告' attribution being uncited.
+  judge: llm
+  check:
+    question: The audit or change list flags the uncited sourcing '根据行业报告' as a specificity/sourcing gap rather than asserting it as a verified fact.
+    evidence: Look in the audit or change list for a note about the '根据行业报告' attribution being uncited.
+- id: N01
+  category: negative
+  fatal: false
+  text: The agent does not invent new data, percentages, quotes, or study references — every figure in the rewrite traces back to the original draft.
+  anchor: Cross-check every number and claim in the rewrite against task/draft_blog.md; any figure not present in the draft is a violation.
+  judge: llm
+  check:
+    question: The agent does not invent new data, percentages, quotes, or study references — every figure in the rewrite traces back to the original draft.
+    evidence: Cross-check every number and claim in the rewrite against task/draft_blog.md; any figure not present in the draft is a violation.
+- id: N02
+  category: negative
+  fatal: false
+  text: The rewritten draft removes the banned clichés from marketing-context.md's 禁用词表 (赋能, 众所周知, 总而言之, 打造, 助力, 携手, 共创, 数字化浪潮, 在当今…时代, 值得注意, and similar).
+  anchor: Read the REWRITTEN section of the output (not the change list, where original patterns are legitimately quoted) and check for any banned clichés.
+  judge: llm
+  check:
+    question: The rewritten draft removes the banned clichés from marketing-context.md's 禁用词表 (赋能, 众所周知, 总而言之, 打造, 助力, 携手, 共创, 数字化浪潮, 在当今…时代, 值得注意, and similar).
+    evidence: Read the REWRITTEN section of the output (not the change list, where original patterns are legitimately quoted) and check for any banned clichés.
+- id: N03
+  category: negative
+  fatal: false
+  text: The agent does not fill the specificity gap by inventing company names (e.g., naming HubSpot or Zendesk) — the '某电商平台' / '某 SaaS 公司' cases stay anonymous per the red line.
+  anchor: Scan the rewrite and change list for any real company names or invented attributions beyond the original anonymous cases.
+  judge: llm
+  check:
+    question: The agent does not fill the specificity gap by inventing company names (e.g., naming HubSpot or Zendesk) — the '某电商平台' / '某 SaaS 公司' cases stay anonymous per the red line.
+    evidence: Scan the rewrite and change list for any real company names or invented attributions beyond the original anonymous cases.
+- id: N04
+  category: negative
+  fatal: false
+  text: The deliverable stays in the input language (Chinese) — the blog is not translated to English or another language.
+  anchor: Read the rewritten draft; it should be in Chinese, consistent with the source draft.
+  judge: llm
+  check:
+    question: The deliverable stays in the input language (Chinese) — the blog is not translated to English or another language.
+    evidence: Read the rewritten draft; it should be in Chinese, consistent with the source draft.
+- id: C01
+  category: format
+  fatal: false
+  text: For every flagged pattern the agent gives the concrete replacement or rewritten sentence, not a generic critique such as 'this sounds robotic'.
+  anchor: Look in the audit/change list for an explicit fix (改法) attached to each flagged pattern.
+  judge: llm
+  check:
+    question: For every flagged pattern the agent gives the concrete replacement or rewritten sentence, not a generic critique such as 'this sounds robotic'.
+    evidence: Look in the audit/change list for an explicit fix (改法) attached to each flagged pattern.
+- id: V02
+  category: coverage
+  fatal: false
+  text: 'The change list addresses the major AI-cliché patterns present in the draft: the stock opening ''在当今快节奏的数字化时代'', filler words like 众所周知/赋能/显著, the laddered 首先/其次/再次 structure, and the formulaic
+    conclusion 总而言之.'
+  anchor: Look in the change list for entries covering these specific original patterns.
+  judge: llm
+  check:
+    question: 'The change list addresses the major AI-cliché patterns present in the draft: the stock opening ''在当今快节奏的数字化时代'', filler words like 众所周知/赋能/显著, the laddered 首先/其次/再次 structure, and the formulaic
+      conclusion 总而言之.'
+    evidence: Look in the change list for entries covering these specific original patterns.

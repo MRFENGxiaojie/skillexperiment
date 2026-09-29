@@ -1,0 +1,362 @@
+skill: 264-startup-pivoting
+version: 2
+total_items: 22
+criteria:
+- id: C01
+  category: process
+  fatal: true
+  text: 'The agent frames the decision explicitly as a binary, named decision space: pivot vs persevere vs shut down (or pivot A vs pivot B).'
+  anchor: Final pack decision statement / Pivot Decision Memo and the agent's early framing messages.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: (?i)persevere|shut down
+    llm:
+      question: 'The agent frames the decision explicitly as a binary, named decision space: pivot vs persevere vs shut down (or pivot A vs pivot B).'
+      evidence: Final pack decision statement / Pivot Decision Memo and the agent's early framing messages.
+      source: output
+      needle: (?i)persevere|shut down
+- id: C04
+  category: boundary
+  fatal: false
+  text: Because the task supplies no data, the agent consults the intake reference and asks for missing evidence instead of fabricating metrics.
+  anchor: Tool log Read of references/INTAKE.md and the agent's intake questions to the user.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_contains
+      cmd: (?i)INTAKE\.md
+    llm:
+      question: Because the task supplies no data, the agent consults the intake reference and asks for missing evidence instead of fabricating metrics.
+      evidence: Tool log Read of references/INTAKE.md and the agent's intake questions to the user.
+      source: tool_log
+      pattern: (?i)INTAKE\.md
+- id: C06
+  category: process
+  fatal: false
+  text: The agent reads the reference files before writing the pack file (read-before-write ordering).
+  anchor: 'Chronological tool log: a Read of a references/*.md file precedes any Write of the pack.'
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_order
+      cmds:
+      - (?i)INTAKE\.md|TEMPLATES\.md|CHECKLISTS\.md|RUBRIC\.md
+      - Write
+    llm:
+      question: The agent reads the reference files before writing the pack file (read-before-write ordering).
+      evidence: 'Chronological tool log: a Read of a references/*.md file precedes any Write of the pack.'
+      source: tool_log
+      pattern: (?i)INTAKE\.md|TEMPLATES\.md|CHECKLISTS\.md|RUBRIC\.md|Write
+- id: C07
+  category: format
+  fatal: false
+  text: The Pivot Decision & Execution Pack is saved as a Markdown file in the workspace.
+  anchor: Workspace root for a *.md file (the pack file); if the pack was kept in-chat only, the judge should verify against the final output instead.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_exists
+      path: '**/*.md'
+    llm:
+      question: The Pivot Decision & Execution Pack is saved as a Markdown file in the workspace.
+      evidence: Workspace root for a *.md file (the pack file); if the pack was kept in-chat only, the judge should verify against the final output instead.
+      source: workspace
+      path: '**/*.md'
+- id: C08
+  category: coverage
+  fatal: false
+  text: 'The final pack includes all eight required sections: context snapshot, stuck diagnosis, exhaustion check, pivot options map, pivot thesis + metrics, validation plan, execution plan, and Risks /
+    Open questions / Next steps.'
+  anchor: Final pack headings in the agent's output (or saved .md).
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: (?i)(?=.*context snapshot)(?=.*stuck diagnosis)(?=.*exhaustion)(?=.*(?:pivot options|options map))(?=.*thesis)(?=.*validation plan)(?=.*execution plan)(?=.*Risks)(?=.*Open questions)(?=.*Next
+        steps)
+    llm:
+      question: 'The final pack includes all eight required sections: context snapshot, stuck diagnosis, exhaustion check, pivot options map, pivot thesis + metrics, validation plan, execution plan, and
+        Risks / Open questions / Next steps.'
+      evidence: Final pack headings in the agent's output (or saved .md).
+      source: output
+      needle: (?i)(?=.*context snapshot)(?=.*stuck diagnosis)(?=.*exhaustion)(?=.*(?:pivot options|options map))(?=.*thesis)(?=.*validation plan)(?=.*execution plan)(?=.*Risks)(?=.*Open questions)(?=.*Next
+        steps)
+- id: C09
+  category: content
+  fatal: false
+  text: The stuck diagnosis separates signal (demand/value) issues from execution (distribution/onboarding/pricing) issues.
+  anchor: Stuck diagnosis section of the pack.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: (?i)(?=.*signal)(?=.*execution)
+    llm:
+      question: The stuck diagnosis separates signal (demand/value) issues from execution (distribution/onboarding/pricing) issues.
+      evidence: Stuck diagnosis section of the pack.
+      source: output
+      needle: (?i)(?=.*signal)(?=.*execution)
+- id: C10
+  category: content
+  fatal: false
+  text: The diagnosis explicitly labels evidence gaps / missing data that must be learned.
+  anchor: Stuck diagnosis section (Evidence gaps).
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: (?i)evidence gaps
+    llm:
+      question: The diagnosis explicitly labels evidence gaps / missing data that must be learned.
+      evidence: Stuck diagnosis section (Evidence gaps).
+      source: output
+      needle: (?i)evidence gaps
+- id: C12
+  category: content
+  fatal: false
+  text: The exhaustion check judges each lever on whether it was "tried well" (quality of attempt), not just whether it was tried.
+  anchor: Exhaustion Check table column "Have we tried it well?" or equivalent.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: (?i)tried it well|tried well
+    llm:
+      question: The exhaustion check judges each lever on whether it was "tried well" (quality of attempt), not just whether it was tried.
+      evidence: Exhaustion Check table column "Have we tried it well?" or equivalent.
+      source: output
+      needle: (?i)tried it well|tried well
+- id: C13
+  category: content
+  fatal: false
+  text: The exhaustion check identifies time-boxed "last best" non-pivot moves, or an explicit rationale for skipping them.
+  anchor: Exhaustion Check conclusion / last-best-tries plan.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: (?i)last best|time-box|timebox
+    llm:
+      question: The exhaustion check identifies time-boxed "last best" non-pivot moves, or an explicit rationale for skipping them.
+      evidence: Exhaustion Check conclusion / last-best-tries plan.
+      source: output
+      needle: (?i)last best|time-box|timebox
+- id: C16
+  category: coverage
+  fatal: false
+  text: The pivot options map presents at least 4 distinct options (target 4-8), rendered as a markdown table with lettered/numbered rows.
+  anchor: Pivot options map table rows (e.g., | A | ... | through | D/E |).
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: (?:\|\s*(?:[A-Z]|\d+)\s*\|[^\n]*\n){4,}
+    llm:
+      question: The pivot options map presents at least 4 distinct options (target 4-8), rendered as a markdown table with lettered/numbered rows.
+      evidence: Pivot options map table rows (e.g., | A | ... | through | D/E |).
+      source: output
+      needle: (?:\|\s*(?:[A-Z]|\d+)\s*\|[^\n]*\n){4,}
+- id: C17
+  category: content
+  fatal: false
+  text: Each pivot option states "why this could win" and "what must be true" (falsifiability).
+  anchor: Pivot options map table columns "Why this could win" and "What must be true".
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: (?i)what must be true|would have to be true|why this could win
+    llm:
+      question: Each pivot option states "why this could win" and "what must be true" (falsifiability).
+      evidence: Pivot options map table columns "Why this could win" and "What must be true".
+      source: output
+      needle: (?i)what must be true|would have to be true|why this could win
+- id: C18
+  category: content
+  fatal: false
+  text: The chosen pivot thesis is a falsifiable statement specifying persona, problem, and promise.
+  anchor: Pivot Thesis Card section of the pack.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: (?i)(?=.*persona)(?=.*problem)(?=.*promise)
+    llm:
+      question: The chosen pivot thesis is a falsifiable statement specifying persona, problem, and promise.
+      evidence: Pivot Thesis Card section of the pack.
+      source: output
+      needle: (?i)(?=.*persona)(?=.*problem)(?=.*promise)
+- id: C19
+  category: content
+  fatal: true
+  text: The success metrics define a North Star metric (with leading indicators), not a vague goal.
+  anchor: Success metrics + kill criteria section.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: (?i)North Star
+    llm:
+      question: The success metrics define a North Star metric (with leading indicators), not a vague goal.
+      evidence: Success metrics + kill criteria section.
+      source: output
+      needle: (?i)North Star
+- id: C20
+  category: termination
+  fatal: true
+  text: Kill criteria are explicit with a decision gate (date/condition after which the pivot is confirmed or killed), not "keep going until it works".
+  anchor: Kill criteria section ("By <date>, if <condition>, then <decision>").
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: (?i)kill criteria|kill criterion
+    llm:
+      question: Kill criteria are explicit with a decision gate (date/condition after which the pivot is confirmed or killed), not "keep going until it works".
+      evidence: Kill criteria section ("By <date>, if <condition>, then <decision>").
+      source: output
+      needle: (?i)kill criteria|kill criterion
+- id: C21
+  category: content
+  fatal: true
+  text: The validation plan includes at least one "hard truth" test that could disconfirm the thesis.
+  anchor: Validation plan section (pre-sell/LOI/paid waitlist/pilot or disconfirming test).
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: (?i)hard truth|hard-truth|disconfirm
+    llm:
+      question: The validation plan includes at least one "hard truth" test that could disconfirm the thesis.
+      evidence: Validation plan section (pre-sell/LOI/paid waitlist/pilot or disconfirming test).
+      source: output
+      needle: (?i)hard truth|hard-truth|disconfirm
+- id: C22
+  category: content
+  fatal: false
+  text: The execution plan is a time-boxed pivot sprint with a weekly timeline.
+  anchor: Pivot sprint execution plan section (Week 1 / Week 2 ...).
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: (?i)sprint|Week 1|Week 2
+    llm:
+      question: The execution plan is a time-boxed pivot sprint with a weekly timeline.
+      evidence: Pivot sprint execution plan section (Week 1 / Week 2 ...).
+      source: output
+      needle: (?i)sprint|Week 1|Week 2
+- id: C24
+  category: content
+  fatal: false
+  text: The execution plan includes a comms plan covering team, customers, and investors.
+  anchor: Execution plan (Comms plan).
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: (?i)comms|communication plan
+    llm:
+      question: The execution plan includes a comms plan covering team, customers, and investors.
+      evidence: Execution plan (Comms plan).
+      source: output
+      needle: (?i)comms|communication plan
+- id: C26
+  category: content
+  fatal: false
+  text: The plan includes a rollback/exit plan if the validation results fail.
+  anchor: Execution/validation plan rollback/exit section.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: (?i)rollback|exit plan
+    llm:
+      question: The plan includes a rollback/exit plan if the validation results fail.
+      evidence: Execution/validation plan rollback/exit section.
+      source: output
+      needle: (?i)rollback|exit plan
+- id: C27
+  category: content
+  fatal: false
+  text: 'The pack ends with all three quality-gate elements: Risks, Open questions, and Next steps.'
+  anchor: End of the pack (deliverable 8).
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: (?i)(?=.*Risks)(?=.*Open questions)(?=.*Next steps)
+    llm:
+      question: 'The pack ends with all three quality-gate elements: Risks, Open questions, and Next steps.'
+      evidence: End of the pack (deliverable 8).
+      source: output
+      needle: (?i)(?=.*Risks)(?=.*Open questions)(?=.*Next steps)
+- id: C28
+  category: evidence
+  fatal: false
+  text: The pack is grounded in the actual product (AI quotation assistant for foreign-trade SMBs), not a generic template.
+  anchor: Context snapshot (Product today / Target customer).
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: (?i)quotation|quote assistant|foreign trade
+    llm:
+      question: The pack is grounded in the actual product (AI quotation assistant for foreign-trade SMBs), not a generic template.
+      evidence: Context snapshot (Product today / Target customer).
+      source: output
+      needle: (?i)quotation|quote assistant|foreign trade
+- id: C31
+  category: evidence
+  fatal: false
+  text: Missing evidence is labeled as explicit assumptions or unknowns rather than presented as measured facts.
+  anchor: Context snapshot / evidence inventory where assumptions are flagged.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: (?i)assumption|assumptions|unknown
+    llm:
+      question: Missing evidence is labeled as explicit assumptions or unknowns rather than presented as measured facts.
+      evidence: Context snapshot / evidence inventory where assumptions are flagged.
+      source: output
+      needle: (?i)assumption|assumptions|unknown
+- id: C32
+  category: negative
+  fatal: false
+  text: The pivot recommendation is tied to runway and exhausted non-pivot levers, not a vibe-based "just change direction" recommendation.
+  anchor: Decision statement and exhaustion-check conclusion.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: (?i)(?=.*runway)(?=.*pivot)
+    llm:
+      question: The pivot recommendation is tied to runway and exhausted non-pivot levers, not a vibe-based "just change direction" recommendation.
+      evidence: Decision statement and exhaustion-check conclusion.
+      source: output
+      needle: (?i)(?=.*runway)(?=.*pivot)

@@ -1,0 +1,8 @@
+## Background
+We built an AI quoting assistant for small and mid-sized foreign-trade companies. We trialed it for over two years; signups grew but paid conversion is poor, the sales cycle keeps lengthening, and cash only covers 6 months.
+
+## Task
+Management is debating whether to pivot. Help us systematically walk through this decision: is it a product problem or did we pick the wrong customers; are there conventional moves we haven't tried; if we do pivot, what directions exist, which to choose, how to validate, and when to make the final call; produce a complete decision document I can send directly to the team and investors. Write all output in English.
+
+## Materials
+None (the product situation and key metrics are as described in the background; I can provide any missing data)

@@ -1,0 +1,8 @@
+## Background
+I'm an independent developer whose product is a developer efficiency tool (CLI + small plugin). I've been heads-down coding for months doing zero social media. Now I want to seriously build a personal brand on LinkedIn and X (Twitter) to attract target users, but I have no idea where to start.
+
+## Task
+Help me plan and produce social content. First I want to nail down the overall content strategy: which content pillars to post around (and the mix ratio), how often to post per week; then give me a two-week editorial calendar (which platform, what format, which pillar, and whether it's timely or evergreen, marked for each day). On content: first give me a batch of ready-to-post opening posts, each with a compelling hook opening, plus body, call to action, and hashtags, written in separate versions for LinkedIn and X (matching each platform's style and length); then adapt one of my existing long-form posts (attached in the materials) into a cross-platform series. Also, I'm unsure whether to use data/statistic hooks — if the material I gave has no real numbers, don't fabricate them. For frequency and goal recommendations, consider my actual situation, and if it exceeds my capacity, say so directly. Write all output in English.
+
+## Materials
+My background: independent developer, product is a terminal-efficiency tool, target audience is developers/DevOps. Existing material: a long-form blog post "How I sped up my terminal workflow 50% with 3 custom commands" (no cited data; personal experience). I currently have no social media content or follower base and can invest ~3 hours a week. Personal brand vs company brand: personal-first.

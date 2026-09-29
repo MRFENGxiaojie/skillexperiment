@@ -1,0 +1,8 @@
+## Background
+Our Azure Virtual WAN recently developed a strange problem: BGP routes between two vhubs keep flapping, and some prefixes show up in regions where they shouldn't be. The networking team suspects route leakage.
+
+## Task
+Help us troubleshoot: I've put the config data in the working directory — first check whether the data itself has problems, then determine whether the flapping is caused by a route-preference loop, and how those unexpected prefixes leaked. Give actionable fix options ordered by priority; a colleague also proposed several alternative fixes (disabling BGP, tearing down peerings, tuning timers, etc.) — evaluate each, saying which ones are usable on Azure and which aren't, with clear reasoning. Write all output in English.
+
+## Materials
+topology.json, relationships.json, preferences.json, route.json, route_leaks.json, possible_solutions.json (in the working directory)

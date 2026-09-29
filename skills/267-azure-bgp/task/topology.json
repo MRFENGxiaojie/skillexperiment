@@ -1,0 +1,54 @@
+{
+  "virtual_wan": {
+    "name": "wan-global-prod",
+    "resource_group": "rg-networking",
+    "type": "Standard",
+    "allow_branch_to_branch_traffic": true,
+    "disable_vpn_encryption": false
+  },
+  "virtual_hubs": [
+    {
+      "name": "hub-east",
+      "location": "eastasia",
+      "address_prefix": "10.200.0.0/24",
+      "hub_routing_preference": "ASPath",
+      "hub_routing_preference_weight": 0,
+      "bgp_peering": { "peer_ip": "10.200.0.4", "peer_asn": 65520 },
+      "status": "Succeeded"
+    },
+    {
+      "name": "hub-west",
+      "location": "southeastasia",
+      "address_prefix": "10.200.1.0/24",
+      "hub_routing_preference": "ASPath",
+      "hub_routing_preference_weight": 0,
+      "bgp_peering": { "peer_ip": "10.200.1.4", "peer_asn": 65521 },
+      "status": "Succeeded"
+    }
+  ],
+  "vnet_connections": [
+    { "name": "app-east", "hub": "hub-east", "address_space": ["10.10.0.0/16"], "connected": true },
+    { "name": "db-east", "hub": "hub-east", "address_space": ["10.11.0.0/16"], "connected": true },
+    { "name": "app-west", "hub": "hub-west", "address_space": ["10.20.0.0/16"], "connected": true }
+  ],
+  "on_premises": [
+    {
+      "name": "site-sg",
+      "hub": "hub-west",
+      "connection_type": "vpn-site",
+      "asn": 65001,
+      "bgp_ip": "172.16.0.1",
+      "prefixes": ["10.0.0.0/16"],
+      "link_state": "Connected"
+    },
+    {
+      "name": "er-hk",
+      "hub": "hub-east",
+      "connection_type": "expressroute",
+      "asn": 65002,
+      "bgp_ip": "172.16.1.2",
+      "prefixes": ["10.1.0.0/16"],
+      "link_state": "Connected"
+    }
+  ]
+}

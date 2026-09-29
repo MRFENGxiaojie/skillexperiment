@@ -1,0 +1,35 @@
+{
+  "observed_leaks": [
+    {
+      "id": "LEAK-01",
+      "prefix": "10.10.0.0/16",
+      "expected_in": ["eastasia: vnet app-east"],
+      "observed_in": ["hub-west route table", "site-sg (VPN on-prem) BGP table"],
+      "propagation_path": "app-east 连接 → hub-east hubBgp → hub-to-hub BGP → hub-west → conn-site-sg → site-sg 本地路由",
+      "first_observed": "2026-07-21T09:14:00Z",
+      "impact": "site-sg 对该前缀的流量被导向云侧；VNet 地址泄露到 VPN 站点",
+      "severity": "high"
+    },
+    {
+      "id": "LEAK-02",
+      "prefix": "10.1.0.0/16",
+      "expected_in": ["hongkong: er-hk 本地网段"],
+      "observed_in": ["hub-west route table", "site-sg (VPN on-prem) BGP table"],
+      "propagation_path": "er-hk (ER) → hub-east → hub-to-hub BGP → hub-west → conn-site-sg → site-sg",
+      "first_observed": "2026-07-18T02:33:00Z",
+      "impact": "site-sg 对自身上游网段 10.1.0.0/16 的路由被云侧劫持，部分流量绕行 Azure 后抖动",
+      "severity": "critical"
+    },
+    {
+      "id": "LEAK-03",
+      "prefix": "10.11.0.0/16",
+      "expected_in": ["eastasia: vnet db-east"],
+      "observed_in": ["hub-west route table", "site-sg (VPN on-prem) BGP table"],
+      "propagation_path": "db-east 连接 → hub-east hubBgp → hub-to-hub BGP → hub-west → conn-site-sg → site-sg",
+      "first_observed": "2026-07-22T11:02:00Z",
+      "impact": "数据库网段地址泄露到 VPN 站点",
+      "severity": "high"
+    }
+  ],
+  "summary": "VNet 与 ER 前缀经 hub-to-hub BGP 传播后被 hub-west 重新通告给 VPN 站点 site-sg；site-sg 不应收到任何 cloud VNet 前缀，也不应收到另一分支的 on-prem 前缀。所有连接的传播都指向 hubBgp 且无 No Peering 标签，疑似泄漏根因。"
+}

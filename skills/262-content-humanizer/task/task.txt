@@ -1,0 +1,8 @@
+## Background
+Last week marketing batch-wrote blog posts for the corporate site with AI tools; they read like a machine wrote them. Before launch we want them to sound more natural.
+
+## Task
+Rewrite "Why customer-service teams should automate" (aimed at prospective customers) so it reads like a human wrote it: remove the telltale AI buzzwords and fluff, vary sentence lengths, and match the tone our site consistently uses. Don't change or fabricate any of the original's data or case studies. After editing, give me a list of every change categorized as "pattern type + how I changed it." Write all output in English.
+
+## Materials
+Draft draft_blog.md and brand tone guide marketing-context.md (both in the working directory)

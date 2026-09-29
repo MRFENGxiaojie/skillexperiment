@@ -1,0 +1,21 @@
+## Background
+We're a consumer brand making healthy foods. We recently noticed a competitor launched a dietary supplement called "NUTRIVITA" whose outer packaging is highly similar to our registered "VITANOVA" line — nearly identical bottle color scheme, typography, and label structure — and it's selling well on domestic e-commerce platforms.
+
+## Task
+Help us assess the situation and whether the counterparty might be infringing our rights and whether it's worth pursuing. The specifics: we hold the VITANOVA trademark registration in the food/health-product category; their product is a direct competitor with similar hero ingredients and positioning, sold through the same e-commerce channel. We suspect they copied our packaging because the color scheme and layout are almost identical. Lay out the pros-and-cons factors one by one — which favor us, which favor them, and which are gray areas — but don't rush to conclude it's definitely infringement. I need help putting all the factors to consider on the table, and finally a next-step recommendation. Write all output in English.
+
+## Materials
+Us: VITANOVA trademark (domestic registration, health-product classes 29/30), product launched 2019, ¥80M annual e-commerce sales. Them: NUTRIVITA, launched March 2026, sold on the same channel. Evidence: product-page screenshots from the e-commerce platform and packaging comparison images of both sides (available).
+
+## Working requirements
+Work in the current working directory. Follow this order:
+1. Read `claude-for-legal/ip-legal/CLAUDE.md` (the practice profile is provided in the working directory), then read `evidence_notes.md`, `references/factor-analysis.md` and `references/what-cuts-which-way-summary.md`.
+2. Produce the full trademark triage and write it to `ip-legal/outputs/infringe-trademark-nutrivita-2026-08-24.md` (create the `ip-legal/outputs` folder in the working directory).
+3. Your final reply must contain the COMPLETE triage text - the final reply is what gets graded, so do not end with a summary or a file pointer.
+
+The final triage must include:
+- Title exactly: "Infringement Triage — Trademark (NOT A FINDING)" and the sentence "This is a triage, not a finding of infringement or non-infringement".
+- A "Triage result:" line with a GREEN/YELLOW/RED verdict and one-sentence rationale.
+- Factor sections with these exact headings: "jurisdiction", "Similarity of marks", "Similarity of goods or services", "Strength of the senior mark", "Intent", "trade dress", and "Consumer sophistication".
+- Anchor the dates: VITANOVA launched "2019", NUTRIVITA launched March "2026"; describe the "accused" product (same channel, similar hero ingredients and positioning).
+- End with "next steps" plus a "cease-desist"/"cease-and-desist" routing option and the next-steps decision tree.

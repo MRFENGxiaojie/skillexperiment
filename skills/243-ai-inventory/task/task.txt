@@ -1,0 +1,10 @@
+## Background
+We're a B2B recruiting-software company. Legal is driving EU AI Act compliance and needs every AI system currently in use registered one by one, to later assess each one's obligations.
+
+## Task
+Help us build an AI system inventory. We have at least three systems to register: a resume-screening tool (an external SaaS we subscribe to directly, running in production, processing resumes of EU candidates); an internal email-drafting assistant (self-built, used only inside the company, used by an overseas team, so also involves EU colleagues); and a customer-support ticket-classification bot (planned to launch next quarter, still in development). Follow the inventory process and fill in every required field for each system — where details are not provided, use reasonable values and mark them as assumptions. After registering, show me the current inventory and identify the role and risk level of each system, analyzing each system's positioning thoroughly. Do not ask the user; proceed autonomously. Write all output in English.
+
+## Materials
+The practice config is at task/.claude/plugins/config/claude-for-legal/ai-governance-legal/CLAUDE.md — read it before starting.
+No inventory exists yet. Maintain the inventory at ai-systems.yaml in the current working directory (the plugin config directory is not reachable here — this is the skill's documented workspace fallback). Do not write under a .claude directory; create ai-systems.yaml in the workspace root, starting with an empty `systems:` list if needed, then add each system.
+The three systems' basic facts are in the task description; details are to be asked per the process.
