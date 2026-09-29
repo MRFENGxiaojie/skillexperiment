@@ -1,0 +1,8 @@
+## Background
+We are two founders building a one-stop invoicing tool for small businesses. We have a 6-month runway and want to start a funding round and run the full process.
+
+## Task
+Walk me through this funding round end to end: first decide whether we should take VC money now (compare against bootstrapping / delaying), then design the round (amount, pacing, milestones, target investor profile), build the fundraising narrative and a deck outline (the first page must be understandable in 10 seconds), list target investors and a pipeline tracking table, draft outreach and follow-up scripts, prepare a due-diligence checklist, and give a two-week action plan with a weekly cadence. Some people have also advised me to think through valuation first — help me decide what logic to use for it. Write all output in English.
+
+## Materials
+Product is live, in trial with 5 design partners, no paid revenue yet; team of 2 (engineer + marketer), planning to hire 1 salesperson; 6-month runway; target amount $1–1.5M; previously raised a $50K angel investment.

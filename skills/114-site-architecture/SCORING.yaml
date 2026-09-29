@@ -1,0 +1,335 @@
+skill: 114-site-architecture
+version: 2
+total_items: 22
+criteria:
+- id: P03
+  category: process
+  fatal: false
+  text: The run frames the task as Mode 1, auditing the current site architecture, rather than planning a brand-new site structure.
+  anchor: Final agent output, opening statements describing the task mode.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: audit
+    llm:
+      question: The run frames the task as Mode 1, auditing the current site architecture, rather than planning a brand-new site structure.
+      evidence: Final agent output, opening statements describing the task mode.
+      source: output
+      needle: audit
+- id: C01
+  category: content
+  fatal: true
+  text: The audit identifies the ~120 blog posts that all share the identical keyword-stuffed slug 'optimizing-enterprise-it-in-2026' as a structural URL problem.
+  anchor: Final agent output, blog/URL-pattern findings section.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: optimizing-enterprise-it-in-2026
+    llm:
+      question: The audit identifies the ~120 blog posts that all share the identical keyword-stuffed slug 'optimizing-enterprise-it-in-2026' as a structural URL problem.
+      evidence: Final agent output, blog/URL-pattern findings section.
+      source: output
+      needle: optimizing-enterprise-it-in-2026
+- id: C02
+  category: content
+  fatal: false
+  text: The audit flags the /resources/ section (30 whitepaper-* pages) as lacking a section landing or hub page in the sitemap, i.e., orphan candidates.
+  anchor: Final agent output, orphan or section-analysis findings.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: whitepaper
+    llm:
+      question: The audit flags the /resources/ section (30 whitepaper-* pages) as lacking a section landing or hub page in the sitemap, i.e., orphan candidates.
+      evidence: Final agent output, orphan or section-analysis findings.
+      source: output
+      needle: whitepaper
+- id: C03
+  category: content
+  fatal: false
+  text: The audit flags the /landing/ section (15 ai-consulting-* pages) as lacking an index or hub page, i.e., orphan candidates.
+  anchor: Final agent output, orphan or section-analysis findings.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: ai-consulting
+    llm:
+      question: The audit flags the /landing/ section (15 ai-consulting-* pages) as lacking an index or hub page, i.e., orphan candidates.
+      evidence: Final agent output, orphan or section-analysis findings.
+      source: output
+      needle: ai-consulting
+- id: C04
+  category: content
+  fatal: false
+  text: The audit flags duplicate or case-variant URLs such as /BLOG/tech-tips/ vs /category/tech-tips/ and /services/Cloud-Migration/ vs /services/cloud-migration/.
+  anchor: Final agent output, URL-pattern/duplicate findings.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Cloud-Migration
+    llm:
+      question: The audit flags duplicate or case-variant URLs such as /BLOG/tech-tips/ vs /category/tech-tips/ and /services/Cloud-Migration/ vs /services/cloud-migration/.
+      evidence: Final agent output, URL-pattern/duplicate findings.
+      source: output
+      needle: Cloud-Migration
+- id: C05
+  category: content
+  fatal: false
+  text: The audit flags the dynamic query-string URLs (/?p=345 and /?p=892) and recommends removing or canonicalizing them.
+  anchor: Final agent output, URL-pattern findings.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: p=345
+    llm:
+      question: The audit flags the dynamic query-string URLs (/?p=345 and /?p=892) and recommends removing or canonicalizing them.
+      evidence: Final agent output, URL-pattern findings.
+      source: output
+      needle: p=345
+- id: C06
+  category: content
+  fatal: false
+  text: The audit flags the date-based legacy URLs under /blog/posts/2023/ (e.g., old-post-001) as overly deep nesting that should be flattened.
+  anchor: Final agent output, hierarchy/depth findings.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: old-post
+    llm:
+      question: The audit flags the date-based legacy URLs under /blog/posts/2023/ (e.g., old-post-001) as overly deep nesting that should be flattened.
+      evidence: Final agent output, hierarchy/depth findings.
+      source: output
+      needle: old-post
+- id: C07
+  category: content
+  fatal: false
+  text: The audit reports the URL depth distribution of the site and/or calls out 4+ level nesting as a problem.
+  anchor: Final agent output, structural scorecard or depth findings.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: depth
+    llm:
+      question: The audit reports the URL depth distribution of the site and/or calls out 4+ level nesting as a problem.
+      evidence: Final agent output, structural scorecard or depth findings.
+      source: output
+      needle: depth
+- id: C08
+  category: content
+  fatal: false
+  text: The audit flags the trailing-slash inconsistency, e.g., /blog appearing without a trailing slash while other URLs include one.
+  anchor: Final agent output, URL-pattern findings.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: trailing slash
+    llm:
+      question: The audit flags the trailing-slash inconsistency, e.g., /blog appearing without a trailing slash while other URLs include one.
+      evidence: Final agent output, URL-pattern findings.
+      source: output
+      needle: trailing slash
+- id: C10
+  category: content
+  fatal: false
+  text: The audit assesses navigation problems such as breadcrumbs, primary nav, or navigation structure.
+  anchor: Final agent output, navigation findings section.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: navigation
+    llm:
+      question: The audit assesses navigation problems such as breadcrumbs, primary nav, or navigation structure.
+      evidence: Final agent output, navigation findings section.
+      source: output
+      needle: navigation
+- id: C11
+  category: content
+  fatal: false
+  text: The audit covers the /legacy/ section (the services-2019-* pages) as part of the structural review.
+  anchor: Final agent output, section analysis.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: legacy
+    llm:
+      question: The audit covers the /legacy/ section (the services-2019-* pages) as part of the structural review.
+      evidence: Final agent output, section analysis.
+      source: output
+      needle: legacy
+- id: D01
+  category: content
+  fatal: true
+  text: The output includes a prioritized fix list ordered by SEO impact, telling the user what to change first.
+  anchor: Final agent output, recommendations section.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: priority
+    llm:
+      question: The output includes a prioritized fix list ordered by SEO impact, telling the user what to change first.
+      evidence: Final agent output, recommendations section.
+      source: output
+      needle: priority
+- id: D02
+  category: content
+  fatal: true
+  text: The output includes a 301 redirect map for the recommended URL changes.
+  anchor: Final agent output, redirect mapping section.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: '301'
+    llm:
+      question: The output includes a 301 redirect map for the recommended URL changes.
+      evidence: Final agent output, redirect mapping section.
+      source: output
+      needle: '301'
+- id: D03
+  category: format
+  fatal: false
+  text: The output presents the URL changes as a before/after (old to new) mapping rather than prose only.
+  anchor: Final agent output, URL change list.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: old to new
+    llm:
+      question: The output presents the URL changes as a before/after (old to new) mapping rather than prose only.
+      evidence: Final agent output, URL change list.
+      source: output
+      needle: old to new
+- id: E01
+  category: evidence
+  fatal: false
+  text: The audit grounds its findings in the actual sitemap data by referencing the real domain acme-enterprise.cn or its real URL paths.
+  anchor: Final agent output, any reference to the site's URLs or domain.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: acme-enterprise.cn
+    llm:
+      question: The audit grounds its findings in the actual sitemap data by referencing the real domain acme-enterprise.cn or its real URL paths.
+      evidence: Final agent output, any reference to the site's URLs or domain.
+      source: output
+      needle: acme-enterprise.cn
+- id: CO01
+  category: format
+  fatal: false
+  text: The output leads with the conclusion or answer before the detailed explanation.
+  anchor: Final agent output, opening section.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: conclusion
+    llm:
+      question: The output leads with the conclusion or answer before the detailed explanation.
+      evidence: Final agent output, opening section.
+      source: output
+      needle: conclusion
+- id: CO02
+  category: format
+  fatal: false
+  text: Action items are assigned owners and deadlines, following the Action | Owner | Due pattern.
+  anchor: Final agent output, action items.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Owner
+    llm:
+      question: Action items are assigned owners and deadlines, following the Action | Owner | Due pattern.
+      evidence: Final agent output, action items.
+      source: output
+      needle: Owner
+- id: CO03
+  category: format
+  fatal: false
+  text: Findings are marked with confidence levels (verified / medium / assumed).
+  anchor: Final agent output, findings presentation.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: verified
+    llm:
+      question: Findings are marked with confidence levels (verified / medium / assumed).
+      evidence: Final agent output, findings presentation.
+      source: output
+      needle: verified
+- id: N01
+  category: negative
+  fatal: false
+  text: The recommendations do not propose keyword-stuffed URLs or 4+ level nesting as the target structure.
+  anchor: LLM judgment of the recommended URL structures in the final output.
+  judge: llm
+  check:
+    question: The recommendations do not propose keyword-stuffed URLs or 4+ level nesting as the target structure.
+    evidence: LLM judgment of the recommended URL structures in the final output.
+- id: N03
+  category: negative
+  fatal: false
+  text: The audit does not recommend site-wide footer links to every post.
+  anchor: LLM judgment of the navigation recommendations in the final output.
+  judge: llm
+  check:
+    question: The audit does not recommend site-wide footer links to every post.
+    evidence: LLM judgment of the navigation recommendations in the final output.
+- id: N04
+  category: negative
+  fatal: false
+  text: The audit stays within site-architecture scope and does not deliver unrelated work such as keyword research or content strategy.
+  anchor: LLM judgment of the overall deliverable scope.
+  judge: llm
+  check:
+    question: The audit stays within site-architecture scope and does not deliver unrelated work such as keyword research or content strategy.
+    evidence: LLM judgment of the overall deliverable scope.
+- id: B01
+  category: boundary
+  fatal: false
+  text: Orphan findings are framed as candidates or inferred with confidence marking, since the sitemap alone cannot prove zero inbound internal links.
+  anchor: Final agent output, orphan findings and their confidence marking.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: candidate
+    llm:
+      question: Orphan findings are framed as candidates or inferred with confidence marking, since the sitemap alone cannot prove zero inbound internal links.
+      evidence: Final agent output, orphan findings and their confidence marking.
+      source: output
+      needle: candidate

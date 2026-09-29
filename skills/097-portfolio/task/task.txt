@@ -1,0 +1,14 @@
+## Background
+Our small company (legal operations role, not lawyers) maintains a portfolio of trademarks and patents, tracking renewals and maintenance fees by hand in spreadsheets. We nearly missed a §8 filing for one trademark recently and want to manage this properly.
+
+## Task
+Help us manage these assets: first build the inventory and compute each asset's next deadline and grace period, then produce a 180-day deadline report (grouped by urgency, with the basis noted for each item); also, we submitted the §8 declaration for TM-US-002 to the USPTO yesterday (with specimens of use) — record this action; the inventory also includes a Brazilian trademark whose renewal rules there I'm unsure about — handle that too. Write all output in English.
+
+## Materials
+Read the full docket export at docket/ipms_export.csv in the current working directory — the summary below is drawn from it:
+Current docket (exported from our IPMS): TM-US-001 "CloudDesk" US registration, registered 2021-03-15, reg. no. 6543210, classes 9/42; TM-US-002 "CloudDesk Pro" US registration, registered 2021-02-10, reg. no. 6599000, class 9; TM-BR-001 "CloudDesk" Brazilian application, filed 2023-06-01, no reg. number; PAT-US-001 US utility patent, granted 2022-11-01, patent no. 11223344, large entity. Company name: CloudDesk Inc.
+
+Build and maintain the portfolio register at portfolio.yaml in the current working directory (the plugin config directory is not reachable here — this is the skill's documented workspace fallback).
+
+## Working requirements
+Record the §8 submission for TM-US-002 as a structured reported_submission entry with a reported_date field in portfolio.yaml. State “Portfolio register initialized” when you create the file. End your final reply with the 180-day deadline report under the heading “180-Day Deadline Report”, grouped by urgency with the basis for each item, and include the 5th–6th anniversary rule for US trademarks and the 3.5-year maintenance-fee window for the US patent.

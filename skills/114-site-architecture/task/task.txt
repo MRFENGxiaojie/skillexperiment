@@ -1,0 +1,10 @@
+## Background
+Our company website acquires customers through SEO. We keep adding content, but new pages rank poorly — we suspect a site-structure problem.
+
+## Task
+Our corporate-service website relies on SEO for leads. It's WordPress, with roughly two to three hundred pages now, and the content team posts new articles weekly. Lately new articles get indexed but don't rank, some pages have no way to reach them from the admin, and there are quite a few dead links. I suspect the site structure itself is the problem. Audit the whole site's structure: page hierarchy, URL patterns, orphan pages, navigation problems; prioritize by SEO impact and tell me what to fix first. If URL changes are involved, give the change list and rough effort. The site sitemap and a partial crawl export are provided — base the whole analysis on them, and read marketing-context.md for the site background and crawl notes. Write all output in English.
+
+## Materials
+- sitemap.xml (current site export)
+- crawl-export.csv (partial crawl of all sitemap URLs: HTTP status, redirect target, title, internal inlinks)
+- marketing-context.md (site background, crawl notes, business priorities)

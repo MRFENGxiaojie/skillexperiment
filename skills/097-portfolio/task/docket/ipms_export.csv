@@ -1,0 +1,5 @@
+asset_id,asset_type,title,jurisdiction,status,filing_date,registration_date,grant_date,registration_number,classes,owner,entity_size,next_deadline,next_deadline_basis,notes
+TM-US-001,trademark,"CloudDesk",US,Registered,2021-03-15,2021-03-15,,6543210,"9;42",CloudDesk Inc.,,2027-03-15,"Section 8 declaration window (5th-6th year after registration, 2026-03-15 to 2027-03-15; grace period to 2027-06-15)",需要提交使用声明及使用证据
+TM-US-002,trademark,"CloudDesk Pro",US,Registered,2021-02-10,2021-02-10,,6599000,9,CloudDesk Inc.,,2027-02-10,"Section 8 declaration window (5th-6th year after registration, 2026-02-10 to 2027-02-10; grace period to 2027-05-10)",2026-08-09 已向 USPTO 提交 Section 8 声明（附使用证据）
+TM-BR-001,trademark,"CloudDesk",BR,Application,2023-06-01,,,pending,9,CloudDesk Inc.,,unknown,unknown,Brazil 续展规则待确认（申请中，无注册号）
+PAT-US-001,patent,"CloudDesk 数据同步系统及方法",US,Granted,,,2022-11-01,11223344,,CloudDesk Inc.,large,2026-11-01,"Maintenance fee 3.5-year milestone (due 2026-05-01, 6-month grace period ends 2026-11-01)",3.5 年年费已过正常缴费期，处于宽限期内

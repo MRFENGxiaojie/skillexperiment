@@ -1,0 +1,224 @@
+url,http_status,redirect_to,title,inlinks
+https://www.acme-enterprise.cn/,200,,Home — Acme Enterprise IT Services,186
+https://www.acme-enterprise.cn/services/,200,,Page,18
+https://www.acme-enterprise.cn/services/enterprise-it/,200,,Enterprise It Services,17
+https://www.acme-enterprise.cn/services/cloud-migration/,200,,Cloud Migration Services,13
+https://www.acme-enterprise.cn/services/security-audit/,200,,Security Audit Services,16
+https://www.acme-enterprise.cn/services/managed-services/,200,,Managed Services Services,15
+https://www.acme-enterprise.cn/services/data-backup/,200,,Data Backup Services,13
+https://www.acme-enterprise.cn/services/network-optimization/,200,,Network Optimization Services,13
+https://www.acme-enterprise.cn/solutions/,200,,Page,23
+https://www.acme-enterprise.cn/solutions/healthcare/,200,,Healthcare Solution,18
+https://www.acme-enterprise.cn/solutions/finance/,200,,Finance Solution,19
+https://www.acme-enterprise.cn/solutions/retail/,200,,Retail Solution,19
+https://www.acme-enterprise.cn/solutions/manufacturing/,200,,Manufacturing Solution,23
+https://www.acme-enterprise.cn/products/,200,,Page,11
+https://www.acme-enterprise.cn/products/inventory-pro/,200,,Inventory Pro,11
+https://www.acme-enterprise.cn/products/crm-lite/,200,,Crm Lite,12
+https://www.acme-enterprise.cn/products/reporting-hub/,200,,Reporting Hub,10
+https://www.acme-enterprise.cn/about/,200,,About Us,22
+https://www.acme-enterprise.cn/about/team/,200,,About Team,26
+https://www.acme-enterprise.cn/about/careers/,200,,About Careers,22
+https://www.acme-enterprise.cn/contact/,200,,Contact,17
+https://www.acme-enterprise.cn/case-studies/,200,,Case Studies,31
+https://www.acme-enterprise.cn/category/news/,200,,Category: News,49
+https://www.acme-enterprise.cn/category/product-updates/,200,,Category: Product Updates,63
+https://www.acme-enterprise.cn/category/case-study/,200,,Category: Case Study,52
+https://www.acme-enterprise.cn/category/tech-tips/,200,,Category: Tech Tips,61
+https://www.acme-enterprise.cn/blog/post-001-optimizing-enterprise-it-in-2026/,200,,Enterprise IT Optimization in 2026 — Post 1,1
+https://www.acme-enterprise.cn/blog/post-002-optimizing-enterprise-it-in-2026/,200,,Enterprise IT Optimization in 2026 — Post 2,1
+https://www.acme-enterprise.cn/blog/post-003-optimizing-enterprise-it-in-2026/,200,,Enterprise IT Optimization in 2026 — Post 3,3
+https://www.acme-enterprise.cn/blog/post-004-optimizing-enterprise-it-in-2026/,200,,Enterprise IT Optimization in 2026 — Post 4,2
+https://www.acme-enterprise.cn/blog/post-005-optimizing-enterprise-it-in-2026/,200,,Enterprise IT Optimization in 2026 — Post 5,2
+https://www.acme-enterprise.cn/blog/post-006-optimizing-enterprise-it-in-2026/,200,,Enterprise IT Optimization in 2026 — Post 6,3
+https://www.acme-enterprise.cn/blog/post-007-optimizing-enterprise-it-in-2026/,200,,Enterprise IT Optimization in 2026 — Post 7,1
+https://www.acme-enterprise.cn/blog/post-008-optimizing-enterprise-it-in-2026/,200,,Enterprise IT Optimization in 2026 — Post 8,3
+https://www.acme-enterprise.cn/blog/post-009-optimizing-enterprise-it-in-2026/,200,,Enterprise IT Optimization in 2026 — Post 9,1
+https://www.acme-enterprise.cn/blog/post-010-optimizing-enterprise-it-in-2026/,200,,Enterprise IT Optimization in 2026 — Post 10,2
+https://www.acme-enterprise.cn/blog/post-011-optimizing-enterprise-it-in-2026/,200,,Enterprise IT Optimization in 2026 — Post 11,2
+https://www.acme-enterprise.cn/blog/post-012-optimizing-enterprise-it-in-2026/,200,,Enterprise IT Optimization in 2026 — Post 12,1
+https://www.acme-enterprise.cn/blog/post-013-optimizing-enterprise-it-in-2026/,200,,Enterprise IT Optimization in 2026 — Post 13,2
+https://www.acme-enterprise.cn/blog/post-014-optimizing-enterprise-it-in-2026/,200,,Enterprise IT Optimization in 2026 — Post 14,1
+https://www.acme-enterprise.cn/blog/post-015-optimizing-enterprise-it-in-2026/,200,,Enterprise IT Optimization in 2026 — Post 15,2
+https://www.acme-enterprise.cn/blog/post-016-optimizing-enterprise-it-in-2026/,200,,Enterprise IT Optimization in 2026 — Post 16,1
+https://www.acme-enterprise.cn/blog/post-017-optimizing-enterprise-it-in-2026/,200,,Enterprise IT Optimization in 2026 — Post 17,3
+https://www.acme-enterprise.cn/blog/post-018-optimizing-enterprise-it-in-2026/,200,,Enterprise IT Optimization in 2026 — Post 18,2
+https://www.acme-enterprise.cn/blog/post-019-optimizing-enterprise-it-in-2026/,200,,Enterprise IT Optimization in 2026 — Post 19,2
+https://www.acme-enterprise.cn/blog/post-020-optimizing-enterprise-it-in-2026/,200,,Enterprise IT Optimization in 2026 — Post 20,2
+https://www.acme-enterprise.cn/blog/post-021-optimizing-enterprise-it-in-2026/,200,,Enterprise IT Optimization in 2026 — Post 21,3
+https://www.acme-enterprise.cn/blog/post-022-optimizing-enterprise-it-in-2026/,200,,Enterprise IT Optimization in 2026 — Post 22,1
+https://www.acme-enterprise.cn/blog/post-023-optimizing-enterprise-it-in-2026/,200,,Enterprise IT Optimization in 2026 — Post 23,1
+https://www.acme-enterprise.cn/blog/post-024-optimizing-enterprise-it-in-2026/,200,,Enterprise IT Optimization in 2026 — Post 24,2
+https://www.acme-enterprise.cn/blog/post-025-optimizing-enterprise-it-in-2026/,200,,Enterprise IT Optimization in 2026 — Post 25,3
+https://www.acme-enterprise.cn/blog/post-026-optimizing-enterprise-it-in-2026/,200,,Enterprise IT Optimization in 2026 — Post 26,3
+https://www.acme-enterprise.cn/blog/post-027-optimizing-enterprise-it-in-2026/,200,,Enterprise IT Optimization in 2026 — Post 27,2
+https://www.acme-enterprise.cn/blog/post-028-optimizing-enterprise-it-in-2026/,200,,Enterprise IT Optimization in 2026 — Post 28,3
+https://www.acme-enterprise.cn/blog/post-029-optimizing-enterprise-it-in-2026/,200,,Enterprise IT Optimization in 2026 — Post 29,3
+https://www.acme-enterprise.cn/blog/post-030-optimizing-enterprise-it-in-2026/,200,,Enterprise IT Optimization in 2026 — Post 30,3
+https://www.acme-enterprise.cn/blog/post-031-optimizing-enterprise-it-in-2026/,200,,Enterprise IT Optimization in 2026 — Post 31,2
+https://www.acme-enterprise.cn/blog/post-032-optimizing-enterprise-it-in-2026/,200,,Enterprise IT Optimization in 2026 — Post 32,2
+https://www.acme-enterprise.cn/blog/post-033-optimizing-enterprise-it-in-2026/,200,,Enterprise IT Optimization in 2026 — Post 33,3
+https://www.acme-enterprise.cn/blog/post-034-optimizing-enterprise-it-in-2026/,200,,Enterprise IT Optimization in 2026 — Post 34,3
+https://www.acme-enterprise.cn/blog/post-035-optimizing-enterprise-it-in-2026/,200,,Enterprise IT Optimization in 2026 — Post 35,1
+https://www.acme-enterprise.cn/blog/post-036-optimizing-enterprise-it-in-2026/,200,,Enterprise IT Optimization in 2026 — Post 36,1
+https://www.acme-enterprise.cn/blog/post-037-optimizing-enterprise-it-in-2026/,200,,Enterprise IT Optimization in 2026 — Post 37,1
+https://www.acme-enterprise.cn/blog/post-038-optimizing-enterprise-it-in-2026/,200,,Enterprise IT Optimization in 2026 — Post 38,3
+https://www.acme-enterprise.cn/blog/post-039-optimizing-enterprise-it-in-2026/,200,,Enterprise IT Optimization in 2026 — Post 39,2
+https://www.acme-enterprise.cn/blog/post-040-optimizing-enterprise-it-in-2026/,200,,Enterprise IT Optimization in 2026 — Post 40,1
+https://www.acme-enterprise.cn/blog/post-041-optimizing-enterprise-it-in-2026/,200,,Enterprise IT Optimization in 2026 — Post 41,1
+https://www.acme-enterprise.cn/blog/post-042-optimizing-enterprise-it-in-2026/,200,,Enterprise IT Optimization in 2026 — Post 42,3
+https://www.acme-enterprise.cn/blog/post-043-optimizing-enterprise-it-in-2026/,200,,Enterprise IT Optimization in 2026 — Post 43,2
+https://www.acme-enterprise.cn/blog/post-044-optimizing-enterprise-it-in-2026/,200,,Enterprise IT Optimization in 2026 — Post 44,2
+https://www.acme-enterprise.cn/blog/post-045-optimizing-enterprise-it-in-2026/,200,,Enterprise IT Optimization in 2026 — Post 45,1
+https://www.acme-enterprise.cn/blog/post-046-optimizing-enterprise-it-in-2026/,200,,Enterprise IT Optimization in 2026 — Post 46,2
+https://www.acme-enterprise.cn/blog/post-047-optimizing-enterprise-it-in-2026/,200,,Enterprise IT Optimization in 2026 — Post 47,2
+https://www.acme-enterprise.cn/blog/post-048-optimizing-enterprise-it-in-2026/,200,,Enterprise IT Optimization in 2026 — Post 48,2
+https://www.acme-enterprise.cn/blog/post-049-optimizing-enterprise-it-in-2026/,200,,Enterprise IT Optimization in 2026 — Post 49,3
+https://www.acme-enterprise.cn/blog/post-050-optimizing-enterprise-it-in-2026/,200,,Enterprise IT Optimization in 2026 — Post 50,3
+https://www.acme-enterprise.cn/blog/post-051-optimizing-enterprise-it-in-2026/,200,,Enterprise IT Optimization in 2026 — Post 51,3
+https://www.acme-enterprise.cn/blog/post-052-optimizing-enterprise-it-in-2026/,200,,Enterprise IT Optimization in 2026 — Post 52,2
+https://www.acme-enterprise.cn/blog/post-053-optimizing-enterprise-it-in-2026/,200,,Enterprise IT Optimization in 2026 — Post 53,3
+https://www.acme-enterprise.cn/blog/post-054-optimizing-enterprise-it-in-2026/,200,,Enterprise IT Optimization in 2026 — Post 54,1
+https://www.acme-enterprise.cn/blog/post-055-optimizing-enterprise-it-in-2026/,200,,Enterprise IT Optimization in 2026 — Post 55,2
+https://www.acme-enterprise.cn/blog/post-056-optimizing-enterprise-it-in-2026/,200,,Enterprise IT Optimization in 2026 — Post 56,1
+https://www.acme-enterprise.cn/blog/post-057-optimizing-enterprise-it-in-2026/,200,,Enterprise IT Optimization in 2026 — Post 57,2
+https://www.acme-enterprise.cn/blog/post-058-optimizing-enterprise-it-in-2026/,200,,Enterprise IT Optimization in 2026 — Post 58,2
+https://www.acme-enterprise.cn/blog/post-059-optimizing-enterprise-it-in-2026/,200,,Enterprise IT Optimization in 2026 — Post 59,1
+https://www.acme-enterprise.cn/blog/post-060-optimizing-enterprise-it-in-2026/,200,,Enterprise IT Optimization in 2026 — Post 60,2
+https://www.acme-enterprise.cn/blog/post-061-optimizing-enterprise-it-in-2026/,200,,Enterprise IT Optimization in 2026 — Post 61,2
+https://www.acme-enterprise.cn/blog/post-062-optimizing-enterprise-it-in-2026/,200,,Enterprise IT Optimization in 2026 — Post 62,3
+https://www.acme-enterprise.cn/blog/post-063-optimizing-enterprise-it-in-2026/,200,,Enterprise IT Optimization in 2026 — Post 63,1
+https://www.acme-enterprise.cn/blog/post-064-optimizing-enterprise-it-in-2026/,200,,Enterprise IT Optimization in 2026 — Post 64,1
+https://www.acme-enterprise.cn/blog/post-065-optimizing-enterprise-it-in-2026/,200,,Enterprise IT Optimization in 2026 — Post 65,1
+https://www.acme-enterprise.cn/blog/post-066-optimizing-enterprise-it-in-2026/,200,,Enterprise IT Optimization in 2026 — Post 66,1
+https://www.acme-enterprise.cn/blog/post-067-optimizing-enterprise-it-in-2026/,200,,Enterprise IT Optimization in 2026 — Post 67,2
+https://www.acme-enterprise.cn/blog/post-068-optimizing-enterprise-it-in-2026/,200,,Enterprise IT Optimization in 2026 — Post 68,3
+https://www.acme-enterprise.cn/blog/post-069-optimizing-enterprise-it-in-2026/,200,,Enterprise IT Optimization in 2026 — Post 69,1
+https://www.acme-enterprise.cn/blog/post-070-optimizing-enterprise-it-in-2026/,200,,Enterprise IT Optimization in 2026 — Post 70,3
+https://www.acme-enterprise.cn/blog/post-071-optimizing-enterprise-it-in-2026/,200,,Enterprise IT Optimization in 2026 — Post 71,3
+https://www.acme-enterprise.cn/blog/post-072-optimizing-enterprise-it-in-2026/,200,,Enterprise IT Optimization in 2026 — Post 72,1
+https://www.acme-enterprise.cn/blog/post-073-optimizing-enterprise-it-in-2026/,200,,Enterprise IT Optimization in 2026 — Post 73,2
+https://www.acme-enterprise.cn/blog/post-074-optimizing-enterprise-it-in-2026/,200,,Enterprise IT Optimization in 2026 — Post 74,2
+https://www.acme-enterprise.cn/blog/post-075-optimizing-enterprise-it-in-2026/,200,,Enterprise IT Optimization in 2026 — Post 75,3
+https://www.acme-enterprise.cn/blog/post-076-optimizing-enterprise-it-in-2026/,200,,Enterprise IT Optimization in 2026 — Post 76,1
+https://www.acme-enterprise.cn/blog/post-077-optimizing-enterprise-it-in-2026/,200,,Enterprise IT Optimization in 2026 — Post 77,1
+https://www.acme-enterprise.cn/blog/post-078-optimizing-enterprise-it-in-2026/,200,,Enterprise IT Optimization in 2026 — Post 78,3
+https://www.acme-enterprise.cn/blog/post-079-optimizing-enterprise-it-in-2026/,200,,Enterprise IT Optimization in 2026 — Post 79,1
+https://www.acme-enterprise.cn/blog/post-080-optimizing-enterprise-it-in-2026/,200,,Enterprise IT Optimization in 2026 — Post 80,2
+https://www.acme-enterprise.cn/blog/post-081-optimizing-enterprise-it-in-2026/,200,,Enterprise IT Optimization in 2026 — Post 81,2
+https://www.acme-enterprise.cn/blog/post-082-optimizing-enterprise-it-in-2026/,200,,Enterprise IT Optimization in 2026 — Post 82,2
+https://www.acme-enterprise.cn/blog/post-083-optimizing-enterprise-it-in-2026/,200,,Enterprise IT Optimization in 2026 — Post 83,1
+https://www.acme-enterprise.cn/blog/post-084-optimizing-enterprise-it-in-2026/,200,,Enterprise IT Optimization in 2026 — Post 84,2
+https://www.acme-enterprise.cn/blog/post-085-optimizing-enterprise-it-in-2026/,200,,Enterprise IT Optimization in 2026 — Post 85,3
+https://www.acme-enterprise.cn/blog/post-086-optimizing-enterprise-it-in-2026/,200,,Enterprise IT Optimization in 2026 — Post 86,2
+https://www.acme-enterprise.cn/blog/post-087-optimizing-enterprise-it-in-2026/,200,,Enterprise IT Optimization in 2026 — Post 87,1
+https://www.acme-enterprise.cn/blog/post-088-optimizing-enterprise-it-in-2026/,200,,Enterprise IT Optimization in 2026 — Post 88,3
+https://www.acme-enterprise.cn/blog/post-089-optimizing-enterprise-it-in-2026/,200,,Enterprise IT Optimization in 2026 — Post 89,2
+https://www.acme-enterprise.cn/blog/post-090-optimizing-enterprise-it-in-2026/,200,,Enterprise IT Optimization in 2026 — Post 90,3
+https://www.acme-enterprise.cn/blog/post-091-optimizing-enterprise-it-in-2026/,200,,Enterprise IT Optimization in 2026 — Post 91,2
+https://www.acme-enterprise.cn/blog/post-092-optimizing-enterprise-it-in-2026/,200,,Enterprise IT Optimization in 2026 — Post 92,1
+https://www.acme-enterprise.cn/blog/post-093-optimizing-enterprise-it-in-2026/,200,,Enterprise IT Optimization in 2026 — Post 93,1
+https://www.acme-enterprise.cn/blog/post-094-optimizing-enterprise-it-in-2026/,200,,Enterprise IT Optimization in 2026 — Post 94,2
+https://www.acme-enterprise.cn/blog/post-095-optimizing-enterprise-it-in-2026/,200,,Enterprise IT Optimization in 2026 — Post 95,2
+https://www.acme-enterprise.cn/blog/post-096-optimizing-enterprise-it-in-2026/,200,,Enterprise IT Optimization in 2026 — Post 96,2
+https://www.acme-enterprise.cn/blog/post-097-optimizing-enterprise-it-in-2026/,200,,Enterprise IT Optimization in 2026 — Post 97,2
+https://www.acme-enterprise.cn/blog/post-098-optimizing-enterprise-it-in-2026/,200,,Enterprise IT Optimization in 2026 — Post 98,1
+https://www.acme-enterprise.cn/blog/post-099-optimizing-enterprise-it-in-2026/,200,,Enterprise IT Optimization in 2026 — Post 99,3
+https://www.acme-enterprise.cn/blog/post-100-optimizing-enterprise-it-in-2026/,200,,Enterprise IT Optimization in 2026 — Post 100,3
+https://www.acme-enterprise.cn/blog/post-101-optimizing-enterprise-it-in-2026/,200,,Enterprise IT Optimization in 2026 — Post 101,3
+https://www.acme-enterprise.cn/blog/post-102-optimizing-enterprise-it-in-2026/,200,,Enterprise IT Optimization in 2026 — Post 102,2
+https://www.acme-enterprise.cn/blog/post-103-optimizing-enterprise-it-in-2026/,200,,Enterprise IT Optimization in 2026 — Post 103,1
+https://www.acme-enterprise.cn/blog/post-104-optimizing-enterprise-it-in-2026/,200,,Enterprise IT Optimization in 2026 — Post 104,3
+https://www.acme-enterprise.cn/blog/post-105-optimizing-enterprise-it-in-2026/,200,,Enterprise IT Optimization in 2026 — Post 105,1
+https://www.acme-enterprise.cn/blog/post-106-optimizing-enterprise-it-in-2026/,200,,Enterprise IT Optimization in 2026 — Post 106,1
+https://www.acme-enterprise.cn/blog/post-107-optimizing-enterprise-it-in-2026/,200,,Enterprise IT Optimization in 2026 — Post 107,2
+https://www.acme-enterprise.cn/blog/post-108-optimizing-enterprise-it-in-2026/,200,,Enterprise IT Optimization in 2026 — Post 108,1
+https://www.acme-enterprise.cn/blog/post-109-optimizing-enterprise-it-in-2026/,200,,Enterprise IT Optimization in 2026 — Post 109,3
+https://www.acme-enterprise.cn/blog/post-110-optimizing-enterprise-it-in-2026/,200,,Enterprise IT Optimization in 2026 — Post 110,3
+https://www.acme-enterprise.cn/blog/post-111-optimizing-enterprise-it-in-2026/,200,,Enterprise IT Optimization in 2026 — Post 111,2
+https://www.acme-enterprise.cn/blog/post-112-optimizing-enterprise-it-in-2026/,200,,Enterprise IT Optimization in 2026 — Post 112,1
+https://www.acme-enterprise.cn/blog/post-113-optimizing-enterprise-it-in-2026/,200,,Enterprise IT Optimization in 2026 — Post 113,1
+https://www.acme-enterprise.cn/blog/post-114-optimizing-enterprise-it-in-2026/,200,,Enterprise IT Optimization in 2026 — Post 114,3
+https://www.acme-enterprise.cn/blog/post-115-optimizing-enterprise-it-in-2026/,200,,Enterprise IT Optimization in 2026 — Post 115,2
+https://www.acme-enterprise.cn/blog/post-116-optimizing-enterprise-it-in-2026/,200,,Enterprise IT Optimization in 2026 — Post 116,2
+https://www.acme-enterprise.cn/blog/post-117-optimizing-enterprise-it-in-2026/,200,,Enterprise IT Optimization in 2026 — Post 117,3
+https://www.acme-enterprise.cn/blog/post-118-optimizing-enterprise-it-in-2026/,200,,Enterprise IT Optimization in 2026 — Post 118,3
+https://www.acme-enterprise.cn/blog/post-119-optimizing-enterprise-it-in-2026/,200,,Enterprise IT Optimization in 2026 — Post 119,3
+https://www.acme-enterprise.cn/blog/post-120-optimizing-enterprise-it-in-2026/,200,,Enterprise IT Optimization in 2026 — Post 120,1
+https://www.acme-enterprise.cn/blog/posts/2023/01/old-post-001/,404,,Old post 001 (legacy date-based URL),0
+https://www.acme-enterprise.cn/blog/posts/2023/02/old-post-002/,404,,Old post 002 (legacy date-based URL),0
+https://www.acme-enterprise.cn/blog/posts/2023/03/old-post-003/,404,,Old post 003 (legacy date-based URL),0
+https://www.acme-enterprise.cn/blog/posts/2023/04/old-post-004/,404,,Old post 004 (legacy date-based URL),0
+https://www.acme-enterprise.cn/blog/posts/2023/05/old-post-005/,404,,Old post 005 (legacy date-based URL),0
+https://www.acme-enterprise.cn/blog/posts/2023/06/old-post-006/,404,,Old post 006 (legacy date-based URL),0
+https://www.acme-enterprise.cn/blog/posts/2023/07/old-post-007/,404,,Old post 007 (legacy date-based URL),0
+https://www.acme-enterprise.cn/blog/posts/2023/08/old-post-008/,404,,Old post 008 (legacy date-based URL),0
+https://www.acme-enterprise.cn/blog/posts/2023/09/old-post-009/,404,,Old post 009 (legacy date-based URL),0
+https://www.acme-enterprise.cn/blog/posts/2023/10/old-post-010/,404,,Old post 010 (legacy date-based URL),0
+https://www.acme-enterprise.cn/blog/posts/2023/11/old-post-011/,404,,Old post 011 (legacy date-based URL),0
+https://www.acme-enterprise.cn/blog/posts/2023/12/old-post-012/,404,,Old post 012 (legacy date-based URL),0
+https://www.acme-enterprise.cn/blog/posts/2023/13/old-post-013/,404,,Old post 013 (legacy date-based URL),0
+https://www.acme-enterprise.cn/blog/posts/2023/14/old-post-014/,404,,Old post 014 (legacy date-based URL),0
+https://www.acme-enterprise.cn/blog/posts/2023/15/old-post-015/,404,,Old post 015 (legacy date-based URL),0
+https://www.acme-enterprise.cn/resources/whitepaper-01-cloud-security/,200,,Cloud Security Whitepaper 1,0
+https://www.acme-enterprise.cn/resources/whitepaper-02-cloud-security/,200,,Cloud Security Whitepaper 2,0
+https://www.acme-enterprise.cn/resources/whitepaper-03-cloud-security/,200,,Cloud Security Whitepaper 3,0
+https://www.acme-enterprise.cn/resources/whitepaper-04-cloud-security/,200,,Cloud Security Whitepaper 4,0
+https://www.acme-enterprise.cn/resources/whitepaper-05-cloud-security/,200,,Cloud Security Whitepaper 5,0
+https://www.acme-enterprise.cn/resources/whitepaper-06-cloud-security/,200,,Cloud Security Whitepaper 6,0
+https://www.acme-enterprise.cn/resources/whitepaper-07-cloud-security/,200,,Cloud Security Whitepaper 7,0
+https://www.acme-enterprise.cn/resources/whitepaper-08-cloud-security/,200,,Cloud Security Whitepaper 8,0
+https://www.acme-enterprise.cn/resources/whitepaper-09-cloud-security/,200,,Cloud Security Whitepaper 9,0
+https://www.acme-enterprise.cn/resources/whitepaper-10-cloud-security/,200,,Cloud Security Whitepaper 10,0
+https://www.acme-enterprise.cn/resources/whitepaper-11-cloud-security/,200,,Cloud Security Whitepaper 11,0
+https://www.acme-enterprise.cn/resources/whitepaper-12-cloud-security/,200,,Cloud Security Whitepaper 12,0
+https://www.acme-enterprise.cn/resources/whitepaper-13-cloud-security/,200,,Cloud Security Whitepaper 13,0
+https://www.acme-enterprise.cn/resources/whitepaper-14-cloud-security/,200,,Cloud Security Whitepaper 14,0
+https://www.acme-enterprise.cn/resources/whitepaper-15-cloud-security/,200,,Cloud Security Whitepaper 15,0
+https://www.acme-enterprise.cn/resources/whitepaper-16-cloud-security/,200,,Cloud Security Whitepaper 16,0
+https://www.acme-enterprise.cn/resources/whitepaper-17-cloud-security/,200,,Cloud Security Whitepaper 17,0
+https://www.acme-enterprise.cn/resources/whitepaper-18-cloud-security/,200,,Cloud Security Whitepaper 18,0
+https://www.acme-enterprise.cn/resources/whitepaper-19-cloud-security/,200,,Cloud Security Whitepaper 19,0
+https://www.acme-enterprise.cn/resources/whitepaper-20-cloud-security/,200,,Cloud Security Whitepaper 20,0
+https://www.acme-enterprise.cn/resources/whitepaper-21-cloud-security/,200,,Cloud Security Whitepaper 21,0
+https://www.acme-enterprise.cn/resources/whitepaper-22-cloud-security/,200,,Cloud Security Whitepaper 22,0
+https://www.acme-enterprise.cn/resources/whitepaper-23-cloud-security/,200,,Cloud Security Whitepaper 23,0
+https://www.acme-enterprise.cn/resources/whitepaper-24-cloud-security/,200,,Cloud Security Whitepaper 24,0
+https://www.acme-enterprise.cn/resources/whitepaper-25-cloud-security/,200,,Cloud Security Whitepaper 25,0
+https://www.acme-enterprise.cn/resources/whitepaper-26-cloud-security/,200,,Cloud Security Whitepaper 26,0
+https://www.acme-enterprise.cn/resources/whitepaper-27-cloud-security/,200,,Cloud Security Whitepaper 27,0
+https://www.acme-enterprise.cn/resources/whitepaper-28-cloud-security/,200,,Cloud Security Whitepaper 28,0
+https://www.acme-enterprise.cn/resources/whitepaper-29-cloud-security/,200,,Cloud Security Whitepaper 29,0
+https://www.acme-enterprise.cn/resources/whitepaper-30-cloud-security/,200,,Cloud Security Whitepaper 30,0
+https://www.acme-enterprise.cn/landing/ai-consulting-01/,200,,AI Consulting Landing 1,0
+https://www.acme-enterprise.cn/landing/ai-consulting-02/,200,,AI Consulting Landing 2,0
+https://www.acme-enterprise.cn/landing/ai-consulting-03/,200,,AI Consulting Landing 3,0
+https://www.acme-enterprise.cn/landing/ai-consulting-04/,200,,AI Consulting Landing 4,0
+https://www.acme-enterprise.cn/landing/ai-consulting-05/,200,,AI Consulting Landing 5,0
+https://www.acme-enterprise.cn/landing/ai-consulting-06/,200,,AI Consulting Landing 6,0
+https://www.acme-enterprise.cn/landing/ai-consulting-07/,200,,AI Consulting Landing 7,0
+https://www.acme-enterprise.cn/landing/ai-consulting-08/,200,,AI Consulting Landing 8,0
+https://www.acme-enterprise.cn/landing/ai-consulting-09/,200,,AI Consulting Landing 9,0
+https://www.acme-enterprise.cn/landing/ai-consulting-10/,200,,AI Consulting Landing 10,0
+https://www.acme-enterprise.cn/landing/ai-consulting-11/,200,,AI Consulting Landing 11,0
+https://www.acme-enterprise.cn/landing/ai-consulting-12/,200,,AI Consulting Landing 12,0
+https://www.acme-enterprise.cn/landing/ai-consulting-13/,200,,AI Consulting Landing 13,0
+https://www.acme-enterprise.cn/landing/ai-consulting-14/,200,,AI Consulting Landing 14,0
+https://www.acme-enterprise.cn/landing/ai-consulting-15/,200,,AI Consulting Landing 15,0
+https://www.acme-enterprise.cn/legacy/services-2019-01/,404,,Legacy Service Page 1 (2019),0
+https://www.acme-enterprise.cn/legacy/services-2019-02/,404,,Legacy Service Page 2 (2019),0
+https://www.acme-enterprise.cn/legacy/services-2019-03/,404,,Legacy Service Page 3 (2019),0
+https://www.acme-enterprise.cn/legacy/services-2019-04/,404,,Legacy Service Page 4 (2019),0
+https://www.acme-enterprise.cn/legacy/services-2019-05/,404,,Legacy Service Page 5 (2019),0
+https://www.acme-enterprise.cn/legacy/services-2019-06/,404,,Legacy Service Page 6 (2019),0
+https://www.acme-enterprise.cn/legacy/services-2019-07/,404,,Legacy Service Page 7 (2019),0
+https://www.acme-enterprise.cn/legacy/services-2019-08/,404,,Legacy Service Page 8 (2019),0
+https://www.acme-enterprise.cn/legacy/services-2019-09/,404,,Legacy Service Page 9 (2019),0
+https://www.acme-enterprise.cn/legacy/services-2019-10/,404,,Legacy Service Page 10 (2019),0
+https://www.acme-enterprise.cn/legacy/services-2019-11/,404,,Legacy Service Page 11 (2019),0
+https://www.acme-enterprise.cn/legacy/services-2019-12/,404,,Legacy Service Page 12 (2019),0
+https://www.acme-enterprise.cn/BLOG/tech-tips/,404,,Tech Tips (case-variant duplicate),2
+https://www.acme-enterprise.cn/services/Cloud-Migration/,404,,Cloud Migration Services,3
+https://www.acme-enterprise.cn/?p=345,301,/about/team/,Legacy query-string URL,0
+https://www.acme-enterprise.cn/?p=892,301,/blog/,Legacy query-string URL,0
+https://www.acme-enterprise.cn/blog,200,,Blog Index (no trailing slash),120

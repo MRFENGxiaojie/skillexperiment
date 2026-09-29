@@ -1,0 +1,8 @@
+## Background
+The Q3 planning meeting is next week, and there are 40+ items backed up in the backlog — requirements, bugs, and tech debt.
+
+## Task
+Our backlog has piled up to forty-plus items — new features, bugs, tech debt, and ops-requested items, each with someone pushing for it, but next quarter's capacity is what it is and we can't do everything. This needs to be ready for next week's planning meeting. Help me sort the list by priority: which are low-effort high-impact, which are big investments that need dedicated scheduling, and which we shouldn't touch at all; finally give me a recommended execution order. Factor our actual situation into the evaluation and write down the scoring rationale for each item — no gut calls. Scoring conventions: effort in person-days (<5 small / 5-15 medium / 15-30 large / >30 very large), and impact assessed across three dimensions — revenue impact, customer satisfaction, and technical risk. I've organized the list in the attachment. Write all output in English.
+
+## Materials
+backlog-items.csv (42 items with title, type, requester, one-line description)

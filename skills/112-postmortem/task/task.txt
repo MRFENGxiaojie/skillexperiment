@@ -1,0 +1,10 @@
+## Background
+The online payment service went down for about 2 hours last night, recovered at 21:50, and the team just brought the service back up.
+
+## Task
+The payment service had a major incident last night: users started failing to place orders around 19:40, and it didn't recover until 21:50; support phones were blown up. Everyone just finished handling it, but I want to do the postmortem while the memory is fresh, or it'll happen again. Help me write a complete postmortem: lay out the timeline clearly with times for every key node from incident to recovery; quantify the impact — roughly how many users were affected and how many orders lost; then deeply analyze why it happened — don't stop at the surface, dig layer by layer to the root cause; finally give follow-up improvements, each with a concrete owner and completion date, splitting urgent fixes from long-term changes. When done, give me a complete postmortem document for our team meeting, and run your quality self-check before outputting. Write all output in English.
+
+## Materials
+Read all three workspace files before answering: incident-notes.md (on-call group chat excerpts), error-logs.txt, and order-metrics.csv (quantifies the impact). Also read the skill's template.md, methodology.md, and rubric_postmortem.json, and follow them.
+## Working requirements
+End your final reply with the complete postmortem document (timeline with exact times, quantified impact from order-metrics.csv, root-cause analysis, and follow-ups each with an owner and date, urgent vs long-term). Run the skill's quality self-check before finishing.

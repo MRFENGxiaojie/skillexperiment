@@ -1,0 +1,16 @@
+2026-08-09T19:44:02.118Z  WARN pay-api[8f3a] pool_get_connection timed out after 10s (host=db-primary, pool=checkout-writes)
+2026-08-09T19:44:07.542Z  WARN pay-api[8f3a] pool_get_connection timed out after 10s (host=db-primary, pool=checkout-writes)
+2026-08-09T19:47:31.903Z  ERROR pay-api[8f3a] checkout failed: org.postgresql.util.PSQLException: FATAL: connection limit exceeded for user "payapi"
+2026-08-09T19:47:33.221Z  ERROR pay-api[8f3a] checkout failed: org.postgresql.util.PSQLException: FATAL: connection limit exceeded for user "payapi"
+2026-08-09T19:50:12.477Z  ERROR pay-api[8f3a] payment.create failed: pool_get_connection timed out (queue depth=512)
+2026-08-09T19:55:40.111Z  INFO pay-api[8f3a] rolling restart triggered by operator (replica set size=6)
+2026-08-09T20:02:55.004Z  ERROR gateway[gateway-2] upstream response timeout: pay-api:8080 (retried 3x)
+2026-08-09T20:04:19.886Z  ERROR pay-api[8f3a] order create tx rollback: lock wait timeout exceeded (lockid=orders_pkey:184733)
+2026-08-09T20:11:47.230Z  ERROR pay-api[8f3a] order create tx rollback: lock wait timeout exceeded (lockid=orders_pkey:184733)
+2026-08-09T20:13:05.664Z  WARN pay-api[8f3a] deadlock detected, session 47 killed (tx: checkouts, lockid=orders_pkey)
+2026-08-09T20:24:12.998Z  INFO db-primary  killing session 41 (idle in transaction 00:18:33, backend pid 1734)
+2026-08-09T20:24:31.410Z  INFO db-primary  killing session 55 (idle in transaction 00:16:07, backend pid 1902)
+2026-08-09T20:31:08.775Z  INFO pay-api[8f3a] checkout succeeded (order=o-998211, latency=1.2s)
+2026-08-09T20:40:22.004Z  INFO pay-api[8f3a] checkout succeeded (order=o-998344, latency=640ms)
+2026-08-09T21:15:02.118Z  INFO pay-api[8f3a] error rate below 1% (5-min window: 0.6%)
+2026-08-09T21:50:00.000Z  INFO pay-api[8f3a] incident cleared, service fully recovered

@@ -1,0 +1,8 @@
+## Background
+Our e-commerce checkout flow was flagged for accessibility issues in a recent audit, and the boss wants WCAG 2.1 AA within the week. I'm the frontend lead and need to scope first, then fix.
+
+## Task
+First declare the audit's scope, goals, and tools; then do a complete check of the checkout flow: automated scan + keyboard walkthrough + measured contrast, list each issue by severity (with the corresponding WCAG clause, impact, fix, and file:line), produce the audit report with quality-gate check results; after the report, directly fix the code that can be fixed, then verify the fixes. Write all output in English.
+
+## Materials
+CheckoutPage.tsx summary: the address form's inputs have no label, only placeholder; the "submit order" button is a <div onClick={...}>; the order-confirmation modal has no focus management on open/close; help text is #999999 on white; the page hero image has alt="image"; the cart table has no headers; there are no skip links; there's an auto-rotating banner at the top. Dev environment is Windows with no screen-reader tools installed.
