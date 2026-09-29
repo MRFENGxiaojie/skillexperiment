@@ -1,0 +1,8 @@
+## Background
+Our team's developer-tool API (SDK ready, docs still missing a few integration guides) is about to be publicly released. I'm the product lead.
+
+## Task
+Help us plan this release from the start: first assess what tier this release belongs to and how many resources it's worth investing, then produce a complete launch plan including timeline, owner per phase (product/engineering/developer relations/marketing), a developer-enablement checklist, the day-of-launch execution flow, and a one-month post-launch follow-up cadence. Before launch I also want you to run a readiness check to see what's not ready yet in docs, code assets, and monitoring. External messaging should not use marketing fluff — use developer-facing language, ideally with code samples and concrete performance numbers. Write all output in English.
+
+## Materials
+None

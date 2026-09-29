@@ -1,0 +1,574 @@
+skill: 291-technical-launch-planner
+version: 2
+total_items: 37
+criteria:
+- id: C01
+  category: tool
+  fatal: false
+  text: The agent invokes scripts/assess_launch_tier.sh to assess the launch tier.
+  anchor: Search the tool log for the assess script invocation.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_contains
+      cmd: scripts/assess_launch_tier.sh
+    llm:
+      question: The agent invokes scripts/assess_launch_tier.sh to assess the launch tier.
+      evidence: Search the tool log for the assess script invocation.
+      source: tool_log
+      pattern: scripts/assess_launch_tier.sh
+- id: C02
+  category: tool
+  fatal: false
+  text: The agent invokes scripts/generate_launch_plan.sh to generate the launch plan.
+  anchor: Search the tool log for the generate script invocation.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_contains
+      cmd: scripts/generate_launch_plan.sh
+    llm:
+      question: The agent invokes scripts/generate_launch_plan.sh to generate the launch plan.
+      evidence: Search the tool log for the generate script invocation.
+      source: tool_log
+      pattern: scripts/generate_launch_plan.sh
+- id: C03
+  category: tool
+  fatal: false
+  text: The agent invokes scripts/validate_readiness.sh to check launch readiness.
+  anchor: Search the tool log for the validate script invocation.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_contains
+      cmd: scripts/validate_readiness.sh
+    llm:
+      question: The agent invokes scripts/validate_readiness.sh to check launch readiness.
+      evidence: Search the tool log for the validate script invocation.
+      source: tool_log
+      pattern: scripts/validate_readiness.sh
+- id: C04
+  category: process
+  fatal: false
+  text: The agent feeds script answers through stdin via a pipe (e.g., printf ... | bash scripts/...) rather than leaving the interactive prompts hanging.
+  anchor: Search the tool log for the pipe into a bash script.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_contains
+      cmd: '| bash scripts/'
+    llm:
+      question: The agent feeds script answers through stdin via a pipe (e.g., printf ... | bash scripts/...) rather than leaving the interactive prompts hanging.
+      evidence: Search the tool log for the pipe into a bash script.
+      source: tool_log
+      pattern: '| bash scripts/'
+- id: C05
+  category: process
+  fatal: false
+  text: The tier assessment script runs before the launch plan generation script.
+  anchor: Check tool log ordering between the two script invocations.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_order
+      cmds:
+      - scripts/assess_launch_tier.sh
+      - scripts/generate_launch_plan.sh
+    llm:
+      question: The tier assessment script runs before the launch plan generation script.
+      evidence: Check tool log ordering between the two script invocations.
+      source: tool_log
+      pattern: scripts/assess_launch_tier.sh|scripts/generate_launch_plan.sh
+- id: C06
+  category: process
+  fatal: false
+  text: The readiness validation script runs after the launch plan generation script.
+  anchor: Check tool log ordering between the generate and validate invocations.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_order
+      cmds:
+      - scripts/generate_launch_plan.sh
+      - scripts/validate_readiness.sh
+    llm:
+      question: The readiness validation script runs after the launch plan generation script.
+      evidence: Check tool log ordering between the generate and validate invocations.
+      source: tool_log
+      pattern: scripts/generate_launch_plan.sh|scripts/validate_readiness.sh
+- id: C07
+  category: process
+  fatal: false
+  text: The agent consults the core tier framework reference references/launch_tiers.md before producing the plan.
+  anchor: Search the tool log for a read of the launch_tiers reference.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_contains
+      cmd: references/launch_tiers
+    llm:
+      question: The agent consults the core tier framework reference references/launch_tiers.md before producing the plan.
+      evidence: Search the tool log for a read of the launch_tiers reference.
+      source: tool_log
+      pattern: references/launch_tiers
+- id: C10
+  category: format
+  fatal: false
+  text: The final deliverable includes a Timeline section covering phases from planning to post-launch.
+  anchor: Look for a Timeline heading in the final output.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Timeline
+    llm:
+      question: The final deliverable includes a Timeline section covering phases from planning to post-launch.
+      evidence: Look for a Timeline heading in the final output.
+      source: output
+      needle: Timeline
+- id: C11
+  category: format
+  fatal: false
+  text: The final deliverable includes a Deliverables section listing documentation, code, and marketing assets.
+  anchor: Look for a Deliverables heading in the final output.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Deliverables
+    llm:
+      question: The final deliverable includes a Deliverables section listing documentation, code, and marketing assets.
+      evidence: Look for a Deliverables heading in the final output.
+      source: output
+      needle: Deliverables
+- id: C12
+  category: format
+  fatal: false
+  text: The final deliverable includes a Stakeholders section naming who owns each workstream.
+  anchor: Look for a Stakeholders heading in the final output.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Stakeholders
+    llm:
+      question: The final deliverable includes a Stakeholders section naming who owns each workstream.
+      evidence: Look for a Stakeholders heading in the final output.
+      source: output
+      needle: Stakeholders
+- id: C13
+  category: format
+  fatal: false
+  text: The final deliverable includes a Success Metrics section defining launch success.
+  anchor: Look for a Success Metrics heading in the final output.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Success Metrics
+    llm:
+      question: The final deliverable includes a Success Metrics section defining launch success.
+      evidence: Look for a Success Metrics heading in the final output.
+      source: output
+      needle: Success Metrics
+- id: C14
+  category: format
+  fatal: false
+  text: The final deliverable includes a Risks (and mitigations) section.
+  anchor: Look for a Risks heading in the final output.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Risks
+    llm:
+      question: The final deliverable includes a Risks (and mitigations) section.
+      evidence: Look for a Risks heading in the final output.
+      source: output
+      needle: Risks
+- id: C15
+  category: format
+  fatal: false
+  text: The final deliverable includes a Post-Launch Plan section.
+  anchor: Look for a Post-Launch heading (case-insensitive) in the final output.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Post-Launch
+    llm:
+      question: The final deliverable includes a Post-Launch Plan section.
+      evidence: Look for a Post-Launch heading (case-insensitive) in the final output.
+      source: output
+      needle: Post-Launch
+- id: C16
+  category: content
+  fatal: false
+  text: The timeline is anchored to the tier calendar using T-minus planning markers (e.g., T-12, T-8, T-6, T-4, T-2).
+  anchor: Look for T-minus milestone labels in the Timeline section.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: T-12
+    llm:
+      question: The timeline is anchored to the tier calendar using T-minus planning markers (e.g., T-12, T-8, T-6, T-4, T-2).
+      evidence: Look for T-minus milestone labels in the Timeline section.
+      source: output
+      needle: T-12
+- id: C17
+  category: content
+  fatal: false
+  text: The post-launch timeline extends out to T+4 weeks with the T+1 to T+4 post-launch period.
+  anchor: Look for a T-plus post-launch marker in the final output.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: T+4
+    llm:
+      question: The post-launch timeline extends out to T+4 weeks with the T+1 to T+4 post-launch period.
+      evidence: Look for a T-plus post-launch marker in the final output.
+      source: output
+      needle: T+4
+- id: C18
+  category: coverage
+  fatal: false
+  text: The plan follows the five-phase workflow covering Planning, Build, Prepare, Launch Day, and Post-Launch.
+  anchor: Look for a Launch Day phase and adjacent phase names in the timeline/plan.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Launch Day|Launch-Day
+    llm:
+      question: The plan follows the five-phase workflow covering Planning, Build, Prepare, Launch Day, and Post-Launch.
+      evidence: Look for a Launch Day phase and adjacent phase names in the timeline/plan.
+      source: output
+      needle: Launch Day|Launch-Day
+- id: C19
+  category: coverage
+  fatal: false
+  text: 'Developer enablement covers the documentation set: getting started guide, API reference, and integration guides.'
+  anchor: Look in the developer enablement / deliverables portion of the output.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: API reference
+    llm:
+      question: 'Developer enablement covers the documentation set: getting started guide, API reference, and integration guides.'
+      evidence: Look in the developer enablement / deliverables portion of the output.
+      source: output
+      needle: API reference
+- id: C20
+  category: coverage
+  fatal: false
+  text: 'Developer enablement covers code assets: SDKs/client libraries, code samples, and sample applications.'
+  anchor: Look in the developer enablement / deliverables portion of the output.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: code samples
+    llm:
+      question: 'Developer enablement covers code assets: SDKs/client libraries, code samples, and sample applications.'
+      evidence: Look in the developer enablement / deliverables portion of the output.
+      source: output
+      needle: code samples
+- id: C21
+  category: coverage
+  fatal: false
+  text: Developer enablement covers developer experience tooling such as a sandbox/playground and interactive tutorials.
+  anchor: Look in the developer enablement portion of the output.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: playground
+    llm:
+      question: Developer enablement covers developer experience tooling such as a sandbox/playground and interactive tutorials.
+      evidence: Look in the developer enablement portion of the output.
+      source: output
+      needle: playground
+- id: C22
+  category: content
+  fatal: false
+  text: Success metrics are measurable adoption/usage metrics (API usage/calls, SDK downloads, documentation traffic) rather than vague goals.
+  anchor: Look in the Success Metrics section of the output.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: SDK downloads
+    llm:
+      question: Success metrics are measurable adoption/usage metrics (API usage/calls, SDK downloads, documentation traffic) rather than vague goals.
+      evidence: Look in the Success Metrics section of the output.
+      source: output
+      needle: SDK downloads
+- id: C23
+  category: content
+  fatal: false
+  text: The launch day playbook is scheduled across the day with morning, midday, and afternoon segments.
+  anchor: Look for the 9 AM morning launch activity in the launch day section.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: 9 AM
+    llm:
+      question: The launch day playbook is scheduled across the day with morning, midday, and afternoon segments.
+      evidence: Look for the 9 AM morning launch activity in the launch day section.
+      source: output
+      needle: 9 AM
+- id: C24
+  category: content
+  fatal: false
+  text: The launch day ends with a Day 1 metrics report, team debrief, and issue triage.
+  anchor: Look for the Day 1 metrics report in the end-of-day playbook.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Day 1
+    llm:
+      question: The launch day ends with a Day 1 metrics report, team debrief, and issue triage.
+      evidence: Look for the Day 1 metrics report in the end-of-day playbook.
+      source: output
+      needle: Day 1
+- id: C25
+  category: content
+  fatal: false
+  text: The post-launch plan includes the Week 1, Week 2, and Week 4 checkpoint cadence.
+  anchor: Look for the Week 1 checkpoint in the post-launch section.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Week 1
+    llm:
+      question: The post-launch plan includes the Week 1, Week 2, and Week 4 checkpoint cadence.
+      evidence: Look for the Week 1 checkpoint in the post-launch section.
+      source: output
+      needle: Week 1
+- id: C26
+  category: content
+  fatal: false
+  text: The post-launch plan includes a launch retrospective and lessons-learned review.
+  anchor: Look for retrospective / lessons learned in the post-launch section.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: retrospective
+    llm:
+      question: The post-launch plan includes a launch retrospective and lessons-learned review.
+      evidence: Look for retrospective / lessons learned in the post-launch section.
+      source: output
+      needle: retrospective
+- id: C27
+  category: coverage
+  fatal: false
+  text: 'Launch channels cover the primary developer channels: developer documentation, GitHub/GitLab, developer blog, API changelog, and release notes.'
+  anchor: Look for changelog/release-notes style channels in the channels section.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: changelog
+    llm:
+      question: 'Launch channels cover the primary developer channels: developer documentation, GitHub/GitLab, developer blog, API changelog, and release notes.'
+      evidence: Look for changelog/release-notes style channels in the channels section.
+      source: output
+      needle: changelog
+- id: C28
+  category: content
+  fatal: false
+  text: Launch channels include secondary developer communities such as Hacker News, Reddit, and Dev.to.
+  anchor: Look for Hacker News in the channels section.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Hacker News
+    llm:
+      question: Launch channels include secondary developer communities such as Hacker News, Reddit, and Dev.to.
+      evidence: Look for Hacker News in the channels section.
+      source: output
+      needle: Hacker News
+- id: C29
+  category: content
+  fatal: false
+  text: The technical messaging includes concrete performance data (e.g., p99 latency, millisecond figures) rather than vague benefits.
+  anchor: Look for a concrete performance figure in the messaging or risks sections.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: p99
+    llm:
+      question: The technical messaging includes concrete performance data (e.g., p99 latency, millisecond figures) rather than vague benefits.
+      evidence: Look for a concrete performance figure in the messaging or risks sections.
+      source: output
+      needle: p99
+- id: C30
+  category: content
+  fatal: false
+  text: The messaging shows, not tells, by including code examples in code blocks.
+  anchor: Look for fenced code blocks (```) in the final output.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: '```'
+    llm:
+      question: The messaging shows, not tells, by including code examples in code blocks.
+      evidence: Look for fenced code blocks (```) in the final output.
+      source: output
+      needle: '```'
+- id: C31
+  category: content
+  fatal: false
+  text: The agent identifies the missing integration guides as the documentation gap in this launch.
+  anchor: Look for integration guide mentions in the readiness findings or deliverables.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: integration guide
+    llm:
+      question: The agent identifies the missing integration guides as the documentation gap in this launch.
+      evidence: Look for integration guide mentions in the readiness findings or deliverables.
+      source: output
+      needle: integration guide
+- id: C32
+  category: content
+  fatal: false
+  text: The agent reports the readiness check results (with the not-ready items called out), not just a generic assertion of readiness.
+  anchor: Look for the readiness findings in the final output.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Readiness
+    llm:
+      question: The agent reports the readiness check results (with the not-ready items called out), not just a generic assertion of readiness.
+      evidence: Look for the readiness findings in the final output.
+      source: output
+      needle: Readiness
+- id: C33
+  category: content
+  fatal: false
+  text: The readiness check flags monitoring/analytics instrumentation as a to-confirm or not-ready item.
+  anchor: Look for monitoring/analytics status in the readiness findings.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: monitoring
+    llm:
+      question: The readiness check flags monitoring/analytics instrumentation as a to-confirm or not-ready item.
+      evidence: Look for monitoring/analytics status in the readiness findings.
+      source: output
+      needle: monitoring
+- id: C34
+  category: coverage
+  fatal: false
+  text: 'Stakeholders are assigned for each workstream: product, engineering, DevRel, sales, and marketing, with an owner named for each.'
+  anchor: Look in the Stakeholders section for DevRel ownership.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: DevRel
+    llm:
+      question: 'Stakeholders are assigned for each workstream: product, engineering, DevRel, sales, and marketing, with an owner named for each.'
+      evidence: Look in the Stakeholders section for DevRel ownership.
+      source: output
+      needle: DevRel
+- id: C35
+  category: negative
+  fatal: false
+  text: The messaging does not use marketing jargon or non-technical superlatives (e.g., revolutionary, game-changing, seamless, cutting-edge, world-class, best-in-class).
+  anchor: Scan the final output's messaging sections for the banned superlative tokens.
+  judge: llm
+  check:
+    question: The messaging does not use marketing jargon or non-technical superlatives (e.g., revolutionary, game-changing, seamless, cutting-edge, world-class, best-in-class).
+    evidence: Scan the final output's messaging sections for the banned superlative tokens.
+- id: C36
+  category: negative
+  fatal: false
+  text: The agent does not fabricate launch specifics (product name, launch date, benchmark metrics); missing facts are asked of the user or explicitly marked as placeholders.
+  anchor: Check whether invented names/dates/metrics appear in the plan without a placeholder or user-confirmation marker.
+  judge: llm
+  check:
+    question: The agent does not fabricate launch specifics (product name, launch date, benchmark metrics); missing facts are asked of the user or explicitly marked as placeholders.
+    evidence: Check whether invented names/dates/metrics appear in the plan without a placeholder or user-confirmation marker.
+- id: C38
+  category: boundary
+  fatal: false
+  text: If an interactive script fails or produces no summary (e.g., validate_readiness.sh truncating), the agent reports the limitation rather than fabricating readiness results.
+  anchor: Look at the readiness step for an explicit note about the script's behavior when it fails.
+  judge: llm
+  check:
+    question: If an interactive script fails or produces no summary (e.g., validate_readiness.sh truncating), the agent reports the limitation rather than fabricating readiness results.
+    evidence: Look at the readiness step for an explicit note about the script's behavior when it fails.
+- id: C40
+  category: evidence
+  fatal: false
+  text: 'The final plan incorporates the script outputs: the stated tier is consistent with the assessment result and the readiness findings are reflected in the plan rather than contradicted.'
+  anchor: Cross-check the tier and readiness statements in the plan against the script outputs in the tool log.
+  judge: llm
+  check:
+    question: 'The final plan incorporates the script outputs: the stated tier is consistent with the assessment result and the readiness findings are reflected in the plan rather than contradicted.'
+    evidence: Cross-check the tier and readiness statements in the plan against the script outputs in the tool log.
+- id: C42
+  category: format
+  fatal: false
+  text: A markdown launch plan file matching the generate script's naming pattern (ProductName_launch_plan.md) is produced in the workspace.
+  anchor: Look for a *_launch_plan.md file in the workspace root.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: count
+      what: '*_launch_plan.md'
+      op: ge
+      n: 1
+    llm:
+      question: A markdown launch plan file matching the generate script's naming pattern (ProductName_launch_plan.md) is produced in the workspace.
+      evidence: Look for a *_launch_plan.md file in the workspace root.
+      source: workspace
+      path: '*_launch_plan.md'

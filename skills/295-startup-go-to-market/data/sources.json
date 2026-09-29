@@ -1,0 +1,35 @@
+{
+  "note": "Starting points for go-to-market research. Verify links before citing; treat each as an entry point, not an authoritative claim.",
+  "resources": [
+    {
+      "name": "Reforge",
+      "type": "course_library",
+      "url": "https://www.reforge.com/",
+      "why": "Operational deep dives on growth, activation, and retention"
+    },
+    {
+      "name": "Lenny's Newsletter",
+      "type": "writing",
+      "url": "https://www.lennyrachitsky.com/",
+      "why": "Interviews and playbooks on PLG, sales-led motion, and product-led growth"
+    },
+    {
+      "name": "Marketing Examples",
+      "type": "writing",
+      "url": "https://marketingexamples.com/",
+      "why": "Concrete campaign and landing-page patterns"
+    },
+    {
+      "name": "Traction (Weinberg & Mares)",
+      "type": "book",
+      "url": "https://www.gabrielweinberg.com/traction/",
+      "why": "Source of the bullseye channel-testing framework used in the channel step"
+    },
+    {
+      "name": "Harvard Business Review",
+      "type": "writing",
+      "url": "https://hbr.org/",
+      "why": "Established frameworks on go-to-market, pricing, and org alignment"
+    }
+  ]
+}

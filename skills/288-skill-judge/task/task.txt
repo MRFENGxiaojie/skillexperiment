@@ -1,0 +1,8 @@
+## Background
+Our team recently wrote a "ticket classification" skill for the internal customer-service team and wants someone to review its quality before launch.
+
+## Task
+Do a complete evaluation of this skill: first read it all, classify its content into "expert knowledge / prompting content / redundant content" and estimate the proportions; then score it across the eight dimensions, giving concrete evidence (line numbers) and explanation for each score, and concrete improvement suggestions for any dimension below full marks; finally compute the total score and grade, and output per the standard evaluation-report format (summary, per-dimension scores, key issues, top 3 improvements, detailed suggestions). Note: only evaluate and suggest — don't modify the skill's content. Write all output in English.
+
+## Materials
+Workspace skills/ticket-classifier/SKILL.md (the skill to be evaluated, including a references/ directory)

@@ -1,0 +1,8 @@
+## Background
+I hold a portfolio of US dividend assets (common stocks, REITs, and BDCs). I want to run a systematic dividend risk check each quarter, pulling out problem holdings for manual review.
+
+## Task
+Run a monitoring pass over this round's holdings data: identify anomaly signals such as dividend cuts or suspensions, financial/governance red flags (8-Ks and similar), and dividend-policy changes; classify each holding as OK / WARN / REVIEW; for every REVIEW item give the triggering rule basis and the manual-review points; finally output a queue report (with summary statistics and a detail line per holding). I only have the raw data exported from my broker, not organized to any standard — organize it first if needed, then run. Also note: I only look at the report; trading decisions are mine to make. Write all output in English.
+
+## Materials
+holdings_raw.csv is in the current working directory (broker export with ticker, type, a per-share dividend time series, and for some holdings 8-K text fragments).

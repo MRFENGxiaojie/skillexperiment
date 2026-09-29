@@ -1,0 +1,10 @@
+## Background
+We built an automated testing platform for game studios (automatically runs regressions and produces test reports). The product works; I'm a co-founder responsible for marketing.
+
+## Task
+Please design a complete go-to-market strategy for us: including the target-customer profile (which studio types to focus on and which to avoid), which growth model to pick (self-serve vs sales-led, or hybrid), which one or two channels to lead with and how to validate them, how to define and measure the conversion funnel, and a launch calendar plus a weekly review mechanism. This is our first formal marketing push; pricing, budget, and existing traffic data are all undecided — give a first version from the current info, and where something's missing say it's missing, don't make it up. Write all output in English.
+
+## Materials
+None
+## Working requirements
+Create three deliverables as files under assets/ in the current working directory: assets/icp-definition.md (sections Primary ICP, Anti-ICP, Buying path, Tiering rules), assets/gtm-strategy.md (sections 1. Executive summary, 2. ICP and segmentation, 3. Positioning), and assets/launch-playbook.md (sections Launch type and goal, Success criteria, Audience and channels, with a stretch target). End your final reply with the GTM summary covering ICP and anti-ICP, PLG and ACV, the PQL formula (PQL = Engagement...), the activation goal (30 minutes), double-down and pivot-trigger thresholds, and the decision log.

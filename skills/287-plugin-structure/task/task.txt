@@ -1,0 +1,8 @@
+## Background
+Our team spends time each iteration organizing daily standup content. We want to build an internal plugin in Claude Code to semi-automate standup records.
+
+## Task
+Help me scaffold this plugin: build the directory structure and manifest per the Claude Code plugin spec; the plugin needs a /standup command (generates a standup template) and a skill for collecting standup summaries. Use portable path references, not hardcoded absolute paths. After scaffolding, explain the directory structure and the purpose of each file, then tell me how components are discovered and loaded, and when config changes take effect. Write all output in English.
+
+## Materials
+None (use workspace/my-plugin/ as the plugin root)

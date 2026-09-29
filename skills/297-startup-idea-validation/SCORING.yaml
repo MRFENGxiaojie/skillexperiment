@@ -1,0 +1,417 @@
+skill: 297-startup-idea-validation
+version: 2
+total_items: 24
+criteria:
+- id: C02
+  category: format
+  fatal: true
+  text: The agent writes the archivable decision memo as a markdown file named `decision_memo.md` in the working directory.
+  anchor: Run filesystem — decision_memo.md exists at the working-directory root.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_exists
+      path: decision_memo.md
+    llm:
+      question: The agent writes the archivable decision memo as a markdown file named `decision_memo.md` in the working directory.
+      evidence: Run filesystem — decision_memo.md exists at the working-directory root.
+      source: workspace
+      path: decision_memo.md
+- id: C03
+  category: format
+  fatal: true
+  text: The decision memo contains four required sections — Verdict, Why, What would change the decision, and Next smallest reversible step — each with substantive content.
+  anchor: decision_memo.md — each of the four section headings appears with content beneath it.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: section_nonempty
+      path: decision_memo.md
+      headers:
+      - Verdict
+      - Why
+      - What would change the decision
+      - Next smallest reversible step
+      min_chars: 10
+    llm:
+      question: The decision memo contains four required sections — Verdict, Why, What would change the decision, and Next smallest reversible step — each with substantive content.
+      evidence: decision_memo.md — each of the four section headings appears with content beneath it.
+      source: workspace
+      path: decision_memo.md
+- id: C04
+  category: termination
+  fatal: false
+  text: 'The verdict is not GO: with only oral interviews and no behavioral commitment evidence (no paid commitment, no prototype), the skill forbids a GO verdict.'
+  anchor: decision_memo.md Verdict section — confirm the stated verdict is not GO.
+  judge: llm
+  check:
+    question: 'The verdict is not GO: with only oral interviews and no behavioral commitment evidence (no paid commitment, no prototype), the skill forbids a GO verdict.'
+    evidence: decision_memo.md Verdict section — confirm the stated verdict is not GO.
+- id: C05
+  category: content
+  fatal: false
+  text: The stated verdict is consistent with the stated composite score per the verdict thresholds (80-100 GO, 60-79 CONDITIONAL, 40-59 PIVOT, <40 NO-GO).
+  anchor: decision_memo.md — cross-check the composite score against the verdict band.
+  judge: llm
+  check:
+    question: The stated verdict is consistent with the stated composite score per the verdict thresholds (80-100 GO, 60-79 CONDITIONAL, 40-59 PIVOT, <40 NO-GO).
+    evidence: decision_memo.md — cross-check the composite score against the verdict band.
+- id: C06
+  category: content
+  fatal: false
+  text: The memo states a composite score computed as the weighted average of the nine dimension scores (sum of weight × score divided by 100).
+  anchor: decision_memo.md — find the composite-score line.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: decision_memo.md
+      needle: composite
+    llm:
+      question: The memo states a composite score computed as the weighted average of the nine dimension scores (sum of weight × score divided by 100).
+      evidence: decision_memo.md — find the composite-score line.
+      source: workspace
+      path: decision_memo.md
+      needle: composite
+- id: C07
+  category: coverage
+  fatal: false
+  text: 'The scorecard covers all nine dimensions: problem severity, market size, market timing, competitive moat, unit economics, founder-market fit, technical feasibility, GTM clarity, and risk profile.'
+  anchor: decision_memo.md — all nine dimension names appear in the scorecard/Why section.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: section_nonempty
+      path: decision_memo.md
+      headers:
+      - Problem severity
+      - Market size
+      - Market timing
+      - Competitive moat
+      - Unit economics
+      - Founder-market fit
+      - Technical feasibility
+      - GTM clarity
+      - Risk profile
+      min_chars: 3
+    llm:
+      question: The scorecard covers all nine dimensions - problem severity, market size, market
+        timing, competitive moat, unit economics, founder-market fit, technical feasibility, GTM
+        clarity and risk profile.
+      evidence: decision_memo.md - all nine dimension names appear in the scorecard/Why section.
+      source: workspace
+      path: decision_memo.md
+      needle: '[Pp]roblem severity|[Mm]arket size|[Cc]ompetitive moat|[Uu]nit economics'
+- id: C08
+  category: content
+  fatal: false
+  text: The agent explicitly identifies the riskiest assumption (RAT) that would kill the business if wrong.
+  anchor: Final output or decision_memo.md — the riskiest assumption is named.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: riskiest assumption
+    llm:
+      question: The agent explicitly identifies the riskiest assumption (RAT) that would kill the business if wrong.
+      evidence: Final output or decision_memo.md — the riskiest assumption is named.
+      source: output
+      needle: riskiest assumption
+- id: C09
+  category: content
+  fatal: false
+  text: 'The agent identifies willingness-to-pay as the riskiest assumption: whether accounting firms will pay for the AI bank-reconciliation agent, since the interviews validated pain but not payment intent.'
+  anchor: Final output or decision_memo.md — the RAT names willingness-to-pay.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: willingness-to-pay|willingness to pay
+    llm:
+      question: 'The agent identifies willingness-to-pay as the riskiest assumption: whether accounting firms will pay for the AI bank-reconciliation agent, since the interviews validated pain but not payment
+        intent.'
+      evidence: Final output or decision_memo.md — the RAT names willingness-to-pay.
+      source: output
+      needle: willingness-to-pay|willingness to pay
+- id: C10
+  category: content
+  fatal: false
+  text: The agent proposes a smoke test with a priced landing page as the cheapest falsifiable test for the RAT, starting at the top of the validation ladder after the completed interviews.
+  anchor: Final output or decision_memo.md — the proposed test is a smoke test.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: smoke test
+    llm:
+      question: The agent proposes a smoke test with a priced landing page as the cheapest falsifiable test for the RAT, starting at the top of the validation ladder after the completed interviews.
+      evidence: Final output or decision_memo.md — the proposed test is a smoke test.
+      source: output
+      needle: smoke test
+- id: C11
+  category: content
+  fatal: false
+  text: The agent pre-registers PASS/FAIL thresholds and stop rules for the proposed test before running it.
+  anchor: decision_memo.md — the test plan states success thresholds and stop rules.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: decision_memo.md
+      needle: threshold
+    llm:
+      question: The agent pre-registers PASS/FAIL thresholds and stop rules for the proposed test before running it.
+      evidence: decision_memo.md — the test plan states success thresholds and stop rules.
+      source: workspace
+      path: decision_memo.md
+      needle: threshold
+- id: C12
+  category: content
+  fatal: false
+  text: The memo tags evidence as fact versus assumption, keeping the evidence trail's fact/assumption separation.
+  anchor: decision_memo.md — evidence entries are labeled fact or assumption.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: decision_memo.md
+      needle: assumption
+    llm:
+      question: The memo tags evidence as fact versus assumption, keeping the evidence trail's fact/assumption separation.
+      evidence: decision_memo.md — evidence entries are labeled fact or assumption.
+      source: workspace
+      path: decision_memo.md
+      needle: assumption
+- id: C13
+  category: content
+  fatal: false
+  text: The agent downgrades dimension scores where evidence is weak (opinions and hypotheticals), per the Evidence Rules.
+  anchor: decision_memo.md — weak-evidence downgrades are noted for affected dimensions.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: decision_memo.md
+      needle: weak evidence
+    llm:
+      question: The agent downgrades dimension scores where evidence is weak (opinions and hypotheticals), per the Evidence Rules.
+      evidence: decision_memo.md — weak-evidence downgrades are noted for affected dimensions.
+      source: workspace
+      path: decision_memo.md
+      needle: weak evidence
+- id: C14
+  category: content
+  fatal: false
+  text: The agent flags that important claims (e.g., market size, competitive state) must be triangulated across at least two sources.
+  anchor: decision_memo.md — the triangulation requirement is noted.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: decision_memo.md
+      needle: triangulat
+    llm:
+      question: The agent flags that important claims (e.g., market size, competitive state) must be triangulated across at least two sources.
+      evidence: decision_memo.md — the triangulation requirement is noted.
+      source: workspace
+      path: decision_memo.md
+      needle: triangulat
+- id: C15
+  category: content
+  fatal: false
+  text: The validation addresses legal and reliable access to bank-statement data (data rights) as a validation focus for the AI idea.
+  anchor: decision_memo.md — data access / data rights are discussed.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: decision_memo.md
+      needle: data access
+    llm:
+      question: The validation addresses legal and reliable access to bank-statement data (data rights) as a validation focus for the AI idea.
+      evidence: decision_memo.md — data access / data rights are discussed.
+      source: workspace
+      path: decision_memo.md
+      needle: data access
+- id: C16
+  category: content
+  fatal: false
+  text: The validation defines success metrics, failure modes, and a human fallback for the AI agent.
+  anchor: decision_memo.md — reliability, failure modes, and human fallback are addressed.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: decision_memo.md
+      needle: fallback
+    llm:
+      question: The validation defines success metrics, failure modes, and a human fallback for the AI agent.
+      evidence: decision_memo.md — reliability, failure modes, and human fallback are addressed.
+      source: workspace
+      path: decision_memo.md
+      needle: fallback
+- id: C17
+  category: content
+  fatal: false
+  text: The validation estimates cost-to-serve per active user per month against expected revenue per user, including inference and retrieval costs.
+  anchor: decision_memo.md — a cost-to-serve estimate is given for the AI agent.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: decision_memo.md
+      needle: cost-to-serve
+    llm:
+      question: The validation estimates cost-to-serve per active user per month against expected revenue per user, including inference and retrieval costs.
+      evidence: decision_memo.md — a cost-to-serve estimate is given for the AI agent.
+      source: workspace
+      path: decision_memo.md
+      needle: cost-to-serve
+- id: C18
+  category: content
+  fatal: false
+  text: Thresholds and expectations are calibrated to a venture-scale, fundable outcome, matching the user's stated goal of raising funding.
+  anchor: decision_memo.md — the venture-scale calibration is explicit.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: decision_memo.md
+      needle: venture-scale
+    llm:
+      question: Thresholds and expectations are calibrated to a venture-scale, fundable outcome, matching the user's stated goal of raising funding.
+      evidence: decision_memo.md — the venture-scale calibration is explicit.
+      source: workspace
+      path: decision_memo.md
+      needle: venture-scale
+- id: C19
+  category: evidence
+  fatal: false
+  text: The agent states an explicit assumption for intake items the user did not provide (business model, geography, constraints) instead of silently filling them in, e.g., assuming a B2B SaaS model.
+  anchor: Final output — the agent names the assumed business model (e.g., B2B SaaS) and other missing intake items.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: B2B
+    llm:
+      question: The agent states an explicit assumption for intake items the user did not provide (business model, geography, constraints) instead of silently filling them in, e.g., assuming a B2B SaaS
+        model.
+      evidence: Final output — the agent names the assumed business model (e.g., B2B SaaS) and other missing intake items.
+      source: output
+      needle: B2B
+- id: C20
+  category: process
+  fatal: false
+  text: The agent reads the evidence (interview_notes.md) before writing the decision memo, following the workflow order of evidence-gathering before scoring.
+  anchor: tool_log — the Read of interview_notes.md precedes the Write of decision_memo.md.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_order
+      cmds:
+      - interview_notes.md
+      - decision_memo.md
+    llm:
+      question: The agent reads the evidence (interview_notes.md) before writing the decision memo, following the workflow order of evidence-gathering before scoring.
+      evidence: tool_log — the Read of interview_notes.md precedes the Write of decision_memo.md.
+      source: tool_log
+      pattern: interview_notes.md|decision_memo.md
+- id: C21
+  category: format
+  fatal: false
+  text: The memo's evidence trail includes a source and a capture month, per the Evidence Rules format (source/link + capture month + fact/assumption type).
+  anchor: decision_memo.md — evidence entries include capture dates (e.g., capture 2026-08).
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: decision_memo.md
+      needle: capture
+    llm:
+      question: The memo's evidence trail includes a source and a capture month, per the Evidence Rules format (source/link + capture month + fact/assumption type).
+      evidence: decision_memo.md — evidence entries include capture dates (e.g., capture 2026-08).
+      source: workspace
+      path: decision_memo.md
+      needle: capture
+- id: C22
+  category: evidence
+  fatal: false
+  text: The memo cites interview_notes.md as the evidence source for the interview findings.
+  anchor: decision_memo.md — the evidence trail references interview_notes.md.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: decision_memo.md
+      needle: interview_notes.md
+    llm:
+      question: The memo cites interview_notes.md as the evidence source for the interview findings.
+      evidence: decision_memo.md — the evidence trail references interview_notes.md.
+      source: workspace
+      path: decision_memo.md
+      needle: interview_notes.md
+- id: C23
+  category: negative
+  fatal: false
+  text: 'The agent does not fabricate evidence: all claims trace to the provided interview notes or are explicitly labeled as assumptions.'
+  anchor: Review the memo's claims and evidence trail for invented sources, quotes, or numbers.
+  judge: llm
+  check:
+    question: 'The agent does not fabricate evidence: all claims trace to the provided interview notes or are explicitly labeled as assumptions.'
+    evidence: Review the memo's claims and evidence trail for invented sources, quotes, or numbers.
+- id: C25
+  category: boundary
+  fatal: false
+  text: For dimensions with no supporting evidence (e.g., market size, unit economics, moat), the agent flags the missing data and scores them low rather than inventing numbers.
+  anchor: decision_memo.md — missing-evidence dimensions are flagged as weak or unknown.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: decision_memo.md
+      needle: insufficient
+    llm:
+      question: For dimensions with no supporting evidence (e.g., market size, unit economics, moat), the agent flags the missing data and scores them low rather than inventing numbers.
+      evidence: decision_memo.md — missing-evidence dimensions are flagged as weak or unknown.
+      source: workspace
+      path: decision_memo.md
+      needle: insufficient
+- id: C26
+  category: content
+  fatal: false
+  text: 'The validation is specific to the proposed idea: an AI agent that automates bank-statement reconciliation for small/medium accounting firms.'
+  anchor: decision_memo.md — the idea is restated with its target user and job-to-be-done.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: decision_memo.md
+      needle: reconciliation
+    llm:
+      question: 'The validation is specific to the proposed idea: an AI agent that automates bank-statement reconciliation for small/medium accounting firms.'
+      evidence: decision_memo.md — the idea is restated with its target user and job-to-be-done.
+      source: workspace
+      path: decision_memo.md
+      needle: reconciliation

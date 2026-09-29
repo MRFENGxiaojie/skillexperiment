@@ -1,0 +1,386 @@
+skill: 295-startup-go-to-market
+version: 2
+total_items: 22
+criteria:
+- id: C02
+  category: tool
+  fatal: false
+  text: The agent reads the task input file task.txt to obtain the user's requirements before drafting anything.
+  anchor: tool_log for a Read of the task file
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_contains
+      cmd: task.txt
+    llm:
+      question: The agent reads the task input file task.txt to obtain the user's requirements before drafting anything.
+      evidence: tool_log for a Read of the task file
+      source: tool_log
+      pattern: task.txt
+- id: C03
+  category: tool
+  fatal: false
+  text: The agent reads the skill definition SKILL.md to ground the workflow before producing deliverables.
+  anchor: tool_log for a Read of SKILL.md
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_contains
+      cmd: SKILL.md
+    llm:
+      question: The agent reads the skill definition SKILL.md to ground the workflow before producing deliverables.
+      evidence: tool_log for a Read of SKILL.md
+      source: tool_log
+      pattern: SKILL.md
+- id: C06
+  category: coverage
+  fatal: false
+  text: 'The GTM strategy deliverable covers all nine template sections: executive summary, ICP and segmentation, positioning and proof, motion and economics, channels, measurement, launch, RevOps alignment,
+    and risks.'
+  anchor: Section headers inside assets/gtm-strategy.md
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: section_nonempty
+      path: assets/gtm-strategy.md
+      headers:
+      - '## 1. Executive summary'
+      - '## 2. ICP and segmentation'
+      - '## 3. Positioning and proof'
+      - '## 4. Motion and economics'
+      - '## 5. Channels'
+      - '## 6. Measurement'
+      - '## 7. Launch'
+      - '## 8. RevOps alignment'
+      - '## 9. Risks'
+      min_chars: 20
+    llm:
+      question: 'The GTM strategy deliverable covers all nine template sections: executive summary, ICP and segmentation, positioning and proof, motion and economics, channels, measurement, launch, RevOps
+        alignment, and risks.'
+      evidence: Section headers inside assets/gtm-strategy.md
+      source: workspace
+      path: assets/gtm-strategy.md
+- id: C09
+  category: coverage
+  fatal: false
+  text: 'The launch playbook deliverable covers all seven template sections: launch type and goal, success criteria, audience and channels, assets checklist, timeline, launch-day checklist, and post-launch
+    review.'
+  anchor: Section headers inside assets/launch-playbook.md
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: section_nonempty
+      path: assets/launch-playbook.md
+      headers:
+      - '## Launch type and goal'
+      - '## Success criteria'
+      - '## Audience and channels'
+      - '## Assets checklist'
+      - '## Timeline'
+      - '## Launch-day checklist'
+      - '## Post-launch review'
+      min_chars: 20
+    llm:
+      question: 'The launch playbook deliverable covers all seven template sections: launch type and goal, success criteria, audience and channels, assets checklist, timeline, launch-day checklist, and
+        post-launch review.'
+      evidence: Section headers inside assets/launch-playbook.md
+      source: workspace
+      path: assets/launch-playbook.md
+- id: C10
+  category: content
+  fatal: false
+  text: Launch success criteria include both a minimum number and a stretch number, not a single open-ended target.
+  anchor: A numeric stretch target after the word 'stretch' in assets/launch-playbook.md
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: numeric_threshold
+      in: file:assets/launch-playbook.md
+      key: stretch
+      op: gt
+      n: 0
+    llm:
+      question: Launch success criteria include both a minimum number and a stretch number, not a single open-ended target.
+      evidence: A numeric stretch target after the word 'stretch' in assets/launch-playbook.md
+      source: workspace
+      path: assets/launch-playbook.md
+- id: C12
+  category: coverage
+  fatal: false
+  text: The ICP definition deliverable includes Primary ICP, Anti-ICP, Buying path, and Tiering rules sections.
+  anchor: Section headers inside assets/icp-definition.md
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: section_nonempty
+      path: assets/icp-definition.md
+      headers:
+      - '## Primary ICP'
+      - '## Anti-ICP'
+      - '## Buying path'
+      - '## Tiering rules'
+      min_chars: 20
+    llm:
+      question: The ICP definition deliverable includes Primary ICP, Anti-ICP, Buying path and
+        Tiering rules sections, each with real content.
+      evidence: Section headers inside assets/icp-definition.md.
+      source: workspace
+      path: assets/icp-definition.md
+      needle: Primary ICP|Anti-ICP|Buying path|Tiering rules
+- id: C13
+  category: content
+  fatal: true
+  text: The plan explicitly defines an anti-ICP stating which studios should NOT be targeted, plus trigger events for the primary ICP.
+  anchor: Term 'anti-ICP' in final output or ICP sections
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: anti-ICP
+    llm:
+      question: The plan explicitly defines an anti-ICP stating which studios should NOT be targeted, plus trigger events for the primary ICP.
+      evidence: Term 'anti-ICP' in final output or ICP sections
+      source: output
+      needle: anti-ICP
+- id: C14
+  category: content
+  fatal: false
+  text: The ICP is tiered by fit + intent signals, with high-fit/high-intent studios prioritized for outreach or PQL routing.
+  anchor: Term 'intent' in final output (tiering rules)
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: intent
+    llm:
+      question: The ICP is tiered by fit + intent signals, with high-fit/high-intent studios prioritized for outreach or PQL routing.
+      evidence: Term 'intent' in final output (tiering rules)
+      source: output
+      needle: intent
+- id: C17
+  category: content
+  fatal: false
+  text: 'The motion decision states explicit economics: ACV/ARPA expressed as a range (since pricing is undefined), a payback constraint, and a touch model.'
+  anchor: Term 'ACV' in final output (motion and economics)
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: ACV
+    llm:
+      question: 'The motion decision states explicit economics: ACV/ARPA expressed as a range (since pricing is undefined), a payback constraint, and a touch model.'
+      evidence: Term 'ACV' in final output (motion and economics)
+      source: output
+      needle: ACV
+- id: C19
+  category: process
+  fatal: false
+  text: Channels are selected 1-2 at a time and tested with a bullseye quick-test plan that doubles down only on channels hitting their threshold.
+  anchor: Phrase 'double down' in final output (channel test plan)
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: double down
+    llm:
+      question: Channels are selected 1-2 at a time and tested with a bullseye quick-test plan that doubles down only on channels hitting their threshold.
+      evidence: Phrase 'double down' in final output (channel test plan)
+      source: output
+      needle: double down
+- id: C20
+  category: content
+  fatal: false
+  text: A numeric success threshold is set in advance for each tested channel (the success metric is defined before any spend).
+  anchor: Term 'threshold' in final output (channel test criteria)
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: threshold
+    llm:
+      question: A numeric success threshold is set in advance for each tested channel (the success metric is defined before any spend).
+      evidence: Term 'threshold' in final output (channel test criteria)
+      source: output
+      needle: threshold
+- id: C21
+  category: content
+  fatal: false
+  text: The plan states explicit stop/pivot triggers for the chosen channels rather than open-ended execution instructions.
+  anchor: Phrase 'pivot trigger' or 'stop/pivot' in final output
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: pivot trigger
+    llm:
+      question: The plan states explicit stop/pivot triggers for the chosen channels rather than open-ended execution instructions.
+      evidence: Phrase 'pivot trigger' or 'stop/pivot' in final output
+      source: output
+      needle: pivot trigger
+- id: C22
+  category: content
+  fatal: true
+  text: Measurement defines one source of truth (product + CRM) with shared lifecycle stages and leading indicators (activation, PQL, retention, win rate).
+  anchor: Phrase 'product + CRM' in final output (measurement/RevOps)
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: product + CRM
+    llm:
+      question: Measurement defines one source of truth (product + CRM) with shared lifecycle stages and leading indicators (activation, PQL, retention, win rate).
+      evidence: Phrase 'product + CRM' in final output (measurement/RevOps)
+      source: output
+      needle: product + CRM
+- id: C23
+  category: content
+  fatal: true
+  text: The funnel is instrumented end-to-end from source to activation/value to revenue/expansion, broken down by segment and channel.
+  anchor: Term 'activation' and funnel language in final output
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: activation
+    llm:
+      question: The funnel is instrumented end-to-end from source to activation/value to revenue/expansion, broken down by segment and channel.
+      evidence: Term 'activation' and funnel language in final output
+      source: output
+      needle: activation
+- id: C24
+  category: process
+  fatal: false
+  text: A weekly GTM review cadence is defined with 30 minutes on pipeline + funnel, 30 minutes on experiments, and 30 minutes on decisions.
+  anchor: Phrase '30 minutes' in final output (operating cadence)
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: 30 minutes
+    llm:
+      question: A weekly GTM review cadence is defined with 30 minutes on pipeline + funnel, 30 minutes on experiments, and 30 minutes on decisions.
+      evidence: Phrase '30 minutes' in final output (operating cadence)
+      source: output
+      needle: 30 minutes
+- id: C25
+  category: content
+  fatal: false
+  text: The operating cadence includes an experiment backlog and a written decision log.
+  anchor: Phrase 'decision log' in final output
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: decision log
+    llm:
+      question: The operating cadence includes an experiment backlog and a written decision log.
+      evidence: Phrase 'decision log' in final output
+      source: output
+      needle: decision log
+- id: C26
+  category: content
+  fatal: false
+  text: The launch plan picks one launch type (soft / beta / ProductHunt / full) matched to a stated goal, with a timeline.
+  anchor: Launch-type language in final output or assets/launch-playbook.md
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: launch
+    llm:
+      question: The launch plan picks one launch type (soft / beta / ProductHunt / full) matched to a stated goal, with a timeline.
+      evidence: Launch-type language in final output or assets/launch-playbook.md
+      source: output
+      needle: launch
+- id: C27
+  category: content
+  fatal: false
+  text: Each chosen channel is allocated a budget (even if expressed as a placeholder or assumption) with a test plan and success metrics.
+  anchor: Term 'budget' in final output or channel section
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: budget
+    llm:
+      question: Each chosen channel is allocated a budget (even if expressed as a placeholder or assumption) with a test plan and success metrics.
+      evidence: Term 'budget' in final output or channel section
+      source: output
+      needle: budget
+- id: C28
+  category: boundary
+  fatal: false
+  text: Since pricing, budget, and traffic data are undefined, the plan proceeds with ranges and explicit assumptions instead of blocking on the missing inputs.
+  anchor: Term 'assumption'/'assumptions' in final output
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: assumption
+    llm:
+      question: Since pricing, budget, and traffic data are undefined, the plan proceeds with ranges and explicit assumptions instead of blocking on the missing inputs.
+      evidence: Term 'assumption'/'assumptions' in final output
+      source: output
+      needle: assumption
+- id: C29
+  category: evidence
+  fatal: false
+  text: The agent explicitly tells the user which inputs are missing and what to measure next, rather than silently presenting a complete-looking plan.
+  anchor: Phrase 'measure next' / 'to measure next' in final output
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: (?s)(?=.*\bmissing\b)(?=.*\bmeasure\b)
+    llm:
+      question: The agent explicitly tells the user which inputs are missing and what to measure next, rather than silently presenting a complete-looking plan.
+      evidence: Phrase 'measure next' / 'to measure next' in final output
+      source: output
+      needle: missing
+- id: C31
+  category: negative
+  fatal: true
+  text: The agent does not recommend running all channels in parallel; channels are sequenced (1-2 selected, others held).
+  anchor: Channel section in final output / assets/gtm-strategy.md — semantic judgment
+  judge: llm
+  check:
+    question: The agent does not recommend running all channels in parallel; channels are sequenced (1-2 selected, others held).
+    evidence: Channel section in final output / assets/gtm-strategy.md — semantic judgment
+- id: C32
+  category: process
+  fatal: false
+  text: The agent reads the task input and skill materials before writing the GTM strategy deliverable, following the workflow order.
+  anchor: 'tool_log ordering: task.txt read precedes gtm-strategy.md write'
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_order
+      cmds:
+      - task.txt
+      - assets/gtm-strategy.md
+    llm:
+      question: The agent reads the task input and skill materials before writing the GTM strategy deliverable, following the workflow order.
+      evidence: 'tool_log ordering: task.txt read precedes gtm-strategy.md write'
+      source: tool_log
+      pattern: task.txt|assets/gtm-strategy.md

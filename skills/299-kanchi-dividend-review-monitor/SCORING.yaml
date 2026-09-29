@@ -1,0 +1,395 @@
+skill: 299-kanchi-dividend-review-monitor
+version: 2
+total_items: 23
+criteria:
+- id: C06
+  category: process
+  fatal: false
+  text: The normalized input file is created before the rule engine runs.
+  anchor: Look in the tool_log for monitor_input being written before build_review_queue.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_order
+      cmds:
+      - monitor_input
+      - build_review_queue
+    llm:
+      question: The normalized input file is created before the rule engine runs.
+      evidence: Look in the tool_log for monitor_input being written before build_review_queue.
+      source: tool_log
+      pattern: monitor_input|build_review_queue
+- id: C07
+  category: format
+  fatal: false
+  text: A normalized input file monitor_input.json exists in the workspace root.
+  anchor: Look for monitor_input.json in the workspace root.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_exists
+      path: monitor_input.json
+    llm:
+      question: A normalized input file monitor_input.json exists in the workspace root.
+      evidence: Look for monitor_input.json in the workspace root.
+      source: workspace
+      path: monitor_input.json
+- id: C10
+  category: format
+  fatal: false
+  text: monitor_input.json is valid JSON with top-level as_of and holdings fields.
+  anchor: Open monitor_input.json and check it parses and contains as_of and holdings.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: json_schema
+      path: monitor_input.json
+      require_fields:
+      - as_of
+      - holdings
+    llm:
+      question: monitor_input.json is valid JSON with top-level as_of and holdings fields.
+      evidence: Open monitor_input.json and check it parses and contains as_of and holdings.
+      source: workspace
+      path: monitor_input.json
+- id: C11
+  category: format
+  fatal: false
+  text: The input as_of is an ISO date string in 2026, consistent with the dataset's generation date.
+  anchor: Look at the as_of value in monitor_input.json.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: monitor_input.json
+      needle: '"as_of": "2026-'
+    llm:
+      question: The input as_of is an ISO date string in 2026, consistent with the dataset's generation date.
+      evidence: Look at the as_of value in monitor_input.json.
+      source: workspace
+      path: monitor_input.json
+      needle: '"as_of": "2026-'
+- id: C12
+  category: format
+  fatal: false
+  text: Each holding record in the normalized input carries the schema's instrument_type field.
+  anchor: Open monitor_input.json and verify per-holding instrument_type keys.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: monitor_input.json
+      needle: '"instrument_type"'
+    llm:
+      question: Each holding record in the normalized input carries the schema's instrument_type field.
+      evidence: Open monitor_input.json and verify per-holding instrument_type keys.
+      source: workspace
+      path: monitor_input.json
+      needle: '"instrument_type"'
+- id: C13
+  category: format
+  fatal: false
+  text: Each holding's dividend object carries latest_regular and prior_regular fields (minimal viable input).
+  anchor: Open monitor_input.json and verify dividend.latest_regular appears for holdings.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: monitor_input.json
+      needle: '"latest_regular"'
+    llm:
+      question: Each holding's dividend object carries latest_regular and prior_regular fields (minimal viable input).
+      evidence: Open monitor_input.json and verify dividend.latest_regular appears for holdings.
+      source: workspace
+      path: monitor_input.json
+      needle: '"latest_regular"'
+- id: C14
+  category: format
+  fatal: false
+  text: The normalized input captures 8-K filing text snippets in a filings field for tickers that have them.
+  anchor: Open monitor_input.json and look for the filings key.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: monitor_input.json
+      needle: '"filings"'
+    llm:
+      question: The normalized input captures 8-K filing text snippets in a filings field for tickers that have them.
+      evidence: Open monitor_input.json and look for the filings key.
+      source: workspace
+      path: monitor_input.json
+      needle: '"filings"'
+- id: C17
+  category: format
+  fatal: false
+  text: Each per-ticker result in the queue JSON carries status and findings fields.
+  anchor: Look at the results array in reports/review_queue_*.json for status and findings keys.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: reports/review_queue_*.json
+      needle: '"findings": ['
+    llm:
+      question: Each per-ticker result in the queue JSON carries status and findings fields.
+      evidence: Look at the results array in reports/review_queue_*.json for status and findings keys.
+      source: workspace
+      path: reports/review_queue_*.json
+      needle: '"findings": ['
+- id: C18
+  category: format
+  fatal: false
+  text: 'Queue JSON findings cite trigger IDs with the form "trigger": "T…".'
+  anchor: Search reports/review_queue_*.json for trigger keys naming T1-T6.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: reports/review_queue_*.json
+      needle: '"trigger": "T'
+    llm:
+      question: 'Queue JSON findings cite trigger IDs with the form "trigger": "T…".'
+      evidence: Search reports/review_queue_*.json for trigger keys naming T1-T6.
+      source: workspace
+      path: reports/review_queue_*.json
+      needle: '"trigger": "T'
+- id: C19
+  category: format
+  fatal: false
+  text: Queue JSON findings record a single-line reason for each trigger.
+  anchor: Search reports/review_queue_*.json for reason keys.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: reports/review_queue_*.json
+      needle: '"reason":'
+    llm:
+      question: Queue JSON findings record a single-line reason for each trigger.
+      evidence: Search reports/review_queue_*.json for reason keys.
+      source: workspace
+      path: reports/review_queue_*.json
+      needle: '"reason":'
+- id: C27
+  category: content
+  fatal: false
+  text: The queue summary reports at least three REVIEW tickers, reflecting the dividend cuts and the suspension present in the raw data.
+  anchor: Read the REVIEW count in the summary of reports/review_queue_*.json.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: numeric_threshold
+      in: file:reports/review_queue_*.json
+      key: '"REVIEW":'
+      op: ge
+      n: 3
+    llm:
+      question: The queue summary reports at least three REVIEW tickers, reflecting the dividend cuts and the suspension present in the raw data.
+      evidence: Read the REVIEW count in the summary of reports/review_queue_*.json.
+      source: workspace
+      path: reports/review_queue_*.json
+- id: C31
+  category: content
+  fatal: false
+  text: MMM's 8-K governance red flag (independent-auditor change and CFO departure) is mapped to a T4 REVIEW finding.
+  anchor: Look for the MMM row in reports/review_queue_*.md and confirm REVIEW.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: reports/review_queue_*.md
+      needle: '| MMM | REVIEW |'
+    llm:
+      question: MMM's 8-K governance red flag (independent-auditor change and CFO departure) is mapped to a T4 REVIEW finding.
+      evidence: Look for the MMM row in reports/review_queue_*.md and confirm REVIEW.
+      source: workspace
+      path: reports/review_queue_*.md
+      needle: '| MMM | REVIEW |'
+- id: C32
+  category: boundary
+  fatal: false
+  text: LYB's sub-1% dividend reduction (1.31 to 1.30) is not treated as a T1 cut and LYB stays OK.
+  anchor: Look for the LYB row in reports/review_queue_*.md and confirm OK.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: reports/review_queue_*.md
+      needle: '| LYB | OK |'
+    llm:
+      question: LYB's sub-1% dividend reduction (1.31 to 1.30) is not treated as a T1 cut and LYB stays OK.
+      evidence: Look for the LYB row in reports/review_queue_*.md and confirm OK.
+      source: workspace
+      path: reports/review_queue_*.md
+      needle: '| LYB | OK |'
+- id: C34
+  category: boundary
+  fatal: false
+  text: The normalized input maps the CSV's REIT/R.E.I.T labels to the lowercase schema value reit.
+  anchor: Search monitor_input.json for instrument_type values of reit.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: monitor_input.json
+      needle: '"instrument_type": "reit"'
+    llm:
+      question: The normalized input maps the CSV's REIT/R.E.I.T labels to the lowercase schema value reit.
+      evidence: Search monitor_input.json for instrument_type values of reit.
+      source: workspace
+      path: monitor_input.json
+      needle: '"instrument_type": "reit"'
+- id: C35
+  category: boundary
+  fatal: false
+  text: The normalized input maps the CSV's BDC labels to the lowercase schema value bdc.
+  anchor: Search monitor_input.json for instrument_type values of bdc.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: monitor_input.json
+      needle: '"instrument_type": "bdc"'
+    llm:
+      question: The normalized input maps the CSV's BDC labels to the lowercase schema value bdc.
+      evidence: Search monitor_input.json for instrument_type values of bdc.
+      source: workspace
+      path: monitor_input.json
+      needle: '"instrument_type": "bdc"'
+- id: C37
+  category: content
+  fatal: false
+  text: The agent's output lists immediate REVIEW tickets (Output Contract item 3), one per REVIEW ticker, using the review-ticket heading format.
+  anchor: Look in the agent's final output for REVIEW Ticket headings.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: REVIEW Ticket
+    llm:
+      question: The agent's output lists immediate REVIEW tickets (Output Contract item 3), one per REVIEW ticker, using the review-ticket heading format.
+      evidence: Look in the agent's final output for REVIEW Ticket headings.
+      source: output
+      needle: REVIEW Ticket
+- id: C38
+  category: content
+  fatal: false
+  text: Each review ticket includes a "Manual Checks Required" section per references/review-ticket-template.md.
+  anchor: Look in the agent's final output for the manual-checks section.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Manual Checks Required
+    llm:
+      question: Each review ticket includes a "Manual Checks Required" section per references/review-ticket-template.md.
+      evidence: Look in the agent's final output for the manual-checks section.
+      source: output
+      needle: Manual Checks Required
+- id: C39
+  category: content
+  fatal: false
+  text: Each review ticket lists the trigger IDs and evidence (Trigger Summary) for the flagged ticker.
+  anchor: Look in the agent's final output for trigger summary sections.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Trigger Summary
+    llm:
+      question: Each review ticket lists the trigger IDs and evidence (Trigger Summary) for the flagged ticker.
+      evidence: Look in the agent's final output for trigger summary sections.
+      source: output
+      needle: Trigger Summary
+- id: C40
+  category: evidence
+  fatal: false
+  text: The agent runs the bundled unit-test suite for the rule engine (python -m pytest scripts/tests).
+  anchor: Look in the tool_log for a pytest invocation.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_contains
+      cmd: pytest
+    llm:
+      question: The agent runs the bundled unit-test suite for the rule engine (python -m pytest scripts/tests).
+      evidence: Look in the tool_log for a pytest invocation.
+      source: tool_log
+      pattern: pytest
+- id: C41
+  category: boundary
+  fatal: false
+  text: The agent states that final buy/sell decisions remain with the user (trade decisions are the user's, not the monitor's).
+  anchor: Look in the agent's final output for an explicit hand-off of trade decisions to the user.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: trading decision
+    llm:
+      question: The agent states that final buy/sell decisions remain with the user (trade decisions are the user's, not the monitor's).
+      evidence: Look in the agent's final output for an explicit hand-off of trade decisions to the user.
+      source: output
+      needle: trading decision
+- id: C44
+  category: termination
+  fatal: false
+  text: If a T4 keyword scan finds no hits, the result is stated as a narrow T4 scan result rather than full governance clearance.
+  anchor: Look in the agent's output or report for how no-hit 8-K scans are characterized.
+  judge: llm
+  check:
+    question: If a T4 keyword scan finds no hits, the result is stated as a narrow T4 scan result rather than full governance clearance.
+    evidence: Look in the agent's output or report for how no-hit 8-K scans are characterized.
+- id: C45
+  category: process
+  fatal: false
+  text: If the agent enumerates SEC 8-K filings for tickers with empty filing snippets, it uses company_tickers.json plus the data.sec.gov submissions endpoint (SEC Filing Guardrail).
+  anchor: Search the agent's output and tool_log for SEC enumeration using company_tickers.json.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: company_tickers.json
+    llm:
+      question: If the agent enumerates SEC 8-K filings for tickers with empty filing snippets, it uses company_tickers.json plus the data.sec.gov submissions endpoint (SEC Filing Guardrail).
+      evidence: Search the agent's output and tool_log for SEC enumeration using company_tickers.json.
+      source: output
+      needle: company_tickers.json
+- id: C46
+  category: process
+  fatal: false
+  text: Any live SEC fetcher the agent implements includes a compliant User-Agent with name and email (SEC Filing Guardrail).
+  anchor: Search the agent's output and tool_log for a User-Agent header.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: User-Agent
+    llm:
+      question: Any live SEC fetcher the agent implements includes a compliant User-Agent with name and email (SEC Filing Guardrail).
+      evidence: Search the agent's output and tool_log for a User-Agent header.
+      source: output
+      needle: User-Agent

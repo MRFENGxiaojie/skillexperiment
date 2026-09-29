@@ -1,0 +1,163 @@
+skill: 288-skill-judge
+version: 2
+total_items: 11
+criteria:
+- id: C04
+  category: process
+  fatal: false
+  text: The target SKILL.md is read before the report-generation step begins (before Step-5 templates are loaded), so scoring is grounded in the actual skill content.
+  anchor: In the tool_log, the ticket-classifier/SKILL.md Read must appear before the references/summary.md Read.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_order
+      cmds:
+      - ticket-classifier/SKILL.md
+      - references/summary.md
+    llm:
+      question: The target SKILL.md is read before the report-generation step begins (before Step-5 templates are loaded), so scoring is grounded in the actual skill content.
+      evidence: In the tool_log, the ticket-classifier/SKILL.md Read must appear before the references/summary.md Read.
+      source: tool_log
+      pattern: ticket-classifier/SKILL.md|references/summary.md
+- id: C07
+  category: content
+  fatal: false
+  text: The report Summary states the knowledge ratio in the template form 'E:A:R = X:Y:Z'.
+  anchor: In the final output, the Summary bullet 'Knowledge Ratio' must contain 'E:A:R ='.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: E:A:R =
+    llm:
+      question: The report Summary states the knowledge ratio in the template form 'E:A:R = X:Y:Z'.
+      evidence: In the final output, the Summary bullet 'Knowledge Ratio' must contain 'E:A:R ='.
+      source: output
+      needle: E:A:R =
+- id: C08
+  category: content
+  fatal: false
+  text: The knowledge-delta judgment applies the threshold standard (good skill >70% Expert, <40% Expert is poor) when interpreting the computed ratio.
+  anchor: Look in the final output for a reference to the 70% Expert threshold.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: 70%
+    llm:
+      question: The knowledge-delta judgment applies the threshold standard (good skill >70% Expert, <40% Expert is poor) when interpreting the computed ratio.
+      evidence: Look in the final output for a reference to the 70% Expert threshold.
+      source: output
+      needle: 70%
+- id: C09
+  category: process
+  fatal: false
+  text: The agent performs Structure Analysis, verifying frontmatter validity and counting the target SKILL.md's total lines.
+  anchor: Look in the report/output for a discussion of frontmatter validity and line count of ticket-classifier.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: frontmatter
+    llm:
+      question: The agent performs Structure Analysis, verifying frontmatter validity and counting the target SKILL.md's total lines.
+      evidence: Look in the report/output for a discussion of frontmatter validity and line count of ticket-classifier.
+      source: output
+      needle: frontmatter
+- id: C11
+  category: coverage
+  fatal: false
+  text: The report's Dimension Scores table includes the D1 (Knowledge Delta) row with a score and notes.
+  anchor: Look in the Dimension Scores table of the final output for the D1 row.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: 'D1: Knowledge Delta'
+    llm:
+      question: The report's Dimension Scores table includes the D1 (Knowledge Delta) row with a score and notes.
+      evidence: Look in the Dimension Scores table of the final output for the D1 row.
+      source: output
+      needle: 'D1: Knowledge Delta'
+- id: C20
+  category: content
+  fatal: false
+  text: The D4 assessment judges the target's frontmatter description against the three questions WHAT, WHEN, and KEYWORDS.
+  anchor: Look in the D4 discussion of the final output for the term KEYWORDS (or the WHAT/WHEN/KEYWORDS triad).
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: KEYWORDS
+    llm:
+      question: The D4 assessment judges the target's frontmatter description against the three questions WHAT, WHEN, and KEYWORDS.
+      evidence: Look in the D4 discussion of the final output for the term KEYWORDS (or the WHAT/WHEN/KEYWORDS triad).
+      source: output
+      needle: KEYWORDS
+- id: C21
+  category: content
+  fatal: false
+  text: The D3 assessment notes that the target skill has no explicit NEVER list and treats the absence as a significant gap.
+  anchor: Look in the D3 or Critical Issues discussion for a note that no NEVER list exists.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: NEVER list
+    llm:
+      question: The D3 assessment notes that the target skill has no explicit NEVER list and treats the absence as a significant gap.
+      evidence: Look in the D3 or Critical Issues discussion for a note that no NEVER list exists.
+      source: output
+      needle: NEVER list
+- id: C22
+  category: content
+  fatal: false
+  text: The D5 assessment evaluates load-trigger quality for the target's references (it is a multi-file skill), not the simple-skill conciseness shortcut.
+  anchor: Look in the D5 discussion of the final output for the term 'load trigger'.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: load trigger
+    llm:
+      question: The D5 assessment evaluates load-trigger quality for the target's references (it is a multi-file skill), not the simple-skill conciseness shortcut.
+      evidence: Look in the D5 discussion of the final output for the term 'load trigger'.
+      source: output
+      needle: load trigger
+- id: C25
+  category: evidence
+  fatal: false
+  text: Every dimension score below the maximum is backed by evidence citing line numbers and by a specific improvement suggestion.
+  anchor: Read the Dimension Scores table and Detailed Recommendations; each below-max dimension must reference line numbers of task/skills/ticket-classifier/SKILL.md.
+  judge: llm
+  check:
+    question: Every dimension score below the maximum is backed by evidence citing line numbers and by a specific improvement suggestion.
+    evidence: Read the Dimension Scores table and Detailed Recommendations; each below-max dimension must reference line numbers of task/skills/ticket-classifier/SKILL.md.
+- id: C26
+  category: evidence
+  fatal: false
+  text: 'The eight dimension scores are arithmetically consistent: they sum to the stated total out of 120, and the percentage and letter grade match the grade scale (A 90%+, B 80-89%, C 70-79%, D 60-69%,
+    F <60%).'
+  anchor: Sum the D1-D8 scores from the Dimension Scores table and compare to the stated Total Score, percentage, and Grade in the Summary.
+  judge: llm
+  check:
+    question: 'The eight dimension scores are arithmetically consistent: they sum to the stated total out of 120, and the percentage and letter grade match the grade scale (A 90%+, B 80-89%, C 70-79%, D
+      60-69%, F <60%).'
+    evidence: Sum the D1-D8 scores from the Dimension Scores table and compare to the stated Total Score, percentage, and Grade in the Summary.
+- id: C27
+  category: content
+  fatal: false
+  text: The agent checks the nine Common Failure Patterns (The Tutorial, The Dump, The Orphan References, etc.) and explicitly notes any present, reflecting them in the affected dimension scores.
+  anchor: Look in the report for a failure-pattern analysis tied to dimension scores.
+  judge: llm
+  check:
+    question: The agent checks the nine Common Failure Patterns (The Tutorial, The Dump, The Orphan References, etc.) and explicitly notes any present, reflecting them in the affected dimension scores.
+    evidence: Look in the report for a failure-pattern analysis tied to dimension scores.

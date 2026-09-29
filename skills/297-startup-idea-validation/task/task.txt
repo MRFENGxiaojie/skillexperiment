@@ -1,0 +1,8 @@
+## Background
+I have an idea: building an AI agent for small and mid-sized accounting firms that automatically reconciles clients' bank statements. I only have the idea and interview notes with 8 accountants; no product prototype yet.
+
+## Task
+Help me validate whether this idea is worth investing in: first determine the most critical risk assumption and the cheapest way to validate it, then give a clear conclusion (GO / CONDITIONAL / PIVOT / NO-GO or similar) with the scoring basis, and finally produce an archivable decision memo stating the conclusion, rationale, what evidence would change the conclusion, and the next minimal action. My personal goal is to build a fundable startup, not a small business. Write all output in English.
+
+## Materials
+interview_notes.md is in the current working directory (interview notes with 8 accountants including verbatim quotes; all verbal statements, no payment commitments).
