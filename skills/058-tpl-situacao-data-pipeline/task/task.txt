@@ -1,0 +1,8 @@
+## Background
+We need to sync supplier order data from their open API into our warehouse (BigQuery), running daily in batches. But the current ad-hoc script has many problems: the API has rate limits and occasional timeouts, duplicates appear with large data volumes, and one piece of bad data can stall the whole batch.
+
+## Task
+Help me redesign this data pipeline: write down clearly where data comes from, what transformations are applied, where it lands, what validation to set up, and how failures are handled, and give executable acceptance criteria. The vendor's API fields occasionally change; the new version must withstand that. We'll also need to backfill the past 90 days later — design with that in mind. The source database is a read-only replica of production — don't touch source data. Write all output in English.
+
+## Materials
+None (the existing ad-hoc script scripts/sync_orders.py can be referenced; source system: vendor open API + a read-only replica of the production transactions table)

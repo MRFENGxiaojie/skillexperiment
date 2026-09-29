@@ -1,0 +1,367 @@
+skill: 042-forecast-premortem
+version: 2
+total_items: 23
+criteria:
+- id: C02
+  category: evidence
+  fatal: false
+  text: The agent reads the bundled failure-mode-taxonomy.md resource to ground the failure-mode enumeration.
+  anchor: 'tool_log.jsonl: a Read call whose file_path ends in resources/failure-mode-taxonomy.md'
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_contains
+      cmd: resources/failure-mode-taxonomy.md
+    llm:
+      question: The agent reads the bundled failure-mode-taxonomy.md resource to ground the failure-mode enumeration.
+      evidence: 'tool_log.jsonl: a Read call whose file_path ends in resources/failure-mode-taxonomy.md'
+      source: tool_log
+      pattern: resources/failure-mode-taxonomy.md
+- id: C03
+  category: evidence
+  fatal: false
+  text: The agent reads the bundled backcasting-method.md resource before writing the failure narrative.
+  anchor: 'tool_log.jsonl: a Read call whose file_path ends in resources/backcasting-method.md'
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_contains
+      cmd: resources/backcasting-method.md
+    llm:
+      question: The agent reads the bundled backcasting-method.md resource before writing the failure narrative.
+      evidence: 'tool_log.jsonl: a Read call whose file_path ends in resources/backcasting-method.md'
+      source: tool_log
+      pattern: resources/backcasting-method.md
+- id: C04
+  category: evidence
+  fatal: false
+  text: The agent reads the bundled premortem-principles.md resource for the calibration/theory basis.
+  anchor: 'tool_log.jsonl: a Read call whose file_path ends in resources/premortem-principles.md'
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_contains
+      cmd: resources/premortem-principles.md
+    llm:
+      question: The agent reads the bundled premortem-principles.md resource for the calibration/theory basis.
+      evidence: 'tool_log.jsonl: a Read call whose file_path ends in resources/premortem-principles.md'
+      source: tool_log
+      pattern: resources/premortem-principles.md
+- id: C05
+  category: process
+  fatal: false
+  text: The skill invocation occurs before the agent consults the resource files.
+  anchor: 'tool_log.jsonl: ordering between the Skill call and the first resource Read'
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_order
+      cmds:
+      - 042-forecast-premortem
+      - resources/failure-mode-taxonomy.md
+    llm:
+      question: The skill invocation occurs before the agent consults the resource files.
+      evidence: 'tool_log.jsonl: ordering between the Skill call and the first resource Read'
+      source: tool_log
+      pattern: 042-forecast-premortem|resources/failure-mode-taxonomy.md
+- id: C09
+  category: process
+  fatal: false
+  text: The output treats the failure as a certainty — it states the target did not happen and that this is fact, not a hypothesis to argue with.
+  anchor: 'agent final output / output.txt: crystal-ball / backcast framing'
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: not an assumption|not a hypothesis
+    llm:
+      question: The output treats the failure as a certainty — it states the target did not happen and that this is fact, not a hypothesis to argue with.
+      evidence: 'agent final output / output.txt: crystal-ball / backcast framing'
+      source: output
+      needle: not an assumption|not a hypothesis
+- id: C10
+  category: content
+  fatal: false
+  text: The output contains a backcasting narrative of how the failure happened.
+  anchor: 'agent final output / output.txt: section labeled Backcast'
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Backcast
+    llm:
+      question: The output contains a backcasting narrative of how the failure happened.
+      evidence: 'agent final output / output.txt: section labeled Backcast'
+      source: output
+      needle: Backcast
+- id: C11
+  category: content
+  fatal: false
+  text: The output sets a resolution date for the prediction before time-traveling to failure.
+  anchor: 'agent final output / output.txt: prediction setup section'
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: resolution date
+    llm:
+      question: The output sets a resolution date for the prediction before time-traveling to failure.
+      evidence: 'agent final output / output.txt: prediction setup section'
+      source: output
+      needle: resolution date
+- id: C12
+  category: content
+  fatal: false
+  text: The output records the emotional calibration — how surprising the assumed failure feels for a forecast at the given confidence.
+  anchor: 'agent final output / output.txt: end of the backcast section'
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: emotion calibration
+    llm:
+      question: The output records the emotional calibration — how surprising the assumed failure feels for a forecast at the given confidence.
+      evidence: 'agent final output / output.txt: end of the backcast section'
+      source: output
+      needle: emotion calibration
+- id: C14
+  category: content
+  fatal: false
+  text: Each failure mode is given a concrete causal mechanism, not just a vague risk label.
+  anchor: 'agent final output / output.txt: failure-mode table'
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: mechanism
+    llm:
+      question: Each failure mode is given a concrete causal mechanism, not just a vague risk label.
+      evidence: 'agent final output / output.txt: failure-mode table'
+      source: output
+      needle: mechanism
+- id: C15
+  category: content
+  fatal: false
+  text: Each failure mode is given an explicit likelihood or probability estimate.
+  anchor: 'agent final output / output.txt: failure-mode table likelihood column'
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: likelihood|probability
+    llm:
+      question: Each failure mode is given an explicit likelihood or probability estimate.
+      evidence: 'agent final output / output.txt: failure-mode table likelihood column'
+      source: output
+      needle: likelihood|probability
+- id: C16
+  category: content
+  fatal: false
+  text: Each failure mode is paired with early warning signals to watch.
+  anchor: 'agent final output / output.txt: failure-mode table warning-signal column'
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: warning signs|early warning
+    llm:
+      question: Each failure mode is paired with early warning signals to watch.
+      evidence: 'agent final output / output.txt: failure-mode table warning-signal column'
+      source: output
+      needle: warning signs|early warning
+- id: C17
+  category: content
+  fatal: false
+  text: The output contains a dedicated tail-risk analysis beyond the ordinary failure modes.
+  anchor: 'agent final output / output.txt: tail-risk section'
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: tail risk
+    llm:
+      question: The output contains a dedicated tail-risk analysis beyond the ordinary failure modes.
+      evidence: 'agent final output / output.txt: tail-risk section'
+      source: output
+      needle: tail risk
+- id: C19
+  category: content
+  fatal: false
+  text: The tail-risk analysis covers key-personnel loss, as the task explicitly names it.
+  anchor: 'agent final output / output.txt: tail-risk section'
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: key person|key contact
+    llm:
+      question: The tail-risk analysis covers key-personnel loss, as the task explicitly names it.
+      evidence: 'agent final output / output.txt: tail-risk section'
+      source: output
+      needle: key person|key contact
+- id: C20
+  category: content
+  fatal: false
+  text: The tail-risk analysis covers big-tech entry into the category, as the task explicitly names it.
+  anchor: 'agent final output / output.txt: tail-risk section'
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: big tech|large companies
+    llm:
+      question: The tail-risk analysis covers big-tech entry into the category, as the task explicitly names it.
+      evidence: 'agent final output / output.txt: tail-risk section'
+      source: output
+      needle: big tech|large companies
+- id: C21
+  category: content
+  fatal: false
+  text: The tail-risk enumeration applies the PESTLE framework for systematic coverage of political/economic/social/technological/legal/environmental categories.
+  anchor: 'agent final output / output.txt: tail-risk enumeration'
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: PESTLE
+    llm:
+      question: The tail-risk enumeration applies the PESTLE framework for systematic coverage of political/economic/social/technological/legal/environmental categories.
+      evidence: 'agent final output / output.txt: tail-risk enumeration'
+      source: output
+      needle: PESTLE
+- id: C22
+  category: content
+  fatal: false
+  text: The output sets kill criteria in the prescribed format 'if [event X] happens, probability drops to [Y]%'.
+  anchor: 'agent final output / output.txt: kill-criteria table'
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: if it happens
+    llm:
+      question: The output sets kill criteria in the prescribed format 'if [event X] happens, probability drops to [Y]%'.
+      evidence: 'agent final output / output.txt: kill-criteria table'
+      source: output
+      needle: if it happens
+- id: C23
+  category: process
+  fatal: false
+  text: The output runs the quantitative plausibility check that asks whether the sum of failure-mode probabilities exceeds the implied failure rate, i.e., whether 85% is too high.
+  anchor: 'agent final output / output.txt: quantitative-check section'
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: too high|overly high
+    llm:
+      question: The output runs the quantitative plausibility check that asks whether the sum of failure-mode probabilities exceeds the implied failure rate, i.e., whether 85% is too high.
+      evidence: 'agent final output / output.txt: quantitative-check section'
+      source: output
+      needle: too high|overly high
+- id: C25
+  category: content
+  fatal: false
+  text: The output quantifies the confidence-interval widening using a score-based width multiplier (score out of 20 applied to the original width).
+  anchor: 'agent final output / output.txt: confidence-interval adjustment section'
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: multiplier
+    llm:
+      question: The output quantifies the confidence-interval widening using a score-based width multiplier (score out of 20 applied to the original width).
+      evidence: 'agent final output / output.txt: confidence-interval adjustment section'
+      source: output
+      needle: multiplier
+- id: C27
+  category: termination
+  fatal: false
+  text: The output gates the goal release — it recommends against publishing the raw 85% figure and proposes a gated framing instead.
+  anchor: 'agent final output / output.txt: release recommendation'
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: do not publish|don't publish
+    llm:
+      question: The output gates the goal release — it recommends against publishing the raw 85% figure and proposes a gated framing instead.
+      evidence: 'agent final output / output.txt: release recommendation'
+      source: output
+      needle: do not publish|don't publish
+- id: C28
+  category: boundary
+  fatal: false
+  text: The output flags the missing current MRR (and similar inputs) as the key dependency of the quantitative conclusion, since the task supplies no financials.
+  anchor: 'agent final output / output.txt: limitation note on missing inputs'
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: current MRR|MRR
+    llm:
+      question: The output flags the missing current MRR (and similar inputs) as the key dependency of the quantitative conclusion, since the task supplies no financials.
+      evidence: 'agent final output / output.txt: limitation note on missing inputs'
+      source: output
+      needle: current MRR|MRR
+- id: C29
+  category: content
+  fatal: false
+  text: The output produces multiple distinct failure narratives (3–5 alternative failure paths), not a single story.
+  anchor: 'agent final output / output.txt: backcast section parallel paths'
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: version|versions
+    llm:
+      question: The output produces multiple distinct failure narratives (3–5 alternative failure paths), not a single story.
+      evidence: 'agent final output / output.txt: backcast section parallel paths'
+      source: output
+      needle: version|versions
+- id: C30
+  category: process
+  fatal: false
+  text: The output synthesizes multiple perspectives (skeptic/fanatic/disinterested observer) to extract the robust failure modes that survived all viewpoints.
+  anchor: 'agent final output / output.txt: dragonfly synthesis in the failure-mode section'
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Dragonfly
+    llm:
+      question: The output synthesizes multiple perspectives (skeptic/fanatic/disinterested observer) to extract the robust failure modes that survived all viewpoints.
+      evidence: 'agent final output / output.txt: dragonfly synthesis in the failure-mode section'
+      source: output
+      needle: Dragonfly
+- id: C31
+  category: negative
+  fatal: false
+  text: The output does not degrade into a generic 'what could go wrong' listicle — failure modes carry mechanisms, quantified probabilities, and monitoring signposts.
+  anchor: holistic review of agent final output / output.txt
+  judge: llm
+  check:
+    question: The output does not degrade into a generic 'what could go wrong' listicle — failure modes carry mechanisms, quantified probabilities, and monitoring signposts.
+    evidence: holistic review of agent final output / output.txt

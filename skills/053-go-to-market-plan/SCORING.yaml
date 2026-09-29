@@ -1,0 +1,244 @@
+skill: 053-go-to-market-plan
+version: 2
+total_items: 16
+criteria:
+- id: C01
+  category: process
+  fatal: false
+  text: The agent checks $ARGUMENTS to determine execution mode before proceeding with the task (content present → proceed straight to execution).
+  anchor: Look in tool_log for any reference to $ARGUMENTS / the mode gate.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_contains
+      cmd: ARGUMENTS
+    llm:
+      question: The agent checks $ARGUMENTS to determine execution mode before proceeding with the task (content present → proceed straight to execution).
+      evidence: Look in tool_log for any reference to $ARGUMENTS / the mode gate.
+      source: tool_log
+      pattern: ARGUMENTS
+- id: C10
+  category: format
+  fatal: false
+  text: The output documents assumptions under a '**Assumptions:**' line near the top.
+  anchor: Look in the final output near the top for 'Assumptions:'.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: '**Assumptions:**'
+    llm:
+      question: The output documents assumptions under a '**Assumptions:**' line near the top.
+      evidence: Look in the final output near the top for 'Assumptions:'.
+      source: output
+      needle: '**Assumptions:**'
+- id: C11
+  category: format
+  fatal: false
+  text: Each strategy block includes a '**The Strategy:**' subsection explaining what the approach is and why it fits.
+  anchor: Look in the final output for 'The Strategy:'.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: '**The Strategy:**'
+    llm:
+      question: Each strategy block includes a '**The Strategy:**' subsection explaining what the approach is and why it fits.
+      evidence: Look in the final output for 'The Strategy:'.
+      source: output
+      needle: '**The Strategy:**'
+- id: C12
+  category: format
+  fatal: false
+  text: Each strategy block includes an '**The Exact Playbook:**' subsection with numbered '**Step 1:**'-style concrete actions.
+  anchor: Look in the final output for 'The Exact Playbook:'.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: '**The Exact Playbook:**'
+    llm:
+      question: Each strategy block includes an '**The Exact Playbook:**' subsection with numbered '**Step 1:**'-style concrete actions.
+      evidence: Look in the final output for 'The Exact Playbook:'.
+      source: output
+      needle: '**The Exact Playbook:**'
+- id: C13
+  category: format
+  fatal: false
+  text: Each strategy block includes a '**Metrics to Track:**' subsection.
+  anchor: Look in the final output for 'Metrics to Track:'.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: '**Metrics to Track:**'
+    llm:
+      question: Each strategy block includes a '**Metrics to Track:**' subsection.
+      evidence: Look in the final output for 'Metrics to Track:'.
+      source: output
+      needle: '**Metrics to Track:**'
+- id: C14
+  category: format
+  fatal: false
+  text: Each strategy block includes an '**Expected Milestones:**' subsection.
+  anchor: Look in the final output for 'Expected Milestones:'.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: '**Expected Milestones:**'
+    llm:
+      question: Each strategy block includes an '**Expected Milestones:**' subsection.
+      evidence: Look in the final output for 'Expected Milestones:'.
+      source: output
+      needle: '**Expected Milestones:**'
+- id: C15
+  category: format
+  fatal: false
+  text: Each strategy block includes a '**Do This Today:**' first-action subsection.
+  anchor: Look in the final output for 'Do This Today:'.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: '**Do This Today:**'
+    llm:
+      question: Each strategy block includes a '**Do This Today:**' first-action subsection.
+      evidence: Look in the final output for 'Do This Today:'.
+      source: output
+      needle: '**Do This Today:**'
+- id: C20
+  category: coverage
+  fatal: false
+  text: All three strategy blocks are fully developed with playbook, metrics, milestones, and a first action — none is an abbreviated placeholder or stub.
+  anchor: Read the full final output; verify each of Strategy 1/2/3 contains the complete part set, not '[...]' placeholders.
+  judge: llm
+  check:
+    question: All three strategy blocks are fully developed with playbook, metrics, milestones, and a first action — none is an abbreviated placeholder or stub.
+    evidence: Read the full final output; verify each of Strategy 1/2/3 contains the complete part set, not '[...]' placeholders.
+- id: C22
+  category: content
+  fatal: false
+  text: Expected Milestones include concrete outcomes with explicit timelines.
+  anchor: Look in the final output's Expected Milestones sections for timeline language such as 'days'.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: days
+    llm:
+      question: Expected Milestones include concrete outcomes with explicit timelines.
+      evidence: Look in the final output's Expected Milestones sections for timeline language such as 'days'.
+      source: output
+      needle: days
+- id: C23
+  category: content
+  fatal: false
+  text: Each 'Do This Today' action is one concrete task a founder can complete in 30-60 minutes with no ambiguity.
+  anchor: Read each 'Do This Today:' line; verify it is a single immediate, specific action.
+  judge: llm
+  check:
+    question: Each 'Do This Today' action is one concrete task a founder can complete in 30-60 minutes with no ambiguity.
+    evidence: Read each 'Do This Today:' line; verify it is a single immediate, specific action.
+- id: C24
+  category: process
+  fatal: false
+  text: The agent evaluates GTM readiness against the required-information list (value prop, specific ICP, stage, competitive landscape, distribution model, pricing, market position, resources) before deciding
+    whether to ask diagnostic questions.
+  anchor: Read tool_log/output for the readiness evaluation covering these required-information dimensions.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_contains
+      cmd: competitive landscape
+    llm:
+      question: The agent evaluates GTM readiness against the required-information list (value prop, specific ICP, stage, competitive landscape, distribution model, pricing, market position, resources)
+        before deciding whether to ask diagnostic questions.
+      evidence: Read tool_log/output for the readiness evaluation covering these required-information dimensions.
+      source: tool_log
+      pattern: competitive landscape
+- id: C25
+  category: termination
+  fatal: false
+  text: The agent proceeds to strategy generation only when the required information is available or the user has explicitly authorized inference from FOUNDER_CONTEXT.md (as task.txt does).
+  anchor: Read tool_log to confirm the gate is satisfied via the task's explicit 'infer missing details' instruction rather than fabricated context.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_contains
+      cmd: task.txt
+    llm:
+      question: The agent proceeds to strategy generation only when the required information is available or the user has explicitly authorized inference from FOUNDER_CONTEXT.md (as task.txt does).
+      evidence: Read tool_log to confirm the gate is satisfied via the task's explicit 'infer missing details' instruction rather than fabricated context.
+      source: tool_log
+      pattern: task.txt
+- id: C26
+  category: process
+  fatal: false
+  text: The agent analyzes market entry across the required dimensions (product-market fit status, market wedge/entry point, competitive positioning, channel fit, GTM motion, market timing) before generating
+    strategies.
+  anchor: Read tool_log/output for market-entry analysis covering PMF status, wedge, positioning, channels, motion, timing.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_contains
+      cmd: PMF status
+    llm:
+      question: The agent analyzes market entry across the required dimensions (product-market fit status, market wedge/entry point, competitive positioning, channel fit, GTM motion, market timing) before
+        generating strategies.
+      evidence: Read tool_log/output for market-entry analysis covering PMF status, wedge, positioning, channels, motion, timing.
+      source: tool_log
+      pattern: PMF status
+- id: C28
+  category: content
+  fatal: false
+  text: The strategies are adapted to the founder's stage (post-MVP, validating product-market fit) and business type (B2B SaaS developer tool), per the skill's stage- and type-based adaptation rules.
+  anchor: Read the final output's Assumptions and strategy content for stage/type-appropriate tactics (validation, developer channels, PLG, etc.).
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: product-led growth
+    llm:
+      question: The strategies are adapted to the founder's stage (post-MVP, validating product-market fit) and business type (B2B SaaS developer tool), per the skill's stage- and type-based adaptation
+        rules.
+      evidence: Read the final output's Assumptions and strategy content for stage/type-appropriate tactics (validation, developer channels, PLG, etc.).
+      source: output
+      needle: product-led growth
+- id: C29
+  category: negative
+  fatal: true
+  text: The output contains no generic, product-agnostic GTM advice such as bare 'do content marketing' or 'build a community' — every strategy is backed by a specific playbook for DevAnalytics.
+  anchor: Read the final output; flag any strategy that reduces to generic advice without product/ICP-specific execution steps.
+  judge: llm
+  check:
+    question: The output contains no generic, product-agnostic GTM advice such as bare 'do content marketing' or 'build a community' — every strategy is backed by a specific playbook for DevAnalytics.
+    evidence: Read the final output; flag any strategy that reduces to generic advice without product/ICP-specific execution steps.
+- id: C32
+  category: evidence
+  fatal: false
+  text: The agent performs the Quality Checklist self-verification before presenting the final output.
+  anchor: Look in tool_log/output for evidence the agent ran through the Quality Checklist (e.g., checking specificity, resource feasibility) before finalizing.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_contains
+      cmd: Quality Checklist
+    llm:
+      question: The agent performs the Quality Checklist self-verification before presenting the final output.
+      evidence: Look in tool_log/output for evidence the agent ran through the Quality Checklist (e.g., checking specificity, resource feasibility) before finalizing.
+      source: tool_log
+      pattern: Quality Checklist

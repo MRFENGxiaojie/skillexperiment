@@ -1,0 +1,17 @@
+## Background
+I run the website of "青禾花艺" (Qinghe Floral), built on WordPress, publishing flower-arranging tutorials and selling bouquet gift boxes. Lately Google shows no rich results at all, and Search Console reports a bunch of structured data errors.
+
+## Task
+Help me review what structured data the site currently has, what's broken, and what's missing; fix the problematic JSON-LD and explain the reason for each change; generate ready-to-paste JSON-LD for an article page and a product page; also add the missing markup such as FAQ content and breadcrumbs; finally give a priority-ordered implementation checklist. Write all output in English.
+
+## Materials
+The site's actual files are in the workspace — read them all before answering:
+- marketing-context.md — site, brand, product and goal details
+- site/search-console-errors.md — Search Console structured-data error excerpts
+- site/article.html — the tutorial article page (its JSON-LD is the erroring one below)
+- site/product.html — the product page (no structured data yet)
+- site/faq.html — the FAQ block (5 Q&As, unmarked)
+
+Existing article-page JSON-LD (currently erroring):
+{"@context": "https://schema.org", "@type": "Article", "headline": "情人节花束挑选指南", "image": "/images/valentine-bouquet.jpg", "dateModified": "2025-01-10", "datePublished": "2026-03-15", "author": {"@type": "Person", "name": ""}}
+The product page sells an ¥88 "Spring Gift Box" with 26 reviews averaging 4.7; it currently has no structured data at all. The FAQ block has 5 Q&As but no markup. There is no BreadcrumbList anywhere on the site.

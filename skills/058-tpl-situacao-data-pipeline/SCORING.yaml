@@ -1,0 +1,437 @@
+skill: 058-tpl-situacao-data-pipeline
+version: 2
+total_items: 23
+criteria:
+- id: C02
+  category: format
+  fatal: false
+  text: The specification contains a Source section describing where data comes from.
+  anchor: In PIPELINE_SPEC.md, look for the Source heading (English or the Chinese '数据源').
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: section_nonempty
+      path: PIPELINE_SPEC.md
+      headers:
+      - Source
+      min_chars: 20
+    llm:
+      question: The specification contains a Source section describing where data comes from.
+      evidence: In PIPELINE_SPEC.md, look for the Source heading (English or the Chinese '数据源').
+      source: workspace
+      path: PIPELINE_SPEC.md
+- id: C03
+  category: format
+  fatal: false
+  text: The specification contains a Transformations section describing what transformations run.
+  anchor: In PIPELINE_SPEC.md, look for a Transform/Transformations heading.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: section_nonempty
+      path: PIPELINE_SPEC.md
+      headers:
+      - Transform
+      min_chars: 20
+    llm:
+      question: The specification contains a Transformations section that actually describes what
+        transformations run, not just an empty heading.
+      evidence: In PIPELINE_SPEC.md, look for a Transform/Transformations heading.
+      source: workspace
+      path: PIPELINE_SPEC.md
+      needle: Transform
+- id: C04
+  category: format
+  fatal: false
+  text: The specification contains a Destination section describing where data lands.
+  anchor: In PIPELINE_SPEC.md, look for a Destination heading.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: section_nonempty
+      path: PIPELINE_SPEC.md
+      headers:
+      - Destination
+      min_chars: 20
+    llm:
+      question: The specification contains a Destination section that actually describes where the
+        data lands, not just an empty heading.
+      evidence: In PIPELINE_SPEC.md, look for a Destination heading.
+      source: workspace
+      path: PIPELINE_SPEC.md
+      needle: Destination
+- id: C07
+  category: content
+  fatal: false
+  text: 'The specification names both source systems: the supplier open API and the production read-only replica ''transactions'' table.'
+  anchor: In PIPELINE_SPEC.md, the Source section must mention the transactions table.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: PIPELINE_SPEC.md
+      needle: transactions
+    llm:
+      question: 'The specification names both source systems: the supplier open API and the production read-only replica ''transactions'' table.'
+      evidence: In PIPELINE_SPEC.md, the Source section must mention the transactions table.
+      source: workspace
+      path: PIPELINE_SPEC.md
+      needle: transactions
+- id: C09
+  category: content
+  fatal: false
+  text: The specification sets the destination load method to an idempotent UPSERT/MERGE on a business key so re-running the batch cannot create duplicates.
+  anchor: In PIPELINE_SPEC.md, the Destination section must state an upsert/merge load method.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: PIPELINE_SPEC.md
+      needle: Use a BigQuery|UPSERT|ON CONFLICT
+    llm:
+      question: The specification sets the destination load method to an idempotent UPSERT/MERGE on a business key so re-running the batch cannot create duplicates.
+      evidence: In PIPELINE_SPEC.md, the Destination section must state an upsert/merge load method.
+      source: workspace
+      path: PIPELINE_SPEC.md
+      needle: Use a BigQuery|UPSERT|ON CONFLICT
+- id: C10
+  category: content
+  fatal: false
+  text: The destination is partitioned by a date column (e.g., created_at) to support targeted reprocessing and backfill.
+  anchor: In PIPELINE_SPEC.md, the Destination/partitioning text must name a date partition column.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: PIPELINE_SPEC.md
+      needle: Partition:|DATE\(ingested_at\)
+    llm:
+      question: The destination is partitioned by a date column (e.g. created_at) to support
+        targeted reprocessing and backfill.
+      evidence: In PIPELINE_SPEC.md, the Destination/partitioning text must name a date partition
+        column.
+      source: workspace
+      path: PIPELINE_SPEC.md
+      needle: '[Pp]artition'
+- id: C11
+  category: termination
+  fatal: false
+  text: The batch-level row-count reconciliation gate halts the job with a loud failure when source-vs-destination deviation exceeds the stated tolerance (e.g., 0.1%), rather than passing silently.
+  anchor: In PIPELINE_SPEC.md, the Validation Gates section must state a reconciliation tolerance that fails the batch.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: PIPELINE_SPEC.md
+      needle: run reconciliation failure|reconciliation fails loudly
+    llm:
+      question: The batch-level row-count reconciliation gate halts the job with a loud failure when
+        source-vs-destination deviation exceeds the stated tolerance, rather than passing silently.
+      evidence: In PIPELINE_SPEC.md, the Validation Gates section must state a reconciliation
+        tolerance that fails the batch.
+      source: workspace
+      path: PIPELINE_SPEC.md
+      needle: '[Rr]econcil'
+- id: C12
+  category: content
+  fatal: false
+  text: The Failure Handling section names a concrete dead-letter-queue destination and alert thresholds expressed with numbers (e.g., PagerDuty on DLQ accumulation).
+  anchor: In PIPELINE_SPEC.md, the Failure Handling section must include a named alert channel and numeric thresholds.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: PIPELINE_SPEC.md
+      needle: PagerDuty|on-call
+    llm:
+      question: The Failure Handling section names a concrete dead-letter-queue destination and alert thresholds expressed with numbers (e.g., PagerDuty on DLQ accumulation).
+      evidence: In PIPELINE_SPEC.md, the Failure Handling section must include a named alert channel and numeric thresholds.
+      source: workspace
+      path: PIPELINE_SPEC.md
+      needle: PagerDuty|on-call
+- id: C13
+  category: boundary
+  fatal: false
+  text: 'The design tolerates source schema drift: newly-added fields are preserved rather than dropped, removed fields fall back to defaults, and type changes use explicit coercion that fails loudly on
+    impossible conversions.'
+  anchor: In PIPELINE_SPEC.md, the schema-evolution section must show unknown fields being retained (e.g., in an _extra column).
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: PIPELINE_SPEC.md
+      needle: explicit coercion|Type change
+    llm:
+      question: The design tolerates source schema drift - newly added fields are preserved rather
+        than dropped, removed fields fall back to defaults, and type changes use explicit coercion
+        that fails loudly on impossible conversions.
+      evidence: In PIPELINE_SPEC.md, the schema-evolution section must show unknown fields being
+        retained (e.g. in an _extra column).
+      source: workspace
+      path: PIPELINE_SPEC.md
+      needle: '[Ss]chema (evolution|drift|change)|coercion'
+- id: C14
+  category: content
+  fatal: false
+  text: The design tracks schema versions (a schema registry or per-record schema version) so source field changes are auditable.
+  anchor: In PIPELINE_SPEC.md, the schema-evolution text must mention a schema version or registry.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: PIPELINE_SPEC.md
+      needle: schema_version|schema version|versioned mapping registry|registry
+    llm:
+      question: The design tracks schema versions (a schema registry or per-record schema version) so source field changes are auditable.
+      evidence: In PIPELINE_SPEC.md, the schema-evolution text must mention a schema version or registry.
+      source: workspace
+      path: PIPELINE_SPEC.md
+      needle: schema_version|schema version|versioned mapping registry|registry
+- id: C16
+  category: content
+  fatal: false
+  text: All timestamps are stored in UTC with no timezone-ambiguous (naive) values.
+  anchor: In PIPELINE_SPEC.md, timestamps must be described as UTC.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: PIPELINE_SPEC.md
+      needle: timezone-naive|timezone-aware
+    llm:
+      question: All timestamps are stored in UTC with no timezone-ambiguous (naive) values.
+      evidence: In PIPELINE_SPEC.md, timestamps must be described as UTC.
+      source: workspace
+      path: PIPELINE_SPEC.md
+      needle: timezone-naive|timezone-aware
+- id: C18
+  category: content
+  fatal: false
+  text: Backfill is scoped to targeted date/partition ranges via an explicit entrypoint (e.g., --backfill --start --end), not full-table reprocessing.
+  anchor: In PIPELINE_SPEC.md, the backfill section must provide a range-based entrypoint.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: PIPELINE_SPEC.md
+      needle: --backfill --start|backfill --start-date|--start-date|--end-date
+    llm:
+      question: Backfill is scoped to targeted date/partition ranges via an explicit entrypoint (e.g., --backfill --start --end), not full-table reprocessing.
+      evidence: In PIPELINE_SPEC.md, the backfill section must provide a range-based entrypoint.
+      source: workspace
+      path: PIPELINE_SPEC.md
+      needle: --backfill --start|backfill --start-date|--start-date|--end-date
+- id: C20
+  category: boundary
+  fatal: false
+  text: The design handles API timeouts with bounded retries so a transient timeout does not fail the whole batch.
+  anchor: In PIPELINE_SPEC.md, the extraction/retry text must cover timeouts.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: PIPELINE_SPEC.md
+      needle: Retry connection errors|bounded backoff|up to 8 attempts
+    llm:
+      question: The design handles API timeouts with bounded retries so a transient timeout does not fail the whole batch.
+      evidence: In PIPELINE_SPEC.md, the extraction/retry text must cover timeouts.
+      source: workspace
+      path: PIPELINE_SPEC.md
+      needle: Retry connection errors|bounded backoff|up to 8 attempts
+- id: C21
+  category: content
+  fatal: false
+  text: Records that fail validation are routed to a dead-letter queue while processing continues, so one bad record cannot block the entire batch.
+  anchor: In PIPELINE_SPEC.md, the validation/failure sections must route bad records to a DLQ and keep going.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: PIPELINE_SPEC.md
+      needle: processing continues|does not block
+    llm:
+      question: Records that fail validation are routed to a dead-letter queue while processing continues, so one bad record cannot block the entire batch.
+      evidence: In PIPELINE_SPEC.md, the validation/failure sections must route bad records to a DLQ and keep going.
+      source: workspace
+      path: PIPELINE_SPEC.md
+      needle: processing continues|does not block
+- id: C23
+  category: evidence
+  fatal: false
+  text: The acceptance criteria include runnable SQL verification (e.g., SELECT COUNT / distinct-count checks) for idempotency and deduplication.
+  anchor: In PIPELINE_SPEC.md, the acceptance-criteria section must contain SQL that a judge could run.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: PIPELINE_SPEC.md
+      needle: COUNT\(\*\)
+    llm:
+      question: The acceptance criteria include runnable SQL verification (e.g., SELECT COUNT / distinct-count checks) for idempotency and deduplication.
+      evidence: In PIPELINE_SPEC.md, the acceptance-criteria section must contain SQL that a judge could run.
+      source: workspace
+      path: PIPELINE_SPEC.md
+      needle: COUNT\(\*\)
+- id: C24
+  category: evidence
+  fatal: false
+  text: The specification includes a QUALITY GATES checklist mapping each design decision to a verifiable gate.
+  anchor: In PIPELINE_SPEC.md, look for a QUALITY GATES checklist section.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: section_nonempty
+      path: PIPELINE_SPEC.md
+      headers:
+      - QUALITY GATES
+      min_chars: 20
+    llm:
+      question: The specification includes a QUALITY GATES checklist that maps each design decision
+        to a verifiable gate.
+      evidence: In PIPELINE_SPEC.md, look for a QUALITY GATES checklist section.
+      source: workspace
+      path: PIPELINE_SPEC.md
+      needle: QUALITY GATES
+- id: C26
+  category: content
+  fatal: false
+  text: The design configures a data-freshness alert that fires when the destination output is not updated within the stated SLO window.
+  anchor: In PIPELINE_SPEC.md, the monitoring/failure text must mention freshness-based alerting.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: PIPELINE_SPEC.md
+      needle: SLOs and alerts|Alert when no successful
+    llm:
+      question: The design configures a data-freshness alert that fires when the destination output is not updated within the stated SLO window.
+      evidence: In PIPELINE_SPEC.md, the monitoring/failure text must mention freshness-based alerting.
+      source: workspace
+      path: PIPELINE_SPEC.md
+      needle: SLOs and alerts|Alert when no successful
+- id: C30
+  category: content
+  fatal: false
+  text: Backfill is scheduled outside peak traffic hours so it does not compete with the production batch.
+  anchor: In PIPELINE_SPEC.md, the backfill scheduling must be off-peak.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: PIPELINE_SPEC.md
+      needle: off-peak|stagger
+    llm:
+      question: Backfill is scheduled outside peak traffic hours so it does not compete with the production batch.
+      evidence: In PIPELINE_SPEC.md, the backfill scheduling must be off-peak.
+      source: workspace
+      path: PIPELINE_SPEC.md
+      needle: off-peak|stagger
+- id: C31
+  category: content
+  fatal: false
+  text: The validation gates check required fields and value ranges at ingress (e.g., amount must be present, numeric, and positive).
+  anchor: In PIPELINE_SPEC.md, the Validation Gates section must include field/range checks on a concrete field.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: PIPELINE_SPEC.md
+      needle: NUMERIC|Reject values
+    llm:
+      question: The validation gates check required fields and value ranges at ingress (e.g., amount must be present, numeric, and positive).
+      evidence: In PIPELINE_SPEC.md, the Validation Gates section must include field/range checks on a concrete field.
+      source: workspace
+      path: PIPELINE_SPEC.md
+      needle: NUMERIC|Reject values
+- id: C32
+  category: content
+  fatal: false
+  text: The design names its architecture pattern (e.g., batch pull) and matches it to the daily-batch workload rather than an arbitrary choice.
+  anchor: In PIPELINE_SPEC.md, the architecture section must state the chosen pattern.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: PIPELINE_SPEC.md
+      needle: Batch Pull|batch pull|incremental
+    llm:
+      question: The design names its architecture pattern (e.g., batch pull) and matches it to the daily-batch workload rather than an arbitrary choice.
+      evidence: In PIPELINE_SPEC.md, the architecture section must state the chosen pattern.
+      source: workspace
+      path: PIPELINE_SPEC.md
+      needle: Batch Pull|batch pull|incremental
+- id: C33
+  category: evidence
+  fatal: false
+  text: The acceptance criteria specify injectable failure tests (mocking rate limits, timeouts, schema additions, and bad records) to prove behavior under those conditions.
+  anchor: In PIPELINE_SPEC.md, the acceptance-criteria section must describe mock/mutation-based tests.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: PIPELINE_SPEC.md
+      needle: test_429_honors_retry_after_and_resumes|test_timeout_retries_are_bounded|test_type_change_uses_explicit_coercion_or_dlq
+    llm:
+      question: The acceptance criteria specify injectable failure tests (mocking rate limits,
+        timeouts, schema additions, and bad records) to prove behavior under those conditions.
+      evidence: In PIPELINE_SPEC.md, the acceptance-criteria section must describe
+        mock/mutation-based tests.
+      source: workspace
+      path: PIPELINE_SPEC.md
+      needle: '[Aa]cceptance [Cc]riteria|test_'
+- id: C34
+  category: content
+  fatal: false
+  text: The agent's final report states where the pipeline-specification deliverable was written.
+  anchor: In the agent's final output, look for the deliverable filename or location.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: PIPELINE_SPEC.md
+    llm:
+      question: The agent's final report states where the pipeline-specification deliverable was written.
+      evidence: In the agent's final output, look for the deliverable filename or location.
+      source: output
+      needle: PIPELINE_SPEC.md
+- id: C35
+  category: evidence
+  fatal: false
+  text: The agent explicitly flags that key parameters (rate limits, real column names, data volumes) are assumptions to be confirmed against the actual API documentation rather than presented as facts.
+  anchor: Read the agent's final output closing remarks for a list of assumptions needing user confirmation.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      needle: not positional assumptions|must be verified before implementation|to be confirmed
+      path: PIPELINE_SPEC.md
+    llm:
+      question: The agent explicitly flags that key parameters (rate limits, real column names, data volumes) are assumptions to be confirmed against the actual API documentation rather than presented as
+        facts.
+      evidence: Read the agent's final output closing remarks for a list of assumptions needing user confirmation.
+      source: workspace
+      needle: not positional assumptions|must be verified before implementation|to be confirmed
+      path: PIPELINE_SPEC.md

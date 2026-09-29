@@ -1,0 +1,8 @@
+## Background
+My co-founder and I, both engineers, built an analytics tool for engineering teams to see development efficiency. We have a dozen beta users but haven't grown much.
+
+## Task
+Help us put together a go-to-market plan: the product works but we haven't found a way to acquire customers, budget and headcount are very limited, and we're not sure how to define our target customer. There's a FOUNDER_CONTEXT.md in the project — read it first, and make reasonable inferences for missing information based on it. Give three actionable strategies, each with concrete execution steps, metrics to track, and milestones. Don't hand me generic advice like "do content marketing"; ideally give a first step we can start working on today. Write all output in English.
+
+## Materials
+FOUNDER_CONTEXT.md (in the working directory; contains company name DevAnalytics, product positioning, feature list, tech stack, existing beta-user situation; does not contain budget, pricing, or competitive details)

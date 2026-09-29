@@ -1,0 +1,276 @@
+skill: 046-tpl-situacao-code-review-assistant
+version: 2
+total_items: 18
+criteria:
+- id: C03
+  category: process
+  fatal: false
+  text: The agent reads the PR description before opening the implementation code (the webhook handler).
+  anchor: tool_log — pr_description.md entry must appear before the webhook_handler.py entry
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_order
+      cmds:
+      - pr_description.md
+      - webhook_handler.py
+    llm:
+      question: The agent reads the PR description before opening the implementation code (the webhook handler).
+      evidence: tool_log — pr_description.md entry must appear before the webhook_handler.py entry
+      source: tool_log
+      pattern: pr_description.md|webhook_handler.py
+- id: C04
+  category: coverage
+  fatal: false
+  text: The agent examines all five changed payment-module source files (webhook_handler.py, refunds.py, routes.py, config.py, models.py).
+  anchor: tool_log — count entries whose serialized JSON references the payment module (substring 'payment'); expect at least 5 (one per source file)
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: count
+      what: payment
+      op: ge
+      n: 5
+    llm:
+      question: The agent examines all five changed payment-module source files (webhook_handler.py, refunds.py, routes.py, config.py, models.py).
+      evidence: tool_log — count entries whose serialized JSON references the payment module (substring 'payment'); expect at least 5 (one per source file)
+      source: tool_log
+      pattern: payment
+- id: C05
+  category: evidence
+  fatal: false
+  text: The agent searches the codebase for test files (test/pytest/unittest) to verify whether any tests exist.
+  anchor: tool_log — a Grep/Bash call whose input contains 'pytest' or 'unittest'
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_contains
+      cmd: pytest|unittest
+    llm:
+      question: The agent searches the codebase for test files (test/pytest/unittest) to verify whether any tests exist.
+      evidence: tool_log — a Grep/Bash call whose input contains 'pytest' or 'unittest'
+      source: tool_log
+      pattern: pytest|unittest
+- id: C10
+  category: content
+  fatal: false
+  text: The review flags the hardcoded WeChat Pay API URL in config.py (PAYMENT_API_URL).
+  anchor: final output — the config token PAYMENT_API_URL must appear
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: PAYMENT_API_URL
+    llm:
+      question: The review flags the hardcoded WeChat Pay API URL in config.py (PAYMENT_API_URL).
+      evidence: final output — the config token PAYMENT_API_URL must appear
+      source: output
+      needle: PAYMENT_API_URL
+- id: C11
+  category: content
+  fatal: false
+  text: The review flags the hardcoded credential fallbacks in config.py (WECHAT_API_KEY / placeholder secrets).
+  anchor: final output — the token WECHAT_API_KEY must appear in a security/secret finding
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: WECHAT_API_KEY
+    llm:
+      question: The review flags the hardcoded credential fallbacks in config.py (WECHAT_API_KEY / placeholder secrets).
+      evidence: final output — the token WECHAT_API_KEY must appear in a security/secret finding
+      source: output
+      needle: WECHAT_API_KEY
+- id: C13
+  category: content
+  fatal: false
+  text: The review flags that mark_refunded in models.py has no state guard and can flip any order (created/pending/cancelled/already-refunded) to REFUNDED.
+  anchor: final output — the model token mark_refunded must appear in a correctness/state-machine finding
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: mark_refunded
+    llm:
+      question: The review flags that mark_refunded in models.py has no state guard and can flip any order (created/pending/cancelled/already-refunded) to REFUNDED.
+      evidence: final output — the model token mark_refunded must appear in a correctness/state-machine finding
+      source: output
+      needle: mark_refunded
+- id: C15
+  category: format
+  fatal: false
+  text: The output classifies at least one finding with the [SUGGESTION] severity label.
+  anchor: final output — literal tag [SUGGESTION] must appear
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: '[SUGGESTION]'
+    llm:
+      question: The output classifies at least one finding with the [SUGGESTION] severity label.
+      evidence: final output — literal tag [SUGGESTION] must appear
+      source: output
+      needle: '[SUGGESTION]'
+- id: C16
+  category: format
+  fatal: false
+  text: The output classifies at least one item with the [QUESTION] severity label.
+  anchor: final output — literal tag [QUESTION] must appear
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: '[QUESTION]'
+    llm:
+      question: The output classifies at least one item with the [QUESTION] severity label.
+      evidence: final output — literal tag [QUESTION] must appear
+      source: output
+      needle: '[QUESTION]'
+- id: C17
+  category: format
+  fatal: false
+  text: The output classifies at least one item with the [NIT] severity label.
+  anchor: final output — literal tag [NIT] must appear
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: '[NIT]'
+    llm:
+      question: The output classifies at least one item with the [NIT] severity label.
+      evidence: final output — literal tag [NIT] must appear
+      source: output
+      needle: '[NIT]'
+- id: C18
+  category: format
+  fatal: false
+  text: Security-sensitive findings (webhook signature, missing auth) are tagged [SECURITY].
+  anchor: final output — literal tag [SECURITY] must appear on at least one security finding
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: '[SECURITY]'
+    llm:
+      question: Security-sensitive findings (webhook signature, missing auth) are tagged [SECURITY].
+      evidence: final output — literal tag [SECURITY] must appear on at least one security finding
+      source: output
+      needle: '[SECURITY]'
+- id: C19
+  category: format
+  fatal: false
+  text: Every [BLOCKING] comment is followed by an explicit 'Suggestion:' line giving a concrete fix.
+  anchor: final output — the marker 'Suggestion:' must appear with the blocking findings
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: 'Suggestion:'
+    llm:
+      question: Every [BLOCKING] comment is followed by an explicit 'Suggestion:' line giving a concrete fix.
+      evidence: final output — the marker 'Suggestion:' must appear with the blocking findings
+      source: output
+      needle: 'Suggestion:'
+- id: C24
+  category: format
+  fatal: false
+  text: The Review Summary lists suggestions ('**Suggestions (N):**').
+  anchor: final output — the token 'Suggestions' must appear in the summary
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Suggestions
+    llm:
+      question: The Review Summary lists suggestions ('**Suggestions (N):**').
+      evidence: final output — the token 'Suggestions' must appear in the summary
+      source: output
+      needle: Suggestions
+- id: C26
+  category: evidence
+  fatal: false
+  text: The review acknowledges the CI status (green baseline) before concluding.
+  anchor: final output — the token 'CI' must appear (e.g. 'CI is green'), ideally noting CI green is meaningless without tests
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: CI
+    llm:
+      question: The review acknowledges the CI status (green baseline) before concluding.
+      evidence: final output — the token 'CI' must appear (e.g. 'CI is green'), ideally noting CI green is meaningless without tests
+      source: output
+      needle: CI
+- id: C27
+  category: process
+  fatal: false
+  text: The review requests a second reviewer because the changes are security-sensitive (payment/webhook/auth).
+  anchor: final output — look for a second-reviewer request (e.g. 'second reviewer')
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: reviewer
+    llm:
+      question: The review requests a second reviewer because the changes are security-sensitive (payment/webhook/auth).
+      evidence: final output — look for a second-reviewer request (e.g. 'second reviewer')
+      source: output
+      needle: reviewer
+- id: C28
+  category: negative
+  fatal: false
+  text: All feedback is about the code, not the author ('this function', not 'you wrote'); no personal or attacking tone.
+  anchor: final output — read the comment phrasing; no author-directed criticism. Semantic judgment, no deterministic token.
+  judge: llm
+  check:
+    question: All feedback is about the code, not the author ('this function', not 'you wrote'); no personal or attacking tone.
+    evidence: final output — read the comment phrasing; no author-directed criticism. Semantic judgment, no deterministic token.
+- id: C29
+  category: negative
+  fatal: false
+  text: The review does not request style/formatting changes that a linter would catch (e.g. indentation, spacing).
+  anchor: final output — comments focus on behavior/design/security, not lintable formatting. Semantic judgment.
+  judge: llm
+  check:
+    question: The review does not request style/formatting changes that a linter would catch (e.g. indentation, spacing).
+    evidence: final output — comments focus on behavior/design/security, not lintable formatting. Semantic judgment.
+- id: C31
+  category: content
+  fatal: false
+  text: The review verifies the acceptance criteria — whether the code actually does what the PR description claims (e.g. the refund flow marks orders REFUNDED without ever calling the WeChat refund API).
+  anchor: final output — look for a finding that the refund/status behavior does not match the PR description. Semantic judgment.
+  judge: llm
+  check:
+    question: The review verifies the acceptance criteria — whether the code actually does what the PR description claims (e.g. the refund flow marks orders REFUNDED without ever calling the WeChat refund
+      API).
+    evidence: final output — look for a finding that the refund/status behavior does not match the PR description. Semantic judgment.
+- id: C32
+  category: coverage
+  fatal: false
+  text: 'The review addresses all three required dimensions: correctness, security, and readability.'
+  anchor: final output — findings span correctness, security, and readability; security is at least partially verifiable via the [SECURITY] tag. Semantic judgment for correctness/readability.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: '[SECURITY]'
+    llm:
+      question: 'The review addresses all three required dimensions: correctness, security, and readability.'
+      evidence: final output — findings span correctness, security, and readability; security is at least partially verifiable via the [SECURITY] tag. Semantic judgment for correctness/readability.
+      source: output
+      needle: '[SECURITY]'

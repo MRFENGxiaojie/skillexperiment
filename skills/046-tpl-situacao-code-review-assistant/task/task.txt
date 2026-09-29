@@ -1,0 +1,15 @@
+## Background
+There's a pending PR in our project's payment module (about 300 lines of changes). I'm the code-review lead and want a systematic review before deciding whether to approve. CI is currently green.
+
+## Task
+Review this PR to completion and give a verdict. Process: first read the PR description, then the tests, then inspect correctness, security, and readability in layers; grade each comment as blocking / suggestion / question / nit, and blocking items must include a concrete fix suggestion; finally give a Review Summary (overall conclusion, highlights, blocking items, suggested items). The PR description and code excerpts are in the materials (the project root has pr_description.md and the full diff). Write all output in English.
+
+## Materials
+PR description: the payment module adds a WeChat Pay channel — webhook callback handling, refund endpoint, order-state-machine changes (full PR description in this task's directory pr_description.md, full diff in pr.diff, changed files under payment/).
+Code excerpts:
+- webhook_handler.py: takes order_id from the request body and directly updates the order status to PAID without verifying the callback signature/source.
+- refunds.py: refund(order_id, amount), where amount comes directly from a frontend parameter; the refund logic unconditionally sets the order to REFUNDED.
+- New DELETE /api/payments/:id route with no authentication checks.
+- config.py: PAYMENT_API_URL = "https://api.wechatpay.com" hardcoded.
+- webhook_handler.py has a console.log(order_id) debug line.
+- The entire PR has no test files.

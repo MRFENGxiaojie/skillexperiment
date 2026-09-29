@@ -1,0 +1,370 @@
+skill: 056-schema-markup
+version: 2
+total_items: 24
+criteria:
+- id: C06
+  category: process
+  fatal: false
+  text: marketing-context.md is read before any site HTML file is opened (the skill's 'check context first' step).
+  anchor: Inspect the tool log for the relative order of the marketing-context read versus the article.html read.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_order
+      cmds:
+      - marketing-context
+      - article.html
+    llm:
+      question: marketing-context.md is read before any site HTML file is opened (the skill's 'check context first' step).
+      evidence: Inspect the tool log for the relative order of the marketing-context read versus the article.html read.
+      source: tool_log
+      pattern: marketing-context|article.html
+- id: C07
+  category: content
+  fatal: false
+  text: The audit report states what schema exists (Article on article pages), what is broken (the three reported errors), and what is missing (Product on the product page, FAQPage, BreadcrumbList) before
+    proposing fixes.
+  anchor: Read the audit section of the final output for a present/broken/missing inventory with priorities.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: FAQPage
+    llm:
+      question: The audit report states what schema exists (Article on article pages), what is broken (the three reported errors), and what is missing (Product on the product page, FAQPage, BreadcrumbList)
+        before proposing fixes.
+      evidence: Read the audit section of the final output for a present/broken/missing inventory with priorities.
+      source: output
+      needle: FAQPage
+- id: C08
+  category: boundary
+  fatal: false
+  text: The empty author.name value in the existing Article JSON-LD is corrected to the real author name 林晓 (visible on the page).
+  anchor: Look for the corrected author value in the article JSON-LD in the final output.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Lin Xiao
+    llm:
+      question: The empty author.name value in the existing Article JSON-LD is corrected to the real author name 林晓 (visible on the page).
+      evidence: Look for the corrected author value in the article JSON-LD in the final output.
+      source: output
+      needle: Lin Xiao
+- id: C09
+  category: boundary
+  fatal: false
+  text: The dateModified-earlier-than-datePublished error is corrected so dateModified is no earlier than datePublished (i.e., set to a 2026 date, not 2025-01-10).
+  anchor: Look at the dateModified value in the corrected article JSON-LD in the final output.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: '"dateModified": "2026'
+    llm:
+      question: The dateModified-earlier-than-datePublished error is corrected so dateModified is no earlier than datePublished (i.e., set to a 2026 date, not 2025-01-10).
+      evidence: Look at the dateModified value in the corrected article JSON-LD in the final output.
+      source: output
+      needle: '"dateModified": "2026'
+- id: C11
+  category: content
+  fatal: false
+  text: The corrected article JSON-LD retains the real headline 情人节花束挑选指南 rather than a placeholder.
+  anchor: Look for the headline field in the delivered article JSON-LD in the final output.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: 情人节花束挑选指南|Valentine Bouquet Guide
+    llm:
+      question: The corrected article JSON-LD retains the real headline 情人节花束挑选指南 rather than a placeholder.
+      evidence: Look for the headline field in the delivered article JSON-LD in the final output.
+      source: output
+      needle: 情人节花束挑选指南|Valentine Bouquet Guide
+- id: C12
+  category: content
+  fatal: false
+  text: New Product JSON-LD is delivered for the product page (春日礼盒), which previously had no structured data.
+  anchor: Look for the product JSON-LD deliverable in the final output.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Spring Gift Box
+    llm:
+      question: New Product JSON-LD is delivered for the product page (春日礼盒), which previously had no structured data.
+      evidence: Look for the product JSON-LD deliverable in the final output.
+      source: output
+      needle: Spring Gift Box
+- id: C14
+  category: content
+  fatal: false
+  text: The Offer block is filled with the real product price (88元) rather than a placeholder.
+  anchor: Look for the price value 88 inside the product Offer block in the final output.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: numeric_threshold
+      in: output
+      key: '"price"'
+      op: eq
+      n: 88
+    llm:
+      question: The Offer block is filled with the real product price (88元) rather than a placeholder.
+      evidence: Look for the price value 88 inside the product Offer block in the final output.
+      source: output
+      needle: '"price"'
+- id: C15
+  category: content
+  fatal: false
+  text: The Product JSON-LD includes an AggregateRating reflecting the real average rating 4.7.
+  anchor: Look for the 4.7 rating value inside aggregateRating in the product JSON-LD in the final output.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: '4.7'
+    llm:
+      question: The Product JSON-LD includes an AggregateRating reflecting the real average rating 4.7.
+      evidence: Look for the 4.7 rating value inside aggregateRating in the product JSON-LD in the final output.
+      source: output
+      needle: '4.7'
+- id: C16
+  category: content
+  fatal: false
+  text: The Product JSON-LD reflects the real review count of 26 (as reviewCount / 26条评价).
+  anchor: Look for reviewCount or the 26 count in the product JSON-LD in the final output.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: numeric_threshold
+      in: output
+      key: reviewCount
+      op: eq
+      n: 26
+    llm:
+      question: The Product JSON-LD reflects the real review count of 26 (as reviewCount / 26条评价).
+      evidence: Look for reviewCount or the 26 count in the product JSON-LD in the final output.
+      source: output
+      needle: reviewCount
+- id: C18
+  category: content
+  fatal: false
+  text: FAQPage JSON-LD is generated for the FAQ section (the missing markup the user asked to add).
+  anchor: Look for the FAQPage JSON-LD deliverable in the final output.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: FAQPage
+    llm:
+      question: FAQPage JSON-LD is generated for the FAQ section (the missing markup the user asked to add).
+      evidence: Look for the FAQPage JSON-LD deliverable in the final output.
+      source: output
+      needle: FAQPage
+- id: C19
+  category: content
+  fatal: false
+  text: The FAQPage markup uses the actual questions from the FAQ block (e.g., 花束可以当天送达吗) rather than placeholders.
+  anchor: Look for the real FAQ question text inside the FAQPage mainEntity in the final output.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Can the bouquet be delivered the same day
+    llm:
+      question: The FAQPage markup uses the actual questions from the FAQ block (e.g., 花束可以当天送达吗) rather than placeholders.
+      evidence: Look for the real FAQ question text inside the FAQPage mainEntity in the final output.
+      source: output
+      needle: Can the bouquet be delivered the same day
+- id: C20
+  category: coverage
+  fatal: false
+  text: The FAQPage markup covers all five questions present in the FAQ block.
+  anchor: Count the Question entries in the FAQPage mainEntity array in the final output (should be 5).
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Do you support invoicing|Can you provide an invoice
+    llm:
+      question: The FAQPage markup covers all five questions present in the FAQ block.
+      evidence: Count the Question entries in the FAQPage mainEntity array in the final output (should be 5).
+      source: output
+      needle: Do you support invoicing|Can you provide an invoice
+- id: C21
+  category: content
+  fatal: false
+  text: BreadcrumbList JSON-LD is generated for the non-homepage pages (article and product), which had no breadcrumbs markup site-wide.
+  anchor: Look for the BreadcrumbList JSON-LD deliverable in the final output.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: BreadcrumbList
+    llm:
+      question: BreadcrumbList JSON-LD is generated for the non-homepage pages (article and product), which had no breadcrumbs markup site-wide.
+      evidence: Look for the BreadcrumbList JSON-LD deliverable in the final output.
+      source: output
+      needle: BreadcrumbList
+- id: C23
+  category: format
+  fatal: false
+  text: All delivered markup is JSON-LD delivered as application/ld+json script blocks, not Microdata or RDFa.
+  anchor: Look for application/ld+json (script type) wrapping the delivered JSON-LD blocks in the final output.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: application/ld+json
+    llm:
+      question: All delivered markup is JSON-LD delivered as application/ld+json script blocks, not Microdata or RDFa.
+      evidence: Look for application/ld+json (script type) wrapping the delivered JSON-LD blocks in the final output.
+      source: output
+      needle: application/ld+json
+- id: C24
+  category: content
+  fatal: false
+  text: Every delivered JSON-LD block declares the schema.org @context (https://schema.org).
+  anchor: 'Look for ''@context'': ''https://schema.org'' in each delivered JSON-LD block in the final output.'
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: '"@context": "https://schema.org"'
+    llm:
+      question: Every delivered JSON-LD block declares the schema.org @context (https://schema.org).
+      evidence: 'Look for ''@context'': ''https://schema.org'' in each delivered JSON-LD block in the final output.'
+      source: output
+      needle: '"@context": "https://schema.org"'
+- id: C25
+  category: negative
+  fatal: false
+  text: No Microdata (itemscope/itemprop) or RDFa (typeof/property) markup is generated for any page.
+  anchor: Check the delivered markup in the final output for any legacy microdata/RDFa attributes; JSON-LD-only passes.
+  judge: llm
+  check:
+    question: No Microdata (itemscope/itemprop) or RDFa (typeof/property) markup is generated for any page.
+    evidence: Check the delivered markup in the final output for any legacy microdata/RDFa attributes; JSON-LD-only passes.
+- id: C26
+  category: content
+  fatal: false
+  text: A change log explaining the reason for each fix is included alongside the corrected JSON-LD (the user asked to explain each modification).
+  anchor: Look for a change-log section that maps each broken field to its fix and rationale in the final output.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: author.name
+    llm:
+      question: A change log explaining the reason for each fix is included alongside the corrected JSON-LD (the user asked to explain each modification).
+      evidence: Look for a change-log section that maps each broken field to its fix and rationale in the final output.
+      source: output
+      needle: author.name
+- id: C28
+  category: content
+  fatal: false
+  text: The implementation checklist is actionable for WordPress (the site's CMS), e.g., via Yoast/plugin or theme-child injection.
+  anchor: Look for WordPress-specific guidance (CMS/plugin steps) inside the checklist or delivery notes in the final output.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: WordPress
+    llm:
+      question: The implementation checklist is actionable for WordPress (the site's CMS), e.g., via Yoast/plugin or theme-child injection.
+      evidence: Look for WordPress-specific guidance (CMS/plugin steps) inside the checklist or delivery notes in the final output.
+      source: output
+      needle: WordPress
+- id: C29
+  category: evidence
+  fatal: false
+  text: The agent recommends testing the schema with the Google Rich Results Test before publishing.
+  anchor: Look for 'Rich Results Test' (or search.google.com/test/rich-results) in the validation/next-steps section of the final output.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Rich Results Test
+    llm:
+      question: The agent recommends testing the schema with the Google Rich Results Test before publishing.
+      evidence: Look for 'Rich Results Test' (or search.google.com/test/rich-results) in the validation/next-steps section of the final output.
+      source: output
+      needle: Rich Results Test
+- id: C31
+  category: negative
+  fatal: true
+  text: No schema is added for content that is not actually on the page (no fabricated reviews, ratings, FAQ items, or page types).
+  anchor: Cross-check each delivered schema type and its data against the visible page content in task/site/ (matches critical failure CF-01).
+  judge: llm
+  check:
+    question: No schema is added for content that is not actually on the page (no fabricated reviews, ratings, FAQ items, or page types).
+    evidence: Cross-check each delivered schema type and its data against the visible page content in task/site/ (matches critical failure CF-01).
+- id: C32
+  category: negative
+  fatal: true
+  text: All delivered JSON-LD is syntactically valid JSON that would parse successfully (no malformed blocks).
+  anchor: Run each delivered JSON-LD block from the final output through a JSON parser (matches critical failure CF-01).
+  judge: llm
+  check:
+    question: All delivered JSON-LD is syntactically valid JSON that would parse successfully (no malformed blocks).
+    evidence: Run each delivered JSON-LD block from the final output through a JSON parser (matches critical failure CF-01).
+- id: C33
+  category: negative
+  fatal: false
+  text: The agent does not guarantee rich results; it notes that Google decides eligibility (including FAQ/HowTo rich-result limits since August 2023).
+  anchor: Look for eligibility caveats (no 'guaranteed rich result' phrasing) in the recommendations in the final output.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: August 2023
+    llm:
+      question: The agent does not guarantee rich results; it notes that Google decides eligibility (including FAQ/HowTo rich-result limits since August 2023).
+      evidence: Look for eligibility caveats (no 'guaranteed rich result' phrasing) in the recommendations in the final output.
+      source: output
+      needle: August 2023
+- id: C34
+  category: format
+  fatal: false
+  text: Findings use the skill's confidence tagging (🟢 verified / 🟡 medium / 🔴 assumed).
+  anchor: Look for the confidence markers on findings in the final output.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: 🟢
+    llm:
+      question: Findings use the skill's confidence tagging (🟢 verified / 🟡 medium / 🔴 assumed).
+      evidence: Look for the confidence markers on findings in the final output.
+      source: output
+      needle: 🟢
+- id: C35
+  category: format
+  fatal: false
+  text: The output leads with the conclusion first and structures each finding as What + Why + How.
+  anchor: Read the overall structure of the final output for conclusion-first organization and What/Why/How per finding.
+  judge: llm
+  check:
+    question: The output leads with the conclusion first and structures each finding as What + Why + How.
+    evidence: Read the overall structure of the final output for conclusion-first organization and What/Why/How per finding.

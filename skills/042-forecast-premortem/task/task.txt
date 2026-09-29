@@ -1,0 +1,8 @@
+## Background
+Our SaaS team is setting next year's goals. I'm fairly confident we can reach $5M monthly recurring revenue within 18 months — team confidence is high, but I worry that the confidence itself is the problem.
+
+## Task
+My forecast: the company reaches $5M MRR in 18 months, with my subjective success probability at 85% and confidence interval 75%-95%. Before we publish this goal, please stress-test this forecast seriously: first treat "it has already failed" as a given fact and work backward, writing out clearly how the failure happened; distill concrete failure modes (mechanisms, likelihoods, early-warning signals); find tail risks that might be overlooked (e.g., regulation, key-person loss, big-tech entry), and for each set a "if X happens, probability drops to Y%" abandon/downgrade line; finally use quantitative methods to check whether my 85% is too high, give adjusted probability and confidence interval, and a checklist of warning signals to watch monthly. Write all output in English.
+
+## Materials
+None
