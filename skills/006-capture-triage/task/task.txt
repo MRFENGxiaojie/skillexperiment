@@ -1,0 +1,15 @@
+## Background
+I jotted down a few things in Drafts on my phone during the day, and now I want to turn those captures into organized tasks.
+
+## Task
+Look at what's in the Zettelkasten Inbox folder, read each item one by one and determine its intent (task, idea, reference, research, project update, or contact), show a classification preview table, then route items directly to the Ready section of the daily note (task/Zettelkasten/2026-08-10.md — the existing daily note in the vault) — do not wait for user confirmation; proceed as if approved and apply the routing yourself; be sure to carry over source links when present. Only process files in the Inbox root directory — do not touch subdirectories. Write all output in English.
+
+## Materials
+The Inbox is at task/Zettelkasten/Inbox/ in the current working directory, with 5 files today:
+- call-dentist.md: "Call dentist Monday about cleaning appointment"
+- hook-challenge.md: "What if we did a 5-day hook challenge for the newsletter?"
+- karpathy-video.md: a structured video note summary (has ## subheadings, bullets, quotes Karpathy's views)
+- research-ai-coaches.md: "Research: how do successful coaches use AI?"
+- x-bookmark.md: frontmatter contains tweet_url: https://x.com/author/status/123456789, body is "Great thread on newsletter growth"
+- The vault also holds context files under task/Zettelkasten/ (e.g., PROJECT - *.md); load active project context before routing.
+When a capture has source frontmatter, extract the source-URL field (e.g., tweet_url) and carry it into the routed line.

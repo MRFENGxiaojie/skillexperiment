@@ -1,0 +1,10 @@
+## Background
+I'm a retail investor holding a portfolio of US dividend-paying assets. Before year-end I want to do systematic dividend tax planning, and I want the conclusions traceable.
+
+## Task
+Do an annual dividend tax plan: 1) classify each holding's dividend stream (qualified potential / ordinary / REIT or BDC components); 2) verify whether the holding periods meet the qualified-dividend requirements (mark missing data as "assumption, to be confirmed" — don't guess); 3) give holding-location recommendations by account type (taxable vs IRA) with rationale; 4) output an annual tax memo by template (assumptions, classification summary, location decisions, a question list for the CPA). Data is in the materials; produce the standardized deliverables as requested. Write all output in English.
+
+## Materials
+tax_input.json is in the current working directory (tax_input.json), structure holdings[] (ticker, instrument_type, account_type, hold_days_in_window), including: 1 REIT, 1 BDC, 1 MLP, 1 stock marked with special_dividend, and 1 holding missing hold_days_in_window.
+## Working requirements
+End your final reply with the complete annual tax memo following the skill's memo template: sections Assumptions, Distribution Classification (with per-holding status values ordinary_likely / qualified_likely / assumption_required / tax_advantaged_preferred / taxable_preferred / case_by_case), Account-Location / Location Hint, Open Risks, and Advisor Questions. Run the skill's build script and its test before finishing.

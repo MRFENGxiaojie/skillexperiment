@@ -1,0 +1,331 @@
+skill: 006-capture-triage
+version: 2
+total_items: 19
+criteria:
+- id: C02
+  category: tool
+  fatal: false
+  text: The agent lists Inbox root .md files with a root-only glob (e.g., Inbox/*.md) rather than a recursive scan.
+  anchor: Look in the tool log for an ls command or Glob pattern matching Inbox/*.md.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_contains
+      cmd: Inbox/\*\.md
+    llm:
+      question: The agent lists Inbox root .md files with a root-only glob (e.g., Inbox/*.md) rather than a recursive scan.
+      evidence: Look in the tool log for an ls command or Glob pattern matching Inbox/*.md.
+      source: tool_log
+      pattern: Inbox/\*\.md
+- id: C03
+  category: negative
+  fatal: false
+  text: The agent reads or globs no capture files from Inbox subdirectories; only Inbox-root .md files are processed.
+  anchor: Scan the tool log for any Read/Glob/mv path pointing at a .md file inside an Inbox subdirectory.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_not_contains
+      cmd: Inbox/[^/]+/[^/]+\.md
+    llm:
+      question: The agent reads or globs no capture files from Inbox subdirectories; only Inbox-root .md files are processed.
+      evidence: Scan the tool log for any Read/Glob/mv path pointing at a .md file inside an Inbox subdirectory.
+      source: tool_log
+      pattern: Inbox/[^/]+/[^/]+\.md
+- id: C04
+  category: coverage
+  fatal: false
+  text: The agent reports finding all 5 captures in the Inbox before classifying them.
+  anchor: Look at the agent's final output for the preview line 'Found 5 captures'.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: numeric_threshold
+      in: output
+      key: Found\s*\**\s*(\d+)\s*\**\s*captures
+      op: eq
+      n: 5
+    llm:
+      question: The agent reports finding all 5 captures in the Inbox before classifying them.
+      evidence: Look at the agent's final output for the preview line 'Found 5 captures'.
+      source: output
+      needle: Found (\d+) captures
+- id: C05
+  category: content
+  fatal: false
+  text: call-dentist.md is classified as TASK and routed to the daily note as a checkbox task 'Call dentist'.
+  anchor: 'Look at task/Zettelkasten/2026-08-10.md for a ''- [ ] Call dentist'' line under ## Ready.'
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: task/Zettelkasten/2026-08-10.md
+      needle: '- \[ \] Call dentist'
+    llm:
+      question: call-dentist.md is classified as TASK and routed to the daily note as a checkbox task 'Call dentist'.
+      evidence: 'Look at task/Zettelkasten/2026-08-10.md for a ''- [ ] Call dentist'' line under ## Ready.'
+      source: workspace
+      path: task/Zettelkasten/2026-08-10.md
+      needle: '- \[ \] Call dentist'
+- id: C06
+  category: content
+  fatal: false
+  text: hook-challenge.md is classified as IDEA and routed to the daily note with a 'Consider:' prefix.
+  anchor: 'Look at task/Zettelkasten/2026-08-10.md for a ''Consider: 5-day hook challenge'' line.'
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: task/Zettelkasten/2026-08-10.md
+      needle: 'Consider: 5-day hook challenge'
+    llm:
+      question: hook-challenge.md is classified as IDEA and routed to the daily note with a 'Consider:' prefix.
+      evidence: 'Look at task/Zettelkasten/2026-08-10.md for a ''Consider: 5-day hook challenge'' line.'
+      source: workspace
+      path: task/Zettelkasten/2026-08-10.md
+      needle: 'Consider: 5-day hook challenge'
+- id: C07
+  category: content
+  fatal: false
+  text: karpathy-video.md is classified as REFERENCE and routed to the daily note as a 'Review:' task.
+  anchor: Look at task/Zettelkasten/2026-08-10.md for a 'Review:' line mentioning Karpathy.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: task/Zettelkasten/2026-08-10.md
+      needle: Review:.*Karpathy
+    llm:
+      question: karpathy-video.md is classified as REFERENCE and routed to the daily note as a 'Review:' task.
+      evidence: Look at task/Zettelkasten/2026-08-10.md for a 'Review:' line mentioning Karpathy.
+      source: workspace
+      path: task/Zettelkasten/2026-08-10.md
+      needle: Review:.*Karpathy
+- id: C08
+  category: content
+  fatal: true
+  text: The karpathy-video Review task includes its real source link (the YouTube URL).
+  anchor: Look at task/Zettelkasten/2026-08-10.md for the YouTube URL EWvNQjAaOHw in the Review entry.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: task/Zettelkasten/2026-08-10.md
+      needle: https://www\.youtube\.com/watch\?v=EWvNQjAaOHw
+    llm:
+      question: The karpathy-video Review task includes its real source link (the YouTube URL).
+      evidence: Look at task/Zettelkasten/2026-08-10.md for the YouTube URL EWvNQjAaOHw in the Review entry.
+      source: workspace
+      path: task/Zettelkasten/2026-08-10.md
+      needle: https://www\.youtube\.com/watch\?v=EWvNQjAaOHw
+- id: C09
+  category: content
+  fatal: false
+  text: research-ai-coaches.md is handled as RESEARCH and a research placeholder line is added to the daily note.
+  anchor: Look at task/Zettelkasten/2026-08-10.md for the '- [RESEARCH]' placeholder line.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: task/Zettelkasten/2026-08-10.md
+      needle: \[RESEARCH\]
+    llm:
+      question: research-ai-coaches.md is handled as RESEARCH and a research placeholder line is added to the daily note.
+      evidence: Look at task/Zettelkasten/2026-08-10.md for the '- [RESEARCH]' placeholder line.
+      source: workspace
+      path: task/Zettelkasten/2026-08-10.md
+      needle: \[RESEARCH\]
+- id: C10
+  category: content
+  fatal: true
+  text: The x-bookmark Review task includes the tweet_url source link https://x.com/author/status/123456789.
+  anchor: Look at task/Zettelkasten/2026-08-10.md for the x.com tweet URL in the x-bookmark Review entry.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: task/Zettelkasten/2026-08-10.md
+      needle: https://x\.com/author/status/123456789
+    llm:
+      question: The x-bookmark Review task includes the tweet_url source link https://x.com/author/status/123456789.
+      evidence: Look at task/Zettelkasten/2026-08-10.md for the x.com tweet URL in the x-bookmark Review entry.
+      source: workspace
+      path: task/Zettelkasten/2026-08-10.md
+      needle: https://x\.com/author/status/123456789
+- id: C11
+  category: content
+  fatal: false
+  text: x-bookmark.md is classified as REFERENCE and routed to the daily note as a 'Review:' task.
+  anchor: Look at task/Zettelkasten/2026-08-10.md for a 'Review:' line about the newsletter thread.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: task/Zettelkasten/2026-08-10.md
+      needle: Review:.*Great thread
+    llm:
+      question: x-bookmark.md is classified as REFERENCE and routed to the daily note as a 'Review:' task.
+      evidence: Look at task/Zettelkasten/2026-08-10.md for a 'Review:' line about the newsletter thread.
+      source: workspace
+      path: task/Zettelkasten/2026-08-10.md
+      needle: Review:.*Great thread
+- id: C17
+  category: process
+  fatal: false
+  text: The agent loads active project context by globbing PROJECT - *.md files.
+  anchor: Look in the tool log for a Glob referencing 'PROJECT -'.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_contains
+      cmd: PROJECT -
+    llm:
+      question: The agent loads active project context by globbing PROJECT - *.md files.
+      evidence: Look in the tool log for a Glob referencing 'PROJECT -'.
+      source: tool_log
+      pattern: PROJECT -
+- id: C18
+  category: process
+  fatal: false
+  text: The agent extracts source URLs from capture frontmatter, notably tweet_url for x-bookmark files.
+  anchor: Look in the tool log for 'tweet_url' when reading x-bookmark.md.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_contains
+      cmd: tweet_url
+    llm:
+      question: The agent extracts source URLs from capture frontmatter, notably tweet_url for x-bookmark files.
+      evidence: Look in the tool log for 'tweet_url' when reading x-bookmark.md.
+      source: tool_log
+      pattern: tweet_url
+- id: C21
+  category: format
+  fatal: false
+  text: Routed tasks carry (MM-DD) date stamps.
+  anchor: Look at the new task lines in task/Zettelkasten/2026-08-10.md for parenthesized month-day stamps.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: task/Zettelkasten/2026-08-10.md
+      needle: \(\d{2}-\d{2}\)
+    llm:
+      question: Routed tasks carry (MM-DD) date stamps.
+      evidence: Look at the new task lines in task/Zettelkasten/2026-08-10.md for parenthesized month-day stamps.
+      source: workspace
+      path: task/Zettelkasten/2026-08-10.md
+      needle: \(\d{2}-\d{2}\)
+- id: C22
+  category: process
+  fatal: false
+  text: The agent moves processed captures to the Inbox/Processed/ folder.
+  anchor: Look in the tool log for the mv command targeting Inbox/Processed.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_contains
+      cmd: Inbox/Processed
+    llm:
+      question: The agent moves processed captures to the Inbox/Processed/ folder.
+      evidence: Look in the tool log for the mv command targeting Inbox/Processed.
+      source: tool_log
+      pattern: Inbox/Processed
+- id: C23
+  category: evidence
+  fatal: false
+  text: All 5 capture files reside in Inbox/Processed/ after the run.
+  anchor: Check the workspace folder task/Zettelkasten/Inbox/Processed/ for the 5 moved .md files.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: count
+      what: task/Zettelkasten/Inbox/Processed/*.md
+      op: eq
+      n: 5
+    llm:
+      question: All 5 capture files reside in Inbox/Processed/ after the run.
+      evidence: Check the workspace folder task/Zettelkasten/Inbox/Processed/ for the 5 moved .md files.
+      source: workspace
+      path: task/Zettelkasten/Inbox/Processed/*.md
+- id: C24
+  category: negative
+  fatal: true
+  text: The agent never deletes capture files; originals are preserved by moving them to Processed.
+  anchor: Scan the tool log for any rm command applied to capture files.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_not_contains
+      cmd: \brm\b
+    llm:
+      question: The agent never deletes capture files; originals are preserved by moving them to Processed.
+      evidence: Scan the tool log for any rm command applied to capture files.
+      source: tool_log
+      pattern: \brm\b
+- id: C25
+  category: content
+  fatal: false
+  text: The agent generates a triage summary with processed count, routing destinations, and actions taken.
+  anchor: Look at the agent's output for the '### Actions Taken' summary section.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Actions Taken
+    llm:
+      question: The agent generates a triage summary with processed count, routing destinations, and actions taken.
+      evidence: Look at the agent's output for the '### Actions Taken' summary section.
+      source: output
+      needle: Actions Taken
+- id: C28
+  category: tool
+  fatal: false
+  text: The RESEARCH item is handled autonomously — a '[RESEARCH]' placeholder is added to Ready (research-swarm is spawned only when a background-agent tool is available).
+  anchor: Look at the agent's output and the daily note for the '[RESEARCH]' placeholder recording the research item.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: \[RESEARCH\]
+    llm:
+      question: The RESEARCH item is handled autonomously — a '[RESEARCH]' placeholder is added to Ready (research-swarm is spawned only when a background-agent tool is available).
+      evidence: Look at the agent's output and the daily note for the '[RESEARCH]' placeholder recording the research item.
+      source: output
+      needle: \[RESEARCH\]
+- id: C29
+  category: process
+  fatal: false
+  text: All capture files are read before the daily note is edited (classify-then-route ordering).
+  anchor: 'Check the tool log ordering: at least one Read entry before the first Edit entry.'
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_order
+      cmds:
+      - Read
+      - Edit
+    llm:
+      question: All capture files are read before the daily note is edited (classify-then-route ordering).
+      evidence: 'Check the tool log ordering: at least one Read entry before the first Edit entry.'
+      source: tool_log
+      pattern: Read|Edit

@@ -1,0 +1,648 @@
+skill: 010-server-management
+version: 2
+total_items: 41
+criteria:
+- id: C01
+  category: format
+  fatal: false
+  text: The agent's deliverable is a complete 《生产环境运维方案》 document presenting the production operations plan.
+  anchor: Look in the agent's final output for the plan title containing '运维方案'.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: operations plan
+    llm:
+      question: The agent's deliverable is a complete 《生产环境运维方案》 document presenting the production operations plan.
+      evidence: Look in the agent's final output for the plan title containing '运维方案'.
+      source: output
+      needle: operations plan
+- id: C02
+  category: coverage
+  fatal: false
+  text: The plan explicitly covers the Node.js Express API service component.
+  anchor: Search the deliverable text for the term 'Express'.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Express
+    llm:
+      question: The plan explicitly covers the Node.js Express API service component.
+      evidence: Search the deliverable text for the term 'Express'.
+      source: output
+      needle: Express
+- id: C09
+  category: content
+  fatal: false
+  text: Process management addresses auto-restart for failure recovery (自动重启).
+  anchor: Search the process-management section for '自动重启'.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: auto-restart
+    llm:
+      question: Process management addresses auto-restart for failure recovery (自动重启).
+      evidence: Search the process-management section for '自动重启'.
+      source: output
+      needle: auto-restart
+- id: C10
+  category: content
+  fatal: false
+  text: Process management addresses start-on-boot so services persist across reboots (开机自启).
+  anchor: Search the process-management section for '开机自启'.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: start on boot|auto-start
+    llm:
+      question: Process management addresses start-on-boot so services persist across reboots (开机自启).
+      evidence: Search the process-management section for '开机自启'.
+      source: output
+      needle: start on boot|auto-start
+- id: C11
+  category: content
+  fatal: false
+  text: Process management addresses clustering and multi-core utilization (多核).
+  anchor: Search the process-management section for '多核'.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: multi-core
+    llm:
+      question: Process management addresses clustering and multi-core utilization (多核).
+      evidence: Search the process-management section for '多核'.
+      source: output
+      needle: multi-core
+- id: C12
+  category: content
+  fatal: false
+  text: Process management specifies the startup dependency order among the four components (who starts first).
+  anchor: Search the process-management section for '依赖'.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: dependencies|dependency
+    llm:
+      question: Process management specifies the startup dependency order among the four components (who starts first).
+      evidence: Search the process-management section for '依赖'.
+      source: output
+      needle: dependencies|dependency
+- id: C13
+  category: content
+  fatal: false
+  text: Process management addresses rolling release / zero-downtime deployment (滚动).
+  anchor: Search the process-management section for '滚动'.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: scroll|scrolling|rolling
+    llm:
+      question: Process management addresses rolling release / zero-downtime deployment (滚动).
+      evidence: Search the process-management section for '滚动'.
+      source: output
+      needle: scroll|scrolling|rolling
+- id: C14
+  category: boundary
+  fatal: false
+  text: The monitoring plan addresses the failure mode where a self-hosted availability probe dies together with the host it monitors (同生共死) and proposes an external/independent probe as mitigation.
+  anchor: Search the monitoring section for '同生共死'.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: same-fate|same fate
+    llm:
+      question: The monitoring plan addresses the failure mode where a self-hosted availability probe dies together with the host it monitors (同生共死) and proposes an external/independent probe as mitigation.
+      evidence: Search the monitoring section for '同生共死'.
+      source: output
+      needle: same-fate|same fate
+- id: C15
+  category: content
+  fatal: false
+  text: 'Monitoring covers system metrics: CPU, memory, disk, and network.'
+  anchor: Search the monitoring section for '磁盘' (disk metric).
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: disk|disks
+    llm:
+      question: 'Monitoring covers system metrics: CPU, memory, disk, and network.'
+      evidence: Search the monitoring section for '磁盘' (disk metric).
+      source: output
+      needle: disk|disks
+- id: C16
+  category: content
+  fatal: false
+  text: 'Monitoring defines per-component metrics for the API: error rate and latency (错误率).'
+  anchor: Search the monitoring section for '错误率'.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: error rate
+    llm:
+      question: 'Monitoring defines per-component metrics for the API: error rate and latency (错误率).'
+      evidence: Search the monitoring section for '错误率'.
+      source: output
+      needle: error rate
+- id: C17
+  category: content
+  fatal: false
+  text: 'Monitoring defines per-component metrics for the worker: queue depth and processing rate (队列深度).'
+  anchor: Search the monitoring section for '队列深度'.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: queue depth
+    llm:
+      question: 'Monitoring defines per-component metrics for the worker: queue depth and processing rate (队列深度).'
+      evidence: Search the monitoring section for '队列深度'.
+      source: output
+      needle: queue depth
+- id: C18
+  category: content
+  fatal: false
+  text: 'Monitoring defines per-component metrics for PostgreSQL: connection count and slow queries (慢查询).'
+  anchor: Search the monitoring section for '慢查询'.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: slow queries|slow query
+    llm:
+      question: 'Monitoring defines per-component metrics for PostgreSQL: connection count and slow queries (慢查询).'
+      evidence: Search the monitoring section for '慢查询'.
+      source: output
+      needle: slow queries|slow query
+- id: C19
+  category: content
+  fatal: false
+  text: 'Monitoring defines per-component metrics for Redis: memory usage and hit rate (命中率).'
+  anchor: Search the monitoring section for '命中率'.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: hit rate
+    llm:
+      question: 'Monitoring defines per-component metrics for Redis: memory usage and hit rate (命中率).'
+      evidence: Search the monitoring section for '命中率'.
+      source: output
+      needle: hit rate
+- id: C21
+  category: content
+  fatal: false
+  text: Alerting defines severity tiers Critical/Warning/Info with tier-appropriate response actions (immediate / investigate / daily review).
+  anchor: Search the monitoring/alerting section for 'Critical'.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Critical
+    llm:
+      question: Alerting defines severity tiers Critical/Warning/Info with tier-appropriate response actions (immediate / investigate / daily review).
+      evidence: Search the monitoring/alerting section for 'Critical'.
+      source: output
+      needle: Critical
+- id: C22
+  category: content
+  fatal: false
+  text: Alerting specifies concrete numeric trigger thresholds (百分比/毫秒/队列深度) for each severity level rather than qualitative levels only.
+  anchor: Search the alerting section for '阈值'.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: threshold
+    llm:
+      question: Alerting specifies concrete numeric trigger thresholds (百分比/毫秒/队列深度) for each severity level rather than qualitative levels only.
+      evidence: Search the alerting section for '阈值'.
+      source: output
+      needle: threshold
+- id: C23
+  category: content
+  fatal: false
+  text: Security hardening disables SSH password authentication.
+  anchor: Search the security section for '密码'.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: password
+    llm:
+      question: Security hardening disables SSH password authentication.
+      evidence: Search the security section for '密码'.
+      source: output
+      needle: password
+- id: C24
+  category: content
+  fatal: false
+  text: Security hardening requires SSH key-based authentication and key management (密钥).
+  anchor: Search the security section for '密钥'.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: secret key|secrets|keys
+    llm:
+      question: Security hardening requires SSH key-based authentication and key management (密钥).
+      evidence: Search the security section for '密钥'.
+      source: output
+      needle: secret key|secrets|keys
+- id: C25
+  category: content
+  fatal: false
+  text: Security hardening disables root SSH login.
+  anchor: Search the security section for 'root'.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: root
+    llm:
+      question: Security hardening disables root SSH login.
+      evidence: Search the security section for 'root'.
+      source: output
+      needle: root
+- id: C26
+  category: content
+  fatal: false
+  text: 'Security hardening specifies port minimization: which ports are exposed publicly and which listen only on internal networks (内网).'
+  anchor: Search the security section for '内网'.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: intranet|internal network
+    llm:
+      question: 'Security hardening specifies port minimization: which ports are exposed publicly and which listen only on internal networks (内网).'
+      evidence: Search the security section for '内网'.
+      source: output
+      needle: intranet|internal network
+- id: C27
+  category: content
+  fatal: false
+  text: Security hardening schedules regular patches for system packages and application dependencies and assigns update responsibility (补丁).
+  anchor: Search the security section for '补丁'.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: patch|patches
+    llm:
+      question: Security hardening schedules regular patches for system packages and application dependencies and assigns update responsibility (补丁).
+      evidence: Search the security section for '补丁'.
+      source: output
+      needle: patch|patches
+- id: C28
+  category: content
+  fatal: false
+  text: Security hardening stores secrets in environment variables rather than files, and covers key rotation and .env management (环境变量).
+  anchor: Search the security section for '环境变量'.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: environment variables
+    llm:
+      question: Security hardening stores secrets in environment variables rather than files, and covers key rotation and .env management (环境变量).
+      evidence: Search the security section for '环境变量'.
+      source: output
+      needle: environment variables
+- id: C29
+  category: content
+  fatal: false
+  text: Security hardening includes audit logging of who logged in and who changed configuration (审计).
+  anchor: Search the security section for '审计'.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: audit
+    llm:
+      question: Security hardening includes audit logging of who logged in and who changed configuration (审计).
+      evidence: Search the security section for '审计'.
+      source: output
+      needle: audit
+- id: C30
+  category: content
+  fatal: false
+  text: Security hardening explains how the security baseline stays consistent when scaling to two servers (基线).
+  anchor: Search the security section for '基线'.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: baseline
+    llm:
+      question: Security hardening explains how the security baseline stays consistent when scaling to two servers (基线).
+      evidence: Search the security section for '基线'.
+      source: output
+      needle: baseline
+- id: C31
+  category: content
+  fatal: false
+  text: Log management distinguishes application, access, and system log layers (访问日志).
+  anchor: Search the log-management section for '访问日志'.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: access logs
+    llm:
+      question: Log management distinguishes application, access, and system log layers (访问日志).
+      evidence: Search the log-management section for '访问日志'.
+      source: output
+      needle: access logs
+- id: C32
+  category: content
+  fatal: false
+  text: Log management requires structured JSON logging with a field specification (JSON).
+  anchor: Search the log-management section for 'JSON'.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: JSON
+    llm:
+      question: Log management requires structured JSON logging with a field specification (JSON).
+      evidence: Search the log-management section for 'JSON'.
+      source: output
+      needle: JSON
+- id: C33
+  category: content
+  fatal: false
+  text: Log management covers rotation and archiving (旋转).
+  anchor: Search the log-management section for '旋转'.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: rotation|rotate
+    llm:
+      question: Log management covers rotation and archiving (旋转).
+      evidence: Search the log-management section for '旋转'.
+      source: output
+      needle: rotation|rotate
+- id: C34
+  category: content
+  fatal: false
+  text: Log management defines a centralized retrieval/search solution for a single server and states what changes when scaling to two servers (集中).
+  anchor: Search the log-management section for '集中'.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: centralized|centralize
+    llm:
+      question: Log management defines a centralized retrieval/search solution for a single server and states what changes when scaling to two servers (集中).
+      evidence: Search the log-management section for '集中'.
+      source: output
+      needle: centralized|centralize
+- id: C35
+  category: content
+  fatal: false
+  text: Log management addresses handling of sensitive data in logs (敏感).
+  anchor: Search the log-management section for '敏感'.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: sensitive
+    llm:
+      question: Log management addresses handling of sensitive data in logs (敏感).
+      evidence: Search the log-management section for '敏感'.
+      source: output
+      needle: sensitive
+- id: C36
+  category: content
+  fatal: false
+  text: Log management explains how API and worker logs are correlated for troubleshooting (关联).
+  anchor: Search the log-management section for '关联'.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: relationships|related|correlation
+    llm:
+      question: Log management explains how API and worker logs are correlated for troubleshooting (关联).
+      evidence: Search the log-management section for '关联'.
+      source: output
+      needle: relationships|related|correlation
+- id: C37
+  category: termination
+  fatal: false
+  text: The scaling plan gates horizontal expansion on statelessness prerequisites — API session, queue consumer, PG connection pool, and Redis data must be externalized/changed before adding the second
+    server (无状态).
+  anchor: Search the scaling section for '无状态'.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: stateless
+    llm:
+      question: The scaling plan gates horizontal expansion on statelessness prerequisites — API session, queue consumer, PG connection pool, and Redis data must be externalized/changed before adding the
+        second server (无状态).
+      evidence: Search the scaling section for '无状态'.
+      source: output
+      needle: stateless
+- id: C41
+  category: content
+  fatal: false
+  text: The two-server plan addresses data replication between the servers (复制).
+  anchor: Search the scaling/architecture section for '复制'.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: copy|replication
+    llm:
+      question: The two-server plan addresses data replication between the servers (复制).
+      evidence: Search the scaling/architecture section for '复制'.
+      source: output
+      needle: copy|replication
+- id: C42
+  category: content
+  fatal: false
+  text: The runbook is driven by the three current symptoms — API crashes, rising memory, and worker queue backlog (积压).
+  anchor: Search the runbook section for '积压'.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: backlog|backlog orders
+    llm:
+      question: The runbook is driven by the three current symptoms — API crashes, rising memory, and worker queue backlog (积压).
+      evidence: Search the runbook section for '积压'.
+      source: output
+      needle: backlog|backlog orders
+- id: C43
+  category: process
+  fatal: false
+  text: 'The runbook follows the skill''s troubleshooting priority order: process status, then logs, then resources (disk/memory/CPU), then network, then dependencies.'
+  anchor: Search the runbook section for the network-check step token 'DNS'.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: DNS
+    llm:
+      question: 'The runbook follows the skill''s troubleshooting priority order: process status, then logs, then resources (disk/memory/CPU), then network, then dependencies.'
+      evidence: Search the runbook section for the network-check step token 'DNS'.
+      source: output
+      needle: DNS
+- id: C44
+  category: process
+  fatal: false
+  text: Each runbook step specifies what to do, what to look at, the conclusion drawn, and the next branch to follow (下一步).
+  anchor: Search the runbook section for '下一步'.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: next steps|next step
+    llm:
+      question: Each runbook step specifies what to do, what to look at, the conclusion drawn, and the next branch to follow (下一步).
+      evidence: Search the runbook section for '下一步'.
+      source: output
+      needle: next steps|next step
+- id: C45
+  category: process
+  fatal: false
+  text: The runbook starts from the fastest-branching check given the current symptoms (最快).
+  anchor: Search the runbook opening for '最快'.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: fastest
+    llm:
+      question: The runbook starts from the fastest-branching check given the current symptoms (最快).
+      evidence: Search the runbook opening for '最快'.
+      source: output
+      needle: fastest
+- id: C47
+  category: content
+  fatal: false
+  text: Each of the six parts explains the rationale/principles behind the chosen decision (原理).
+  anchor: Search the deliverable for '原理'.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: principles|rationale|how it works
+    llm:
+      question: Each of the six parts explains the rationale/principles behind the chosen decision (原理).
+      evidence: Search the deliverable for '原理'.
+      source: output
+      needle: principles|rationale|how it works
+- id: C48
+  category: evidence
+  fatal: false
+  text: Each of the six parts explains how to verify the effect of the decision (验证).
+  anchor: Search the deliverable for '验证'.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: verification|verify|validation
+    llm:
+      question: Each of the six parts explains how to verify the effect of the decision (验证).
+      evidence: Search the deliverable for '验证'.
+      source: output
+      needle: verification|verify|validation
+- id: C49
+  category: evidence
+  fatal: false
+  text: Verification guidance includes concrete health checks (e.g., HTTP 200 availability), log checks, or metric validation.
+  anchor: Search the verification guidance for 'HTTP 200'.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: HTTP 200
+    llm:
+      question: Verification guidance includes concrete health checks (e.g., HTTP 200 availability), log checks, or metric validation.
+      evidence: Search the verification guidance for 'HTTP 200'.
+      source: output
+      needle: HTTP 200
+- id: C50
+  category: content
+  fatal: false
+  text: The plan includes a regular backup schedule and backup verification, consistent with the skill's anti-pattern guidance.
+  anchor: LLM judgment of the deliverable text (no reliable single keyword; agent may write 备份 or backup).
+  judge: llm
+  check:
+    question: The plan includes a regular backup schedule and backup verification, consistent with the skill's anti-pattern guidance.
+    evidence: LLM judgment of the deliverable text (no reliable single keyword; agent may write 备份 or backup).
+- id: C52
+  category: negative
+  fatal: true
+  text: The plan does not recommend anti-patterns such as running as root, manual restarts without auto-recovery, skipping monitoring, or skipping backups.
+  anchor: LLM judgment of the deliverable's implementation notes against the anti-patterns table.
+  judge: llm
+  check:
+    question: The plan does not recommend anti-patterns such as running as root, manual restarts without auto-recovery, skipping monitoring, or skipping backups.
+    evidence: LLM judgment of the deliverable's implementation notes against the anti-patterns table.
+- id: C55
+  category: process
+  fatal: false
+  text: During the run, the agent reads the task file task/task.txt.
+  anchor: Search the tool_log for a read of 'task.txt'.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_contains
+      cmd: task.txt
+    llm:
+      question: During the run, the agent reads the task file task/task.txt.
+      evidence: Search the tool_log for a read of 'task.txt'.
+      source: tool_log
+      pattern: task.txt

@@ -1,0 +1,40 @@
+{
+  "tax_year": 2025,
+  "holdings": [
+    {
+      "ticker": "O",
+      "instrument_type": "reit",
+      "account_type": "taxable",
+      "security_type": "common",
+      "hold_days_in_window": 90
+    },
+    {
+      "ticker": "ARCC",
+      "instrument_type": "bdc",
+      "account_type": "ira",
+      "security_type": "common",
+      "hold_days_in_window": 75
+    },
+    {
+      "ticker": "ET",
+      "instrument_type": "mlp",
+      "account_type": "taxable",
+      "security_type": "common",
+      "hold_days_in_window": 60
+    },
+    {
+      "ticker": "COST",
+      "instrument_type": "stock",
+      "account_type": "taxable",
+      "security_type": "common",
+      "hold_days_in_window": 70,
+      "special_dividend": true
+    },
+    {
+      "ticker": "JPM",
+      "instrument_type": "stock",
+      "account_type": "ira",
+      "security_type": "common"
+    }
+  ]
+}

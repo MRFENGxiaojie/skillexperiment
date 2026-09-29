@@ -1,0 +1,31 @@
+## Background
+Our team wants to build a bookkeeping and invoicing tool for freelancers. We have an initial idea but haven't written a line of code. Before launch we want to confirm whether this need actually exists.
+
+## Task
+Help us design a round of user research. We want to know: how freelancers currently keep books, what their biggest pain points are, and whether they'd pay for an automatic-invoicing feature. We plan to interview about 10 freelancers and run an online survey at scale (planning to send it to 200 people). Please provide: clear research objectives and hypotheses to test; how to screen interview participants (including screening questions); a complete interview guide where questions dig for real past events rather than vague "would you use this" questions; the survey questions; and how to analyze results — how to code and theme interview notes, and how to tabulate the survey. Also leave a structure for recording findings so we can capture evidence, surprises, confidence, and limitations. Write all output in English.
+
+## Materials
+None
+## Deliverables
+Save your complete research plan to a single file named `discovery-interviews-surveys.md` in the current working directory (workspace root). Before writing it, read the skill's resources `resources/template.md`, `resources/methodology.md`, and `resources/evaluators/rubric_discovery_interviews_surveys.json`, and self-assess against that rubric inside the file.
+
+Organize the file with these exact section headings (use them verbatim):
+- Research objectives
+- Hypotheses
+- Willingness to pay
+- Sample size: 10 people
+- Target 200 responses
+- Screening questions
+- Recruitment channels
+- Interview guide
+- Survey
+- Mixed methods
+- Thematic coding
+- Chi-square test
+- Findings template
+- Surprises
+- Credibility
+- Limitations
+- Rubric
+
+The interview guide and survey must dig for real past events (behavior-focused "show me" questions, e.g., walk me through how they actually do it) rather than hypotheticals. Include success criteria with explicit thresholds (e.g., thematic saturation at X/10 interviews, ≥30 usable completes per segment) and pre-specify the analysis plan before data collection (recording how deviations from it will be handled). Report the rubric average score (target >= 3.5). In your final reply, state the saved file name.

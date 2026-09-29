@@ -1,0 +1,8 @@
+## Background
+I run a B2B data-labeling services company and want to proactively reach SaaS customers. I need a set of high-quality cold-outreach messages.
+
+## Task
+Help me write a set of outreach messages: the target customer is a SaaS company's growth lead, contacted via LinkedIn DM, with the goal of booking a 15-minute call. Our selling points: we can cut data-labeling costs by ~40%; we have a real case study — for a SaaS company with ¥30M annual revenue, we reduced monthly data-labeling cost from ¥24K to ¥15K within 6 weeks. Write 3 messages by default (initial + two follow-ups), each with a different angle, the last one a low-pressure close, and each with a single call to action. The company background is in FOUNDER_CONTEXT.md at the project root — read it before writing. Write all output in English.
+
+## Materials
+FOUNDER_CONTEXT.md (in the task/ directory of the current working directory, i.e., the project root); target customer: John, growth lead at Acme (that company recently publicly announced expanding its growth team).

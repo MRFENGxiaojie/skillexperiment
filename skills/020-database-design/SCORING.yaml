@@ -1,0 +1,397 @@
+skill: 020-database-design
+version: 2
+total_items: 24
+criteria:
+- id: C09
+  category: negative
+  fatal: false
+  text: The agent does not default to PostgreSQL as the primary database for this application.
+  anchor: Final database choice across the whole deliverable; it must be the local-first engine, not PostgreSQL.
+  judge: llm
+  check:
+    question: The agent does not default to PostgreSQL as the primary database for this application.
+    evidence: Final database choice across the whole deliverable; it must be the local-first engine, not PostgreSQL.
+- id: C10
+  category: format
+  fatal: true
+  text: The run produces a Prisma schema file at prisma/schema.prisma, matching the bundled validator's discovery path **/prisma/schema.prisma.
+  anchor: Run filesystem, under the workspace root; the validator only finds **/prisma/schema.prisma.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_nonempty
+      path: prisma/schema.prisma
+    llm:
+      question: The run produces a Prisma schema file at prisma/schema.prisma, matching the bundled validator's discovery path **/prisma/schema.prisma.
+      evidence: Run filesystem, under the workspace root; the validator only finds **/prisma/schema.prisma.
+      source: workspace
+      path: prisma/schema.prisma
+- id: C11
+  category: content
+  fatal: false
+  text: The Prisma schema declares a SQLite datasource (provider sqlite), consistent with the local-first choice.
+  anchor: datasource block at the top of prisma/schema.prisma.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: prisma/schema.prisma
+      needle: provider = "sqlite"
+    llm:
+      question: The Prisma schema declares a SQLite datasource (provider sqlite), consistent with the local-first choice.
+      evidence: datasource block at the top of prisma/schema.prisma.
+      source: workspace
+      path: prisma/schema.prisma
+      needle: provider = "sqlite"
+- id: C12
+  category: content
+  fatal: false
+  text: The schema defines a User entity as a Prisma model.
+  anchor: Model declarations in prisma/schema.prisma.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: prisma/schema.prisma
+      needle: 'model User'
+    llm:
+      question: The schema defines a User entity as a Prisma model.
+      evidence: Model declarations in prisma/schema.prisma.
+      source: workspace
+      path: prisma/schema.prisma
+      needle: 'model User'
+- id: C13
+  category: content
+  fatal: false
+  text: The schema defines an Account entity as a Prisma model.
+  anchor: Model declarations in prisma/schema.prisma.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: prisma/schema.prisma
+      needle: model Account
+    llm:
+      question: The schema defines an Account entity as a Prisma model.
+      evidence: Model declarations in prisma/schema.prisma.
+      source: workspace
+      path: prisma/schema.prisma
+      needle: model Account
+- id: C14
+  category: content
+  fatal: false
+  text: The schema defines a Transaction entity as a Prisma model.
+  anchor: Model declarations in prisma/schema.prisma.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: prisma/schema.prisma
+      needle: model Transaction
+    llm:
+      question: The schema defines a Transaction entity as a Prisma model.
+      evidence: Model declarations in prisma/schema.prisma.
+      source: workspace
+      path: prisma/schema.prisma
+      needle: model Transaction
+- id: C15
+  category: content
+  fatal: false
+  text: The schema defines a Budget entity as a Prisma model.
+  anchor: Model declarations in prisma/schema.prisma.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: prisma/schema.prisma
+      needle: model Budget
+    llm:
+      question: The schema defines a Budget entity as a Prisma model.
+      evidence: Model declarations in prisma/schema.prisma.
+      source: workspace
+      path: prisma/schema.prisma
+      needle: model Budget
+- id: C16
+  category: content
+  fatal: false
+  text: The schema defines a Tag entity as a Prisma model.
+  anchor: Model declarations in prisma/schema.prisma.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: prisma/schema.prisma
+      needle: model Tag
+    llm:
+      question: The schema defines a Tag entity as a Prisma model.
+      evidence: Model declarations in prisma/schema.prisma.
+      source: workspace
+      path: prisma/schema.prisma
+      needle: model Tag
+- id: C17
+  category: content
+  fatal: false
+  text: The schema models declare primary keys with @id, satisfying the validator's id-field check.
+  anchor: Model bodies in prisma/schema.prisma.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: prisma/schema.prisma
+      needle: '@id'
+    llm:
+      question: The schema models declare primary keys with @id, satisfying the validator's id-field check.
+      evidence: Model bodies in prisma/schema.prisma.
+      source: workspace
+      path: prisma/schema.prisma
+      needle: '@id'
+- id: C18
+  category: content
+  fatal: false
+  text: The schema includes createdAt/updatedAt timestamp fields, which the bundled validator explicitly recommends for every model.
+  anchor: Model bodies in prisma/schema.prisma.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: prisma/schema.prisma
+      needle: createdAt
+    llm:
+      question: The schema includes createdAt/updatedAt timestamp fields, which the bundled validator explicitly recommends for every model.
+      evidence: Model bodies in prisma/schema.prisma.
+      source: workspace
+      path: prisma/schema.prisma
+      needle: createdAt
+- id: C19
+  category: content
+  fatal: false
+  text: The schema declares relationships between entities using @relation, so the validator's missing-relations check passes.
+  anchor: Model bodies in prisma/schema.prisma.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: prisma/schema.prisma
+      needle: '@relation'
+    llm:
+      question: The schema declares relationships between entities using @relation, so the validator's missing-relations check passes.
+      evidence: Model bodies in prisma/schema.prisma.
+      source: workspace
+      path: prisma/schema.prisma
+      needle: '@relation'
+- id: C20
+  category: content
+  fatal: false
+  text: The Transaction model carries a foreign key to Account (accountId).
+  anchor: Transaction model body in prisma/schema.prisma.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: prisma/schema.prisma
+      needle: accountId
+    llm:
+      question: The Transaction model carries a foreign key to Account (accountId).
+      evidence: Transaction model body in prisma/schema.prisma.
+      source: workspace
+      path: prisma/schema.prisma
+      needle: accountId
+- id: C21
+  category: content
+  fatal: false
+  text: The Account model carries a foreign key to User (userId).
+  anchor: Account model body in prisma/schema.prisma.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: prisma/schema.prisma
+      needle: userId
+    llm:
+      question: The Account model carries a foreign key to User (userId).
+      evidence: Account model body in prisma/schema.prisma.
+      source: workspace
+      path: prisma/schema.prisma
+      needle: userId
+- id: C22
+  category: content
+  fatal: false
+  text: The schema defines database indexes with @@index.
+  anchor: Index declarations in prisma/schema.prisma.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: prisma/schema.prisma
+      needle: '@@index'
+    llm:
+      question: The schema defines database indexes with @@index.
+      evidence: Index declarations in prisma/schema.prisma.
+      source: workspace
+      path: prisma/schema.prisma
+      needle: '@@index'
+- id: C23
+  category: content
+  fatal: false
+  text: A composite index beginning with accountId is defined to support the account-plus-date-range query (recent transactions of an account).
+  anchor: '@@index declarations in prisma/schema.prisma.'
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: prisma/schema.prisma
+      needle: '@@index([accountId'
+    llm:
+      question: A composite index beginning with accountId is defined to support the account-plus-date-range query (recent transactions of an account).
+      evidence: '@@index declarations in prisma/schema.prisma.'
+      source: workspace
+      path: prisma/schema.prisma
+      needle: '@@index([accountId'
+- id: C24
+  category: content
+  fatal: false
+  text: The schema indexes a category field so the spend-by-category aggregation query is supported.
+  anchor: Transaction model and @@index declarations in prisma/schema.prisma.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: prisma/schema.prisma
+      needle: category
+    llm:
+      question: The schema indexes a category field so the spend-by-category aggregation query is supported.
+      evidence: Transaction model and @@index declarations in prisma/schema.prisma.
+      source: workspace
+      path: prisma/schema.prisma
+      needle: category
+- id: C25
+  category: content
+  fatal: false
+  text: The final deliverable presents the schema as inline DDL (Prisma model definitions) with primary and foreign keys.
+  anchor: Schema section of the final output (Prisma model blocks echoed).
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: 'model User'
+    llm:
+      question: The final deliverable presents the schema as inline DDL (Prisma model definitions) with primary and foreign keys.
+      evidence: Schema section of the final output (Prisma model blocks echoed).
+      source: output
+      needle: 'model User'
+- id: C27
+  category: content
+  fatal: false
+  text: The final deliverable recommends Prisma as the ORM, with a brief justification.
+  anchor: ORM recommendation section of the final output.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Prisma
+    llm:
+      question: The final deliverable recommends Prisma as the ORM, with a brief justification.
+      evidence: ORM recommendation section of the final output.
+      source: output
+      needle: Prisma
+- id: C32
+  category: evidence
+  fatal: false
+  text: The agent runs the bundled schema validator (scripts/schema_validator.py) against the produced project.
+  anchor: Bash command list in tool_log, matching schema_validator.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_contains
+      cmd: schema_validator
+    llm:
+      question: The agent runs the bundled schema validator (scripts/schema_validator.py) against the produced project.
+      evidence: Bash command list in tool_log, matching schema_validator.
+      source: tool_log
+      pattern: schema_validator
+- id: C33
+  category: process
+  fatal: false
+  text: The schema validator runs after the Prisma schema file has been written, so it validates the actual deliverable.
+  anchor: 'tool_log ordering: Write of prisma/schema.prisma must precede the schema_validator command.'
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_order
+      cmds:
+      - schema.prisma
+      - schema_validator
+    llm:
+      question: The schema validator runs after the Prisma schema file has been written, so it validates the actual deliverable.
+      evidence: 'tool_log ordering: Write of prisma/schema.prisma must precede the schema_validator command.'
+      source: tool_log
+      pattern: schema.prisma|schema_validator
+- id: C34
+  category: evidence
+  fatal: false
+  text: The validator's report header (SCHEMA VALIDATOR) is visible in the run, showing the schema was actually checked.
+  anchor: Validator stdout echoed in the Bash tool result within tool_log.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_contains
+      cmd: '[SCHEMA VALIDATOR]'
+    llm:
+      question: The validator's report header (SCHEMA VALIDATOR) is visible in the run, showing the schema was actually checked.
+      evidence: Validator stdout echoed in the Bash tool result within tool_log.
+      source: tool_log
+      pattern: '[SCHEMA VALIDATOR]'
+- id: C35
+  category: boundary
+  fatal: false
+  text: The design addresses concurrency for the desktop app, e.g., SQLite WAL mode or the single-writer trade-off.
+  anchor: Concurrency/database discussion in the final output.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: WAL
+    llm:
+      question: The design addresses concurrency for the desktop app, e.g., SQLite WAL mode or the single-writer trade-off.
+      evidence: Concurrency/database discussion in the final output.
+      source: output
+      needle: WAL
+- id: C36
+  category: coverage
+  fatal: false
+  text: 'The final deliverable covers all five SKILL.md output-format components: database choice, schema/DDL, indexing strategy, ORM recommendation, and migration plan.'
+  anchor: Whole deliverable; each component section must be present with none omitted.
+  judge: llm
+  check:
+    question: 'The final deliverable covers all five SKILL.md output-format components: database choice, schema/DDL, indexing strategy, ORM recommendation, and migration plan.'
+    evidence: Whole deliverable; each component section must be present with none omitted.
+- id: C37
+  category: negative
+  fatal: false
+  text: The agent does not recommend SELECT * in queries or schema guidance.
+  anchor: Query examples and recommendations in the deliverable.
+  judge: llm
+  check:
+    question: The agent does not recommend SELECT * in queries or schema guidance.
+    evidence: Query examples and recommendations in the deliverable.

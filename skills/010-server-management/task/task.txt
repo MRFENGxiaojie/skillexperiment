@@ -1,0 +1,26 @@
+## Background
+Our company has an online system deployed on a single Linux production server (8 vCPU / 32 GB RAM, Ubuntu 22.04) running four components: a Node.js Express API service (external-facing, roughly 500 requests/min at peak), a Node.js background worker (processing async tasks from a message queue), a PostgreSQL 14 database, and a Redis cache. Everything currently runs as manually-started processes with no central orchestration; there is no central log collection and no monitoring beyond a health-check endpoint. Recently the API keeps crashing with OOM kills, system memory keeps rising over the day, the worker queue is backing up, and customers are starting to complain. We plan to straighten out the entire operations setup this month, and next month expand to two servers.
+
+## Task
+Produce a complete production operations plan covering 6 parts. Each part must give **concrete decisions** (choices, values, thresholds, steps) and the rationale behind them, plus how to verify effectiveness. Base all decisions on the current "single server, four components" state and the "expand to two servers next month" goal. Write all output in English.
+
+### 1. Process management (per component)
+What process management approach (e.g., PM2/systemd/native daemon) each of API, worker, PostgreSQL, and Redis should use, and why — consider: auto-restart, start on boot, clustering and multi-core utilization, dependencies (who starts first), rolling deploys; and whether the approach must change when scaling to two servers.
+
+### 2. Monitoring and alerting (layered)
+External availability probes (the issue where self-hosted monitoring dies together with the monitored target), system metrics (CPU/memory/disk/network), process/app metrics (what to watch per component: API error rate and latency, worker queue depth and processing rate, PG connection count and slow queries, Redis memory and hit rate), app error tracking; alert levels (Critical/Warning/Info) with trigger thresholds and response actions per level (give concrete values).
+
+### 3. Security hardening
+SSH access (disable passwords, key management, disable root login), port minimization (which ports are external, which listen only on internal networks), regular security patching (how system packages and app dependencies are updated, who's responsible), secrets and sensitive config (environment variables rather than files, key rotation, .env management), audit logs (who logged in, who changed what config); and how to keep the security baseline consistent when scaling to two servers.
+
+### 4. Log management
+Log layering (app logs/access logs/system logs), structuring (JSON, field conventions), rotation and archival, centralized search (what on a single machine, what to switch to with two servers), sensitive data handling in logs; how worker and API logs are correlated for troubleshooting.
+
+### 5. Scaling strategy
+Prerequisites (statelessness: API sessions, worker queue consumers, PG connection pool, Redis data — what must be externalized/changed to scale horizontally), the vertical vs horizontal decision rule (which to pick under what evidence), the relationship between the current memory-growth problem and scaling (fix the leak vs add memory — ordering), and an architecture sketch for two-server deployment (load balancing, failover, data replication).
+
+### 6. Troubleshooting runbook
+Write an ordered troubleshooting runbook for the current symptoms: API keeps crashing + memory rising + worker queue backing up. For each step give "what to do, what to look at, what conclusion to draw, where to branch next", starting from the check that splits conclusions fastest; end with a regression verification checklist after the fix.
+
+## Materials
+No external materials — give the plan based on the scenario above. Note: this is a teaching scenario, and the plan must be actionable for real operations.

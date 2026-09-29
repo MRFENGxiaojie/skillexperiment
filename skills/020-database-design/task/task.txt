@@ -1,0 +1,14 @@
+## Background
+We are building a cross-platform personal bookkeeping app that mainly runs on desktop, with user data stored locally. The team is split on database choice — we habitually used PostgreSQL, but for a single-machine app the install and maintenance are too heavy.
+
+## Task
+Help us settle the data storage approach. Business entities include: users, accounts, transactions, budgets, tags; everyday queries are mostly "the last three months of transactions for an account" and "expenses summarized by category", with single-user data in the tens of thousands of rows. Besides local storage, we plan to add cloud sync later. Please provide: database choice (seriously consider embedded, local-first options) and rationale; a complete table schema including primary/foreign keys and sensible time fields; an indexing strategy for the key queries, explaining which index supports which query; an ORM recommendation and rationale; and a migration strategy to smoothly evolve from local to cloud sync — the migration must be executed in safe steps with a rollback plan. Express the complete schema as a Prisma schema file at prisma/schema.prisma (SQLite provider; models for users, accounts, transactions, budgets, and tags with primary keys, timestamps, relations, and indexes covering the key queries). After writing the schema, run the bundled validator `python scripts/schema_validator.py .` and include its output and any fixes in your response. Write all output in English.
+
+## Materials
+Reference files (read them before finalizing the design):
+- database-selection.md - engine comparison and decision tree (embedded/local-first vs serverless vs self-hosted)
+- schema-design.md - normalization, primary keys, timestamp strategy
+- indexing.md - when and how to index, index type selection
+- orm-selection.md - ORM comparison and selection guidance
+- migrations.md - safe migration strategy and serverless databases
+- scripts/schema_validator.py - bundled Prisma schema validator (run it against your deliverable)
