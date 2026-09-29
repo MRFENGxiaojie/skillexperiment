@@ -1,0 +1,668 @@
+skill: 350-server-management-constrained
+version: 2
+total_items: 41
+criteria:
+- id: C01
+  category: process
+  fatal: true
+  text: The run creates the decision record at .workflow/.scratchpad/server-plan-{timestamp}/plan.json (Mandatory Workflow step 1).
+  anchor: Look for the file under the workspace's .workflow/.scratchpad directory in the run's filesystem.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_exists
+      path: '**/.workflow/.scratchpad/server-plan-*/plan.json'
+    llm:
+      question: The run creates the decision record at .workflow/.scratchpad/server-plan-{timestamp}/plan.json (Mandatory Workflow step 1).
+      evidence: Look for the file under the workspace's .workflow/.scratchpad directory in the run's filesystem.
+      source: workspace
+      path: '**/.workflow/.scratchpad/server-plan-*/plan.json'
+- id: C02
+  category: format
+  fatal: false
+  text: plan.json is valid JSON and contains the template fields status, inventory, requirements, decisions, and verification.
+  anchor: Parse .workflow/.scratchpad/server-plan-*/plan.json and check the top-level keys.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: json_schema
+      path: '**/.workflow/.scratchpad/server-plan-*/plan.json'
+      require_fields:
+      - status
+      - inventory
+      - requirements
+      - decisions
+      - verification
+    llm:
+      question: plan.json is valid JSON and contains the template fields status, inventory, requirements, decisions, and verification.
+      evidence: Parse .workflow/.scratchpad/server-plan-*/plan.json and check the top-level keys.
+      source: workspace
+      path: '**/.workflow/.scratchpad/server-plan-*/plan.json'
+- id: C03
+  category: format
+  fatal: false
+  text: The plan.json status field advances from the initial 'init' to a completed state such as 'complete'.
+  anchor: Read the 'status' value inside plan.json.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: '**/.workflow/.scratchpad/server-plan-*/plan.json'
+      needle: '"complete"'
+    llm:
+      question: The plan.json status field advances from the initial 'init' to a completed state such as 'complete'.
+      evidence: Read the 'status' value inside plan.json.
+      source: workspace
+      path: '**/.workflow/.scratchpad/server-plan-*/plan.json'
+      needle: '"complete"'
+- id: C04
+  category: process
+  fatal: false
+  text: The decision matrix at specs/decision-matrix.md is read before any tool recommendation is made (Mandatory Workflow step 2).
+  anchor: tool_log shows a Read of the decision-matrix.md file.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_contains
+      cmd: decision-matrix.md
+    llm:
+      question: The decision matrix at specs/decision-matrix.md is read before any tool recommendation is made (Mandatory Workflow step 2).
+      evidence: tool_log shows a Read of the decision-matrix.md file.
+      source: tool_log
+      pattern: decision-matrix.md
+- id: C05
+  category: process
+  fatal: false
+  text: The decision matrix is read before decisions are recorded in plan.json.
+  anchor: 'tool_log order: the decision-matrix.md read precedes plan.json content containing ''decision_id''.'
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_order
+      cmds:
+      - decision-matrix.md
+      - decision_id
+    llm:
+      question: The decision matrix is read before decisions are recorded in plan.json.
+      evidence: 'tool_log order: the decision-matrix.md read precedes plan.json content containing ''decision_id''.'
+      source: tool_log
+      pattern: decision-matrix.md|decision_id
+- id: C06
+  category: format
+  fatal: false
+  text: The plan.json .decisions array is populated with at least one decision (not the empty template shell).
+  anchor: plan.json contains a decision entry carrying a decision_id key.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: '**/.workflow/.scratchpad/server-plan-*/plan.json'
+      needle: '"decision_id"'
+    llm:
+      question: The plan.json .decisions array is populated with at least one decision (not the empty template shell).
+      evidence: plan.json contains a decision entry carrying a decision_id key.
+      source: workspace
+      path: '**/.workflow/.scratchpad/server-plan-*/plan.json'
+      needle: '"decision_id"'
+- id: C07
+  category: format
+  fatal: false
+  text: Every recorded decision includes the required schema fields decision_id, topic, options_considered, chosen, and rationale.
+  anchor: Inspect objects in the .decisions array of plan.json for all five keys.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: '**/.workflow/.scratchpad/server-plan-*/plan.json'
+      needle: '"options_considered"'
+    llm:
+      question: Every recorded decision includes the required schema fields decision_id, topic, options_considered, chosen, and rationale.
+      evidence: Inspect objects in the .decisions array of plan.json for all five keys.
+      source: workspace
+      path: '**/.workflow/.scratchpad/server-plan-*/plan.json'
+      needle: '"options_considered"'
+- id: C08
+  category: format
+  fatal: false
+  text: plan.json records a verification object with a 'consistent' field (Mandatory Workflow step 4).
+  anchor: plan.json contains the key 'consistent' under .verification.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: '**/.workflow/.scratchpad/server-plan-*/plan.json'
+      needle: '"consistent"'
+    llm:
+      question: plan.json records a verification object with a 'consistent' field (Mandatory Workflow step 4).
+      evidence: plan.json contains the key 'consistent' under .verification.
+      source: workspace
+      path: '**/.workflow/.scratchpad/server-plan-*/plan.json'
+      needle: '"consistent"'
+- id: C09
+  category: format
+  fatal: false
+  text: The verification object in plan.json includes a warnings array.
+  anchor: plan.json contains the key 'warnings' in its verification object.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: '**/.workflow/.scratchpad/server-plan-*/plan.json'
+      needle: '"warnings"'
+    llm:
+      question: The verification object in plan.json includes a warnings array.
+      evidence: plan.json contains the key 'warnings' in its verification object.
+      source: workspace
+      path: '**/.workflow/.scratchpad/server-plan-*/plan.json'
+      needle: '"warnings"'
+- id: C10
+  category: process
+  fatal: false
+  text: The consistency verification is written after the decisions are recorded.
+  anchor: 'tool_log order: ''decision_id'' appears before ''consistent''.'
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_order
+      cmds:
+      - decision_id
+      - consistent
+    llm:
+      question: The consistency verification is written after the decisions are recorded.
+      evidence: 'tool_log order: ''decision_id'' appears before ''consistent''.'
+      source: tool_log
+      pattern: decision_id|consistent
+- id: C11
+  category: process
+  fatal: false
+  text: The run creates the .workflow/.scratchpad directory as part of producing the decision record (Mandatory Workflow step 5).
+  anchor: tool_log contains a tool call whose path references .workflow/.scratchpad.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_contains
+      cmd: .workflow/.scratchpad
+    llm:
+      question: The run creates the .workflow/.scratchpad directory as part of producing the decision record (Mandatory Workflow step 5).
+      evidence: tool_log contains a tool call whose path references .workflow/.scratchpad.
+      source: tool_log
+      pattern: .workflow/.scratchpad
+- id: C14
+  category: content
+  fatal: false
+  text: The plan configures auto-restart (restart on failure / auto-recovery) for the components.
+  anchor: Final output contains auto-restart.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: auto-restart
+    llm:
+      question: The plan configures auto-restart (restart on failure / auto-recovery) for the components.
+      evidence: Final output contains auto-restart.
+      source: output
+      needle: auto-restart
+- id: C15
+  category: content
+  fatal: false
+  text: The plan addresses boot-time startup so services survive server reboots.
+  anchor: Final output mentions reboot.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: reboot
+    llm:
+      question: The plan addresses boot-time startup so services survive server reboots.
+      evidence: Final output mentions reboot.
+      source: output
+      needle: reboot
+- id: C17
+  category: content
+  fatal: false
+  text: The plan states whether the process-management scheme changes when scaling to two machines.
+  anchor: Final output addresses the two-machine (双机) scenario.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: dual-machine|two servers|dual server
+    llm:
+      question: The plan states whether the process-management scheme changes when scaling to two machines.
+      evidence: Final output addresses the two-machine (双机) scenario.
+      source: output
+      needle: dual-machine|two servers|dual server
+- id: C18
+  category: coverage
+  fatal: false
+  text: Monitoring covers the worker's queue depth and processing rate.
+  anchor: Final output monitoring section mentions queue depth.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: queue depth
+    llm:
+      question: Monitoring covers the worker's queue depth and processing rate.
+      evidence: Final output monitoring section mentions queue depth.
+      source: output
+      needle: queue depth
+- id: C19
+  category: coverage
+  fatal: false
+  text: Monitoring covers PostgreSQL connection count and slow queries.
+  anchor: Final output monitoring section mentions slow query.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: slow query
+    llm:
+      question: Monitoring covers PostgreSQL connection count and slow queries.
+      evidence: Final output monitoring section mentions slow query.
+      source: output
+      needle: slow query
+- id: C20
+  category: coverage
+  fatal: false
+  text: Monitoring covers Redis memory usage and hit rate.
+  anchor: Final output monitoring section mentions hit rate.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: hit rate
+    llm:
+      question: Monitoring covers Redis memory usage and hit rate.
+      evidence: Final output monitoring section mentions hit rate.
+      source: output
+      needle: hit rate
+- id: C21
+  category: coverage
+  fatal: false
+  text: Monitoring covers the API's error rate and latency.
+  anchor: Final output monitoring section mentions latency.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: latency
+    llm:
+      question: Monitoring covers the API's error rate and latency.
+      evidence: Final output monitoring section mentions latency.
+      source: output
+      needle: latency
+- id: C22
+  category: boundary
+  fatal: false
+  text: The availability-probe design addresses the failure mode where a self-built monitor on the same host dies together with the monitored service (the '同生共死' problem) and mitigates it, e.g., with an
+    external/independent probe.
+  anchor: Final output discusses the co-death/同生共死 problem.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: same-fate|same fate
+    llm:
+      question: The availability-probe design addresses the failure mode where a self-built monitor on the same host dies together with the monitored service (the '同生共死' problem) and mitigates it, e.g.,
+        with an external/independent probe.
+      evidence: Final output discusses the co-death/同生共死 problem.
+      source: output
+      needle: same-fate|same fate
+- id: C23
+  category: content
+  fatal: false
+  text: The alerting section defines a Critical severity tier.
+  anchor: Final output contains Critical.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Critical
+    llm:
+      question: The alerting section defines a Critical severity tier.
+      evidence: Final output contains Critical.
+      source: output
+      needle: Critical
+- id: C24
+  category: content
+  fatal: false
+  text: The alerting section defines a Warning severity tier.
+  anchor: Final output contains Warning.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Warning
+    llm:
+      question: The alerting section defines a Warning severity tier.
+      evidence: Final output contains Warning.
+      source: output
+      needle: Warning
+- id: C25
+  category: content
+  fatal: false
+  text: The alerting section defines an Info severity tier.
+  anchor: Final output contains Info.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Info
+    llm:
+      question: The alerting section defines an Info severity tier.
+      evidence: Final output contains Info.
+      source: output
+      needle: Info
+- id: C27
+  category: content
+  fatal: false
+  text: The security section disables password-based SSH login in favor of key-based authentication.
+  anchor: Final output security section mentions password authentication.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: password
+    llm:
+      question: The security section disables password-based SSH login in favor of key-based authentication.
+      evidence: Final output security section mentions password authentication.
+      source: output
+      needle: password
+- id: C28
+  category: content
+  fatal: false
+  text: The security section addresses root access (disabling root login / running as a non-root user).
+  anchor: Final output security section mentions root.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: root
+    llm:
+      question: The security section addresses root access (disabling root login / running as a non-root user).
+      evidence: Final output security section mentions root.
+      source: output
+      needle: root
+- id: C30
+  category: content
+  fatal: false
+  text: Secrets and sensitive configuration are stored in environment variables, not in files.
+  anchor: Final output security section mentions environment variable.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: environment variable
+    llm:
+      question: Secrets and sensitive configuration are stored in environment variables, not in files.
+      evidence: Final output security section mentions environment variable.
+      source: output
+      needle: environment variable
+- id: C35
+  category: content
+  fatal: false
+  text: The logging section mandates log rotation and archiving to prevent disk fill.
+  anchor: Final output logging section mentions rotation.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: rotation
+    llm:
+      question: The logging section mandates log rotation and archiving to prevent disk fill.
+      evidence: Final output logging section mentions rotation.
+      source: output
+      needle: rotation
+- id: C36
+  category: content
+  fatal: false
+  text: The logging section excludes sensitive data (secrets/PII) from logs.
+  anchor: Final output logging section mentions sensitive.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: sensitive
+    llm:
+      question: The logging section excludes sensitive data (secrets/PII) from logs.
+      evidence: Final output logging section mentions sensitive.
+      source: output
+      needle: sensitive
+- id: C37
+  category: content
+  fatal: false
+  text: The plan explains how API and worker logs are correlated for troubleshooting (e.g., request/trace ID).
+  anchor: Final output logging section mentions request ID or correlation ID.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: request ID
+    llm:
+      question: The plan explains how API and worker logs are correlated for troubleshooting (e.g., request/trace ID).
+      evidence: Final output logging section mentions request ID or correlation ID.
+      source: output
+      needle: request ID
+- id: C39
+  category: content
+  fatal: false
+  text: The scaling section addresses PostgreSQL connection pooling for horizontal scale-out.
+  anchor: Final output scaling section mentions connection pool.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: connection pool
+    llm:
+      question: The scaling section addresses PostgreSQL connection pooling for horizontal scale-out.
+      evidence: Final output scaling section mentions connection pool.
+      source: output
+      needle: connection pool
+- id: C40
+  category: content
+  fatal: false
+  text: The scaling section makes worker queue consumers stateless or idempotent.
+  anchor: Final output scaling section mentions consumer.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: consumer
+    llm:
+      question: The scaling section makes worker queue consumers stateless or idempotent.
+      evidence: Final output scaling section mentions consumer.
+      source: output
+      needle: consumer
+- id: C41
+  category: content
+  fatal: false
+  text: The scaling section addresses Redis data persistence/replication for the two-machine topology.
+  anchor: Final output scaling section mentions replication.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: replication
+    llm:
+      question: The scaling section addresses Redis data persistence/replication for the two-machine topology.
+      evidence: Final output scaling section mentions replication.
+      source: output
+      needle: replication
+- id: C42
+  category: content
+  fatal: false
+  text: The scaling section fixes the memory leak (profile first) before adding RAM, rather than scaling blindly.
+  anchor: Final output scaling section mentions leak.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: leak
+    llm:
+      question: The scaling section fixes the memory leak (profile first) before adding RAM, rather than scaling blindly.
+      evidence: Final output scaling section mentions leak.
+      source: output
+      needle: leak
+- id: C43
+  category: content
+  fatal: false
+  text: The scaling section gives the decision rule for vertical versus horizontal scaling.
+  anchor: Final output scaling section mentions horizontal.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: horizontal
+    llm:
+      question: The scaling section gives the decision rule for vertical versus horizontal scaling.
+      evidence: Final output scaling section mentions horizontal.
+      source: output
+      needle: horizontal
+- id: C44
+  category: content
+  fatal: false
+  text: The two-machine architecture includes a load balancer.
+  anchor: Final output architecture section mentions load balancer.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: load balancer
+    llm:
+      question: The two-machine architecture includes a load balancer.
+      evidence: Final output architecture section mentions load balancer.
+      source: output
+      needle: load balancer
+- id: C48
+  category: content
+  fatal: false
+  text: 'The runbook follows the troubleshooting priority order: process status, then logs, then resources, then network, then dependencies.'
+  anchor: Final output runbook references the troubleshooting layers, e.g., dependency.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: dependency
+    llm:
+      question: 'The runbook follows the troubleshooting priority order: process status, then logs, then resources, then network, then dependencies.'
+      evidence: Final output runbook references the troubleshooting layers, e.g., dependency.
+      source: output
+      needle: dependency
+- id: C49
+  category: content
+  fatal: false
+  text: The runbook ends with a regression verification checklist to confirm the fix.
+  anchor: Final output runbook mentions regression.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: regression
+    llm:
+      question: The runbook ends with a regression verification checklist to confirm the fix.
+      evidence: Final output runbook mentions regression.
+      source: output
+      needle: regression
+- id: C50
+  category: evidence
+  fatal: false
+  text: The plan includes verification steps (health checks, log checks, or metric validation) for its recommendations.
+  anchor: Final output contains health check or verification guidance.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: health check
+    llm:
+      question: The plan includes verification steps (health checks, log checks, or metric validation) for its recommendations.
+      evidence: Final output contains health check or verification guidance.
+      source: output
+      needle: health check
+- id: C51
+  category: content
+  fatal: false
+  text: The plan includes a regular backup schedule (avoiding the 'no backups' anti-pattern).
+  anchor: Final output mentions backup.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: backup
+    llm:
+      question: The plan includes a regular backup schedule (avoiding the 'no backups' anti-pattern).
+      evidence: Final output mentions backup.
+      source: output
+      needle: backup
+- id: C52
+  category: format
+  fatal: false
+  text: The final output presents the complete operations-plan document (生产环境运维方案), not a fragment or discussion.
+  anchor: Final output contains the operations-plan title token 运维方案.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: operations plan
+    llm:
+      question: The final output presents the complete operations-plan document (生产环境运维方案), not a fragment or discussion.
+      evidence: Final output contains the operations-plan title token 运维方案.
+      source: output
+      needle: operations plan
+- id: C53
+  category: negative
+  fatal: true
+  text: The deliverable does not reduce to a bare list of commands without explaining the underlying decisions and reasoning.
+  anchor: Assess the overall deliverable; a raw CLI recipe dump without rationale fails this constraint.
+  judge: llm
+  check:
+    question: The deliverable does not reduce to a bare list of commands without explaining the underlying decisions and reasoning.
+    evidence: Assess the overall deliverable; a raw CLI recipe dump without rationale fails this constraint.
+- id: C54
+  category: negative
+  fatal: true
+  text: The plan does not recommend running services as root, manual restarts without auto-recovery, skipping monitoring, or going without backups.
+  anchor: Scan the plan for the anti-patterns listed in SKILL.md section 8.
+  judge: llm
+  check:
+    question: The plan does not recommend running services as root, manual restarts without auto-recovery, skipping monitoring, or going without backups.
+    evidence: Scan the plan for the anti-patterns listed in SKILL.md section 8.

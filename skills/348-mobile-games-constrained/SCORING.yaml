@@ -1,0 +1,687 @@
+skill: 348-mobile-games-constrained
+version: 2
+total_items: 43
+criteria:
+- id: C01
+  category: process
+  fatal: true
+  text: The agent creates the design document at .workflow/.scratchpad/game-design-{timestamp}/design.json before producing the plan.
+  anchor: Workspace filesystem under .workflow/.scratchpad/; matches mandatory workflow step 1 and critical failure CF-03.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: count
+      what: '**/.workflow/.scratchpad/game-design-*/design.json'
+      op: ge
+      n: 1
+    llm:
+      question: The agent creates the design document at .workflow/.scratchpad/game-design-{timestamp}/design.json before producing the plan.
+      evidence: Workspace filesystem under .workflow/.scratchpad/; matches mandatory workflow step 1 and critical failure CF-03.
+      source: workspace
+      path: '**/.workflow/.scratchpad/game-design-*/design.json'
+- id: C02
+  category: format
+  fatal: false
+  text: 'design.json is valid JSON and contains all seven fields: status, platform, engine, controls, monetization, constraints, decisions.'
+  anchor: The design.json file created under .workflow/.scratchpad/.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: json_schema
+      path: '**/.workflow/.scratchpad/game-design-*/design.json'
+      require_fields:
+      - status
+      - platform
+      - engine
+      - controls
+      - monetization
+      - constraints
+      - decisions
+    llm:
+      question: 'design.json is valid JSON and contains all seven fields: status, platform, engine, controls, monetization, constraints, decisions.'
+      evidence: The design.json file created under .workflow/.scratchpad/.
+      source: workspace
+      path: '**/.workflow/.scratchpad/game-design-*/design.json'
+- id: C04
+  category: content
+  fatal: false
+  text: design.json records architecture decisions where each decision entry carries decision_id, topic, options_considered, chosen, and rationale.
+  anchor: The .decisions array inside the design.json file.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: '**/.workflow/.scratchpad/game-design-*/design.json'
+      needle: options_considered
+    llm:
+      question: design.json records architecture decisions where each decision entry carries decision_id, topic, options_considered, chosen, and rationale.
+      evidence: The .decisions array inside the design.json file.
+      source: workspace
+      path: '**/.workflow/.scratchpad/game-design-*/design.json'
+      needle: options_considered
+- id: C05
+  category: process
+  fatal: false
+  text: After the plan is finished, design.json .status is updated from init to "complete".
+  anchor: The status field in design.json; final value must be complete.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: '**/.workflow/.scratchpad/game-design-*/design.json'
+      needle: complete
+    llm:
+      question: After the plan is finished, design.json .status is updated from init to "complete".
+      evidence: The status field in design.json; final value must be complete.
+      source: workspace
+      path: '**/.workflow/.scratchpad/game-design-*/design.json'
+      needle: complete
+- id: C06
+  category: content
+  fatal: false
+  text: design.json gains a .verification section recording build or test results after implementation.
+  anchor: The verification field in design.json.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: '**/.workflow/.scratchpad/game-design-*/design.json'
+      needle: verification
+    llm:
+      question: design.json gains a .verification section recording build or test results after implementation.
+      evidence: The verification field in design.json.
+      source: workspace
+      path: '**/.workflow/.scratchpad/game-design-*/design.json'
+      needle: verification
+- id: C07
+  category: content
+  fatal: false
+  text: The touch-control design specifies a minimum touch target of 44x44 points for interactive elements.
+  anchor: The multi-screen touch section of the final output.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: 44x44
+    llm:
+      question: The touch-control design specifies a minimum touch target of 44x44 points for interactive elements.
+      evidence: The multi-screen touch section of the final output.
+      source: output
+      needle: 44x44
+- id: C08
+  category: content
+  fatal: false
+  text: The plan identifies the PC-ported Input.mousePosition launcher and its 32x32 px button as a problem to redesign for touch.
+  anchor: The in-game screen touch redesign discussion in the final output.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: mousePosition
+    llm:
+      question: The plan identifies the PC-ported Input.mousePosition launcher and its 32x32 px button as a problem to redesign for touch.
+      evidence: The in-game screen touch redesign discussion in the final output.
+      source: output
+      needle: mousePosition
+- id: C09
+  category: content
+  fatal: false
+  text: The plan relaxes or removes the 400ms combo window that is too strict for touch latency.
+  anchor: The in-game control/feel discussion; the 400ms window comes from implementation-notes and review r019.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: 400ms
+    llm:
+      question: The plan relaxes or removes the 400ms combo window that is too strict for touch latency.
+      evidence: The in-game control/feel discussion; the 400ms window comes from implementation-notes and review r019.
+      source: output
+      needle: 400ms
+- id: C10
+  category: content
+  fatal: false
+  text: The touch redesign cites the review complaint that buttons are too small (按钮太小).
+  anchor: Touch section referencing Google Play review data from reviews.csv (r001).
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: buttons too small|button too small
+    llm:
+      question: The touch redesign cites the review complaint that buttons are too small (按钮太小).
+      evidence: Touch section referencing Google Play review data from reviews.csv (r001).
+      source: output
+      needle: buttons too small|button too small
+- id: C11
+  category: content
+  fatal: false
+  text: The in-game aiming design adds a trajectory prediction line to address the review request for better aiming (轨迹线).
+  anchor: In-game aiming/launch redesign referencing review r004.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: trajectory line|aim guide|trajectory
+    llm:
+      question: The in-game aiming design adds a trajectory prediction line to address the review request for better aiming (轨迹线).
+      evidence: In-game aiming/launch redesign referencing review r004.
+      source: output
+      needle: trajectory line|aim guide|trajectory
+- id: C12
+  category: coverage
+  fatal: false
+  text: 'The multi-screen touch section designs all four screens: main menu (主菜单), level select (关卡选择), in-game launch area (游戏内), and settlement (结算页) — none omitted.'
+  anchor: The four-screen design subsections of the touch section; verify each screen present.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: checkout page
+    llm:
+      question: 'The multi-screen touch section designs all four screens: main menu (主菜单), level select (关卡选择), in-game launch area (游戏内), and settlement (结算页) — none omitted.'
+      evidence: The four-screen design subsections of the touch section; verify each screen present.
+      source: output
+      needle: checkout page
+- id: C13
+  category: content
+  fatal: false
+  text: The touch design specifies a haptic feedback (触觉反馈) scheme for touch interactions.
+  anchor: Touch section per-screen haptic feedback description.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: haptic feedback
+    llm:
+      question: The touch design specifies a haptic feedback (触觉反馈) scheme for touch interactions.
+      evidence: Touch section per-screen haptic feedback description.
+      source: output
+      needle: haptic feedback
+- id: C14
+  category: content
+  fatal: false
+  text: The touch design addresses portrait/landscape orientation cooperation (横屏/竖屏) rather than forcing one orientation.
+  anchor: Touch section orientation sub-part, addressing review r018 and guideline single-orientation rationale.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: landscape
+    llm:
+      question: The touch design addresses portrait/landscape orientation cooperation (横屏/竖屏) rather than forcing one orientation.
+      evidence: Touch section orientation sub-part, addressing review r018 and guideline single-orientation rationale.
+      source: output
+      needle: landscape
+- id: C15
+  category: content
+  fatal: false
+  text: The performance section gives a dynamic frame-rate strategy with concrete trigger conditions (动态帧率, when to run 60/30/lower fps).
+  anchor: Performance and thermal section of the final output.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: dynamic frame rate|adaptive frame rate
+    llm:
+      question: The performance section gives a dynamic frame-rate strategy with concrete trigger conditions (动态帧率, when to run 60/30/lower fps).
+      evidence: Performance and thermal section of the final output.
+      source: output
+      needle: dynamic frame rate|adaptive frame rate
+- id: C16
+  category: content
+  fatal: false
+  text: The performance section includes texture atlas batching (纹理图集) for resource/load optimization.
+  anchor: Performance memory-optimization part.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: image gallery|gallery
+    llm:
+      question: The performance section includes texture atlas batching (纹理图集) for resource/load optimization.
+      evidence: Performance memory-optimization part.
+      source: output
+      needle: image gallery|gallery
+- id: C18
+  category: content
+  fatal: false
+  text: The performance section defines a thermal degradation ladder from mild heating to critical temperature with a concrete action per stage (发热降级阶梯, critical stage 临界).
+  anchor: Thermal management part, mirroring the guidelines' warm/reduce, hot/cap FPS, critical/pause effects ladder.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: critical|crossing a threshold
+    llm:
+      question: The performance section defines a thermal degradation ladder from mild heating to critical temperature with a concrete action per stage (发热降级阶梯, critical stage 临界).
+      evidence: Thermal management part, mirroring the guidelines' warm/reduce, hot/cap FPS, critical/pause effects ladder.
+      source: output
+      needle: critical|crossing a threshold
+- id: C19
+  category: content
+  fatal: false
+  text: The background-behavior plan stops the WebSocket score sync when paused instead of keeping it alive in background.
+  anchor: Background/interruption part; addresses implementation-notes' always-connected WebSocket and its 8%/10min battery cost.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: WebSocket
+    llm:
+      question: The background-behavior plan stops the WebSocket score sync when paused instead of keeping it alive in background.
+      evidence: Background/interruption part; addresses implementation-notes' always-connected WebSocket and its 8%/10min battery cost.
+      source: output
+      needle: WebSocket
+- id: C20
+  category: content
+  fatal: false
+  text: The plan addresses the retention problem of 60% of users quitting within 5 minutes.
+  anchor: Intro or experience-improvement rationale referencing the game-spec churn stat.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: 5 minutes
+    llm:
+      question: The plan addresses the retention problem of 60% of users quitting within 5 minutes.
+      evidence: Intro or experience-improvement rationale referencing the game-spec churn stat.
+      source: output
+      needle: 5 minutes
+- id: C21
+  category: content
+  fatal: false
+  text: The plan addresses the battery drain complaints (耗电) reported in reviews and implementation notes.
+  anchor: Performance/battery part referencing review data and notes (电量掉得快, 耗电约8%, 半小时20%).
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: battery drain|battery|power consumption
+    llm:
+      question: The plan addresses the battery drain complaints (耗电) reported in reviews and implementation notes.
+      evidence: Performance/battery part referencing review data and notes (电量掉得快, 耗电约8%, 半小时20%).
+      source: output
+      needle: battery drain|battery|power consumption
+- id: C22
+  category: coverage
+  fatal: false
+  text: The store-compliance section treats iOS (App Store) and Google Play as two separate platforms.
+  anchor: Dual-store compliance section; Google Play must be addressed distinctly from iOS.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Google Play
+    llm:
+      question: The store-compliance section treats iOS (App Store) and Google Play as two separate platforms.
+      evidence: Dual-store compliance section; Google Play must be addressed distinctly from iOS.
+      source: output
+      needle: Google Play
+- id: C23
+  category: content
+  fatal: false
+  text: The iOS compliance plan requires complete and accurate privacy labels (隐私标签).
+  anchor: iOS subsection of the compliance section.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: privacy labels
+    llm:
+      question: The iOS compliance plan requires complete and accurate privacy labels (隐私标签).
+      evidence: iOS subsection of the compliance section.
+      source: output
+      needle: privacy labels
+- id: C24
+  category: content
+  fatal: false
+  text: The iOS compliance plan addresses in-app account deletion (账号删除) where account creation exists.
+  anchor: iOS subsection, per guideline section 4.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: account deletion
+    llm:
+      question: The iOS compliance plan addresses in-app account deletion (账号删除) where account creation exists.
+      evidence: iOS subsection, per guideline section 4.
+      source: output
+      needle: account deletion
+- id: C25
+  category: content
+  fatal: false
+  text: The iOS compliance plan requires screenshots for all required device sizes (截图).
+  anchor: iOS subsection, per guideline section 4.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: screenshot|screenshots
+    llm:
+      question: The iOS compliance plan requires screenshots for all required device sizes (截图).
+      evidence: iOS subsection, per guideline section 4.
+      source: output
+      needle: screenshot|screenshots
+- id: C26
+  category: content
+  fatal: false
+  text: The Google Play compliance plan sets a current-year target API level (目标 API).
+  anchor: Google Play subsection, per guideline section 5.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: target API
+    llm:
+      question: The Google Play compliance plan sets a current-year target API level (目标 API).
+      evidence: Google Play subsection, per guideline section 5.
+      source: output
+      needle: target API
+- id: C29
+  category: content
+  fatal: false
+  text: The compliance section covers children's data rules and ad/IAP compliance because the target users may include minors (儿童).
+  anchor: Compliance section children-data part.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: children|kids|child
+    llm:
+      question: The compliance section covers children's data rules and ad/IAP compliance because the target users may include minors (儿童).
+      evidence: Compliance section children-data part.
+      source: output
+      needle: children|kids|child
+- id: C30
+  category: content
+  fatal: false
+  text: The compliance section provides a pre-launch material checklist and check order (材料清单/检查顺序).
+  anchor: Compliance section pre-release materials part.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: checklist|list|inventory
+    llm:
+      question: The compliance section provides a pre-launch material checklist and check order (材料清单/检查顺序).
+      evidence: Compliance section pre-release materials part.
+      source: output
+      needle: checklist|list|inventory
+- id: C31
+  category: content
+  fatal: false
+  text: The monetization section gives one clear recommendation between Plan A (paid 6元) and Plan B (free + IAP + ads) with a stated rationale.
+  anchor: Monetization section referencing the two pricing plans from game-spec.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: 6 CNY|6 yuan|6 RMB
+    llm:
+      question: The monetization section gives one clear recommendation between Plan A (paid 6元) and Plan B (free + IAP + ads) with a stated rationale.
+      evidence: Monetization section referencing the two pricing plans from game-spec.
+      source: output
+      needle: 6 CNY|6 yuan|6 RMB
+- id: C32
+  category: content
+  fatal: false
+  text: If Plan B is recommended, the plan designs ad placement including rewarded video (激励视频) and interstitial timing (插屏).
+  anchor: Monetization ad-design part under Plan B.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: rewarded video
+    llm:
+      question: If Plan B is recommended, the plan designs ad placement including rewarded video (激励视频) and interstitial timing (插屏).
+      evidence: Monetization ad-design part under Plan B.
+      source: output
+      needle: rewarded video
+- id: C33
+  category: content
+  fatal: false
+  text: If Plan B is recommended, the plan defines a first-purchase gift pack (首充) and pricing anchors.
+  anchor: Monetization IAP design part under Plan B.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: first purchase|first charge
+    llm:
+      question: If Plan B is recommended, the plan defines a first-purchase gift pack (首充) and pricing anchors.
+      evidence: Monetization IAP design part under Plan B.
+      source: output
+      needle: first purchase|first charge
+- id: C34
+  category: content
+  fatal: false
+  text: The plan includes a 4-week post-launch A/B test plan covering what to test, grouping, and metrics.
+  anchor: Monetization section A/B testing part.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: A/B
+    llm:
+      question: The plan includes a 4-week post-launch A/B test plan covering what to test, grouping, and metrics.
+      evidence: Monetization section A/B testing part.
+      source: output
+      needle: A/B
+- id: C36
+  category: content
+  fatal: false
+  text: The accessibility section supports screen readers via UGUI accessibility labels and readable order (读屏/辅助功能).
+  anchor: Accessibility section, Unity UGUI part.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: screen reader|screen-reading
+    llm:
+      question: The accessibility section supports screen readers via UGUI accessibility labels and readable order (读屏/辅助功能).
+      evidence: Accessibility section, Unity UGUI part.
+      source: output
+      needle: screen reader|screen-reading
+- id: C37
+  category: content
+  fatal: false
+  text: The accessibility section sets color-contrast requirements (对比度).
+  anchor: Accessibility color part.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: contrast
+    llm:
+      question: The accessibility section sets color-contrast requirements (对比度).
+      evidence: Accessibility color part.
+      source: output
+      needle: contrast
+- id: C38
+  category: content
+  fatal: false
+  text: The accessibility section adapts dynamic text and scaling (动态文字与缩放适配).
+  anchor: Accessibility text-scaling part.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: zoom|scaling
+    llm:
+      question: The accessibility section adapts dynamic text and scaling (动态文字与缩放适配).
+      evidence: Accessibility text-scaling part.
+      source: output
+      needle: zoom|scaling
+- id: C39
+  category: content
+  fatal: false
+  text: The accessibility section respects reduce-motion settings (reduce motion / 减少动态效果).
+  anchor: Accessibility motion part.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: reduce motion
+    llm:
+      question: The accessibility section respects reduce-motion settings (reduce motion / 减少动态效果).
+      evidence: Accessibility motion part.
+      source: output
+      needle: reduce motion
+- id: C40
+  category: content
+  fatal: false
+  text: Every accessibility change item includes an implementation method and acceptance criteria (验收标准).
+  anchor: Accessibility section acceptance/verification column.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: acceptance criteria
+    llm:
+      question: Every accessibility change item includes an implementation method and acceptance criteria (验收标准).
+      evidence: Accessibility section acceptance/verification column.
+      source: output
+      needle: acceptance criteria
+- id: C42
+  category: content
+  fatal: false
+  text: The localization section covers font support and text overflow/wrapping handling (字体).
+  anchor: Localization font/wrapping part.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: font|fonts|typography
+    llm:
+      question: The localization section covers font support and text overflow/wrapping handling (字体).
+      evidence: Localization font/wrapping part.
+      source: output
+      needle: font|fonts|typography
+- id: C45
+  category: content
+  fatal: false
+  text: The localization section includes store metadata localization for title, description, and keywords (标题/描述/关键词).
+  anchor: Localization store-metadata part.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: keywords|keyword
+    llm:
+      question: The localization section includes store metadata localization for title, description, and keywords (标题/描述/关键词).
+      evidence: Localization store-metadata part.
+      source: output
+      needle: keywords|keyword
+- id: C46
+  category: content
+  fatal: false
+  text: The localization section selects a concrete target region and a first-language list (首批语言) based on the user profile.
+  anchor: Localization target-region part; Southeast Asia target from the brief.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: first batch of languages|initial languages
+    llm:
+      question: The localization section selects a concrete target region and a first-language list (首批语言) based on the user profile.
+      evidence: Localization target-region part; Southeast Asia target from the brief.
+      source: output
+      needle: first batch of languages|initial languages
+- id: C47
+  category: evidence
+  fatal: false
+  text: The plan cites sources (来源) for claims that reference review data, specs, or guidelines.
+  anchor: Final output where reviews/data/spec references are attributed, per the task instruction to mark sources.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: source|sources
+    llm:
+      question: The plan cites sources (来源) for claims that reference review data, specs, or guidelines.
+      evidence: Final output where reviews/data/spec references are attributed, per the task instruction to mark sources.
+      source: output
+      needle: source|sources
+- id: C51
+  category: negative
+  fatal: true
+  text: The plan does not recommend desktop/console control patterns (small buttons, precise timing, hover dependence) for mobile.
+  anchor: Touch design section; verify no small-target or hover-based interactions are kept — critical failure CF-01.
+  judge: llm
+  check:
+    question: The plan does not recommend desktop/console control patterns (small buttons, precise timing, hover dependence) for mobile.
+    evidence: Touch design section; verify no small-target or hover-based interactions are kept — critical failure CF-01.
+- id: C52
+  category: negative
+  fatal: true
+  text: The plan does not ignore battery/thermal constraints (no always-on networking, no missing thermal throttling).
+  anchor: Performance section; verify it does not recommend leaving background sync running or omit thermal handling — critical failure CF-02.
+  judge: llm
+  check:
+    question: The plan does not ignore battery/thermal constraints (no always-on networking, no missing thermal throttling).
+    evidence: Performance section; verify it does not recommend leaving background sync running or omit thermal handling — critical failure CF-02.
+- id: C53
+  category: boundary
+  fatal: false
+  text: If .workflow/ is not writable, the agent creates it first rather than skipping the design document.
+  anchor: Mandatory workflow step 5 behavior; judge evaluates the agent's fallback when the directory is unavailable.
+  judge: llm
+  check:
+    question: If .workflow/ is not writable, the agent creates it first rather than skipping the design document.
+    evidence: Mandatory workflow step 5 behavior; judge evaluates the agent's fallback when the directory is unavailable.
+- id: C54
+  category: coverage
+  fatal: false
+  text: The final plan includes all six required sections — multi-screen touch, performance/thermal, dual-store compliance, monetization + A/B, accessibility, localization — with none omitted.
+  anchor: Final output structure; confirm each of the six section headings is present, not only a subset.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: localization
+    llm:
+      question: The final plan includes all six required sections — multi-screen touch, performance/thermal, dual-store compliance, monetization + A/B, accessibility, localization — with none omitted.
+      evidence: Final output structure; confirm each of the six section headings is present, not only a subset.
+      source: output
+      needle: localization

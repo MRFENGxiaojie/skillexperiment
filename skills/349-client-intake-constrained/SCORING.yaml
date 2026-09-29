@@ -1,0 +1,432 @@
+skill: 349-client-intake-constrained
+version: 2
+total_items: 25
+criteria:
+- id: C02
+  category: format
+  fatal: false
+  text: 'Each intake record file is valid JSON carrying the required top-level fields: status, client, issues, conflict_check, triage.'
+  anchor: Intake record JSON under .workflow/.scratchpad/intake-*/
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: json_schema
+      path: .workflow/.scratchpad/intake-*/**/*.json
+      require_fields:
+      - status
+      - client
+      - issues
+      - conflict_check
+      - triage
+    llm:
+      question: 'Each intake record file is valid JSON carrying the required top-level fields: status, client, issues, conflict_check, triage.'
+      evidence: Intake record JSON under .workflow/.scratchpad/intake-*/
+      source: workspace
+      path: .workflow/.scratchpad/intake-*/**/*.json
+- id: C04
+  category: process
+  fatal: false
+  text: 'The practice-areas spec is read before the intake summary markdown is written (order discipline: templates precede issue classification in the summary).'
+  anchor: Tool log sequence
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_order
+      cmds:
+      - Read.*practice-areas\.md
+      - Write.*\.md
+    llm:
+      question: 'The practice-areas spec is read before the intake summary markdown is written (order discipline: templates precede issue classification in the summary).'
+      evidence: Tool log sequence
+      source: tool_log
+      pattern: Read.*practice-areas\.md|Write.*\.md
+- id: C06
+  category: process
+  fatal: false
+  text: The agent checks for a practice-area supervisor guide by referencing the `guides` directory of the clinic config.
+  anchor: Tool log guide-check call
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_contains
+      cmd: guides
+    llm:
+      question: The agent checks for a practice-area supervisor guide by referencing the `guides` directory of the clinic config.
+      evidence: Tool log guide-check call
+      source: tool_log
+      pattern: guides
+- id: C07
+  category: coverage
+  fatal: false
+  text: 'The intake is recorded for all three clients: at least three intake record JSON files exist under `.workflow/.scratchpad/intake-*` (one per client, none omitted).'
+  anchor: Count of JSON files under .workflow/.scratchpad/intake-*/
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: count
+      what: .workflow/.scratchpad/intake-*/**/*.json
+      op: ge
+      n: 3
+    llm:
+      question: 'The intake is recorded for all three clients: at least three intake record JSON files exist under `.workflow/.scratchpad/intake-*` (one per client, none omitted).'
+      evidence: Count of JSON files under .workflow/.scratchpad/intake-*/
+      source: workspace
+      path: .workflow/.scratchpad/intake-*/**/*.json
+- id: C08
+  category: coverage
+  fatal: false
+  text: 'The intake-summaries deliverable covers all three clients: at least three markdown summary files exist in `intake-summaries/` (none merged or dropped).'
+  anchor: Count of files in intake-summaries/
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: count
+      what: intake-summaries/*.md
+      op: ge
+      n: 3
+    llm:
+      question: 'The intake-summaries deliverable covers all three clients: at least three markdown summary files exist in `intake-summaries/` (none merged or dropped).'
+      evidence: Count of files in intake-summaries/
+      source: workspace
+      path: intake-summaries/*.md
+- id: C10
+  category: tool
+  fatal: false
+  text: The intake summary is persisted as a deliverable using the Write tool on a `.md` file (output file for the student).
+  anchor: Tool log Write calls ending in .md
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_contains
+      cmd: Write.*\.md
+    llm:
+      question: The intake summary is persisted as a deliverable using the Write tool on a `.md` file (output file for the student).
+      evidence: Tool log Write calls ending in .md
+      source: tool_log
+      pattern: Write.*\.md
+- id: C11
+  category: format
+  fatal: false
+  text: The delivered summaries carry the `[AI-ASSISTED DRAFT — requires student analysis and attorney review]` label.
+  anchor: Final output / summary files, header block
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: AI-ASSISTED DRAFT
+    llm:
+      question: The delivered summaries carry the `[AI-ASSISTED DRAFT — requires student analysis and attorney review]` label.
+      evidence: Final output / summary files, header block
+      source: output
+      needle: AI-ASSISTED DRAFT
+- id: C12
+  category: content
+  fatal: false
+  text: Every statutory/case citation in the deliverables carries a provenance tag, at minimum the default `[model knowledge — verify]`.
+  anchor: Legal issues / jurisdictional notes sections
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: model knowledge
+    llm:
+      question: Every statutory/case citation in the deliverables carries a provenance tag, at minimum the default `[model knowledge — verify]`.
+      evidence: Legal issues / jurisdictional notes sections
+      source: output
+      needle: model knowledge
+- id: C14
+  category: content
+  fatal: false
+  text: Maria's summary records the eviction hearing date 2026-08-19 (Alameda County Superior Court).
+  anchor: intake-summaries/maria-gonzalez.md
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: intake-summaries/maria-gonzalez.md
+      needle: '2026-08-19'
+    llm:
+      question: Maria's summary records the eviction hearing date 2026-08-19 (Alameda County Superior Court).
+      evidence: intake-summaries/maria-gonzalez.md
+      source: workspace
+      path: intake-summaries/maria-gonzalez.md
+      needle: '2026-08-19'
+- id: C15
+  category: content
+  fatal: false
+  text: Maria's summary flags the cross-area immigration/retaliation issue raised by the landlord's ICE threat (DACA holder).
+  anchor: intake-summaries/maria-gonzalez.md
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: intake-summaries/maria-gonzalez.md
+      needle: ICE
+    llm:
+      question: Maria's summary flags the cross-area immigration/retaliation issue raised by the landlord's ICE threat (DACA holder).
+      evidence: intake-summaries/maria-gonzalez.md
+      source: workspace
+      path: intake-summaries/maria-gonzalez.md
+      needle: ICE
+- id: C16
+  category: content
+  fatal: false
+  text: José's summary records the unpaid-wages amount of $4,200 (three months missing).
+  anchor: intake-summaries/jose-alvarez.md
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: intake-summaries/jose-alvarez.md
+      needle: 4,200
+    llm:
+      question: José's summary records the unpaid-wages amount of $4,200 (three months missing).
+      evidence: intake-summaries/jose-alvarez.md
+      source: workspace
+      path: intake-summaries/jose-alvarez.md
+      needle: 4,200
+- id: C17
+  category: content
+  fatal: false
+  text: José's summary flags the workers' compensation issue from the unreported kitchen burn injury.
+  anchor: intake-summaries/jose-alvarez.md
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: intake-summaries/jose-alvarez.md
+      needle: work injury|workplace injury
+    llm:
+      question: José's summary flags the workers' compensation issue from the unreported kitchen burn injury.
+      evidence: intake-summaries/jose-alvarez.md
+      source: workspace
+      path: intake-summaries/jose-alvarez.md
+      needle: work injury|workplace injury
+- id: C18
+  category: content
+  fatal: false
+  text: Aisha's summary flags the domestic-violence / protective-order issue from the husband's push and custody threat.
+  anchor: intake-summaries/aisha-thompson.md
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: intake-summaries/aisha-thompson.md
+      needle: protective order
+    llm:
+      question: Aisha's summary flags the domestic-violence / protective-order issue from the husband's push and custody threat.
+      evidence: intake-summaries/aisha-thompson.md
+      source: workspace
+      path: intake-summaries/aisha-thompson.md
+      needle: protective order
+- id: C19
+  category: content
+  fatal: false
+  text: Aisha's summary flags her financial dependence (no separate bank account; stall license and car in the husband's name).
+  anchor: intake-summaries/aisha-thompson.md
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: intake-summaries/aisha-thompson.md
+      needle: bank account
+    llm:
+      question: Aisha's summary flags her financial dependence (no separate bank account; stall license and car in the husband's name).
+      evidence: intake-summaries/aisha-thompson.md
+      source: workspace
+      path: intake-summaries/aisha-thompson.md
+      needle: bank account
+- id: C22
+  category: content
+  fatal: false
+  text: Maria's document-given hearing date is filled directly into the deadline block's `due=` field (not marked VERIFY).
+  anchor: intake-summaries/maria-gonzalez.md deadline block
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: intake-summaries/maria-gonzalez.md
+      needle: due=2026-08-19
+    llm:
+      question: Maria's document-given hearing date is filled directly into the deadline block's `due=` field (not marked VERIFY).
+      evidence: intake-summaries/maria-gonzalez.md deadline block
+      source: workspace
+      path: intake-summaries/maria-gonzalez.md
+      needle: due=2026-08-19
+- id: C23
+  category: content
+  fatal: false
+  text: José's deadlines cover the employer's Sacramento relocation risk window.
+  anchor: José deadline blocks / final output
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Sacramento
+    llm:
+      question: José's deadlines cover the employer's Sacramento relocation risk window.
+      evidence: José deadline blocks / final output
+      source: output
+      needle: Sacramento
+- id: C24
+  category: content
+  fatal: false
+  text: Aisha's deadlines cover the school-start / housing-arrangement timeline (case slug `aisha-thompson-family` in its deadline block).
+  anchor: Aisha deadline block
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: aisha-thompson-family
+    llm:
+      question: Aisha's deadlines cover the school-start / housing-arrangement timeline (case slug `aisha-thompson-family` in its deadline block).
+      evidence: Aisha deadline block
+      source: output
+      needle: aisha-thompson-family
+- id: C25
+  category: format
+  fatal: false
+  text: Each emitted deadline block carries the full required field set, including the `warnings=[14,7,3,1]` line.
+  anchor: Any /legal-clinic:deadlines --add block
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: warnings=[14,7,3,1]
+    llm:
+      question: Each emitted deadline block carries the full required field set, including the `warnings=[14,7,3,1]` line.
+      evidence: Any /legal-clinic:deadlines --add block
+      source: output
+      needle: warnings=[14,7,3,1]
+- id: C26
+  category: process
+  fatal: false
+  text: The conflict check is explicitly pairwise across the three clients — the intake records record the checked pairs (checked_pairs) rather than only per-client checks.
+  anchor: conflict_check field in intake record JSON
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: .workflow/.scratchpad/intake-*/**/*.json
+      needle: checked_pairs
+    llm:
+      question: The conflict check is explicitly pairwise across the three clients — the intake records record the checked pairs (checked_pairs) rather than only per-client checks.
+      evidence: conflict_check field in intake record JSON
+      source: workspace
+      path: .workflow/.scratchpad/intake-*/**/*.json
+      needle: checked_pairs
+- id: C28
+  category: content
+  fatal: false
+  text: The deliverable includes a verification/checklist section for the student (facts to confirm, dates from documents, hypotheses to verify).
+  anchor: Per-client verification prompts / final checklist
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: verification checklist
+    llm:
+      question: The deliverable includes a verification/checklist section for the student (facts to confirm, dates from documents, hypotheses to verify).
+      evidence: Per-client verification prompts / final checklist
+      source: output
+      needle: verification checklist
+- id: C29
+  category: coverage
+  fatal: false
+  text: The reply ends with a next-steps decision tree the student/lawyer picks from (draft, escalate, get facts, watch-and-wait, something else branches customized to this intake).
+  anchor: Final output tail
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: decision tree
+    llm:
+      question: The reply ends with a next-steps decision tree the student/lawyer picks from (draft, escalate, get facts, watch-and-wait, something else branches customized to this intake).
+      evidence: Final output tail
+      source: output
+      needle: decision tree
+- id: C30
+  category: negative
+  fatal: false
+  text: The output states the summary does NOT decide case acceptance — acceptance remains the student's analysis and the professor's judgment (no 'we take/we decline' verdict).
+  anchor: '''What this summary does NOT do'' section / bottom line framing'
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: does not decide|doesn
+    llm:
+      question: The output states the summary does NOT decide case acceptance — acceptance remains the student's analysis and the professor's judgment (no 'we take/we decline' verdict).
+      evidence: '''What this summary does NOT do'' section / bottom line framing'
+      source: output
+      needle: does not decide|doesn
+- id: C33
+  category: boundary
+  fatal: false
+  text: When clinic-config-referenced seed documents are absent from the workspace, the agent flags them for the student to retrieve (索取) rather than blocking the intake.
+  anchor: Run notes / final output
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: request|ask for|obtain
+    llm:
+      question: When clinic-config-referenced seed documents are absent from the workspace, the agent flags them for the student to retrieve (索取) rather than blocking the intake.
+      evidence: Run notes / final output
+      source: output
+      needle: request|ask for|obtain
+- id: C34
+  category: boundary
+  fatal: false
+  text: When no practice-area supervisor guide exists, the summary notes the generic intake so the supervisor can tailor questions later.
+  anchor: Generic intake note at end of summaries
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: generic intake
+    llm:
+      question: When no practice-area supervisor guide exists, the summary notes the generic intake so the supervisor can tailor questions later.
+      evidence: Generic intake note at end of summaries
+      source: output
+      needle: generic intake
+- id: C35
+  category: evidence
+  fatal: false
+  text: 'When no research connector is reachable, the jurisdictional notes record it in a Sources: line instead of emitting an unverifiable standalone banner.'
+  anchor: Jurisdictional notes / Sources line
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: 'Sources:'
+    llm:
+      question: 'When no research connector is reachable, the jurisdictional notes record it in a Sources: line instead of emitting an unverifiable standalone banner.'
+      evidence: Jurisdictional notes / Sources line
+      source: output
+      needle: 'Sources:'

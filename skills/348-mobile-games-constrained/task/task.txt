@@ -1,0 +1,31 @@
+## Background
+We built a casual mobile game, "弹珠消消乐" (Marble Match), in Unity. Android test downloads are decent, but 60% of users quit within 5 minutes, and reviews complain "hard to operate on a phone" and "the phone gets hot after a while." We're planning to launch on the iOS App Store and Google Play in 2026-10, and are also considering SEA expansion.
+
+## Task
+Produce a complete "Launch & Experience Overhaul Plan" covering the following 6 parts. Every part must give concrete, executable decisions (numbers, thresholds, trigger conditions, implementation steps), not just principles. Write all output in English.
+
+### 1. Multi-touch control plan (design all 4 screens)
+For the 4 screens — main menu, level select, in-game (marble-launch operation area), and results page — give respectively: control layout and minimum sizes (including touch-target specs), spacing and mis-tap prevention (thumb hot zones, two-handed one-hand operation), haptic feedback plan, and how it works with portrait/landscape. Point out each concrete problem with the current "straight port from desktop" design (referencing the review data) and the corresponding fix.
+
+### 2. Performance & heat
+Give a dynamic frame-rate strategy (when 60fps / 30fps / lower, and the trigger conditions), asset loading and memory optimization (texture atlases, object pooling, GC control), a heat-downscaling ladder (what to do at each tier from "slightly warm" to "critically hot"), and background-switch behavior (pausing, data-sync timing).
+
+### 3. Dual-store compliance (iOS + Google Play separately)
+iOS: privacy labels, account deletion (if there's an account system), screenshots at each device size; Google Play: target API level, 64-bit, AAB; both stores' children's-data rules, ads and in-app-purchase compliance (our target users may include minors); plus the material checklist that must be prepared before launch and the review order.
+
+### 4. Monetization decision
+Give a clear recommendation between Plan A (paid ¥6 one-time) and Plan B (free + IAP + ads), with the reasoning (game type, current retention, market conventions); if B is chosen, give first-purchase bundles, ad placement design (when to show interstitials, where rewarded videos go), and pricing anchors; regardless of choice, give an A/B test plan for the first 4 weeks after launch (what to test, how to group, what metrics to watch, whether sample size is sufficient).
+
+### 5. Accessibility
+Screen-reader support (Unity UGUI accessibility labels, readable order), color contrast, dynamic text and scaling adaptation, respecting reduce-motion, and captions/sound-cue alternatives; give an implementation approach and acceptance criteria for each accessibility fix.
+
+### 6. Localization (overseas prep)
+Localization workflow (string tables, font support, text overflow and wrapping), RTL language notes, date/currency/number formatting, store metadata localization (title/description/keywords), target-region selection (based on our user profile), and the initial language list.
+
+## Materials
+All materials are under the task/ directory in the current working directory:
+- Game info: task/game-spec.md (type, session length, target users, planned pricing model)
+- Current implementation notes: task/implementation-notes.md (60 FPS, online scoring, background behavior, portrait, etc.)
+- Store review data: task/data/reviews.csv (Google Play review sample: rating, content, date)
+
+Read all materials before starting. Wherever the plan cites reviews/data/standards, note the source.

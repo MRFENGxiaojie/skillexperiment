@@ -1,0 +1,14 @@
+## Background
+Our product is an AI code-review API; developers use it per call, and we pay for compute per token, so cost fluctuates a lot with usage. Our pricing is still the crudest approach: a flat $99/month unlimited plan. The result: big customers hammer it and eat our gross margin, while small customers think it's expensive and don't renew.
+
+## Task
+Help me rethink pricing and the business model: first judge what type our current model is (subscription? usage?); then see whether there's a better revenue model (for example, usage + credits combination); work out the unit economics — compute cost per 10K tokens, gross margin, CAC, churn, payback period — preferably split by customer size (individual devs / small teams / enterprise), not just one average; give a new pricing and plan structure: how to define the value-billing unit, how to set the free tier and paid tiers, usage limits and overage charging, upgrade trigger conditions, and guardrails against abuse and runaway compute (rate limits, credit expiry); finally give an implementation plan: define success metrics and guardrails before changing prices, how to run the experiment evaluation (we rely mostly on self-serve signup), how long to wait per metric before concluding, and clear go/no-go decision lines. Our current data: CAC ~$800, monthly churn 8%, self-estimated gross margin under 60% (mostly compute); I haven't organized per-customer-size numbers. For missing numbers, assume industry ranges but label them. Write all output in English.
+
+## Materials
+Supplemental data (use directly, no need to ask):
+
+Customer-size distribution (currently ~200 paying customers): individual devs 60% (~30K tokens/month avg), small teams of 2-10 people 30% (~800K tokens/month avg), enterprise 10% (~6M tokens/month avg). Compute cost $0.002/1K tokens (GPT-4o mini average price). Under the current $99/month unlimited model, large enterprises actually consume $600-900/month in cost, while small devs only consume $3-5/month.
+
+Competitor pricing reference: CodeRabbit $12/user/month, CodeClimate $15/dev/month (includes quality metrics), SonarQube free community edition + enterprise from $150/year. Signup-to-paid conversion 4.5%, monthly churn 8% (individual devs 12%, small teams 6%, enterprise 2%).
+
+The above are actual data or reasonable estimates. For missing specifics (such as expected migration rates per plan), assume industry ranges and label them.
