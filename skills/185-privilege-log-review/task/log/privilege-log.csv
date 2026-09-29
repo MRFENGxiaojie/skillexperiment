@@ -1,0 +1,14 @@
+# Privilege Log
+# Matter: cal-commercial-dispute | Jurisdiction: U.S. District Court, Central District of California
+# Privilege claimed per entry noted in column "Privilege"
+bates,date,author,recipients,cc,document_type,privilege,description
+A-0001,2026-05-02,Outside Counsel (Carol West),Client Legal (GC),(none),Email,Attorney-Client,"Litigation strategy: analysis of opposing party's claims and settlement posture"
+A-0002,2026-05-10,Client Legal (GC, also business duties),Sales VP,(Outside Counsel CC),Email,Attorney-Client (claimed),"Contract negotiation points; mixed legal/business content"
+A-0003,2026-05-15,Client CEO,Outside Counsel,(none),Email + Excel attachment (4 pages, sales data),Attorney-Client (email) / none (attachment),"Analysis of opposing party's offer; attachment is raw sales data"
+A-0004,2026-05-20,Outside Counsel,Client Legal,(Third-party consultant — employee of opposing party's subsidiary),Email,Attorney-Client (claimed),"Third party copied; possible privilege break or common-interest question"
+A-0005,2026-06-01,Client Legal,Business Team,(none),Email,None (claimed in log),Quarterly revenue targets — pure business
+A-0006,2026-06-10,Outside Counsel + Client Legal,Meeting minutes,(none),Meeting Minutes,Attorney-Client / Work Product (claimed),"Claims and settlement discussion — meeting minutes"
+A-0007,2026-06-15,Client Account Manager,Client Sales Team,(none),Email thread (1 of 4),None (claimed),Customer communication — no attorney involved
+A-0008,2026-06-16,Client Sales Team,(thread),Client Account Manager,Email thread (2 of 4),None (claimed),Customer communication — no attorney involved
+A-0009,2026-06-17,Client Account Manager,Client Sales Team,(none),Email thread (3 of 4),None (claimed),Customer communication — no attorney involved
+A-0010,2026-06-18,Client Sales Team,(thread),Client Account Manager,Email thread (4 of 4),None (claimed),Customer communication — no attorney involved

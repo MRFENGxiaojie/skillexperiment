@@ -1,0 +1,8 @@
+## Background
+We are an online collaborative document product for small and mid-size teams (like a lightweight Notion) about to go commercial. The founder wants to finalize the pricing plan quickly, but the team has been divided on how to price.
+
+## Task
+Help us build a complete pricing plan: first read FOUNDER_CONTEXT.md (in the current working directory) to understand the company — do not answer before reading it, and base every figure and claim on it — it covers product positioning, target customer profile, competitor pricing (Notion Plus $10/mo/user, Coda Pro $12/mo/user), the existing 2,000 free users (teams averaging 5 people), and the year-one ARR target of $500K. Then give a pricing model choice and rationale, each tier's name/price (including annual price and discount)/feature boundaries/target audience/price justification (benchmarked against competitors, value, or margin), plus psychological pricing tactics, upgrade triggers, and revenue optimization suggestions; finally point out the biggest pricing risk for this business. For information missing from FOUNDER_CONTEXT.md, make reasonable assumptions per common B2B SaaS practice and mark all assumptions in the plan. Review against a quality checklist before delivering. Write all output in English.
+
+## Materials
+FOUNDER_CONTEXT.md is at the working directory root: contains product positioning, target customer profile, competitors and their pricing, current paid status, stage and revenue goals (see that file for details).

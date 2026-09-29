@@ -1,0 +1,11 @@
+## Background
+I'm the growth lead at a cross-border payments startup (product "汇航 Pay" / HuiHang Pay). I want to start cold-email outreach to finance leaders at North American e-commerce SaaS companies, aiming to get trials or initial conversations. I've never done systematic outreach before; I have a rough draft that reads like a mass-marketing blast and I'm embarrassed to send it myself.
+
+## Task
+Help me build this outreach from zero: first write the initial outreach email (it should read like a real person wrote it — short, direct, relevant to the recipient's actual situation), with 2-3 subject-line alternatives and the reasoning for each; then plan a full follow-up sequence where every email offers a different new angle with sensible spacing, ending with a graceful close; meanwhile flag the cold-outreach mistakes in my current draft (formulaic openers, feature dumps, high-friction CTAs, etc.) and give deliverability advice for my sending domain. Write all output in English.
+
+## Materials
+- Target customers: finance leads/CFOs at North American e-commerce SaaS companies with $500K-$50M monthly revenue; trigger points: the company's public funding news, or a job posting containing "global expansion"
+- Us: a 50-person team focused on cross-border acquiring + local payment methods, with a case study (a Shopify seller improved payment success to 92% after onboarding)
+- Draft at task/draft.txt: opens with "Hope this email finds you well", a long feature dump, and ends with a 30-minute demo
+- Sending domain outreach.huihangpay.com is newly registered; SPF/DKIM/DMARC configured, but no warm-up done

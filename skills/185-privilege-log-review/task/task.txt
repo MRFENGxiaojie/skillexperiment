@@ -1,0 +1,16 @@
+## Background
+We're handling a commercial contract dispute (California federal court), and next Thursday we must produce a privilege log to the opposing party. This is my first full submission; the attorney asked me to do a first pass: screen out the obvious ones, flag the uncertain ones, but not make decisions for him. This is pass one — he'll review every flag.
+
+## Task
+Do a first-pass review of this log: first check formatting (dates, author, recipients complete, privilege type, description sufficient); then classify each entry into three states — clearly privileged / privileged-but-needs-attorney-determination (spell out the specific question for the attorney and the evidence on both sides) / suggested-for-removal (suggestion only, don't change the status yourself); be extra careful with in-house communications — don't easily mark "definitely privileged"; look for patterns across entries (same third party on multiple entries, over-designation, descriptions too brief); finally output the review result by template, with citations to applicable rules, markers, and a statement that "the attorney must review all markers." Write all output in English.
+
+## Materials
+Read the full log at log/privilege-log.csv and the case files at .claude/plugins/config/claude-for-legal/litigation-legal/ (CLAUDE.md, matters/_log.yaml, matters/cal-commercial-dispute/matter.md) before answering — the excerpt below is a subset:
+Log excerpt (starting at Bates A-0001):
+- A-0001 2026-05-02 outside counsel→client legal, subject "litigation strategy", only the two parties
+- A-0002 2026-05-10 client legal (also handling some business duties)→sales VP, subject "contract negotiation points", cc outside counsel
+- A-0003 2026-05-15 client CEO→outside counsel, subject "counterparty quote analysis", attached 4-page Excel (sales data)
+- A-0004 2026-05-20 outside counsel→client legal, cc a third-party consultant (an employee of the counterparty's subsidiary)
+- A-0005 2026-06-01 client legal→business team, subject "quarterly revenue target" (purely commercial)
+- A-0006 2026-06-10 meeting minutes of outside counsel and client legal, subject includes "claims and settlement"
+- A-0007~A-0010 client internal email thread, subject "customer communication", no attorney involved

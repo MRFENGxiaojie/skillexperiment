@@ -1,0 +1,118 @@
+skill: 193-game-audio
+version: 2
+total_items: 8
+criteria:
+- id: C11
+  category: content
+  fatal: false
+  text: The answer recommends 3-5 variations per sound to avoid the repeated-sound anti-pattern.
+  anchor: Agent's final answer (SFX variation guidance)
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: 3-5
+    llm:
+      question: The answer recommends 3-5 variations per sound to avoid the repeated-sound anti-pattern.
+      evidence: Agent's final answer (SFX variation guidance)
+      source: output
+      needle: 3-5
+- id: C17
+  category: content
+  fatal: false
+  text: The answer sets Player SFX at -3 to -6 dB and Enemy SFX at -6 to -9 dB in the mix.
+  anchor: Agent's final answer (mix hierarchy)
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: -3 to -6
+    llm:
+      question: The answer sets Player SFX at -3 to -6 dB and Enemy SFX at -6 to -9 dB in the mix.
+      evidence: Agent's final answer (mix hierarchy)
+      source: output
+      needle: -3 to -6
+- id: C18
+  category: content
+  fatal: false
+  text: 'The answer specifies ducking timing: voice playback ducks Music and Ambience, an explosion briefly ducks everything else, and opening the menu ducks gameplay audio.'
+  anchor: Agent's final answer (ducking rules)
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: ducking
+    llm:
+      question: 'The answer specifies ducking timing: voice playback ducks Music and Ambience, an explosion briefly ducks everything else, and opening the menu ducks gameplay audio.'
+      evidence: Agent's final answer (ducking rules)
+      source: output
+      needle: ducking
+- id: C21
+  category: format
+  fatal: false
+  text: 'The answer is structured per the skill''s Output Format with all four parts present: category declaration, decision chain, specific values, and an anti-pattern check.'
+  anchor: Agent's final answer structure
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: pattern
+    llm:
+      question: 'The answer is structured per the skill''s Output Format with all four parts present: category declaration, decision chain, specific values, and an anti-pattern check.'
+      evidence: Agent's final answer structure
+      source: output
+      needle: pattern
+- id: C22
+  category: process
+  fatal: false
+  text: The answer works through the skill's workflow without omitting a step, covering channel competition, platform constraints, mix levels, and the anti-pattern check.
+  anchor: Agent's final answer (workflow coverage)
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: ducking
+    llm:
+      question: The answer works through the skill's workflow without omitting a step, covering channel competition, platform constraints, mix levels, and the anti-pattern check.
+      evidence: Agent's final answer (workflow coverage)
+      source: output
+      needle: ducking
+- id: C25
+  category: content
+  fatal: false
+  text: The answer responds in Chinese using game-audio terminology (e.g., 音效) and directly addresses each of the user's questions.
+  anchor: Agent's final answer (language and responsiveness)
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: sound effects|SFX
+    llm:
+      question: The answer responds in Chinese using game-audio terminology (e.g., 音效) and directly addresses each of the user's questions.
+      evidence: Agent's final answer (language and responsiveness)
+      source: output
+      needle: sound effects|SFX
+- id: C26
+  category: negative
+  fatal: false
+  text: The answer stays within the skill's scope and does not provide Wwise/FMOD project configuration, music composition, sound production, or voice-synthesis guidance.
+  anchor: Agent's final answer (LLM judgment needed; absence of middleware/composition content)
+  judge: llm
+  check:
+    question: The answer stays within the skill's scope and does not provide Wwise/FMOD project configuration, music composition, sound production, or voice-synthesis guidance.
+    evidence: Agent's final answer (LLM judgment needed; absence of middleware/composition content)
+- id: C27
+  category: negative
+  fatal: true
+  text: 'The answer does not contradict the core system: Voice is not ranked below Music, and UI sounds are not recommended as 3D-positioned.'
+  anchor: Agent's final answer (LLM judgment needed; core-table consistency)
+  judge: llm
+  check:
+    question: 'The answer does not contradict the core system: Voice is not ranked below Music, and UI sounds are not recommended as 3D-positioned.'
+    evidence: Agent's final answer (LLM judgment needed; core-table consistency)

@@ -1,0 +1,12 @@
+## Background
+I'm a student at a law school legal aid clinic handling a tenant case: the landlord cut off heat in winter, forcing the tenant to move out; the landlord counterclaims for unpaid rent, and we need to evaluate the tenant's defenses.
+
+## Task
+Help me set up the framework for this case's issue-analysis memo. The client interview notes are in the materials; the issues mainly concern breach-of-contract defenses and rent abatement. List the research questions clearly, mark which parts of the rules I need to verify myself, leave writing space in the analysis section, and leave the conclusion blank. After I finish a draft I'll ask you to proofread it. Write all output in English.
+
+## Materials
+- Client interview notes: docs/intake-notes.md
+- Lease copy: docs/lease.pdf (text version: docs/lease.pdf.md)
+- Landlord's attorney letter: docs/landlord-letter.pdf (text version: docs/landlord-letter.pdf.md)
+- House practice config: .claude/plugins/config/claude-for-legal/legal-clinic/CLAUDE.md (practice areas, jurisdiction, research rules, memo output format) - read it before drafting
+- Supervisor guide: .claude/plugins/config/claude-for-legal/legal-clinic/guides/landlord-tenant.md (pedagogy posture for this practice area) - read it before drafting

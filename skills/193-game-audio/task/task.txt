@@ -1,0 +1,19 @@
+## Background
+I'm making a side-scrolling rogue-like pixel mobile game, "深穴探险者" (Deep Cave Explorer), heading to mobile. I've reached the audio phase and I'm handling all the audio myself with no outsourcing budget.
+
+## Task
+Help me plan the whole game's audio approach: what audio categories are needed and how to prioritize each; how to handle the protagonist's attack SFX and enemy SFX separately (I plan to use free asset libraries); for BGM I want to switch between battle/exploration states — what's the most natural transition approach; how to control mobile audio formats and the memory budget; how to balance volume across categories and when to duck. Also — I currently reuse a single asset file for all footsteps and hits, and the menus have almost no SFX; is this design problematic? Write all output in English.
+
+## Materials
+None (game type: portrait mobile rogue-like, 10-20 minutes per run, fast combat pacing; target package size at the level of a small casual game)
+
+## Working requirements
+Work in the current working directory. Build the complete game-audio plan and write it to `game-audio-plan.md` in the working directory.
+
+Your final reply must contain the COMPLETE plan text - the final reply is what gets graded, so do not end with a summary or a file pointer. Follow the skill's category structure (Music / SFX / Ambience / UI / Voice) and cover every item below:
+- Priority order written exactly as: Voice > Player SFX > Enemy SFX > Music > Ambience; state which lower-priority category "can be dropped" if the budget is tight.
+- Handle "Player SFX" and "Enemy SFX" separately; use "Library samples" for free assets; recommend "3-5" "variations" per important sound.
+- BGM state switch between battle and "exploration" using "Crossfade".
+- Mobile formats: "AAC"; total audio memory target "10-50 MB".
+- Mix levels: "0 dB" for Voice, "-12 to -18" for Ambience, "-3 to -6" for SFX and Music; "ducking" rules for voice-over.
+- Diagnose the current design: one reused asset for all "footsteps"/hits and almost no "menu" SFX - explain why that "pattern" is problematic and how to fix it.

@@ -1,0 +1,319 @@
+skill: 198-pricing-strategist
+version: 2
+total_items: 21
+criteria:
+- id: C01
+  category: format
+  fatal: false
+  text: The final output opens with a top-level pricing strategy title heading whose text starts with '## Pricing Strategy for'.
+  anchor: Top of the final agent output, the strategy document title.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: '## Pricing Strategy for'
+    llm:
+      question: The final output opens with a top-level pricing strategy title heading whose text starts with '## Pricing Strategy for'.
+      evidence: Top of the final agent output, the strategy document title.
+      source: output
+      needle: '## Pricing Strategy for'
+- id: C03
+  category: format
+  fatal: false
+  text: The output contains a '**Why this structure:**' line giving the rationale for the chosen model.
+  anchor: Final output, directly under the strategy type line.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: '**Why this structure:**'
+    llm:
+      question: The output contains a '**Why this structure:**' line giving the rationale for the chosen model.
+      evidence: Final output, directly under the strategy type line.
+      source: output
+      needle: '**Why this structure:**'
+- id: C04
+  category: process
+  fatal: true
+  text: The agent reads FOUNDER_CONTEXT.md before producing the pricing plan, and does not ask the user for missing info (it makes reasonable assumptions and marks them).
+  anchor: 'tool_log shows the Read of FOUNDER_CONTEXT.md; the plan reflects it and marks assumptions for missing details.'
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_contains
+      cmd: task/FOUNDER_CONTEXT.md
+    llm:
+      question: The agent reads FOUNDER_CONTEXT.md before producing the pricing plan, and does not ask the user for missing info (it makes reasonable assumptions and marks them).
+      evidence: 'tool_log shows the Read of FOUNDER_CONTEXT.md; the plan reflects it and marks assumptions for missing details.'
+      source: tool_log
+      pattern: task/FOUNDER_CONTEXT.md
+- id: C06
+  category: boundary
+  fatal: false
+  text: The agent makes reasonable assumptions for missing details per common B2B SaaS practice and marks each assumption in the plan, rather than asking the user.
+  anchor: The plan lists assumptions for any detail absent from FOUNDER_CONTEXT.md; no user-facing questions in the tool log.
+  judge: llm
+  check:
+    question: The agent makes reasonable assumptions for missing details per common B2B SaaS practice and marks each assumption in the plan, rather than asking the user.
+    evidence: The plan lists assumptions for any detail absent from FOUNDER_CONTEXT.md; no user-facing questions in the tool log.
+- id: C08
+  category: coverage
+  fatal: false
+  text: The strategy presents at least 3 pricing tiers, each with its own price point.
+  anchor: Final output — count the '**Price:**' bullets across the tier blocks.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: '**Price:**'
+    llm:
+      question: The strategy presents at least 3 pricing tiers, each with its own price point.
+      evidence: Final output — count the '**Price:**' bullets across the tier blocks.
+      source: output
+      needle: '**Price:**'
+- id: C09
+  category: format
+  fatal: false
+  text: Every tier lists both a monthly and an annual price (annual shown as a /yr figure).
+  anchor: Final output tier blocks — presence of '/yr' annual price lines.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: /yr
+    llm:
+      question: Every tier lists both a monthly and an annual price (annual shown as a /yr figure).
+      evidence: Final output tier blocks — presence of '/yr' annual price lines.
+      source: output
+      needle: /yr
+- id: C10
+  category: content
+  fatal: false
+  text: The annual discount is stated as a percentage off the monthly price (target range 20-25%).
+  anchor: Final output tier blocks for '% off' or 'save N%' tokens.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: '% off'
+    llm:
+      question: The annual discount is stated as a percentage off the monthly price (target range 20-25%).
+      evidence: Final output tier blocks for '% off' or 'save N%' tokens.
+      source: output
+      needle: '% off'
+- id: C11
+  category: content
+  fatal: true
+  text: Every pricing tier includes a price justification anchored to competitor benchmarks, value delivered, margin targets, or willingness to pay — no bare numbers.
+  anchor: Final output — 'justification' should appear per tier; judge verifies each tier's price is anchored.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: '**Price justification:**'
+    llm:
+      question: Every pricing tier includes a price justification anchored to competitor benchmarks, value delivered, margin targets, or willingness to pay — no bare numbers.
+      evidence: Final output — 'justification' should appear per tier; judge verifies each tier's price is anchored.
+      source: output
+      needle: '**Price justification:**'
+- id: C12
+  category: content
+  fatal: false
+  text: Every tier names a specific target customer segment (the 'Who it's for' bullet).
+  anchor: Final output tier blocks for 'Who it's for' bullets.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: '**Who it''s for:**'
+    llm:
+      question: Every tier names a specific target customer segment (the 'Who it's for' bullet).
+      evidence: Final output tier blocks for 'Who it's for' bullets.
+      source: output
+      needle: '**Who it''s for:**'
+- id: C13
+  category: content
+  fatal: false
+  text: Every tier defines its feature set and what is deliberately excluded to drive upgrades (the 'What's included' bullet).
+  anchor: Final output tier blocks for 'What's included' bullets.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: '**What''s included:**'
+    llm:
+      question: Every tier defines its feature set and what is deliberately excluded to drive upgrades (the 'What's included' bullet).
+      evidence: Final output tier blocks for 'What's included' bullets.
+      source: output
+      needle: '**What''s included:**'
+- id: C14
+  category: content
+  fatal: false
+  text: Price points are anchored to named competitors from the context (e.g., Notion), not invented from thin air.
+  anchor: Final output — mention of 'Notion' in price justifications or positioning.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Notion
+    llm:
+      question: Price points are anchored to named competitors from the context (e.g., Notion), not invented from thin air.
+      evidence: Final output — mention of 'Notion' in price justifications or positioning.
+      source: output
+      needle: Notion
+- id: C16
+  category: content
+  fatal: false
+  text: Upgrade triggers are defined — specific customer behaviors that move a customer from tier N to tier N+1.
+  anchor: Final output 'Upgrade triggers' bullet under Positioning & Psychology.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: '**Upgrade triggers:**'
+    llm:
+      question: Upgrade triggers are defined — specific customer behaviors that move a customer from tier N to tier N+1.
+      evidence: Final output 'Upgrade triggers' bullet under Positioning & Psychology.
+      source: output
+      needle: '**Upgrade triggers:**'
+- id: C17
+  category: format
+  fatal: false
+  text: The output contains the '### Positioning & Psychology' section.
+  anchor: Final output section header.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: '### Positioning & Psychology'
+    llm:
+      question: The output contains the '### Positioning & Psychology' section.
+      evidence: Final output section header.
+      source: output
+      needle: '### Positioning & Psychology'
+- id: C18
+  category: format
+  fatal: false
+  text: The output contains the '### Revenue Optimization' section.
+  anchor: Final output section header.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: '### Revenue Optimization'
+    llm:
+      question: The output contains the '### Revenue Optimization' section.
+      evidence: Final output section header.
+      source: output
+      needle: '### Revenue Optimization'
+- id: C19
+  category: format
+  fatal: false
+  text: The output contains the '### Biggest Pricing Risk' section.
+  anchor: Final output section header.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: '### Biggest Pricing Risk'
+    llm:
+      question: The output contains the '### Biggest Pricing Risk' section.
+      evidence: Final output section header.
+      source: output
+      needle: '### Biggest Pricing Risk'
+- id: C20
+  category: content
+  fatal: false
+  text: The biggest pricing risk is specific to this business (free-tier generosity eroding paid conversion), not generic boilerplate.
+  anchor: Final output Biggest Pricing Risk section — mention of 'conversion' or the free-to-paid dynamic.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: conversion
+    llm:
+      question: The biggest pricing risk is specific to this business (free-tier generosity eroding paid conversion), not generic boilerplate.
+      evidence: Final output Biggest Pricing Risk section — mention of 'conversion' or the free-to-paid dynamic.
+      source: output
+      needle: conversion
+- id: C21
+  category: evidence
+  fatal: false
+  text: The agent runs the quality checklist before presenting and reports the result (checks passed, or revisions made before presenting).
+  anchor: Final output or tool_log — a self-verification statement mentioning the checklist.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Quality Checklist
+    llm:
+      question: The agent runs the quality checklist before presenting and reports the result (checks passed, or revisions made before presenting).
+      evidence: Final output or tool_log — a self-verification statement mentioning the checklist.
+      source: output
+      needle: Quality Checklist
+- id: C26
+  category: boundary
+  fatal: false
+  text: The strategy presents no more than 4 pricing tiers (paradox-of-choice limit).
+  anchor: Final output — count the tier blocks.
+  judge: llm
+  check:
+    question: The strategy presents no more than 4 pricing tiers (paradox-of-choice limit).
+    evidence: Final output — count the tier blocks.
+- id: C27
+  category: termination
+  fatal: false
+  text: The agent builds the strategy from FOUNDER_CONTEXT.md and marks assumptions for any genuine gaps instead of asking questions by default.
+  anchor: The plan is complete and assumption-marked; no AskUserQuestion batches in the tool log.
+  judge: llm
+  check:
+    question: The agent builds the strategy from FOUNDER_CONTEXT.md and marks assumptions for any genuine gaps instead of asking questions by default.
+    evidence: The plan is complete and assumption-marked; no AskUserQuestion batches in the tool log.
+- id: C29
+  category: content
+  fatal: false
+  text: The chosen strategy type is consistent with the context (subscription + B2B SMB → SaaS Tiered or Hybrid) and the reason is stated rather than a generic default.
+  anchor: Final output 'Strategy type' and 'Why this structure' lines.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: SaaS Tiered
+    llm:
+      question: The chosen strategy type is consistent with the context (subscription + B2B SMB → SaaS Tiered or Hybrid) and the reason is stated rather than a generic default.
+      evidence: Final output 'Strategy type' and 'Why this structure' lines.
+      source: output
+      needle: SaaS Tiered
+- id: C30
+  category: content
+  fatal: false
+  text: 'Enterprise-tier handling respects the early-stage rule: Enterprise is skipped, priced transparently, or marked ''contact sales''.'
+  anchor: Final output — the top-tier block or positioning notes.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Enterprise
+    llm:
+      question: 'Enterprise-tier handling respects the early-stage rule: Enterprise is skipped, priced transparently, or marked ''contact sales''.'
+      evidence: Final output — the top-tier block or positioning notes.
+      source: output
+      needle: Enterprise

@@ -1,0 +1,10 @@
+## Background
+We are a Series A B2B SaaS doing customer-support ticket automation, $12M annual ARR, hybrid PLG/sales-led. We're about to enter the German market, where customers are very sensitive to GDPR and data sovereignty. I'm the PMM, and I own the positioning and message architecture for this market entry.
+
+## Task
+Help me build the positioning and message architecture for the German market entry: define the ICP (mid-to-large German enterprises, 100–500-person support teams) with a validation checklist; walk through the positioning methodology — real competitive alternatives, unique attributes, value mapping, best-fit customers, market category; give messaging and proof for each of the three roles: economic buyer, technical buyer, end user; then build a battlecard against the main competitors, including win/when-to-win-lose scenarios and objection-handling scripts. Write all output in English.
+
+## Materials
+Us: customer-support ticket automation, 40% auto-routing of German-language tickets, integrates with Salesforce and SAP, GDPR compliant (data stored in Frankfurt).
+Competitors: Zendesk (big brand, high price, mediocre German support); GermanSuite (local vendor, deep local ecosystem integration, outdated UI); status quo = email + Excel.
+Known: German ACV estimate $60K/yr, 4–6 month sales cycle, no win/loss data yet, sales team has 2 German-speaking reps.

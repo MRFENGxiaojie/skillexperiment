@@ -1,0 +1,10 @@
+## Background
+Our team is prototyping a vital-signs monitor based on 24GHz radar. We collected raw I/Q data from a subject sitting still and want to extract heart rate and respiration rate to validate the algorithm.
+
+## Task
+Help me process this radar data and compute heart rate and respiration rate. The raw data is a binary I/Q file, and the same directory has a config file describing the acquisition parameters — follow its format and sampling rate rather than assuming. After processing, report both values with the processing parameters (sampling rate, filter bands, peak-detection method) and a confidence note; if the results are unreliable, say so directly and help investigate which step the problem is in. Write all output in English.
+
+## Materials
+- task/data/record_01.bin: raw I/Q binary data
+- task/data/record_01.json: acquisition parameter config (includes sampling rate and data format)
+- Acquisition condition: subject sitting still ~60 seconds

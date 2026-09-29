@@ -1,0 +1,14 @@
+## Background
+We're a payroll outsourcing SaaS startup (target customers: HR at small/mid businesses with 100–500 employees), acquiring customers mainly through SEO and content with a tight budget. The boss wants to do "engineering as marketing": build a few free tools to drive traffic and leads. Engineers can spare one to two weeks per quarter, there's a small amount of design resource, and no dedicated ops.
+
+## Task
+Help me evaluate which of these three tool ideas to build: a US paycheck calculator (take-home pay), a company benefits cost comparator, and an HR compliance checklist generator. Score each using a six-factor framework with reasoning, and give a clear build/don't-build conclusion considering our goals and resources; for the chosen one, design the UX spec — the value exchange (input what to get what), a maximum of a few initial inputs, how results can be shared and saved, and where the lead-capture gate goes (don't make it "enter email before seeing results"); then give the SEO landing page structure (including schema) and a launch plan (channels, outreach checklist, metrics, and a 90-day target). Write all output in English.
+
+## Working requirements
+Read marketing-context.md in the current working directory first — every product, resource, competitor, goal and target figure in your answer must come from it (do not invent numbers).
+
+## Materials
+Product: payroll outsourcing + benefits management SaaS, ~$15K/yr ACV, target customer HR directors; SEO monthly organic visits 80K, all blog, no tool pages.
+Resources: 1 backend + 0.5 frontend, ~2 weeks available per quarter; 1 marketer part-time.
+Competitors: 2 decent free paycheck calculators already exist (e.g., PaycheckCity); no good free compliance checklist.
+Targets: 200 MQLs per quarter, 30 organic backlinks.

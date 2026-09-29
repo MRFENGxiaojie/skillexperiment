@@ -1,0 +1,343 @@
+skill: 196-cold-email
+version: 2
+total_items: 26
+criteria:
+- id: C02
+  category: process
+  fatal: false
+  text: The agent reads references/marketing-context.md before drafting or asking questions, since it exists in the package (per 'Before You Start').
+  anchor: Search the tool_log for a Read call whose path contains marketing-context.md.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_contains
+      cmd: references/marketing-context.md
+    llm:
+      question: The agent reads references/marketing-context.md before drafting or asking questions, since it exists in the package (per 'Before You Start').
+      evidence: Search the tool_log for a Read call whose path contains marketing-context.md.
+      source: tool_log
+      pattern: references/marketing-context.md
+- id: C03
+  category: content
+  fatal: false
+  text: The agent selects the correct modes for this request — write first email and build a follow-up sequence (not iterate-from-data) — and executes both.
+  anchor: Confirm the final output contains both a first-touch email and a sequence deliverable.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: sequence
+    llm:
+      question: The agent selects the correct modes for this request — write first email and build a follow-up sequence (not iterate-from-data) — and executes both.
+      evidence: Confirm the final output contains both a first-touch email and a sequence deliverable.
+      source: output
+      needle: sequence
+- id: C04
+  category: coverage
+  fatal: false
+  text: 'The final response delivers all four requested components in one run: rewritten first email, follow-up sequence, critique of the draft, and deliverability advice for the sending domain.'
+  anchor: Read the full final output and confirm each of the four requested parts is present and substantive.
+  judge: llm
+  check:
+    question: 'The final response delivers all four requested components in one run: rewritten first email, follow-up sequence, critique of the draft, and deliverability advice for the sending domain.'
+    evidence: Read the full final output and confirm each of the four requested parts is present and substantive.
+- id: C05
+  category: content
+  fatal: false
+  text: The rewritten first email opens with the prospect's situation or trigger (e.g., the 'global expansion' hiring signal or public funding news), not with the sender's company intro.
+  anchor: Inspect the opening of the rewritten first email in the final output for a prospect-trigger reference.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: global expansion
+    llm:
+      question: The rewritten first email opens with the prospect's situation or trigger (e.g., the 'global expansion' hiring signal or public funding news), not with the sender's company intro.
+      evidence: Inspect the opening of the rewritten first email in the final output for a prospect-trigger reference.
+      source: output
+      needle: global expansion
+- id: C06
+  category: content
+  fatal: false
+  text: The rewritten first email uses the real proof point given in the brief — the Shopify merchant's 92% payment-success rate — tied to the prospect's problem.
+  anchor: Look for the '92%' case study inside the rewritten email or its rationale in the final output.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: 92%
+    llm:
+      question: The rewritten first email uses the real proof point given in the brief — the Shopify merchant's 92% payment-success rate — tied to the prospect's problem.
+      evidence: Look for the '92%' case study inside the rewritten email or its rationale in the final output.
+      source: output
+      needle: 92%
+- id: C08
+  category: content
+  fatal: false
+  text: The first-email deliverable includes a brief rationale explaining the structure and word choices (per Output Artifacts).
+  anchor: Look for a rationale section accompanying the email copy in the final output.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: rationale
+    llm:
+      question: The first-email deliverable includes a brief rationale explaining the structure and word choices (per Output Artifacts).
+      evidence: Look for a rationale section accompanying the email copy in the final output.
+      source: output
+      needle: rationale
+- id: C09
+  category: negative
+  fatal: true
+  text: The rewritten first email does NOT open with 'Hope this email finds you well' or 'My name is X and I work at Y' (instant template tell).
+  anchor: Read the rewritten email copy and confirm its first line leads with the prospect, not a banned opener.
+  judge: llm
+  check:
+    question: The rewritten first email does NOT open with 'Hope this email finds you well' or 'My name is X and I work at Y' (instant template tell).
+    evidence: Read the rewritten email copy and confirm its first line leads with the prospect, not a banned opener.
+- id: C10
+  category: negative
+  fatal: false
+  text: The rewritten first email avoids the draft's feature dump (the long list of payment features) and avoids re-using the 30-minute demo as its CTA.
+  anchor: Read the rewritten email body and CTA; confirm no feature list and no 30-minute demo ask.
+  judge: llm
+  check:
+    question: The rewritten first email avoids the draft's feature dump (the long list of payment features) and avoids re-using the 30-minute demo as its CTA.
+    evidence: Read the rewritten email body and CTA; confirm no feature list and no 30-minute demo ask.
+- id: C11
+  category: content
+  fatal: false
+  text: The rewritten first email contains exactly one, low-friction CTA (a question or a short call), per the 'One Ask Per Email' principle.
+  anchor: Locate the single call to action in the rewritten email and judge its friction level.
+  judge: llm
+  check:
+    question: The rewritten first email contains exactly one, low-friction CTA (a question or a short call), per the 'One Ask Per Email' principle.
+    evidence: Locate the single call to action in the rewritten email and judge its friction level.
+- id: C12
+  category: evidence
+  fatal: false
+  text: The agent explicitly verifies the rewritten first email against the ~150-word limit (referencing the 150-word ceiling or stating the count), per the Proactive Triggers.
+  anchor: Search the final output for a word-count check or a reference to the 150-word limit for the first email.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: '150'
+    llm:
+      question: The agent explicitly verifies the rewritten first email against the ~150-word limit (referencing the 150-word ceiling or stating the count), per the Proactive Triggers.
+      evidence: Search the final output for a word-count check or a reference to the 150-word limit for the first email.
+      source: output
+      needle: '150'
+- id: C13
+  category: coverage
+  fatal: false
+  text: The follow-up sequence contains 5-6 emails total including a final breakup email that closes the loop.
+  anchor: Inspect the sequence deliverable in the final output and count emails including the breakup.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: breakup
+    llm:
+      question: The follow-up sequence contains 5-6 emails total including a final breakup email that closes the loop.
+      evidence: Inspect the sequence deliverable in the final output and count emails including the breakup.
+      source: output
+      needle: breakup
+- id: C14
+  category: format
+  fatal: false
+  text: The sequence assigns increasing send intervals starting at Day 1 (e.g., Day 1 → Day 4 → Day 9 → …), not a fixed daily cadence.
+  anchor: Look for the interval schedule at the top of the sequence deliverable.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Day 1
+    llm:
+      question: The sequence assigns increasing send intervals starting at Day 1 (e.g., Day 1 → Day 4 → Day 9 → …), not a fixed daily cadence.
+      evidence: Look for the interval schedule at the top of the sequence deliverable.
+      source: output
+      needle: Day 1
+- id: C15
+  category: format
+  fatal: false
+  text: The cadence extends through the later intervals (e.g., Day 25 and the Day 35 breakup), proving the intervals actually increase over time.
+  anchor: Confirm the sequence table includes the later send days beyond Day 1.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Day 25
+    llm:
+      question: The cadence extends through the later intervals (e.g., Day 25 and the Day 35 breakup), proving the intervals actually increase over time.
+      evidence: Confirm the sequence table includes the later send days beyond Day 1.
+      source: output
+      needle: Day 25
+- id: C16
+  category: content
+  fatal: false
+  text: Each follow-up email in the sequence has a distinct new angle (new evidence, new problem angle, insight, direct question, or reverse ask) — never just a nudge, with an angle noted per email.
+  anchor: Check the angle summary provided for each follow-up in the sequence deliverable.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: angle
+    llm:
+      question: Each follow-up email in the sequence has a distinct new angle (new evidence, new problem angle, insight, direct question, or reverse ask) — never just a nudge, with an angle noted per email.
+      evidence: Check the angle summary provided for each follow-up in the sequence deliverable.
+      source: output
+      needle: angle
+- id: C17
+  category: negative
+  fatal: true
+  text: No follow-up email uses 'just checking in' or 'circling back' with no new value (wasted touchpoint).
+  anchor: Read each follow-up and confirm it adds a new angle rather than a check-in.
+  judge: llm
+  check:
+    question: No follow-up email uses 'just checking in' or 'circling back' with no new value (wasted touchpoint).
+    evidence: Read each follow-up and confirm it adds a new angle rather than a check-in.
+- id: C18
+  category: content
+  fatal: false
+  text: The breakup email closes the loop professionally and offers a low-friction out (reply to reconnect, or a referral name).
+  anchor: Read the final email of the sequence and judge its closing structure.
+  judge: llm
+  check:
+    question: The breakup email closes the loop professionally and offers a low-friction out (reply to reconnect, or a referral name).
+    evidence: Read the final email of the sequence and judge its closing structure.
+- id: C20
+  category: content
+  fatal: false
+  text: The critique flags the draft's feature dump (the long list of payment solutions) as a copy violation for a first touch.
+  anchor: Look for the feature-dump criticism in the critique section of the final output.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: feature dump
+    llm:
+      question: The critique flags the draft's feature dump (the long list of payment solutions) as a copy violation for a first touch.
+      evidence: Look for the feature-dump criticism in the critique section of the final output.
+      source: output
+      needle: feature dump
+- id: C22
+  category: content
+  fatal: false
+  text: The critique notes the draft's placeholder details (e.g., '[Your Name]', 'Business Development Manager') must be replaced with real sender info before sending.
+  anchor: Look for a placeholder-reference warning in the critique or delivery notes.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: '[Your Name]'
+    llm:
+      question: The critique notes the draft's placeholder details (e.g., '[Your Name]', 'Business Development Manager') must be replaced with real sender info before sending.
+      evidence: Look for a placeholder-reference warning in the critique or delivery notes.
+      source: output
+      needle: '[Your Name]'
+- id: C24
+  category: content
+  fatal: false
+  text: The deliverability advice flags that the newly-registered, unwarmed domain needs a warmup ramp before live sending.
+  anchor: Look for warmup guidance in the deliverability section of the final output.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: warmup
+    llm:
+      question: The deliverability advice flags that the newly-registered, unwarmed domain needs a warmup ramp before live sending.
+      evidence: Look for warmup guidance in the deliverability section of the final output.
+      source: output
+      needle: warmup
+- id: C25
+  category: content
+  fatal: false
+  text: The deliverability advice references the SPF/DKIM/DMARC setup and the need to verify all three pass.
+  anchor: Look for SPF/DKIM/DMARC authentication guidance in the deliverability section.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: DKIM
+    llm:
+      question: The deliverability advice references the SPF/DKIM/DMARC setup and the need to verify all three pass.
+      evidence: Look for SPF/DKIM/DMARC authentication guidance in the deliverability section.
+      source: output
+      needle: DKIM
+- id: C27
+  category: content
+  fatal: false
+  text: The deliverability advice includes a working opt-out mechanism (CAN-SPAM/GDPR compliance).
+  anchor: Look for opt-out guidance in the deliverability section.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: opt-out
+    llm:
+      question: The deliverability advice includes a working opt-out mechanism (CAN-SPAM/GDPR compliance).
+      evidence: Look for opt-out guidance in the deliverability section.
+      source: output
+      needle: opt-out
+- id: C29
+  category: format
+  fatal: false
+  text: 'The response follows the structured communication pattern: conclusion first, with confidence marking on assumptions.'
+  anchor: Assess the output structure for conclusion-first ordering and any confidence marking.
+  judge: llm
+  check:
+    question: 'The response follows the structured communication pattern: conclusion first, with confidence marking on assumptions.'
+    evidence: Assess the output structure for conclusion-first ordering and any confidence marking.
+- id: C30
+  category: boundary
+  fatal: false
+  text: Because no specific prospect names/companies were provided, the agent treats the email as a segment template with placeholders rather than fabricating named prospects.
+  anchor: Confirm no invented company or person names appear in the personalization.
+  judge: llm
+  check:
+    question: Because no specific prospect names/companies were provided, the agent treats the email as a segment template with placeholders rather than fabricating named prospects.
+    evidence: Confirm no invented company or person names appear in the personalization.
+- id: C31
+  category: termination
+  fatal: false
+  text: The sequence stops at the breakup email (5-6 emails max) and does not balloon into a 7-14 email campaign or offload to cold-email-sequence-generator.
+  anchor: Count emails in the sequence and confirm it ends at the breakup.
+  judge: llm
+  check:
+    question: The sequence stops at the breakup email (5-6 emails max) and does not balloon into a 7-14 email campaign or offload to cold-email-sequence-generator.
+    evidence: Count emails in the sequence and confirm it ends at the breakup.
+- id: C32
+  category: negative
+  fatal: false
+  text: The agent does not send the emails, build/scrape prospect lists, or set up sending infrastructure — it delivers copy, sequence, critique, and recommendations only (per Scope and Limitations).
+  anchor: Scan the tool_log and output for any send/scrape/list-building actions.
+  judge: llm
+  check:
+    question: The agent does not send the emails, build/scrape prospect lists, or set up sending infrastructure — it delivers copy, sequence, critique, and recommendations only (per Scope and Limitations).
+    evidence: Scan the tool_log and output for any send/scrape/list-building actions.
+- id: C33
+  category: negative
+  fatal: true
+  text: The agent does not apply lifecycle/nurture email patterns (no opt-in assumption, no button CTAs, no heavy HTML) to this cold outreach.
+  anchor: Confirm the deliverables treat the prospect as cold, not opted-in.
+  judge: llm
+  check:
+    question: The agent does not apply lifecycle/nurture email patterns (no opt-in assumption, no button CTAs, no heavy HTML) to this cold outreach.
+    evidence: Confirm the deliverables treat the prospect as cold, not opted-in.

@@ -1,0 +1,10 @@
+## Background
+I produce a monthly sales report from a 2GB order CSV (~8M rows, 40 columns). pandas used to take over ten minutes and often blew memory. I want to rewrite this analysis with polars, but I haven't used it much.
+
+## Task
+Write this processing script with polars: read the large CSV with lazy execution; do cleaning (convert amounts to numeric, parse dates, handle nulls); aggregate sales amount and order count by region+month, and compute each customer's sales rank within their region (window computation); create new columns conditionally (large-order/regular-order flag); finally export a parquet summary and a CSV detail. The script must handle 8M rows; don't use row-wise Python functions on the hot path; where my requirements have pandas idioms, show me the corresponding polars idiom. Write all output in English.
+
+## Materials
+CSV: task/orders_2026.csv (in the current working directory), columns include order_id, date, region, customer_id, amount, status; sample row: A1001,2026-01-05,华东,C88,1299.50,completed.
+Counting convention: only status=completed counts.
+(Note: 华东 is the East China region code.)

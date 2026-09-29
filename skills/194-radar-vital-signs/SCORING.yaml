@@ -1,0 +1,375 @@
+skill: 194-radar-vital-signs
+version: 2
+total_items: 24
+criteria:
+- id: C03
+  category: process
+  fatal: false
+  text: The agent parses record_01.bin as little-endian int16 interleaved complex I/Q, matching the sidecar format field.
+  anchor: In the tool log, search the parsing code/command for the dtype token int16.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_contains
+      cmd: int16
+    llm:
+      question: The agent parses record_01.bin as little-endian int16 interleaved complex I/Q, matching the sidecar format field.
+      evidence: In the tool log, search the parsing code/command for the dtype token int16.
+      source: tool_log
+      pattern: int16
+- id: C05
+  category: process
+  fatal: false
+  text: 'The agent removes static clutter by subtracting the temporal mean of the complex I/Q (CW form: iq -= iq.mean()).'
+  anchor: In the tool log, search the analysis code for iq.mean().
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_contains
+      cmd: iq.mean()
+    llm:
+      question: 'The agent removes static clutter by subtracting the temporal mean of the complex I/Q (CW form: iq -= iq.mean()).'
+      evidence: In the tool log, search the analysis code for iq.mean().
+      source: tool_log
+      pattern: iq.mean()
+- id: C06
+  category: process
+  fatal: false
+  text: The agent extracts the phase via angle plus phase unwrapping and removes the phase mean (DC offset).
+  anchor: In the tool log, search the analysis code for np.unwrap.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_contains
+      cmd: np.unwrap
+    llm:
+      question: The agent extracts the phase via angle plus phase unwrapping and removes the phase mean (DC offset).
+      evidence: In the tool log, search the analysis code for np.unwrap.
+      source: tool_log
+      pattern: np.unwrap
+- id: C07
+  category: content
+  fatal: false
+  text: The report states the post-decimation sample rate as 100 Hz.
+  anchor: In the agent's final output, search the Parameters section for 100 Hz.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: 100 Hz
+    llm:
+      question: The report states the post-decimation sample rate as 100 Hz.
+      evidence: In the agent's final output, search the Parameters section for 100 Hz.
+      source: output
+      needle: 100 Hz
+- id: C08
+  category: boundary
+  fatal: false
+  text: The agent skips decimation because 100 Hz is below the 500 Hz threshold, and documents that the post-decimation fs equals the original fs.
+  anchor: In the agent's final output, search for the token post-decimation showing the decimation decision was documented.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: post-decimation
+    llm:
+      question: The agent skips decimation because 100 Hz is below the 500 Hz threshold, and documents that the post-decimation fs equals the original fs.
+      evidence: In the agent's final output, search for the token post-decimation showing the decimation decision was documented.
+      source: output
+      needle: post-decimation
+- id: C09
+  category: process
+  fatal: false
+  text: The agent designs two separate Butterworth bandpass filters — a breathing band (0.08–0.5 Hz) and a heart-rate band (0.7–3.0 Hz).
+  anchor: In the tool log, search the analysis code for butter.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_contains
+      cmd: butter
+    llm:
+      question: The agent designs two separate Butterworth bandpass filters — a breathing band (0.08–0.5 Hz) and a heart-rate band (0.7–3.0 Hz).
+      evidence: In the tool log, search the analysis code for butter.
+      source: tool_log
+      pattern: butter
+- id: C10
+  category: content
+  fatal: false
+  text: The report lists the breathing-rate band lower edge at 0.08 Hz in the Parameters section.
+  anchor: In the agent's final output, search for 0.08.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: '0.08'
+    llm:
+      question: The report lists the breathing-rate band lower edge at 0.08 Hz in the Parameters section.
+      evidence: In the agent's final output, search for 0.08.
+      source: output
+      needle: '0.08'
+- id: C11
+  category: content
+  fatal: false
+  text: The report lists the heart-rate band edges (0.7 Hz lower, 3.0 Hz upper) in the Parameters section.
+  anchor: In the agent's final output, search for 0.7.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: '0.7'
+    llm:
+      question: The report lists the heart-rate band edges (0.7 Hz lower, 3.0 Hz upper) in the Parameters section.
+      evidence: In the agent's final output, search for 0.7.
+      source: output
+      needle: '0.7'
+- id: C12
+  category: process
+  fatal: false
+  text: The agent computes the peak frequency in each band from a zero-padded Welch power spectral density.
+  anchor: In the tool log, search the analysis code for welch.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_contains
+      cmd: welch
+    llm:
+      question: The agent computes the peak frequency in each band from a zero-padded Welch power spectral density.
+      evidence: In the tool log, search the analysis code for welch.
+      source: tool_log
+      pattern: welch
+- id: C13
+  category: content
+  fatal: false
+  text: The report states the PSD window parameters (nperseg and nfft) in the Parameters section.
+  anchor: In the agent's final output, search for nperseg.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: nperseg
+    llm:
+      question: The report states the PSD window parameters (nperseg and nfft) in the Parameters section.
+      evidence: In the agent's final output, search for nperseg.
+      source: output
+      needle: nperseg
+- id: C14
+  category: process
+  fatal: false
+  text: The agent runs the HR sub-harmonic rejection check (f_peak/2 power compared to peak power), which the skill marks as always required.
+  anchor: In the tool log, search the analysis code for the token harmonic (comment or variable).
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_contains
+      cmd: harmonic
+    llm:
+      question: The agent runs the HR sub-harmonic rejection check (f_peak/2 power compared to peak power), which the skill marks as always required.
+      evidence: In the tool log, search the analysis code for the token harmonic (comment or variable).
+      source: tool_log
+      pattern: harmonic
+- id: C15
+  category: process
+  fatal: false
+  text: The agent cross-checks the PSD-derived rates with an autocorrelation estimate for each band.
+  anchor: In the tool log, search the analysis code for np.correlate.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_contains
+      cmd: np.correlate
+    llm:
+      question: The agent cross-checks the PSD-derived rates with an autocorrelation estimate for each band.
+      evidence: In the tool log, search the analysis code for np.correlate.
+      source: tool_log
+      pattern: np.correlate
+- id: C16
+  category: content
+  fatal: false
+  text: The report states the peak-selection method used (PSD, autocorrelation, or both) for each rate.
+  anchor: In the agent's final output, search for autocorrelation.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: autocorrelation
+    llm:
+      question: The report states the peak-selection method used (PSD, autocorrelation, or both) for each rate.
+      evidence: In the agent's final output, search for autocorrelation.
+      source: output
+      needle: autocorrelation
+- id: C17
+  category: evidence
+  fatal: false
+  text: The agent uses the 5 bpm agreement threshold between PSD and autocorrelation when assigning confidence to each rate.
+  anchor: In the agent's final output, search the Confidence section for 5 bpm.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: 5 bpm
+    llm:
+      question: The agent uses the 5 bpm agreement threshold between PSD and autocorrelation when assigning confidence to each rate.
+      evidence: In the agent's final output, search the Confidence section for 5 bpm.
+      source: output
+      needle: 5 bpm
+- id: C18
+  category: format
+  fatal: false
+  text: 'The final results are reported with bpm units (e.g., ''HR: {N} bpm | BR: {N} bpm'').'
+  anchor: In the agent's final output, search for bpm.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: bpm
+    llm:
+      question: 'The final results are reported with bpm units (e.g., ''HR: {N} bpm | BR: {N} bpm'').'
+      evidence: In the agent's final output, search for bpm.
+      source: output
+      needle: bpm
+- id: C19
+  category: coverage
+  fatal: false
+  text: The final report includes a Parameters section covering sample rate, band edges, PSD window, and peak-selection method.
+  anchor: In the agent's final output, search for the section header Parameters.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Parameters
+    llm:
+      question: The final report includes a Parameters section covering sample rate, band edges, PSD window, and peak-selection method.
+      evidence: In the agent's final output, search for the section header Parameters.
+      source: output
+      needle: Parameters
+- id: C20
+  category: content
+  fatal: false
+  text: The report includes a Confidence entry for each rate with one of high / low / inconclusive.
+  anchor: In the agent's final output, search for Confidence.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Confidence
+    llm:
+      question: The report includes a Confidence entry for each rate with one of high / low / inconclusive.
+      evidence: In the agent's final output, search for Confidence.
+      source: output
+      needle: Confidence
+- id: C21
+  category: content
+  fatal: false
+  text: The report includes a Checks section stating the sanity checks that were performed.
+  anchor: In the agent's final output, search for Checks.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Checks
+    llm:
+      question: The report includes a Checks section stating the sanity checks that were performed.
+      evidence: In the agent's final output, search for Checks.
+      source: output
+      needle: Checks
+- id: C22
+  category: content
+  fatal: false
+  text: The report states the BR < HR sanity check result (confirming the bands are not swapped).
+  anchor: In the agent's final output, search the Checks section for BR < HR.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: BR < HR
+    llm:
+      question: The report states the BR < HR sanity check result (confirming the bands are not swapped).
+      evidence: In the agent's final output, search the Checks section for BR < HR.
+      source: output
+      needle: BR < HR
+- id: C23
+  category: content
+  fatal: false
+  text: The report states the resting-adult plausibility check (HR 50–90 bpm, BR 10–20 bpm).
+  anchor: In the agent's final output, search for plausible or plausibility.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: plausib
+    llm:
+      question: The report states the resting-adult plausibility check (HR 50–90 bpm, BR 10–20 bpm).
+      evidence: In the agent's final output, search for plausible or plausibility.
+      source: output
+      needle: plausib
+- id: C25
+  category: negative
+  fatal: false
+  text: The agent never presents a low-confidence estimate as a final answer; a flagged value is always labeled low-confidence in the same breath.
+  anchor: Semantic — review how the final HR/BR values are presented relative to the confidence statement.
+  judge: llm
+  check:
+    question: The agent never presents a low-confidence estimate as a final answer; a flagged value is always labeled low-confidence in the same breath.
+    evidence: Semantic — review how the final HR/BR values are presented relative to the confidence statement.
+- id: C26
+  category: content
+  fatal: false
+  text: If the results are unreliable or low-confidence, the agent says so explicitly and helps identify which pipeline step failed.
+  anchor: Semantic — review the final output for any reliability caveat and troubleshooting guidance.
+  judge: llm
+  check:
+    question: If the results are unreliable or low-confidence, the agent says so explicitly and helps identify which pipeline step failed.
+    evidence: Semantic — review the final output for any reliability caveat and troubleshooting guidance.
+- id: C27
+  category: evidence
+  fatal: false
+  text: The agent actually executes the analysis (runs Python code against the binary), rather than reporting numbers without computation.
+  anchor: In the tool log, search for a python execution command.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: command_succeeded
+      cmd: python
+      expect: success
+    llm:
+      question: The agent actually executes the analysis (runs Python code against the binary), rather than reporting numbers without computation.
+      evidence: In the tool log, search for a python execution command.
+      source: tool_log
+      pattern: python
+- id: C28
+  category: boundary
+  fatal: false
+  text: The agent verifies that the parsed sample count is consistent with the config (60 s at 100 Hz → 6000 complex samples) or otherwise handles a length mismatch.
+  anchor: Semantic — review the parsing step for a length/duration consistency check.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_contains
+      cmd: fs * duration
+    llm:
+      question: The agent verifies that the parsed sample count is consistent with the config (60 s at 100 Hz → 6000 complex samples) or otherwise handles a length mismatch.
+      evidence: Semantic — review the parsing step for a length/duration consistency check.
+      source: tool_log
+      pattern: fs * duration

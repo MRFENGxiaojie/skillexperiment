@@ -1,0 +1,11 @@
+{
+  "record_id": "record_01",
+  "radar_type": "24GHz_cw",
+  "format": "int16_le_interleaved_complex",
+  "sample_rate_hz": 100,
+  "duration_seconds": 60,
+  "num_channels": 1,
+  "adc_bits": 16,
+  "clutter_removal": "recommended",
+  "notes": "subject seated ~60s, breathing/hand motions kept minimal"
+}
