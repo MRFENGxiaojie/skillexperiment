@@ -1,0 +1,21 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "git-tidy"
+version = "1.0.0"
+description = "Git commit message lint and auto-fix tool"
+requires-python = ">=3.9"
+license = { text = "MIT" }
+dependencies = []
+
+[project.scripts]
+git-tidy = "git_tidy.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["git_tidy*"]
+
+[tool.git-tidy]
+types = ["feat", "fix", "docs", "chore", "refactor", "test"]
+max-line-length = 72

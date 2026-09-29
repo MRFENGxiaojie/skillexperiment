@@ -1,0 +1,8 @@
+## Background
+We're the "记账鸭" (Jizhang Duck) app team, building a personal bookkeeping app on iOS and Android. Core features are quick entry, expense reports, and budget alerts. Six months after launch the rating is 3.8, with negative reviews concentrated on "the entry flow is too tedious," "can't find the settings entry," and "the reports are hard to understand." The team keeps arguing about what to fix first.
+
+## Task
+Do a comprehensive experience evaluation of the whole app — don't just focus on one part. Walk through all dimensions: user value, ease of use, findability, trustworthiness, and attractiveness. Rank the issues found by severity, give a concrete redesign plan, an implementation roadmap, and how to validate these conclusions with real users afterward. Write all output in English.
+
+## Materials
+Product info: 记账鸭 v2.1, core flow is "open → pick category → enter amount → save", averaging 6 steps per entry; 40K monthly active users, 32% next-day retention. User feedback excerpts: "too many taps to record one entry", "can't understand the charts", "don't know where to switch ledgers", "it crashed once — no data lost but I was panicked". Team goal: improve next-day retention and the rating.

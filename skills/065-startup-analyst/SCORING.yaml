@@ -1,0 +1,390 @@
+skill: 065-startup-analyst
+version: 2
+total_items: 24
+criteria:
+- id: C01
+  category: content
+  fatal: false
+  text: The analysis is tailored to the given company 筑联云 and its B2B SaaS construction-project-management business, not generic startup advice.
+  anchor: Check the agent's final output for the company name 筑联云.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: 筑联云|Zhu Lian Yun
+    llm:
+      question: The analysis is tailored to the given company 筑联云 and its B2B SaaS construction-project-management business, not generic startup advice.
+      evidence: Check the agent's final output for the company name 筑联云.
+      source: output
+      needle: 筑联云|Zhu Lian Yun
+- id: C04
+  category: tool
+  fatal: false
+  text: The agent uses WebFetch to read a source page for data verification.
+  anchor: Search the tool log for a WebFetch call.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_contains
+      cmd: WebFetch
+    llm:
+      question: The agent uses WebFetch to read a source page for data verification.
+      evidence: Search the tool log for a WebFetch call.
+      source: tool_log
+      pattern: WebFetch
+- id: C05
+  category: process
+  fatal: false
+  text: The agent reads the provided company data file company-info.md before analyzing.
+  anchor: Search the tool log for a Read of company-info.md.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_contains
+      cmd: company-info.md
+    llm:
+      question: The agent reads the provided company data file company-info.md before analyzing.
+      evidence: Search the tool log for a Read of company-info.md.
+      source: tool_log
+      pattern: company-info.md
+- id: C07
+  category: process
+  fatal: false
+  text: Web research happens before the report is written, so data gathering precedes synthesis.
+  anchor: Verify in the tool log that a WebSearch call appears before a Write call.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_order
+      cmds:
+      - WebSearch
+      - Write
+    llm:
+      question: Web research happens before the report is written, so data gathering precedes synthesis.
+      evidence: Verify in the tool log that a WebSearch call appears before a Write call.
+      source: tool_log
+      pattern: WebSearch|Write
+- id: C10
+  category: format
+  fatal: false
+  text: The report presents data in markdown tables (pipe-delimited rows).
+  anchor: Check the report file for pipe characters forming table rows.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: market-opportunity-analysis-report.md
+      needle: '|'
+    llm:
+      question: The report presents data in markdown tables (pipe-delimited rows).
+      evidence: Check the report file for pipe characters forming table rows.
+      source: workspace
+      path: market-opportunity-analysis-report.md
+      needle: '|'
+- id: C15
+  category: content
+  fatal: false
+  text: The report shows the formula and step-by-step calculation used for each estimate.
+  anchor: Check the report file for the term formula (公式) in the calculation sections.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: market-opportunity-analysis-report.md
+      needle: formula|formulas
+    llm:
+      question: The report shows the formula and step-by-step calculation used for each estimate.
+      evidence: Check the report file for the term formula (公式) in the calculation sections.
+      source: workspace
+      path: market-opportunity-analysis-report.md
+      needle: formula|formulas
+- id: C17
+  category: content
+  fatal: false
+  text: Market-size results are reported with units (亿元).
+  anchor: Check the report file for the unit 亿元 (100 million CNY) attached to market size figures.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: market-opportunity-analysis-report.md
+      needle: 100 million|100M
+    llm:
+      question: Market-size results are reported with units (亿元).
+      evidence: Check the report file for the unit 亿元 (100 million CNY) attached to market size figures.
+      source: workspace
+      path: market-opportunity-analysis-report.md
+      needle: 100 million|100M
+- id: C18
+  category: content
+  fatal: false
+  text: The competitive analysis names at least one real player in the China decoration-industry software market (e.g., 酷家乐).
+  anchor: Check the report file for a named competitor such as Kujiale (酷家乐).
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: market-opportunity-analysis-report.md
+      needle: 酷家乐|Kujiale|Coohom
+    llm:
+      question: The competitive analysis names at least one real player in the China decoration-industry software market (e.g., 酷家乐).
+      evidence: Check the report file for a named competitor such as Kujiale (酷家乐).
+      source: workspace
+      path: market-opportunity-analysis-report.md
+      needle: 酷家乐|Kujiale|Coohom
+- id: C19
+  category: coverage
+  fatal: false
+  text: The competitive landscape maps multiple distinct named players, not a single competitor.
+  anchor: Check the report file for a second named player such as Glodon (广联达) alongside the first.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: market-opportunity-analysis-report.md
+      needle: Glodon
+    llm:
+      question: The competitive landscape maps multiple distinct named players, not a single competitor.
+      evidence: Check the report file for a second named player such as Glodon (广联达) alongside the first.
+      source: workspace
+      path: market-opportunity-analysis-report.md
+      needle: Glodon
+- id: C21
+  category: content
+  fatal: false
+  text: The report includes a conservative 3-year revenue forecast.
+  anchor: Check the report file for a forecast reaching end of year 3 (第 3 年末).
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: market-opportunity-analysis-report.md
+      needle: end of year 3
+    llm:
+      question: The report includes a conservative 3-year revenue forecast.
+      evidence: Check the report file for a forecast reaching end of year 3 (第 3 年末).
+      source: workspace
+      path: market-opportunity-analysis-report.md
+      needle: end of year 3
+- id: C22
+  category: coverage
+  fatal: false
+  text: The revenue forecast spans all three years (year 1 through year 3).
+  anchor: Check the report file for intermediate-year data such as end of year 2 (第 2 年末).
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: market-opportunity-analysis-report.md
+      needle: end of year 2
+    llm:
+      question: The revenue forecast spans all three years (year 1 through year 3).
+      evidence: Check the report file for intermediate-year data such as end of year 2 (第 2 年末).
+      source: workspace
+      path: market-opportunity-analysis-report.md
+      needle: end of year 2
+- id: C23
+  category: content
+  fatal: false
+  text: The report includes a break-even analysis.
+  anchor: Check the report file for the term break-even (盈亏平衡).
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: market-opportunity-analysis-report.md
+      needle: breakeven|break-even
+    llm:
+      question: The report includes a break-even analysis.
+      evidence: Check the report file for the term break-even (盈亏平衡).
+      source: workspace
+      path: market-opportunity-analysis-report.md
+      needle: breakeven|break-even
+- id: C25
+  category: content
+  fatal: false
+  text: The report provides a prioritized KPI/metric checklist for the period before fundraising.
+  anchor: Check the report file for the pre-fundraising section (融资前 / pre-funding).
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: market-opportunity-analysis-report.md
+      needle: pre-funding|pre-financing
+    llm:
+      question: The report provides a prioritized KPI/metric checklist for the period before fundraising.
+      evidence: Check the report file for the pre-fundraising section (融资前 / pre-funding).
+      source: workspace
+      path: market-opportunity-analysis-report.md
+      needle: pre-funding|pre-financing
+- id: C26
+  category: content
+  fatal: false
+  text: The KPI checklist uses metrics appropriate to the SaaS business model (e.g., NDR, CAC, LTV).
+  anchor: Check the report file for a SaaS-specific metric such as NDR.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: market-opportunity-analysis-report.md
+      needle: NDR
+    llm:
+      question: The KPI checklist uses metrics appropriate to the SaaS business model (e.g., NDR, CAC, LTV).
+      evidence: Check the report file for a SaaS-specific metric such as NDR.
+      source: workspace
+      path: market-opportunity-analysis-report.md
+      needle: NDR
+- id: C27
+  category: evidence
+  fatal: false
+  text: The report cites data sources and distinguishes sourced figures from estimates (来源/口径说明).
+  anchor: Check the report file for a sources section (来源).
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: market-opportunity-analysis-report.md
+      needle: source|sources
+    llm:
+      question: The report cites data sources and distinguishes sourced figures from estimates (来源/口径说明).
+      evidence: Check the report file for a sources section (来源).
+      source: workspace
+      path: market-opportunity-analysis-report.md
+      needle: source|sources
+- id: C28
+  category: evidence
+  fatal: false
+  text: The TAM estimate is cross-validated with a second method (triangulation).
+  anchor: Check the report file for a triangulation step (交叉验证).
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: market-opportunity-analysis-report.md
+      needle: cross-validation
+    llm:
+      question: The TAM estimate is cross-validated with a second method (triangulation).
+      evidence: Check the report file for a triangulation step (交叉验证).
+      source: workspace
+      path: market-opportunity-analysis-report.md
+      needle: cross-validation
+- id: C29
+  category: boundary
+  fatal: false
+  text: Figures that could not be verified online are explicitly marked as needing re-verification (二次核实) rather than presented as confirmed.
+  anchor: Check the report file for the re-verification marker 'second verification' (二次核实).
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: market-opportunity-analysis-report.md
+      needle: second verification|double-check
+    llm:
+      question: Figures that could not be verified online are explicitly marked as needing re-verification (二次核实) rather than presented as confirmed.
+      evidence: Check the report file for the re-verification marker 'second verification' (二次核实).
+      source: workspace
+      path: market-opportunity-analysis-report.md
+      needle: second verification|double-check
+- id: C30
+  category: boundary
+  fatal: false
+  text: The agent discloses data limitations and what must be re-verified before fundraising.
+  anchor: Check the final output for the limitations section 'data usage description' (数据使用说明).
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: data usage description
+    llm:
+      question: The agent discloses data limitations and what must be re-verified before fundraising.
+      evidence: Check the final output for the limitations section 'data usage description' (数据使用说明).
+      source: output
+      needle: data usage description
+- id: C31
+  category: content
+  fatal: false
+  text: The report frames the fundraising timing and amount implications (seed round within ~6 months).
+  anchor: Check the report file for seed-round framing (种子轮).
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: market-opportunity-analysis-report.md
+      needle: seed round
+    llm:
+      question: The report frames the fundraising timing and amount implications (seed round within ~6 months).
+      evidence: Check the report file for seed-round framing (种子轮).
+      source: workspace
+      path: market-opportunity-analysis-report.md
+      needle: seed round
+- id: C32
+  category: coverage
+  fatal: false
+  text: The agent offers actionable next steps or follow-up support to the founder at the end of the analysis.
+  anchor: Check the final output for an offer of follow-up work (接着做).
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: continue|keep going
+    llm:
+      question: The agent offers actionable next steps or follow-up support to the founder at the end of the analysis.
+      evidence: Check the final output for an offer of follow-up work (接着做).
+      source: output
+      needle: continue|keep going
+- id: C33
+  category: negative
+  fatal: true
+  text: 'The agent does not fabricate market data: unverified figures are labeled as assumptions or directional estimates, never presented as sourced facts.'
+  anchor: LLM judgment over the report's data handling and caveats.
+  judge: llm
+  check:
+    question: 'The agent does not fabricate market data: unverified figures are labeled as assumptions or directional estimates, never presented as sourced facts.'
+    evidence: LLM judgment over the report's data handling and caveats.
+- id: C34
+  category: negative
+  fatal: false
+  text: The agent does not present legal, tax, accounting, or investment advice as definitive, and flags such topics for licensed professionals.
+  anchor: LLM judgment over disclaimers and scope statements in the report.
+  judge: llm
+  check:
+    question: The agent does not present legal, tax, accounting, or investment advice as definitive, and flags such topics for licensed professionals.
+    evidence: LLM judgment over disclaimers and scope statements in the report.
+- id: C35
+  category: termination
+  fatal: false
+  text: When public data verification fails, the agent degrades to explicitly marked assumptions instead of proceeding with unverified sourced claims.
+  anchor: LLM judgment over the report's handling of failed web verification.
+  judge: llm
+  check:
+    question: When public data verification fails, the agent degrades to explicitly marked assumptions instead of proceeding with unverified sourced claims.
+    evidence: LLM judgment over the report's handling of failed web verification.
+- id: C36
+  category: negative
+  fatal: false
+  text: The agent proceeds from the provided company context (stage angel round (天使轮), B2B SaaS) and does not assume unstated inputs.
+  anchor: LLM judgment over the agent's handling of context before analysis.
+  judge: llm
+  check:
+    question: The agent proceeds from the provided company context (stage angel round (天使轮), B2B SaaS) and does not assume unstated inputs.
+    evidence: LLM judgment over the agent's handling of context before analysis.

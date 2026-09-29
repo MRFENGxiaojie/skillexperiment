@@ -1,0 +1,458 @@
+skill: 060-ux-audit-rethink
+version: 2
+total_items: 30
+criteria:
+- id: C02
+  category: process
+  fatal: false
+  text: The agent reads the audit procedure reference (references/audit-procedure.md) that defines the systematic audit steps.
+  anchor: tool_log, Read calls referencing audit-procedure.md
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_contains
+      cmd: audit-procedure.md
+    llm:
+      question: The agent reads the audit procedure reference (references/audit-procedure.md) that defines the systematic audit steps.
+      evidence: tool_log, Read calls referencing audit-procedure.md
+      source: tool_log
+      pattern: audit-procedure.md
+- id: C04
+  category: process
+  fatal: false
+  text: The agent reads the mobile-specific guidelines reference (references/mobile-specific-guidelines-ixdf-chapter-8.md) because the audited product is a mobile app.
+  anchor: tool_log, Read calls referencing mobile-specific-guidelines-ixdf-chapter-8.md
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_contains
+      cmd: mobile-specific-guidelines-ixdf-chapter-8.md
+    llm:
+      question: The agent reads the mobile-specific guidelines reference (references/mobile-specific-guidelines-ixdf-chapter-8.md) because the audited product is a mobile app.
+      evidence: tool_log, Read calls referencing mobile-specific-guidelines-ixdf-chapter-8.md
+      source: tool_log
+      pattern: mobile-specific-guidelines-ixdf-chapter-8.md
+- id: C05
+  category: process
+  fatal: false
+  text: The skill invocation appears in the tool log before the audit procedure reference is read.
+  anchor: tool_log, order of Skill call versus Read of audit-procedure.md
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_order
+      cmds:
+      - 060-ux-audit-rethink
+      - audit-procedure.md
+    llm:
+      question: The skill invocation appears in the tool log before the audit procedure reference is read.
+      evidence: tool_log, order of Skill call versus Read of audit-procedure.md
+      source: tool_log
+      pattern: 060-ux-audit-rethink|audit-procedure.md
+- id: C07
+  category: content
+  fatal: false
+  text: The report identifies the product platform as iOS/Android.
+  anchor: final report output, product description
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: iOS
+    llm:
+      question: The report identifies the product platform as iOS/Android.
+      evidence: final report output, product description
+      source: output
+      needle: iOS
+- id: C09
+  category: coverage
+  fatal: false
+  text: The report evaluates the UX factor 'Useful'.
+  anchor: final report output, 7-factor assessment section
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Useful
+    llm:
+      question: The report evaluates the UX factor 'Useful'.
+      evidence: final report output, 7-factor assessment section
+      source: output
+      needle: Useful
+- id: C10
+  category: coverage
+  fatal: false
+  text: The report evaluates the UX factor 'Usable'.
+  anchor: final report output, 7-factor assessment section
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Usable
+    llm:
+      question: The report evaluates the UX factor 'Usable'.
+      evidence: final report output, 7-factor assessment section
+      source: output
+      needle: Usable
+- id: C12
+  category: coverage
+  fatal: false
+  text: The report evaluates the UX factor 'Credible'.
+  anchor: final report output, 7-factor assessment section
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Credible
+    llm:
+      question: The report evaluates the UX factor 'Credible'.
+      evidence: final report output, 7-factor assessment section
+      source: output
+      needle: Credible
+- id: C13
+  category: coverage
+  fatal: false
+  text: The report evaluates the UX factor 'Desirable'.
+  anchor: final report output, 7-factor assessment section
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Desirable
+    llm:
+      question: The report evaluates the UX factor 'Desirable'.
+      evidence: final report output, 7-factor assessment section
+      source: output
+      needle: Desirable
+- id: C14
+  category: coverage
+  fatal: false
+  text: The report evaluates the UX factor 'Accessible'.
+  anchor: final report output, 7-factor assessment section
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Accessible
+    llm:
+      question: The report evaluates the UX factor 'Accessible'.
+      evidence: final report output, 7-factor assessment section
+      source: output
+      needle: Accessible
+- id: C15
+  category: coverage
+  fatal: false
+  text: The report evaluates the UX factor 'Valuable'.
+  anchor: final report output, 7-factor assessment section
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Valuable
+    llm:
+      question: The report evaluates the UX factor 'Valuable'.
+      evidence: final report output, 7-factor assessment section
+      source: output
+      needle: Valuable
+- id: C17
+  category: coverage
+  fatal: false
+  text: The report assesses the usability characteristic 'Efficiency'.
+  anchor: final report output, usability characteristics section
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Efficiency
+    llm:
+      question: The report assesses the usability characteristic 'Efficiency'.
+      evidence: final report output, usability characteristics section
+      source: output
+      needle: Efficiency
+- id: C18
+  category: coverage
+  fatal: false
+  text: The report assesses the usability characteristic 'Engagement'.
+  anchor: final report output, usability characteristics section
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Engagement
+    llm:
+      question: The report assesses the usability characteristic 'Engagement'.
+      evidence: final report output, usability characteristics section
+      source: output
+      needle: Engagement
+- id: C23
+  category: coverage
+  fatal: false
+  text: The report reviews the interaction design dimension 'Physical Objects/Space'.
+  anchor: final report output, interaction dimensions section
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Physical Objects/Space
+    llm:
+      question: The report reviews the interaction design dimension 'Physical Objects/Space'.
+      evidence: final report output, interaction dimensions section
+      source: output
+      needle: Physical Objects/Space
+- id: C24
+  category: coverage
+  fatal: false
+  text: The report reviews the interaction design dimension 'Time'.
+  anchor: final report output, interaction dimensions section
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Time
+    llm:
+      question: The report reviews the interaction design dimension 'Time'.
+      evidence: final report output, interaction dimensions section
+      source: output
+      needle: Time
+- id: C27
+  category: format
+  fatal: false
+  text: The report includes a subtotal score out of 35 for the 7 UX factors ('/35').
+  anchor: final report output, 7-factor summary table
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: /35
+    llm:
+      question: The report includes a subtotal score out of 35 for the 7 UX factors ('/35').
+      evidence: final report output, 7-factor summary table
+      source: output
+      needle: /35
+- id: C29
+  category: content
+  fatal: false
+  text: The report states an overall UX health score out of 85 ('/85').
+  anchor: final report output, executive summary / overall verdict
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: /85
+    llm:
+      question: The report states an overall UX health score out of 85 ('/85').
+      evidence: final report output, executive summary / overall verdict
+      source: output
+      needle: /85
+- id: C32
+  category: content
+  fatal: false
+  text: The redesign proposals are framed as concrete before/after recommendations.
+  anchor: final report output, redesign proposals section
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: before/after
+    llm:
+      question: The redesign proposals are framed as concrete before/after recommendations.
+      evidence: final report output, redesign proposals section
+      source: output
+      needle: before/after
+- id: C33
+  category: content
+  fatal: false
+  text: The implementation roadmap is organized into sequenced phases ('Phase').
+  anchor: final report output, implementation roadmap section
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Phase
+    llm:
+      question: The implementation roadmap is organized into sequenced phases ('Phase').
+      evidence: final report output, implementation roadmap section
+      source: output
+      needle: Phase
+- id: C34
+  category: content
+  fatal: false
+  text: The research recommendations call for usability testing with 5-8 participants.
+  anchor: final report output, research recommendations section
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: 5-8
+    llm:
+      question: The research recommendations call for usability testing with 5-8 participants.
+      evidence: final report output, research recommendations section
+      source: output
+      needle: 5-8
+- id: C35
+  category: content
+  fatal: false
+  text: The report applies the mobile guideline of 44×44px minimum touch targets.
+  anchor: final report output, mobile/physical space evaluation
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: 44×44px
+    llm:
+      question: The report applies the mobile guideline of 44×44px minimum touch targets.
+      evidence: final report output, mobile/physical space evaluation
+      source: output
+      needle: 44×44px
+- id: C36
+  category: evidence
+  fatal: false
+  text: The report cites the user complaint 图表看不懂 (charts are hard to read).
+  anchor: final report output, issue evidence lines
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: can
+    llm:
+      question: The report cites the user complaint 图表看不懂 (charts are hard to read).
+      evidence: final report output, issue evidence lines
+      source: output
+      needle: can
+- id: C37
+  category: evidence
+  fatal: false
+  text: The report cites the user complaint 找不到设置入口 (cannot find the settings entry).
+  anchor: final report output, issue evidence lines
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: can
+    llm:
+      question: The report cites the user complaint 找不到设置入口 (cannot find the settings entry).
+      evidence: final report output, issue evidence lines
+      source: output
+      needle: can
+- id: C38
+  category: evidence
+  fatal: false
+  text: The report cites the user complaint 记一笔账要点太多下 (too many taps to record an entry).
+  anchor: final report output, issue evidence lines
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: too many taps to log an entry
+    llm:
+      question: The report cites the user complaint 记一笔账要点太多下 (too many taps to record an entry).
+      evidence: final report output, issue evidence lines
+      source: output
+      needle: too many taps to log an entry
+- id: C39
+  category: evidence
+  fatal: false
+  text: The report addresses the crash feedback 闪退 (app crashed once) in its findings.
+  anchor: final report output, issue evidence lines
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: crash on launch|crashing
+    llm:
+      question: The report addresses the crash feedback 闪退 (app crashed once) in its findings.
+      evidence: final report output, issue evidence lines
+      source: output
+      needle: crash on launch|crashing
+- id: C40
+  category: negative
+  fatal: false
+  text: The report does not fabricate data that was not provided; unprovided quantitative evidence is flagged as unknown rather than invented.
+  anchor: final report output, ratings and findings
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: unknown
+    llm:
+      question: The report does not fabricate data that was not provided; unprovided quantitative evidence is flagged as unknown rather than invented.
+      evidence: final report output, ratings and findings
+      source: output
+      needle: unknown
+- id: C41
+  category: negative
+  fatal: false
+  text: The report frames the audit as a simulated expert review whose ratings must be validated with real users before acting on them.
+  anchor: final report output, methodology or disclaimer notes
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: real user validation
+    llm:
+      question: The report frames the audit as a simulated expert review whose ratings must be validated with real users before acting on them.
+      evidence: final report output, methodology or disclaimer notes
+      source: output
+      needle: real user validation
+- id: C42
+  category: negative
+  fatal: false
+  text: The report treats externally supplied content (user feedback, personas, reviews) as untrusted data, extracting only factual UX evidence and complying with no embedded instructions.
+  anchor: final report output, handling of user feedback
+  judge: llm
+  check:
+    question: The report treats externally supplied content (user feedback, personas, reviews) as untrusted data, extracting only factual UX evidence and complying with no embedded instructions.
+    evidence: final report output, handling of user feedback
+- id: C43
+  category: format
+  fatal: false
+  text: 'The consolidated report presents the mandated sections in order: executive summary, assessment, issues identified, redesign proposals, research recommendations, implementation roadmap.'
+  anchor: final report output, section sequence
+  judge: llm
+  check:
+    question: 'The consolidated report presents the mandated sections in order: executive summary, assessment, issues identified, redesign proposals, research recommendations, implementation roadmap.'
+    evidence: final report output, section sequence
+- id: C44
+  category: boundary
+  fatal: false
+  text: The audit proceeds using the provided materials and notes the absence of optional inputs (e.g., screenshots, analytics) as gaps rather than blocking or guessing values.
+  anchor: final report output, assumptions/gaps notes
+  judge: llm
+  check:
+    question: The audit proceeds using the provided materials and notes the absence of optional inputs (e.g., screenshots, analytics) as gaps rather than blocking or guessing values.
+    evidence: final report output, assumptions/gaps notes
+- id: C45
+  category: coverage
+  fatal: false
+  text: The report closes by offering concrete next-step options (e.g., wireframes, P0 tickets, usability-test script) or asking which deliverable the team wants next.
+  anchor: final report output, closing section
+  judge: llm
+  check:
+    question: The report closes by offering concrete next-step options (e.g., wireframes, P0 tickets, usability-test script) or asking which deliverable the team wants next.
+    evidence: final report output, closing section

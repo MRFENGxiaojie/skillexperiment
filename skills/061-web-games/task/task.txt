@@ -1,0 +1,8 @@
+## Background
+I want to put a small game on my personal website that can be played directly in the browser, as a product showcase and traffic driver. Requirements: open the page and play — no installs, works on both mobile and desktop.
+
+## Task
+Build this browser game: a 2D Snake variant where the snake eats coins to grow and avoids obstacles, with scoring and simple sound effects. Make it runnable by double-clicking an HTML file, no build step. Also explain why you chose this technical approach and how it compares with alternatives; the game shouldn't break when switching to a background tab or leaving mid-game, and loading shouldn't pull down all resources at once. Write all output in English.
+
+## Materials
+None

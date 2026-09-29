@@ -1,0 +1,8 @@
+## Background
+Two co-founders and I run the B2B SaaS company "筑联云" (Zhu Lian Yun), providing project-management software to renovation companies. We started charging last year and now have 40 paying customers and ¥60K monthly recurring revenue, still at angel stage. We plan to raise a seed round in six months, so we need to understand the market opportunity first.
+
+## Task
+Help us estimate the market size: compute TAM, SAM, and SOM bottom-up, writing out assumptions and calculation steps; then analyze the competitive landscape — who are the main players in China's renovation-industry software market and how should we differentiate; finally give a conservative 3-year revenue forecast and a list of key metrics to watch before fundraising. Base everything on the data I gave and publicly verifiable sources; mark uncertain items as assumptions. Write all output in English. Write the final report to a markdown file named `market-opportunity-analysis-report.md` in the workspace (市场机会分析报告.md), and keep the full analysis in that file.
+
+## Materials
+Company facts: 筑联云, renovation-company project-management SaaS, ~¥1,500/month ACV, paying customers grew from 12 to 40, ~85% gross margin, ¥120K monthly fixed costs. Industry background (verifiable online): China has on the order of a hundred thousand renovation-related companies; the renovation industry's total output is in the trillions of CNY.

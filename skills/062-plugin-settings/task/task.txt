@@ -1,0 +1,8 @@
+## Background
+I'm developing a Claude Code plugin with a hook script that runs after every file change. All configuration is currently hardcoded in the script, so switching projects means editing code — I want each project to be able to configure the plugin's behavior itself.
+
+## Task
+Help me change the plugin to support per-project configuration: users can put a config file in the project using YAML to set switches and parameters (enabled, strict mode, retry count, notification level), the hook script reads the config before each run, using defaults when no config file exists; the config file should support attached explanatory comments and must not be committable to git. Also write the parsing script, a config template, and the config documentation in the README, and tell users what to do after changing config for it to take effect. Write all output in English.
+
+## Materials
+Plugin name: security-scan. Config items: enabled (boolean), strict_mode (boolean), max_retries (number), notification_level (one of info/warn/error).

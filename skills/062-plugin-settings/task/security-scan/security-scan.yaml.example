@@ -1,0 +1,4 @@
+enabled: true
+strict_mode: false
+max_retries: 3
+notification_level: warn

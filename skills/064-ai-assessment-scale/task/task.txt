@@ -1,0 +1,8 @@
+## Background
+Our team used AI tools to help develop the open-source project "git-tidy" (a Git commit-message standardizer) and it's about to ship v1.0. The company requires disclosure of the degree of AI involvement when publishing, and investors also ask how much of the code was written by AI and what humans did. The repository is in the current working directory.
+
+## Task
+Assess the degree of AI involvement in each development phase of the project (architecture design, code implementation, testing, documentation), give a level and the basis for each, and write a transparent AI-usage disclosure report including evidence, rationale, and a suggested README disclosure (including a badge pattern). We just want to disclose honestly — we're not grading ourselves good or bad by how much AI was used. Write all output in English.
+
+## Materials
+Repository contents are in the working directory (README, commit history, code comments, tests all inspectable). Additional facts: the team developed with Cursor + Copilot; roughly 80% of the backend API code was AI-generated then human-reviewed; all test cases were drafted by AI with humans adding edge cases; the README and docs were AI-drafted then human-rewritten; architecture choices were decided by human discussion, using AI for option comparison.

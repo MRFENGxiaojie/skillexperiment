@@ -1,0 +1,392 @@
+skill: 062-plugin-settings
+version: 2
+total_items: 22
+criteria:
+- id: C01
+  category: format
+  fatal: true
+  text: The per-project settings file is created at `.claude/security-scan.local.md` (exact plugin name `security-scan`, `.local.md` suffix, inside `.claude/`, at the project root).
+  anchor: Check the workspace root for the settings file under .claude/.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_exists
+      path: .claude/security-scan.local.md
+    llm:
+      question: The per-project settings file is created at `.claude/security-scan.local.md` (exact plugin name `security-scan`, `.local.md` suffix, inside `.claude/`, at the project root).
+      evidence: Check the workspace root for the settings file under .claude/.
+      source: workspace
+      path: .claude/security-scan.local.md
+- id: C02
+  category: format
+  fatal: false
+  text: The settings file uses YAML frontmatter delimited by `---` markers rather than a plain YAML key list without markers.
+  anchor: Open .claude/security-scan.local.md and look for the opening/closing `---` lines.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: .claude/security-scan.local.md
+      needle: '---'
+    llm:
+      question: The settings file uses YAML frontmatter delimited by `---` markers rather than a plain YAML key list without markers.
+      evidence: Open .claude/security-scan.local.md and look for the opening/closing `---` lines.
+      source: workspace
+      path: .claude/security-scan.local.md
+      needle: '---'
+- id: C03
+  category: content
+  fatal: false
+  text: The settings file defines the `enabled` configuration key (boolean on/off switch).
+  anchor: Open .claude/security-scan.local.md and find a line starting with `enabled:`.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: .claude/security-scan.local.md
+      needle: 'enabled:'
+    llm:
+      question: The settings file defines the `enabled` configuration key (boolean on/off switch).
+      evidence: Open .claude/security-scan.local.md and find a line starting with `enabled:`.
+      source: workspace
+      path: .claude/security-scan.local.md
+      needle: 'enabled:'
+- id: C04
+  category: content
+  fatal: false
+  text: The settings file defines the `strict_mode` configuration key (boolean).
+  anchor: Open .claude/security-scan.local.md and find a line starting with `strict_mode:`.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: .claude/security-scan.local.md
+      needle: 'strict_mode:'
+    llm:
+      question: The settings file defines the `strict_mode` configuration key (boolean).
+      evidence: Open .claude/security-scan.local.md and find a line starting with `strict_mode:`.
+      source: workspace
+      path: .claude/security-scan.local.md
+      needle: 'strict_mode:'
+- id: C05
+  category: content
+  fatal: false
+  text: The settings file defines the `max_retries` configuration key (numeric).
+  anchor: Open .claude/security-scan.local.md and find a line starting with `max_retries:`.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: .claude/security-scan.local.md
+      needle: 'max_retries:'
+    llm:
+      question: The settings file defines the `max_retries` configuration key (numeric).
+      evidence: Open .claude/security-scan.local.md and find a line starting with `max_retries:`.
+      source: workspace
+      path: .claude/security-scan.local.md
+      needle: 'max_retries:'
+- id: C06
+  category: content
+  fatal: false
+  text: The settings file defines the `notification_level` configuration key (info/warn/error).
+  anchor: Open .claude/security-scan.local.md and find a line starting with `notification_level:`.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: .claude/security-scan.local.md
+      needle: 'notification_level:'
+    llm:
+      question: The settings file defines the `notification_level` configuration key (info/warn/error).
+      evidence: Open .claude/security-scan.local.md and find a line starting with `notification_level:`.
+      source: workspace
+      path: .claude/security-scan.local.md
+      needle: 'notification_level:'
+- id: C07
+  category: content
+  fatal: false
+  text: The settings file carries explanatory text in a markdown body after the closing frontmatter `---` (the 说明文字 requirement), not only YAML keys.
+  anchor: Inspect .claude/security-scan.local.md for markdown content (e.g. a `# ` heading or notes) below the frontmatter block.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: .claude/security-scan.local.md
+      needle: '# '
+    llm:
+      question: The settings file carries explanatory text in a markdown body after the closing frontmatter `---` (the 说明文字 requirement), not only YAML keys.
+      evidence: Inspect .claude/security-scan.local.md for markdown content (e.g. a `# ` heading or notes) below the frontmatter block.
+      source: workspace
+      path: .claude/security-scan.local.md
+      needle: '# '
+- id: C08
+  category: content
+  fatal: true
+  text: The hook script `hook-scan.sh` reads the per-project settings from `.claude/security-scan.local.md` at runtime instead of relying only on the hardcoded config block.
+  anchor: Open security-scan/hook-scan.sh and search for the settings path `.claude/security-scan.local.md`.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: task/security-scan/hook-scan.sh
+      needle: .claude/security-scan.local.md
+    llm:
+      question: The hook script `hook-scan.sh` reads the per-project settings from `.claude/security-scan.local.md` at runtime instead of relying only on the hardcoded config block.
+      evidence: Open security-scan/hook-scan.sh and search for the settings path `.claude/security-scan.local.md`.
+      source: workspace
+      path: task/security-scan/hook-scan.sh
+      needle: .claude/security-scan.local.md
+- id: C09
+  category: content
+  fatal: false
+  text: The hook reads and applies the `enabled` flag from config, skipping execution when the plugin is disabled.
+  anchor: Open security-scan/hook-scan.sh and look for the enabled variable (ENABLED or SECURITY_SCAN_ENABLED).
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: task/security-scan/hook-scan.sh
+      needle: ENABLED
+    llm:
+      question: The hook reads and applies the `enabled` flag from config, skipping execution when the plugin is disabled.
+      evidence: Open security-scan/hook-scan.sh and look for the enabled variable (ENABLED or SECURITY_SCAN_ENABLED).
+      source: workspace
+      path: task/security-scan/hook-scan.sh
+      needle: ENABLED
+- id: C10
+  category: content
+  fatal: false
+  text: The hook applies the `strict_mode` setting to control blocking behavior when suspected secrets are found.
+  anchor: Open security-scan/hook-scan.sh and look for the strict-mode variable (STRICT_MODE or SECURITY_SCAN_STRICT_MODE).
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: task/security-scan/hook-scan.sh
+      needle: STRICT_MODE
+    llm:
+      question: The hook applies the `strict_mode` setting to control blocking behavior when suspected secrets are found.
+      evidence: Open security-scan/hook-scan.sh and look for the strict-mode variable (STRICT_MODE or SECURITY_SCAN_STRICT_MODE).
+      source: workspace
+      path: task/security-scan/hook-scan.sh
+      needle: STRICT_MODE
+- id: C11
+  category: content
+  fatal: false
+  text: The hook uses the `max_retries` setting to control the scan retry loop.
+  anchor: Open security-scan/hook-scan.sh and look for the retries variable (MAX_RETRIES or SECURITY_SCAN_MAX_RETRIES).
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: task/security-scan/hook-scan.sh
+      needle: MAX_RETRIES
+    llm:
+      question: The hook uses the `max_retries` setting to control the scan retry loop.
+      evidence: Open security-scan/hook-scan.sh and look for the retries variable (MAX_RETRIES or SECURITY_SCAN_MAX_RETRIES).
+      source: workspace
+      path: task/security-scan/hook-scan.sh
+      needle: MAX_RETRIES
+- id: C12
+  category: content
+  fatal: false
+  text: The hook uses the `notification_level` setting to decide which notification output is produced.
+  anchor: Open security-scan/hook-scan.sh and look for the notification variable (NOTIFICATION_LEVEL or SECURITY_SCAN_NOTIFICATION_LEVEL).
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: task/security-scan/hook-scan.sh
+      needle: NOTIFICATION_LEVEL
+    llm:
+      question: The hook uses the `notification_level` setting to decide which notification output is produced.
+      evidence: Open security-scan/hook-scan.sh and look for the notification variable (NOTIFICATION_LEVEL or SECURITY_SCAN_NOTIFICATION_LEVEL).
+      source: workspace
+      path: task/security-scan/hook-scan.sh
+      needle: NOTIFICATION_LEVEL
+- id: C13
+  category: boundary
+  fatal: false
+  text: When the config file is missing or a field is absent, the plugin runs with documented default values (enabled=true, strict_mode=false, max_retries=3, notification_level=warn).
+  anchor: Look in security-scan/README.md for the documented defaults (默认值).
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: task/security-scan/README.md
+      needle: default value|defaults
+    llm:
+      question: When the config file is missing or a field is absent, the plugin runs with documented default values (enabled=true, strict_mode=false, max_retries=3, notification_level=warn).
+      evidence: Look in security-scan/README.md for the documented defaults (默认值).
+      source: workspace
+      path: task/security-scan/README.md
+      needle: default value|defaults
+- id: C14
+  category: coverage
+  fatal: false
+  text: A parsing script was added to the plugin, so the plugin directory now contains at least two shell scripts (the hook plus a config parser).
+  anchor: List security-scan/ — expect hook-scan.sh plus a parse script (e.g. parse-config.sh).
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: count
+      what: task/security-scan/*.sh
+      op: ge
+      n: 2
+    llm:
+      question: A parsing script was added to the plugin, so the plugin directory now contains at least two shell scripts (the hook plus a config parser).
+      evidence: List security-scan/ — expect hook-scan.sh plus a parse script (e.g. parse-config.sh).
+      source: workspace
+      path: task/security-scan/*.sh
+- id: C15
+  category: format
+  fatal: false
+  text: The README provides the configuration template in the `.local.md` format — a YAML frontmatter block delimited by `---` that users copy into their project.
+  anchor: Open security-scan/README.md and look for a template/example code block containing `---` frontmatter.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: task/security-scan/README.md
+      needle: '---'
+    llm:
+      question: The README provides the configuration template in the `.local.md` format — a YAML frontmatter block delimited by `---` that users copy into their project.
+      evidence: Open security-scan/README.md and look for a template/example code block containing `---` frontmatter.
+      source: workspace
+      path: task/security-scan/README.md
+      needle: '---'
+- id: C16
+  category: content
+  fatal: false
+  text: The README documents the per-project settings location `.claude/security-scan.local.md` for users.
+  anchor: Open security-scan/README.md and search for `.claude/security-scan.local.md`.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: task/security-scan/README.md
+      needle: .claude/security-scan.local.md
+    llm:
+      question: The README documents the per-project settings location `.claude/security-scan.local.md` for users.
+      evidence: Open security-scan/README.md and search for `.claude/security-scan.local.md`.
+      source: workspace
+      path: task/security-scan/README.md
+      needle: .claude/security-scan.local.md
+- id: C17
+  category: negative
+  fatal: false
+  text: The plugin ensures the config file is excluded from version control — a `.gitignore` entry for `.claude/*.local.md` is created or documented so the config is not committed.
+  anchor: Search the tool log for creation of a `.gitignore`/`.gitignore.example` file or a README section mentioning gitignore.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_contains
+      cmd: .gitignore
+    llm:
+      question: The plugin ensures the config file is excluded from version control — a `.gitignore` entry for `.claude/*.local.md` is created or documented so the config is not committed.
+      evidence: Search the tool log for creation of a `.gitignore`/`.gitignore.example` file or a README section mentioning gitignore.
+      source: tool_log
+      pattern: .gitignore
+- id: C19
+  category: boundary
+  fatal: false
+  text: Invalid config values (e.g. notification_level outside info/warn/error, non-numeric max_retries) fall back to defaults instead of aborting the hook.
+  anchor: Look in security-scan/README.md or the parse script for the fallback behavior (回退 to default).
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: task/security-scan/README.md
+      needle: rollback|fallback|revert
+    llm:
+      question: Invalid config values (e.g. notification_level outside info/warn/error, non-numeric max_retries) fall back to defaults instead of aborting the hook.
+      evidence: Look in security-scan/README.md or the parse script for the fallback behavior (回退 to default).
+      source: workspace
+      path: task/security-scan/README.md
+      needle: rollback|fallback|revert
+- id: C20
+  category: evidence
+  fatal: false
+  text: The run executes the modified hook script (`hook-scan.sh`) to verify its behavior after the refactor.
+  anchor: In the tool log, find Bash invocations of hook-scan.sh.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: command_succeeded
+      cmd: hook-scan.sh
+      expect: success
+    llm:
+      question: The run executes the modified hook script (`hook-scan.sh`) to verify its behavior after the refactor.
+      evidence: In the tool log, find Bash invocations of hook-scan.sh.
+      source: tool_log
+      pattern: hook-scan.sh
+- id: C21
+  category: tool
+  fatal: false
+  text: The run structurally validates the created settings file by executing the bundled validator script `scripts/validate-settings.sh`.
+  anchor: In the tool log, find a Bash invocation of validate-settings.sh.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: command_succeeded
+      cmd: validate-settings.sh
+      expect: success
+    llm:
+      question: The run structurally validates the created settings file by executing the bundled validator script `scripts/validate-settings.sh`.
+      evidence: In the tool log, find a Bash invocation of validate-settings.sh.
+      source: tool_log
+      pattern: validate-settings.sh
+- id: C22
+  category: negative
+  fatal: false
+  text: The per-project settings are written to the `.claude/security-scan.local.md` location (the `.local.md` convention), not stored as a plain `.yaml` config file.
+  anchor: In the tool log, find writes/commands referencing `.claude/security-scan.local.md`.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_contains
+      cmd: .claude/security-scan.local.md
+    llm:
+      question: The per-project settings are written to the `.claude/security-scan.local.md` location (the `.local.md` convention), not stored as a plain `.yaml` config file.
+      evidence: In the tool log, find writes/commands referencing `.claude/security-scan.local.md`.
+      source: tool_log
+      pattern: .claude/security-scan.local.md
+- id: C23
+  category: process
+  fatal: false
+  text: The settings/config implementation is put in place before the hook is executed for testing (config exists before the hook is verified against it).
+  anchor: In the tool log, check that `.claude/security-scan.local.md` (or the parser that defines it) appears before the hook test commands.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_order
+      cmds:
+      - .claude/security-scan.local.md
+      - hook-scan.sh
+    llm:
+      question: The settings/config implementation is put in place before the hook is executed for testing (config exists before the hook is verified against it).
+      evidence: In the tool log, check that `.claude/security-scan.local.md` (or the parser that defines it) appears before the hook test commands.
+      source: tool_log
+      pattern: .claude/security-scan.local.md|hook-scan.sh
