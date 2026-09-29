@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>结算 - 云仓科技</title>
+  <link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="logo">云仓科技</div>
+    <nav class="main-nav">
+      <a href="index.html">首页</a>
+      <a href="checkout.html" class="active">结算</a>
+    </nav>
+  </header>
+
+  <main class="checkout-main">
+    <h1>结算中心</h1>
+
+    <!-- 步骤指示条：纯颜色表示当前步骤 -->
+    <ol class="steps">
+      <li class="step active">1. 填写信息</li>
+      <li class="step">2. 确认订单</li>
+      <li class="step">3. 完成支付</li>
+    </ol>
+
+    <!-- 结算表单：多处无 label、无 aria 标注 -->
+    <form id="checkout-form" class="checkout-form">
+      <fieldset>
+        <legend>收货人信息</legend>
+
+        <div class="form-field">
+          <input type="text" name="receiver" placeholder="收货人姓名" class="field-input">
+        </div>
+
+        <div class="form-field">
+          <input type="tel" name="phone" placeholder="手机号码" class="field-input">
+        </div>
+
+        <div class="form-field">
+          <select name="province" class="field-input">
+            <option value="">请选择省份</option>
+            <option value="zj">浙江省</option>
+            <option value="js">江苏省</option>
+            <option value="gd">广东省</option>
+            <option value="sh">上海市</option>
+          </select>
+        </div>
+
+        <div class="form-field">
+          <textarea name="address" placeholder="详细地址（街道、门牌号）" rows="2" class="field-input"></textarea>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>支付方式</legend>
+        <label class="radio-item">
+          <input type="radio" name="pay" value="wechat">
+          微信支付
+        </label>
+        <label class="radio-item">
+          <input type="radio" name="pay" value="alipay">
+          支付宝
+        </label>
+        <label class="radio-item">
+          <input type="radio" name="pay" value="card">
+          银行卡
+        </label>
+      </fieldset>
+
+      <div class="error-summary" id="error-summary" role="alert" hidden></div>
+
+      <div class="order-total">
+        <span>应付总额</span>
+        <span class="total-amount">¥ 1,299.00</span>
+        <span class="total-note">含运费 ¥ 18.00，结算周期按季度开具发票</span>
+      </div>
+
+      <button type="submit" class="btn btn-primary btn-lg">提交订单</button>
+      <p class="secure-note">🔒 支付信息已加密传输</p>
+    </form>
+
+    <!-- iframe 无 title 属性 -->
+    <iframe src="https://example.com/coupon-widget" width="100%" height="80" frameborder="0"></iframe>
+  </main>
+
+  <footer class="site-footer">
+    <p>© 2026 云仓科技有限公司</p>
+  </footer>
+
+  <script src="../assets/main.js"></script>
+</body>
+</html>

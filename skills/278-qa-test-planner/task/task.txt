@@ -1,0 +1,16 @@
+## Background
+Our app's new version adds a coupon feature (claim, redeem, expire) and ships next week; QA is short-handed.
+
+## Task
+Help me prepare a testing plan: write a test plan for the coupon feature covering the main flows, and several hand-executable manual test cases for claiming and redeeming; also, before release, run a smoke test — help me list the key paths to cover. Every step in each case must have an expected result, and include edge cases (expiry-time boundary, invalid coupon codes, etc.). Write all output in English.
+
+## Materials
+None
+## Deliverables
+Save your output as three Markdown files in the current working directory (workspace root): `test-plan.md`, `manual-test-cases.md`, and `smoke-test-suite.md`. While producing them, consult the skill's own resources: read `references/test_case_templates.md` and `references/regression_testing.md`, and use `scripts/generate_test_cases.sh` for the manual test cases.
+
+- `test-plan.md` - title it "Test Plan" and include sections headed exactly: Test Scope, Entry Criteria, Exit Criteria, Risk Assessment, Test Environment, and Timeline.
+- `manual-test-cases.md` - number the cases as `TC-...` and give each one Preconditions, test steps with Expected results, Priority, Test Data, and Edge Cases; cover claiming coupons (claim coupon / get coupon), redemption (redemption / verify and write off), expiry-time boundaries (expired/expiry/expiration), critical paths, and invalid coupon codes.
+- `smoke-test-suite.md` - number the smoke checks as `SMOKE-...` and include an Execution Order section.
+
+Do not leave TBD or TODO placeholders anywhere. In your final reply, report the saved file names and confirm you verified completeness and traceability of requirements to tests.

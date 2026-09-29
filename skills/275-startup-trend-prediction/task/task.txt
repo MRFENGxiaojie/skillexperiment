@@ -1,0 +1,8 @@
+## Background
+I'm evaluating a startup direction: AI bookkeeping and tax SaaS for small and mid-sized businesses. I want to judge whether now is a good time to enter.
+
+## Task
+Help me analyze the trend for this direction: how far has AI finance and tax automation developed in the past two years, what stage is it at now, and for a team of our size, is entering now early, just right, or late — give a conclusion of one of "enter / wait / avoid". Additionally, if we do go ahead, help me work out how to estimate the market size and where the money mainly goes. I want the conclusion to be evidence-based, not gut feel — write out your judgment basis and the conditions under which you could be proven wrong. Write all output in English.
+
+## Materials
+None

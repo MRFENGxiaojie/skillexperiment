@@ -1,0 +1,286 @@
+skill: 278-qa-test-planner
+version: 2
+total_items: 16
+criteria:
+- id: C08
+  category: coverage
+  fatal: false
+  text: The coupon feature's 领券 (get-coupon) main flow is covered by the test deliverables.
+  anchor: Search all produced .md deliverables for the term 领券.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: '**/*.md'
+      needle: claim coupon|claim coupons|get coupon
+    llm:
+      question: The coupon feature's 领券 (get-coupon) main flow is covered by the test deliverables.
+      evidence: Search all produced .md deliverables for the term 领券.
+      source: workspace
+      path: '**/*.md'
+      needle: claim coupon|claim coupons|get coupon
+- id: C09
+  category: coverage
+  fatal: false
+  text: The coupon feature's 核销 (redeem) main flow is covered by the test deliverables.
+  anchor: Search all produced .md deliverables for the term 核销.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: '**/*.md'
+      needle: redemption|verify and write off
+    llm:
+      question: The coupon feature's 核销 (redeem) main flow is covered by the test deliverables.
+      evidence: Search all produced .md deliverables for the term 核销.
+      source: workspace
+      path: '**/*.md'
+      needle: redemption|verify and write off
+- id: C10
+  category: coverage
+  fatal: false
+  text: The coupon feature's 过期 (expiry) main flow is covered by the test deliverables.
+  anchor: Search all produced .md deliverables for the term 过期.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: '**/*.md'
+      needle: expired|expiry|expiration
+    llm:
+      question: The coupon feature's 过期 (expiry) main flow is covered by the test deliverables.
+      evidence: Search all produced .md deliverables for the term 过期.
+      source: workspace
+      path: '**/*.md'
+      needle: expired|expiry|expiration
+- id: C11
+  category: format
+  fatal: false
+  text: Manual test cases are produced using the skill's TC- test-case ID format.
+  anchor: Test case deliverables (per-flow .md files) begin each case with a 'TC-' ID, e.g. TC-xxx-001.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: '**/*.md'
+      needle: TC-
+    llm:
+      question: Manual test cases are produced using the skill's TC- test-case ID format.
+      evidence: Test case deliverables (per-flow .md files) begin each case with a 'TC-' ID, e.g. TC-xxx-001.
+      source: workspace
+      path: '**/*.md'
+      needle: TC-
+- id: C12
+  category: content
+  fatal: false
+  text: Test cases document preconditions and setup requirements before the steps.
+  anchor: '''Preconditions'' heading within test case deliverables.'
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: '**/*.md'
+      needle: Preconditions
+    llm:
+      question: Test cases document preconditions and setup requirements before the steps.
+      evidence: '''Preconditions'' heading within test case deliverables.'
+      source: workspace
+      path: '**/*.md'
+      needle: Preconditions
+- id: C13
+  category: content
+  fatal: false
+  text: Every test step is paired with an expected result so the tester can verify the outcome.
+  anchor: '''Expected'' markers inside numbered test steps in test case deliverables.'
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: '**/*.md'
+      needle: Expected
+    llm:
+      question: Every test step is paired with an expected result so the tester can verify the outcome.
+      evidence: '''Expected'' markers inside numbered test steps in test case deliverables.'
+      source: workspace
+      path: '**/*.md'
+      needle: Expected
+- id: C14
+  category: content
+  fatal: false
+  text: Test cases assign a priority level (P0-P3).
+  anchor: '''Priority'' field in test case deliverables.'
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: '**/*.md'
+      needle: Priority
+    llm:
+      question: Test cases assign a priority level (P0-P3).
+      evidence: '''Priority'' field in test case deliverables.'
+      source: workspace
+      path: '**/*.md'
+      needle: Priority
+- id: C15
+  category: content
+  fatal: false
+  text: Test cases specify the test data needed to execute them so the tester is not blocked.
+  anchor: '''Test Data'' section in test case deliverables.'
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: '**/*.md'
+      needle: Test Data
+    llm:
+      question: Test cases specify the test data needed to execute them so the tester is not blocked.
+      evidence: '''Test Data'' section in test case deliverables.'
+      source: workspace
+      path: '**/*.md'
+      needle: Test Data
+- id: C16
+  category: content
+  fatal: false
+  text: Test cases include an 'Edge Cases & Variations' section.
+  anchor: '''Edge Cases'' heading in test case deliverables.'
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: '**/*.md'
+      needle: Edge Cases
+    llm:
+      question: Test cases include an 'Edge Cases & Variations' section.
+      evidence: '''Edge Cases'' heading in test case deliverables.'
+      source: workspace
+      path: '**/*.md'
+      needle: Edge Cases
+- id: C17
+  category: boundary
+  fatal: false
+  text: Edge cases include the coupon-expiration critical boundary (过期时间临界), such as redeeming exactly at or just after expiry.
+  anchor: Edge-case sections of test case deliverables contain the 临界/临界点 scenario.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: '**/*.md'
+      needle: expiry boundary|exact expiry|one second.*expiry|临界
+    llm:
+      question: Edge cases include the coupon-expiration critical boundary (过期时间临界), such as redeeming exactly at or just after expiry.
+      evidence: Edge-case sections of test case deliverables contain the 临界/临界点 scenario.
+      source: workspace
+      path: '**/*.md'
+      needle: expiry boundary|exact expiry|one second.*expiry|临界
+- id: C18
+  category: boundary
+  fatal: false
+  text: Edge cases include abnormal coupon codes (券码异常), such as invalid, expired, or already-redeemed codes.
+  anchor: Edge-case sections of test case deliverables reference the coupon code (券码) error scenarios.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: '**/*.md'
+      needle: coupon codes|coupon code
+    llm:
+      question: Edge cases include abnormal coupon codes (券码异常), such as invalid, expired, or already-redeemed codes.
+      evidence: Edge-case sections of test case deliverables reference the coupon code (券码) error scenarios.
+      source: workspace
+      path: '**/*.md'
+      needle: coupon codes|coupon code
+- id: C19
+  category: content
+  fatal: false
+  text: A smoke test suite is produced that lists the key coupon critical paths to cover before release.
+  anchor: Smoke suite deliverable uses SMOKE- prefixed IDs as in the regression guide.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: '**/*.md'
+      needle: SMOKE-
+    llm:
+      question: A smoke test suite is produced that lists the key coupon critical paths to cover before release.
+      evidence: Smoke suite deliverable uses SMOKE- prefixed IDs as in the regression guide.
+      source: workspace
+      path: '**/*.md'
+      needle: SMOKE-
+- id: C20
+  category: content
+  fatal: false
+  text: The smoke/regression suite specifies an execution order, with smoke run first and stop-on-failure handling.
+  anchor: '''Execution Order'' heading or equivalent in the smoke/regression deliverable.'
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: '**/*.md'
+      needle: Execution Order
+    llm:
+      question: The smoke/regression suite specifies an execution order, with smoke run first and stop-on-failure handling.
+      evidence: '''Execution Order'' heading or equivalent in the smoke/regression deliverable.'
+      source: workspace
+      path: '**/*.md'
+      needle: Execution Order
+- id: C24
+  category: tool
+  fatal: false
+  text: The run uses the skill's bundled test-case generator script (scripts/generate_test_cases.sh) to produce the manual test cases.
+  anchor: tool_log shows generate_test_cases.sh being invoked.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_contains
+      cmd: generate_test_cases.sh
+    llm:
+      question: The run uses the skill's bundled test-case generator script (scripts/generate_test_cases.sh) to produce the manual test cases.
+      evidence: tool_log shows generate_test_cases.sh being invoked.
+      source: tool_log
+      pattern: generate_test_cases.sh
+- id: C25
+  category: negative
+  fatal: false
+  text: Deliverables contain no placeholder or vague markers such as TBD or TODO; every field is filled with concrete content.
+  anchor: Scan all produced .md deliverables; any TBD/TODO/placeholder means the constraint is violated.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_not_contains
+      path: '**/*.md'
+      needle: TBD
+    llm:
+      question: The deliverables contain no placeholder or vague markers such as TBD, TODO, FIXME,
+        XXX or '<fill in>' - every field is filled with concrete content.
+      evidence: Scan all produced .md deliverables; any TBD/TODO/placeholder means the constraint is
+        violated.
+      source: workspace
+      path: '**/*.md'
+- id: C27
+  category: format
+  fatal: false
+  text: The run produces multiple Markdown deliverable files (test plan plus several test cases plus smoke suite), not a single chat-only response.
+  anchor: Count .md files written to the workspace (plan + per-flow test cases + smoke suite).
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: count
+      what: '**/*.md'
+      op: ge
+      n: 3

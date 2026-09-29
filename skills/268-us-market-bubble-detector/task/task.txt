@@ -1,0 +1,8 @@
+## Background
+US stocks have been rising for a long time. More and more people around me are talking about stocks, and colleagues discuss AI stocks over lunch. I'm worried it might be a bubble.
+
+## Task
+Help me assess the current bubble risk in the US stock market: first gather the data that should be checked (options sentiment, VIX, margin debt, market breadth, IPO activity, etc.) and score it — don't go by feel. Recently colleagues and neighbors have indeed been recommending AI stocks to me, but I haven't recorded the specific details one by one; if this evidence isn't solid enough, handle it honestly per the rules. Finally, following your report format, give me a final score, the current phase, and corresponding position sizing and take-profit advice. Even if some market data cannot be retrieved, still complete the full report: record unavailable indicators explicitly as 'unavailable' with a reason, score conservatively, and still provide the final score, phase, and recommended actions. Write all output in English.
+
+## Materials
+None

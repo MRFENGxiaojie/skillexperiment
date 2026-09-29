@@ -1,0 +1,101 @@
+{
+  "description": "Trend data sources for the Signal vs Noise Framework. Levels follow the Strong/Moderate/Weak signal tables; 'primary' sources are regulators, standards bodies, platform documentation, and filings (preferred for key claims per Web Search Safety).",
+  "sources": [
+    {
+      "level": "primary",
+      "category": "Regulation and standards",
+      "source": "Regulators, standards bodies (ISO, W3C, IEEE), government filings",
+      "what_to_track": "New rules, comment periods, effective dates, certification requirements"
+    },
+    {
+      "level": "primary",
+      "category": "Platform documentation",
+      "source": "API/OS/cloud vendor release notes and changelogs",
+      "what_to_track": "New capabilities, deprecations, pricing changes, roadmap items"
+    },
+    {
+      "level": "primary",
+      "category": "Filings",
+      "source": "SEC filings (10-K, 10-Q, S-1), company annual reports",
+      "what_to_track": "Revenue mix, R&D direction, stated strategy, risk factors"
+    },
+    {
+      "level": "strong",
+      "category": "VC funding patterns",
+      "source": "PitchBook, Crunchbase, CB Insights, quarterly VC activity reports",
+      "what_to_track": "Deal counts and dollar volume by category, round sizes, valuation step-ups"
+    },
+    {
+      "level": "strong",
+      "category": "Big tech acquisitions",
+      "source": "M&A announcement trackers, press releases",
+      "what_to_track": "Acquisition targets and prices, strategic signals in acquirer messaging"
+    },
+    {
+      "level": "strong",
+      "category": "Job posting trends",
+      "source": "LinkedIn jobs, Indeed, company career pages",
+      "what_to_track": "Posting counts by role/technology, new role titles, geographic spread"
+    },
+    {
+      "level": "strong",
+      "category": "Open-source activity",
+      "source": "GitHub stars, forks, contributors, commits",
+      "what_to_track": "Growth rate of key repos, contributor diversity, issue velocity"
+    },
+    {
+      "level": "strong",
+      "category": "Enterprise adoption",
+      "source": "Gartner, Forrester, IDC reports and vendor reference customers",
+      "what_to_track": "Magic Quadrant/Forrester Wave placements, enterprise case studies, TCO claims"
+    },
+    {
+      "level": "moderate",
+      "category": "Conference talk themes",
+      "source": "KubeCon, AWS re:Invent, WWDC, industry conference agendas",
+      "what_to_track": "New track names, talk density by topic, sponsor messaging"
+    },
+    {
+      "level": "moderate",
+      "category": "Developer sentiment",
+      "source": "Algolia Hacker News search, HN front page",
+      "what_to_track": "Mention frequency, comment sentiment, show-HN launches"
+    },
+    {
+      "level": "moderate",
+      "category": "Community discussions",
+      "source": "Reddit subreddits, Discord/community forums",
+      "what_to_track": "Subscriber growth, post volume, recurring question topics"
+    },
+    {
+      "level": "moderate",
+      "category": "Influencer adoption",
+      "source": "Key voices on X/Twitter, LinkedIn, technical newsletters",
+      "what_to_track": "Which voices adopt, endorsement frequency, follow-up usage"
+    },
+    {
+      "level": "weak",
+      "category": "Product launches",
+      "source": "ProductHunt daily launches",
+      "what_to_track": "Launch counts by category, upvote velocity, comment quality"
+    },
+    {
+      "level": "weak",
+      "category": "Content frequency",
+      "source": "Blog post frequency, SEO content by topic",
+      "what_to_track": "New content velocity, content quality, author credibility"
+    },
+    {
+      "level": "weak",
+      "category": "Podcast mentions",
+      "source": "Podcast episode scanning",
+      "what_to_track": "Mention frequency, which shows, follow-up episodes"
+    },
+    {
+      "level": "weak",
+      "category": "Media hype",
+      "source": "TechCrunch, Wired, mainstream tech press",
+      "what_to_track": "Article frequency and framing; treat as lagging attention, not adoption"
+    }
+  ]
+}

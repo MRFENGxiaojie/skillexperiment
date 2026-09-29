@@ -1,0 +1,225 @@
+skill: 268-us-market-bubble-detector
+version: 2
+total_items: 14
+criteria:
+- id: C01
+  category: format
+  fatal: false
+  text: 'The final report follows the v2.1 markdown structure and contains the required section headings: Overall Assessment, Quantitative Evaluation (Phase 2), Qualitative Adjustment (Phase 3), and Recommended
+    Actions.'
+  anchor: Inspect the agent's final output (or any written report file) for the four v2.1 report headings.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: (?s)(?=.*Overall Assessment)(?=.*Quantitative Evaluation)(?=.*Qualitative Adjustment)(?=.*Recommended Actions)
+    llm:
+      question: 'The final report follows the v2.1 markdown structure and contains the required section headings: Overall Assessment, Quantitative Evaluation (Phase 2), Qualitative Adjustment (Phase 3),
+        and Recommended Actions.'
+      evidence: Inspect the agent's final output (or any written report file) for the four v2.1 report headings.
+      source: output
+      needle: (?s)(?=.*Overall Assessment)(?=.*Quantitative Evaluation)(?=.*Qualitative Adjustment)(?=.*Recommended Actions)
+- id: C03
+  category: process
+  fatal: true
+  text: Phase 1 quantitative data collection is performed via web search before the evaluation proceeds to scoring.
+  anchor: Search tool_log.jsonl for WebSearch/web_search/WebFetch tool calls.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_contains
+      cmd: WebSearch|web_search|WebFetch
+    llm:
+      question: Phase 1 quantitative data collection is performed via web search before the evaluation proceeds to scoring.
+      evidence: Search tool_log.jsonl for WebSearch/web_search/WebFetch tool calls.
+      source: tool_log
+      pattern: WebSearch|web_search|WebFetch
+- id: C06
+  category: content
+  fatal: false
+  text: The Phase 2 evaluation records, for each of the six indicators, the measured value, the assigned score, and a rationale.
+  anchor: Look in the Quantitative Evaluation (Phase 2) section of the final output for per-indicator rationale text.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Rationale
+    llm:
+      question: The Phase 2 evaluation records, for each of the six indicators, the measured value, the assigned score, and a rationale.
+      evidence: Look in the Quantitative Evaluation (Phase 2) section of the final output for per-indicator rationale text.
+      source: output
+      needle: Rationale
+- id: C08
+  category: content
+  fatal: false
+  text: The Phase 2 total is computed and stated out of 12 points.
+  anchor: Look for 'Phase 2 Total' and a '/12' denominator in the final output.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: (?s)(?=.*Phase 2 Total)(?=.*/12)
+    llm:
+      question: The Phase 2 total is computed and stated out of 12 points.
+      evidence: Look for 'Phase 2 Total' and a '/12' denominator in the final output.
+      source: output
+      needle: (?s)(?=.*Phase 2 Total)(?=.*/12)
+- id: C10
+  category: coverage
+  fatal: false
+  text: 'All three qualitative adjustments are evaluated: A. Social Penetration, B. Media/Search Trends, and C. Valuation Disconnect.'
+  anchor: Check the Phase 3 section of the final output for all three adjustment headings.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: (?s)(?=.*Social Penetration)(?=.*Media/Search Trends)(?=.*Valuation Disconnect)
+    llm:
+      question: 'All three qualitative adjustments are evaluated: A. Social Penetration, B. Media/Search Trends, and C. Valuation Disconnect.'
+      evidence: Check the Phase 3 section of the final output for all three adjustment headings.
+      source: output
+      needle: (?s)(?=.*Social Penetration)(?=.*Media/Search Trends)(?=.*Valuation Disconnect)
+- id: C11
+  category: content
+  fatal: false
+  text: The Social Penetration adjustment is awarded +0 points (not +1) because the user's anecdotal recommendations lack the required specific names/dates and three independent sources.
+  anchor: Look at the 'A. Social Penetration' sub-section of the final output for a +0 score near the section heading.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Social Penetration[\s\S]{0,300}\+0
+    llm:
+      question: The Social Penetration adjustment is awarded +0 points (not +1) because the user's anecdotal recommendations lack the required specific names/dates and three independent sources.
+      evidence: Look at the 'A. Social Penetration' sub-section of the final output for a +0 score near the section heading.
+      source: output
+      needle: Social Penetration[\s\S]{0,300}\+0
+- id: C12
+  category: content
+  fatal: true
+  text: The Phase 3 total is stated out of 3 and is within the v2.1 cap of +0 to +3 points.
+  anchor: Look for 'Phase 3 Total' with a value between +0 and +3 out of 3 in the final output.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Phase 3 Total:? ?\+?[0-3]/3
+    llm:
+      question: The Phase 3 total is stated out of 3 and is within the v2.1 cap of +0 to +3 points.
+      evidence: Look for 'Phase 3 Total' with a value between +0 and +3 out of 3 in the final output.
+      source: output
+      needle: Phase 3 Total:? ?\+?[0-3]/3
+- id: C16
+  category: content
+  fatal: false
+  text: The report references the v2.1 'Elevated Risk' phase (8-9 points), confirming the granular five-phase framework is used.
+  anchor: Look for 'Elevated Risk' anywhere in the final output (e.g., the Key Changes in v2.1 section).
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Elevated Risk
+    llm:
+      question: The report references the v2.1 'Elevated Risk' phase (8-9 points), confirming the granular five-phase framework is used.
+      evidence: Look for 'Elevated Risk' anywhere in the final output (e.g., the Key Changes in v2.1 section).
+      source: output
+      needle: Elevated Risk
+- id: C18
+  category: content
+  fatal: false
+  text: The Recommended Actions include profit-taking guidance and an ATR stop-loss setting consistent with the stated phase.
+  anchor: Look in the Recommended Actions section for profit-taking and ATR terms.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: (?s)(?=.*profit.taking)(?=.*ATR)
+    llm:
+      question: The Recommended Actions include profit-taking guidance and an ATR stop-loss setting consistent with the stated phase.
+      evidence: Look in the Recommended Actions section for profit-taking and ATR terms.
+      source: output
+      needle: (?s)(?=.*profit.taking)(?=.*ATR)
+- id: C19
+  category: content
+  fatal: false
+  text: The short-selling guidance states the composite conditions as X/7 met together with the phase-appropriate minimum (0/7, 2/7, 3/7, or 5/7).
+  anchor: Look in the Recommended Actions section for 'Short-Selling' and composite conditions 'X/7'.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: (?s)(?=.*Short-Selling)(?=.*/7)
+    llm:
+      question: The short-selling guidance states the composite conditions as X/7 met together with the phase-appropriate minimum (0/7, 2/7, 3/7, or 5/7).
+      evidence: Look in the Recommended Actions section for 'Short-Selling' and composite conditions 'X/7'.
+      source: output
+      needle: (?s)(?=.*Short-Selling)(?=.*/7)
+- id: C20
+  category: content
+  fatal: false
+  text: The report includes the 'Key Changes in v2.1' section.
+  anchor: Look for the 'Key Changes in v2.1' heading in the final output.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Key Changes in v2.1
+    llm:
+      question: The report includes the 'Key Changes in v2.1' section.
+      evidence: Look for the 'Key Changes in v2.1' heading in the final output.
+      source: output
+      needle: Key Changes in v2.1
+- id: C21
+  category: process
+  fatal: false
+  text: The report presents the Quantitative Evaluation (Phase 2) before the Qualitative Adjustment (Phase 3), following the strict phase order.
+  anchor: Confirm the Phase 2 section appears before the Phase 3 section in the final output.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: (?s)Quantitative Evaluation[\s\S]*Qualitative Adjustment
+    llm:
+      question: The report presents the Quantitative Evaluation (Phase 2) before the Qualitative Adjustment (Phase 3), following the strict phase order.
+      evidence: Confirm the Phase 2 section appears before the Phase 3 section in the final output.
+      source: output
+      needle: (?s)Quantitative Evaluation[\s\S]*Qualitative Adjustment
+- id: C22
+  category: negative
+  fatal: true
+  text: The evaluation does not double-count valuation/fundamentals between Phase 2 and Phase 3 (no +1 Valuation Disconnect point when P/E is already reflected in Phase 2 or when fundamentals support the
+    valuation).
+  anchor: Review the Valuation Disconnect adjustment for double-counting with the Phase 2 indicators.
+  judge: llm
+  check:
+    question: The evaluation does not double-count valuation/fundamentals between Phase 2 and Phase 3 (no +1 Valuation Disconnect point when P/E is already reflected in Phase 2 or when fundamentals support
+      the valuation).
+    evidence: Review the Valuation Disconnect adjustment for double-counting with the Phase 2 indicators.
+- id: C23
+  category: content
+  fatal: false
+  text: The report disclaims that the framework output is not independent investment advice or states that final decisions rest with the user.
+  anchor: Look for a not-investment-advice disclaimer or 'rest with the user' statement in the final output.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: (?s)(?=.*(?:not investment advice|rest with the user))
+    llm:
+      question: The report disclaims that the framework output is not independent investment advice or states that final decisions rest with the user.
+      evidence: Look for a not-investment-advice disclaimer or 'rest with the user' statement in the final output.
+      source: output
+      needle: (?s)(?=.*(?:not investment advice|rest with the user))

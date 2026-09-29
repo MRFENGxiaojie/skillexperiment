@@ -1,0 +1,10 @@
+## Background
+Our team's medical paper came back from revision, and the editor said a few passages look "obviously AI." They want me to polish before resubmitting.
+
+## Task
+Help me polish this manuscript into natural, professional medical writing: adjust sentence rhythm and remove AI traces, while preserving every statistic, citation, and conclusion; match the tone of the author's consistent style (formal, objective, no dashes). After editing, list the processing patterns used by number, and confirm no dashes remain anywhere in the text. Write all output in English.
+
+## Materials
+Manuscript at manuscript_draft.md in the current working directory (with data and citations)
+## Working requirements
+Read the skill's references (llm-specific-word-choice-patterns.md, process-two-pass-draft-audit.md, output-format.md) and follow the two-pass process, including the rhythm check and self-audit. Preserve every statistic, citation, and number from manuscript_draft.md. End your final reply with the complete polished manuscript text.

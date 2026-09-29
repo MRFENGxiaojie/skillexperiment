@@ -1,0 +1,8 @@
+## Background
+Our company website recently got two pieces of feedback from visually impaired users saying they can't operate the pages with a screen reader. The boss wants a compliance risk self-audit (the European market also involves EAA requirements).
+
+## Task
+Do an accessibility audit of our website: focus on the two core pages, the homepage and the checkout flow; check against WCAG requirements item by item (contrast, keyboard operation, form labels, screen-reader compatibility, etc.); give each issue's level and the corresponding success-criterion number; list a remediation plan tiered by effort; finally give a compliant/non-compliant conclusion. If any check can't be run in the current environment, say so directly — don't fabricate test results. Write all output in English.
+
+## Materials
+Workspace src/pages/index.html and src/pages/checkout.html (the complete HTML source of both pages); the homepage carousel images are under images/ (hero-warehouse.jpg, hero-data.jpg, hero-live.jpg), and the supporting stylesheet and script are under src/assets/ (styles.css, main.js).
