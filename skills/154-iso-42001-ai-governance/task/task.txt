@@ -1,0 +1,15 @@
+## Background
+Our company (~300 people) built an AI resume-screening system that reads resumes with a large language model, scores and ranks candidates, and directly participates in hiring decisions. We're about to onboard EU clients, and legal requires us to run a self-assessment against ISO/IEC 42001 and the EU AI Act to see how far off our governance is.
+
+## Task
+Run a gap assessment of our current AI governance: the system's description and use case are in the materials. Cover the organizational context, leadership responsibilities, planning and risk management, resources and support, AI lifecycle operations (data, development, validation, deployment, monitoring, retirement), and performance evaluation and improvement — give existing evidence and gaps for each, ideally score each item, and finally give a phased remediation roadmap. Note: we haven't engaged a certification body, so don't describe us as compliant or certified. Write all output in English.
+
+## Materials
+The AI system description and the existing documents are files in the current working directory:
+- task/docs/model-description.md (1-page system description: purpose, model, data, output, users, affected persons, deployment, self-assessed risk)
+- task/docs/privacy-policy.md (existing public-facing privacy policy, summary)
+- task/docs/data-retention-policy.md (existing data-retention policy, summary)
+
+There is no formal risk assessment, no AI policy document, no internal audit records, and no complaint-handling process.
+
+Follow the skill's audit procedure and report template: references/audit-procedure.md and references/report-template.md (in the skill directory).

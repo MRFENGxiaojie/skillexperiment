@@ -1,0 +1,8 @@
+## Background
+Before the two-week iteration starts, a 5-person team needs to break down the next iteration's three requirements and lay out the plan.
+
+## Task
+The new iteration starts next Monday and we're a 5-person dev team. This round has three fairly large requirements: mobile login/registration overhaul, order-export performance optimization, and an admin-backend permission-system upgrade; I've put the product descriptions in the attachment. Help me break them into actionable user stories, each with verifiable acceptance criteria, estimated in story points with the estimation standard set by you. Also fit in some tech debt left from the last iteration — for example, the deprecated old API that's never been cleaned up — and spell out the impact clearly. The mobile requirement's UI design isn't finalized yet; assess the impact of that. Finally give me a complete iteration plan: how capacity is calculated, each story's ownership and dependencies, what the risks are, and the iteration goal in one sentence. Make reasonable inferences from the attachment where information is insufficient. Write all output in English.
+
+## Materials
+sprint-input.md (product descriptions of the three requirements, fairly rough)

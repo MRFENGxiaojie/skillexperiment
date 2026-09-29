@@ -1,0 +1,17 @@
+id,priority,subject,status,created_at,resolved_at
+SUP-2101,high,"Dashboard loading slowly / timeouts",resolved,2026-07-02,2026-07-06
+SUP-2102,medium,"Cannot invite team members",resolved,2026-07-03,2026-07-05
+SUP-2103,high,"Charged after trial cancellation",resolved,2026-07-04,2026-07-08
+SUP-2104,low,"Feature request: dark mode",open,2026-07-05,
+SUP-2105,high,"Search extremely slow on large projects",open,2026-07-06,
+SUP-2106,medium,"Invoice shows wrong amount after upgrade",resolved,2026-07-08,2026-07-12
+SUP-2107,medium,"Invite emails going to spam",open,2026-07-09,
+SUP-2108,high,"Mobile app crash while adding tasks",resolved,2026-07-11,2026-07-15
+SUP-2109,low,"Request: Gantt chart view",open,2026-07-12,
+SUP-2110,medium,"Zapier integration fails silently",resolved,2026-07-14,2026-07-18
+SUP-2111,high,"Afternoon outages / report timeouts",resolved,2026-07-15,2026-07-17
+SUP-2112,medium,"BRL tax calculation incorrect on invoice",open,2026-07-17,
+SUP-2113,low,"Request: per-user workload limits",open,2026-07-18,
+SUP-2114,high,"Data missing after sync failure",resolved,2026-07-19,2026-07-22
+SUP-2115,medium,"Need project templates for quick start",resolved,2026-07-20,2026-07-24
+SUP-2116,medium,"Duplicate task with subtasks not working",open,2026-07-23,

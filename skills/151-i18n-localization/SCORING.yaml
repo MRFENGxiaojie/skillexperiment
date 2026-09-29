@@ -1,0 +1,196 @@
+skill: 151-i18n-localization
+version: 2
+total_items: 13
+criteria:
+- id: C04
+  category: content
+  fatal: false
+  text: The report identifies concrete hardcoded Chinese UI strings in Orders.tsx (e.g., the '订单列表' heading, '导出', '已支付').
+  anchor: Look in the agent's final output for the quoted string '订单列表' or a list of specific hardcoded strings from Orders.tsx.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Order List
+    llm:
+      question: The report identifies concrete hardcoded Chinese UI strings in Orders.tsx (e.g., the '订单列表' heading, '导出', '已支付').
+      evidence: Look in the agent's final output for the quoted string '订单列表' or a list of specific hardcoded strings from Orders.tsx.
+      source: output
+      needle: Order List
+- id: C05
+  category: content
+  fatal: false
+  text: The report states the scale of hardcoded strings, approximately 60 or more occurrences.
+  anchor: Look in the final output for a count around 60 (e.g., '60+处', '约60处', 'over 60').
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: numeric_threshold
+      in: output
+      key: \d+\+?\s*处|约\s*\d+|over\s*\d+
+      op: ge
+      n: 60
+    llm:
+      question: The report states the scale of hardcoded strings, approximately 60 or more occurrences.
+      evidence: Look in the final output for a count around 60 (e.g., '60+处', '约60处', 'over 60').
+      source: output
+      needle: \d+\+?\s*处|约\s*\d+|over\s*\d+
+- id: C08
+  category: content
+  fatal: false
+  text: The report flags physical-direction CSS properties such as margin-left and padding-right as a problem for RTL layouts.
+  anchor: Look in the final output for 'margin-left' or 'padding-right' discussed in the RTL/CSS context.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: margin-left
+    llm:
+      question: The report flags physical-direction CSS properties such as margin-left and padding-right as a problem for RTL layouts.
+      evidence: Look in the final output for 'margin-left' or 'padding-right' discussed in the RTL/CSS context.
+      source: output
+      needle: margin-left
+- id: C09
+  category: content
+  fatal: false
+  text: The report includes an estimate of the workload/effort required for the i18n migration.
+  anchor: Look in the final output for the workload estimate (e.g., '工作量').
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: workload|effort
+    llm:
+      question: The report includes an estimate of the workload/effort required for the i18n migration.
+      evidence: Look in the final output for the workload estimate (e.g., '工作量').
+      source: output
+      needle: workload|effort
+- id: C10
+  category: content
+  fatal: false
+  text: The plan recommends using react-i18next (already listed in package.json) with translation keys via the t()/useTranslation API.
+  anchor: Look in the plan section of the final output for 'react-i18next' or 'useTranslation'.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: react-i18next
+    llm:
+      question: The plan recommends using react-i18next (already listed in package.json) with translation keys via the t()/useTranslation API.
+      evidence: Look in the plan section of the final output for 'react-i18next' or 'useTranslation'.
+      source: output
+      needle: react-i18next
+- id: C11
+  category: content
+  fatal: false
+  text: The plan proposes organizing translation files per language under a locales directory (e.g., locales/en/ with namespace files).
+  anchor: Look in the plan section for the proposed locale directory structure, e.g., 'locales/en'.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: locales/en
+    llm:
+      question: The plan proposes organizing translation files per language under a locales directory (e.g., locales/en/ with namespace files).
+      evidence: Look in the plan section for the proposed locale directory structure, e.g., 'locales/en'.
+      source: output
+      needle: locales/en
+- id: C15
+  category: content
+  fatal: false
+  text: The plan recommends using the ICU message format for plurals and complex strings.
+  anchor: Look in the plan section for 'ICU' (e.g., 'ICU message format').
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: ICU
+    llm:
+      question: The plan recommends using the ICU message format for plurals and complex strings.
+      evidence: Look in the plan section for 'ICU' (e.g., 'ICU message format').
+      source: output
+      needle: ICU
+- id: C16
+  category: content
+  fatal: false
+  text: The plan specifies setting dir="rtl" (and the corresponding lang attribute) for Arabic RTL layouts.
+  anchor: Look in the plan section for 'dir="rtl"' or an equivalent RTL attribute recommendation.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: dir="rtl"
+    llm:
+      question: The plan specifies setting dir="rtl" (and the corresponding lang attribute) for Arabic RTL layouts.
+      evidence: Look in the plan section for 'dir="rtl"' or an equivalent RTL attribute recommendation.
+      source: output
+      needle: dir="rtl"
+- id: C17
+  category: content
+  fatal: false
+  text: The plan recommends replacing physical-direction CSS with logical properties such as margin-inline-start and padding-inline-end.
+  anchor: Look in the plan section for 'margin-inline-start' or 'padding-inline-end'.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: margin-inline-start
+    llm:
+      question: The plan recommends replacing physical-direction CSS with logical properties such as margin-inline-start and padding-inline-end.
+      evidence: Look in the plan section for 'margin-inline-start' or 'padding-inline-end'.
+      source: output
+      needle: margin-inline-start
+- id: C21
+  category: content
+  fatal: false
+  text: The plan recommends using the bundled checker script scripts/i18n_checker.py (run with python scripts/i18n_checker.py <project_path>) to detect hardcoded strings and missing translations.
+  anchor: Look in the plan section for a mention of 'i18n_checker' or 'checker script'.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: i18n_checker
+    llm:
+      question: The plan recommends using the bundled checker script scripts/i18n_checker.py (run with python scripts/i18n_checker.py <project_path>) to detect hardcoded strings and missing translations.
+      evidence: Look in the plan section for a mention of 'i18n_checker' or 'checker script'.
+      source: output
+      needle: i18n_checker
+- id: C22
+  category: coverage
+  fatal: false
+  text: 'The migration plan covers all four requested dimensions: language-file organization, pluralization handling, locale-aware date/number formatting, and Arabic RTL layout.'
+  anchor: The judge reads the plan section and verifies all four dimensions requested in the task are addressed.
+  judge: llm
+  check:
+    question: 'The migration plan covers all four requested dimensions: language-file organization, pluralization handling, locale-aware date/number formatting, and Arabic RTL layout.'
+    evidence: The judge reads the plan section and verifies all four dimensions requested in the task are addressed.
+- id: C23
+  category: coverage
+  fatal: false
+  text: 'The pre-launch checklist covers the key verification items: all user-visible strings use translation keys, locale files exist for all supported languages, Intl API used, RTL tested, and fallback
+    configured.'
+  anchor: The judge reads the checklist section and verifies it contains the deployment verification items from SKILL.md section 8.
+  judge: llm
+  check:
+    question: 'The pre-launch checklist covers the key verification items: all user-visible strings use translation keys, locale files exist for all supported languages, Intl API used, RTL tested, and fallback
+      configured.'
+    evidence: The judge reads the checklist section and verifies it contains the deployment verification items from SKILL.md section 8.
+- id: C24
+  category: boundary
+  fatal: false
+  text: The agent frames the deliverable as a plan-only proposal and offers to proceed with implementation only after the user approves.
+  anchor: The judge reads the closing of the final output for an explicit offer to implement on approval, consistent with '先出方案，先别改代码'.
+  judge: llm
+  check:
+    question: The agent frames the deliverable as a plan-only proposal and offers to proceed with implementation only after the user approves.
+    evidence: The judge reads the closing of the final output for an explicit offer to implement on approval, consistent with '先出方案，先别改代码'.

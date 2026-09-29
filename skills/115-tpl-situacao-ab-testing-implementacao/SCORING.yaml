@@ -1,0 +1,367 @@
+skill: 115-tpl-situacao-ab-testing-implementacao
+version: 2
+total_items: 25
+criteria:
+- id: C08
+  category: format
+  fatal: false
+  text: The design includes a "Required Sample Size" field stating a computed number of users per variant.
+  anchor: Look for a Required Sample Size line in the experiment design.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Required Sample Size
+    llm:
+      question: The design includes a "Required Sample Size" field stating a computed number of users per variant.
+      evidence: Look for a Required Sample Size line in the experiment design.
+      source: output
+      needle: Required Sample Size
+- id: C09
+  category: content
+  fatal: false
+  text: The reported required sample size is consistent with a two-proportion power analysis for a 3.2% to 3.5% lift (roughly 50,000-65,000 users per variant).
+  anchor: Compare the reported sample-size figure against the power-analysis result for base rate 3.2% and MDE to 3.5%.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: numeric_threshold
+      in: output
+      key: Sample Size[^0-9]{0,40}([0-9][0-9,]*)
+      op: ge
+      n: 50000
+    llm:
+      question: The reported required sample size is consistent with a two-proportion power analysis for a 3.2% to 3.5% lift (roughly 50,000-65,000 users per variant).
+      evidence: Compare the reported sample-size figure against the power-analysis result for base rate 3.2% and MDE to 3.5%.
+      source: output
+      needle: Sample Size[^0-9]{0,40}([0-9][0-9,]*)
+- id: C11
+  category: format
+  fatal: false
+  text: The design states a confidence level of 95%.
+  anchor: Look for the confidence level in the experiment design or power-analysis section.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: 95%
+    llm:
+      question: The design states a confidence level of 95%.
+      evidence: Look for the confidence level in the experiment design or power-analysis section.
+      source: output
+      needle: 95%
+- id: C12
+  category: tool
+  fatal: false
+  text: The agent runs a power-analysis computation (80% power, 95% confidence) to derive the required sample size.
+  anchor: Inspect the tool log for the executed power-analysis command and its output.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_contains
+      cmd: 95% confidence
+    llm:
+      question: The agent runs a power-analysis computation (80% power, 95% confidence) to derive the required sample size.
+      evidence: Inspect the tool log for the executed power-analysis command and its output.
+      source: tool_log
+      pattern: 95% confidence
+- id: C16
+  category: process
+  fatal: false
+  text: Sticky bucketing is implemented so the same user always receives the same variant across sessions.
+  anchor: Look for the assignment/bucketing description in the experiment design.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: sticky
+    llm:
+      question: Sticky bucketing is implemented so the same user always receives the same variant across sessions.
+      evidence: Look for the assignment/bucketing description in the experiment design.
+      source: output
+      needle: sticky
+- id: C20
+  category: process
+  fatal: false
+  text: Bot/crawler traffic is excluded from the experiment analysis.
+  anchor: Look in the analysis methodology for a bot/crawler filtering step.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: bot
+    llm:
+      question: Bot/crawler traffic is excluded from the experiment analysis.
+      evidence: Look in the analysis methodology for a bot/crawler filtering step.
+      source: output
+      needle: bot
+- id: C21
+  category: process
+  fatal: false
+  text: The analysis applies a two-proportion z-test at alpha = 0.05.
+  anchor: Look for the significance-test method in the analysis section.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: z-test
+    llm:
+      question: The analysis applies a two-proportion z-test at alpha = 0.05.
+      evidence: Look for the significance-test method in the analysis section.
+      source: output
+      needle: z-test
+- id: C22
+  category: content
+  fatal: false
+  text: The Experiment Report includes a p-value.
+  anchor: Look in the results section of the Experiment Report.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: p-value
+    llm:
+      question: The Experiment Report includes a p-value.
+      evidence: Look in the results section of the Experiment Report.
+      source: output
+      needle: p-value
+- id: C23
+  category: content
+  fatal: false
+  text: The Experiment Report includes a relative lift.
+  anchor: Look in the results section of the Experiment Report.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Relative Lift
+    llm:
+      question: The Experiment Report includes a relative lift.
+      evidence: Look in the results section of the Experiment Report.
+      source: output
+      needle: Relative Lift
+- id: C24
+  category: content
+  fatal: false
+  text: The Experiment Report includes a SHIP / NO_SHIP recommendation.
+  anchor: Look for the Decision line in the Experiment Report.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: SHIP
+    llm:
+      question: The Experiment Report includes a SHIP / NO_SHIP recommendation.
+      evidence: Look for the Decision line in the Experiment Report.
+      source: output
+      needle: SHIP
+- id: C26
+  category: content
+  fatal: false
+  text: The Experiment Report includes the experiment duration.
+  anchor: Look for the duration field at the top of the Experiment Report.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Duration
+    llm:
+      question: The Experiment Report includes the experiment duration.
+      evidence: Look for the duration field at the top of the Experiment Report.
+      source: output
+      needle: Duration
+- id: C27
+  category: content
+  fatal: false
+  text: The Experiment Report includes per-variant visitor and conversion counts.
+  anchor: Look in the Results section for per-variant visitor/conversion figures.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: conversions
+    llm:
+      question: The Experiment Report includes per-variant visitor and conversion counts.
+      evidence: Look in the Results section for per-variant visitor/conversion figures.
+      source: output
+      needle: conversions
+- id: C28
+  category: process
+  fatal: false
+  text: After the experiment, the winning variant is deployed as the permanent implementation.
+  anchor: Look in the Next Steps / cleanup section for the winner-deployment step.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Deploy treatment
+    llm:
+      question: After the experiment, the winning variant is deployed as the permanent implementation.
+      evidence: Look in the Next Steps / cleanup section for the winner-deployment step.
+      source: output
+      needle: Deploy treatment
+- id: C29
+  category: process
+  fatal: false
+  text: After the experiment, the losing variant code is removed from the codebase.
+  anchor: Look in the Next Steps / cleanup section for removal of the losing variant.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: losing variant
+    llm:
+      question: After the experiment, the losing variant code is removed from the codebase.
+      evidence: Look in the Next Steps / cleanup section for removal of the losing variant.
+      source: output
+      needle: losing variant
+- id: C30
+  category: process
+  fatal: false
+  text: After the experiment, the feature flag is removed.
+  anchor: Look in the Next Steps / cleanup section for feature-flag removal.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: feature flag
+    llm:
+      question: After the experiment, the feature flag is removed.
+      evidence: Look in the Next Steps / cleanup section for feature-flag removal.
+      source: output
+      needle: feature flag
+- id: C33
+  category: negative
+  fatal: false
+  text: The primary metric is not changed after the experiment starts (no post-hoc metric selection).
+  anchor: Compare the metric used in the analysis against the metric named in the original design.
+  judge: llm
+  check:
+    question: The primary metric is not changed after the experiment starts (no post-hoc metric selection).
+    evidence: Compare the metric used in the analysis against the metric named in the original design.
+- id: C35
+  category: negative
+  fatal: false
+  text: The decision is not based on secondary metrics when the primary metric is flat.
+  anchor: Examine the decision rationale in the report.
+  judge: llm
+  check:
+    question: The decision is not based on secondary metrics when the primary metric is flat.
+    evidence: Examine the decision rationale in the report.
+- id: C36
+  category: negative
+  fatal: false
+  text: The same user's repeated sessions are not counted as independent samples.
+  anchor: Examine the analysis methodology for unit-of-analysis handling.
+  judge: llm
+  check:
+    question: The same user's repeated sessions are not counted as independent samples.
+    evidence: Examine the analysis methodology for unit-of-analysis handling.
+- id: C37
+  category: negative
+  fatal: true
+  text: The losing variant code and feature flag are not left in place after the experiment concludes.
+  anchor: Look at the final cleanup instructions; failure here mirrors critical failure CF-02.
+  judge: llm
+  check:
+    question: The losing variant code and feature flag are not left in place after the experiment concludes.
+    evidence: Look at the final cleanup instructions; failure here mirrors critical failure CF-02.
+- id: C38
+  category: termination
+  fatal: false
+  text: If a guardrail metric (error rate / P95) degrades during the run, the experiment is stopped, rolled back to control, and investigated before any restart or winner decision.
+  anchor: Look for the guardrail-degradation handling rule in the plan.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: roll back
+    llm:
+      question: If a guardrail metric (error rate / P95) degrades during the run, the experiment is stopped, rolled back to control, and investigated before any restart or winner decision.
+      evidence: Look for the guardrail-degradation handling rule in the plan.
+      source: output
+      needle: roll back
+- id: C39
+  category: boundary
+  fatal: false
+  text: If a user is observed receiving different variants across sessions, sticky bucketing is diagnosed as broken and the assignment logic is fixed before results are treated as valid.
+  anchor: Look for the sticky-bucketing error-handling rule in the plan.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: assignment logic
+    llm:
+      question: If a user is observed receiving different variants across sessions, sticky bucketing is diagnosed as broken and the assignment logic is fixed before results are treated as valid.
+      evidence: Look for the sticky-bucketing error-handling rule in the plan.
+      source: output
+      needle: assignment logic
+- id: C41
+  category: coverage
+  fatal: false
+  text: 'The experiment plan covers all eight requested elements: hypothesis, primary metric, required traffic (sample size), minimum duration, stable grouping, adoption decision rule, cleanup of code and
+    flag, and guardrail monitoring.'
+  anchor: Cross-check the plan against the task's enumerated questions.
+  judge: llm
+  check:
+    question: 'The experiment plan covers all eight requested elements: hypothesis, primary metric, required traffic (sample size), minimum duration, stable grouping, adoption decision rule, cleanup of
+      code and flag, and guardrail monitoring.'
+    evidence: Cross-check the plan against the task's enumerated questions.
+- id: C42
+  category: evidence
+  fatal: false
+  text: The agent checks the design and report against the QUALITY GATES checklist before concluding.
+  anchor: Look for a QUALITY GATES verification step near the end of the output.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: QUALITY GATES
+    llm:
+      question: The agent checks the design and report against the QUALITY GATES checklist before concluding.
+      evidence: Look for a QUALITY GATES verification step near the end of the output.
+      source: output
+      needle: QUALITY GATES
+- id: C43
+  category: evidence
+  fatal: false
+  text: The report verifies that guardrail metrics did not degrade before declaring a winner.
+  anchor: Look in the report for a guardrail-status check on error rate / performance.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: degrad
+    llm:
+      question: The report verifies that guardrail metrics did not degrade before declaring a winner.
+      evidence: Look in the report for a guardrail-status check on error rate / performance.
+      source: output
+      needle: degrad
+- id: C44
+  category: negative
+  fatal: false
+  text: The design changes exactly one variable (the button text) and does not co-change other UI elements.
+  anchor: Inspect the variant descriptions for any additional changed elements.
+  judge: llm
+  check:
+    question: The design changes exactly one variable (the button text) and does not co-change other UI elements.
+    evidence: Inspect the variant descriptions for any additional changed elements.

@@ -1,0 +1,453 @@
+skill: 124-customer-feedback-analyzer
+version: 2
+total_items: 22
+criteria:
+- id: C01
+  category: tool
+  fatal: false
+  text: The agent extracts the provided feedback-data.zip archive so the 
+    contained data files become available.
+  anchor: Check the tool log for a Bash/extract command referencing 
+    feedback-data.zip (e.g., unzip feedback-data.zip).
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: command_succeeded
+      cmd: feedback-data.zip
+      expect: success
+    llm:
+      question: The agent extracts the provided feedback-data.zip archive so the
+        contained data files become available.
+      evidence: Check the tool log for a Bash/extract command referencing 
+        feedback-data.zip (e.g., unzip feedback-data.zip).
+      source: tool_log
+      pattern: feedback-data.zip
+- id: C06
+  category: process
+  fatal: false
+  text: The feedback archive is handled before the individual data files are 
+    read.
+  anchor: Verify in the tool log that a call mentioning feedback-data.zip 
+    precedes any call reading in-app-feedback.csv.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_order
+      cmds:
+      - feedback-data.zip
+      - in-app-feedback.csv
+    llm:
+      question: The feedback archive is handled before the individual data files
+        are read.
+      evidence: Verify in the tool log that a call mentioning feedback-data.zip 
+        precedes any call reading in-app-feedback.csv.
+      source: tool_log
+      pattern: feedback-data.zip|in-app-feedback.csv
+- id: C07
+  category: coverage
+  fatal: false
+  text: The final analysis incorporates all four provided channels — in-app 
+    feedback, support tickets, NPS survey, and interviews — with none omitted.
+  anchor: Review the final summary to confirm all four channels are represented 
+    and none is silently dropped.
+  judge: llm
+  check:
+    question: The final analysis incorporates all four provided channels — 
+      in-app feedback, support tickets, NPS survey, and interviews — with none 
+      omitted.
+    evidence: Review the final summary to confirm all four channels are 
+      represented and none is silently dropped.
+- id: C08
+  category: process
+  fatal: false
+  text: Feedback is categorized by severity (the summary's severity dimension).
+  anchor: Look for the 'severity' field in the top themes of the final summary.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      needle: severity|Priority
+      path: july-2026-feedback-summary.md
+    llm:
+      question: Feedback is categorized by severity (the summary's severity 
+        dimension).
+      evidence: Look for the 'severity' field in the top themes of the final 
+        summary.
+      source: workspace
+      needle: severity|Priority
+      path: july-2026-feedback-summary.md
+- id: C09
+  category: process
+  fatal: false
+  text: Feedback is categorized by frequency (the summary's frequency 
+    dimension).
+  anchor: Look for the 'frequency' field in the top themes of the final summary.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: frequency
+    llm:
+      question: Feedback is categorized by frequency (the summary's frequency 
+        dimension).
+      evidence: Look for the 'frequency' field in the top themes of the final 
+        summary.
+      source: output
+      needle: frequency
+- id: C10
+  category: process
+  fatal: false
+  text: Feedback items are classified by type (bug, feature request, 
+    enhancement, usability, performance) rather than left as raw free text.
+  anchor: Review the categorization pass for type labels on individual feedback 
+    items.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: type
+    llm:
+      question: Feedback items are classified by type (bug, feature request, 
+        enhancement, usability, performance) rather than left as raw free text.
+      evidence: Review the categorization pass for type labels on individual 
+        feedback items.
+      source: output
+      needle: type
+- id: C11
+  category: content
+  fatal: false
+  text: The summary organizes the feedback into several main themes (the 
+    'top_themes' section).
+  anchor: Look for the 'top_themes' key in the final summary output.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      needle: top_themes|Ranked themes
+      path: july-2026-feedback-summary.md
+    llm:
+      question: The summary organizes the feedback into several main themes (the
+        'top_themes' section).
+      evidence: Look for the 'top_themes' key in the final summary output.
+      source: workspace
+      needle: top_themes|Ranked themes
+      path: july-2026-feedback-summary.md
+- id: C12
+  category: content
+  fatal: false
+  text: Each top theme includes example quotes drawn from the feedback 
+    ('example_quotes').
+  anchor: Look for the 'example_quotes' field inside the top themes of the 
+    summary.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      needle: 'example_quotes|Evidence:'
+      path: july-2026-feedback-summary.md
+    llm:
+      question: Each top theme includes example quotes drawn from the feedback 
+        ('example_quotes').
+      evidence: Look for the 'example_quotes' field inside the top themes of the
+        summary.
+      source: workspace
+      needle: 'example_quotes|Evidence:'
+      path: july-2026-feedback-summary.md
+- id: C13
+  category: content
+  fatal: false
+  text: Each top theme includes a recommended action ('recommended_action').
+  anchor: Look for the 'recommended_action' field inside the top themes of the 
+    summary.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      needle: 'recommended_action|Action:'
+      path: july-2026-feedback-summary.md
+    llm:
+      question: Each top theme includes a recommended action 
+        ('recommended_action').
+      evidence: Look for the 'recommended_action' field inside the top themes of
+        the summary.
+      source: workspace
+      needle: 'recommended_action|Action:'
+      path: july-2026-feedback-summary.md
+- id: C15
+  category: content
+  fatal: false
+  text: The summary includes NPS detractor reasons ('detractor_reasons').
+  anchor: Look for 'detractor_reasons' in the NPS section of the final summary.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      needle: 'detractor_reasons|Detractors:'
+      path: july-2026-feedback-summary.md
+    llm:
+      question: The summary includes NPS detractor reasons 
+        ('detractor_reasons').
+      evidence: Look for 'detractor_reasons' in the NPS section of the final 
+        summary.
+      source: workspace
+      needle: 'detractor_reasons|Detractors:'
+      path: july-2026-feedback-summary.md
+- id: C16
+  category: content
+  fatal: false
+  text: The summary includes a prioritized backlog ranking the feedback items 
+    ('prioritized_backlog').
+  anchor: Look for the 'prioritized_backlog' key in the final summary.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      needle: prioritized_backlog|Ranked themes
+      path: july-2026-feedback-summary.md
+    llm:
+      question: The summary includes a prioritized backlog ranking the feedback 
+        items ('prioritized_backlog').
+      evidence: Look for the 'prioritized_backlog' key in the final summary.
+      source: workspace
+      needle: prioritized_backlog|Ranked themes
+      path: july-2026-feedback-summary.md
+- id: C17
+  category: process
+  fatal: false
+  text: Priority scoring uses the skill's formula Score = Impact (1-5) × 
+    Frequency (1-5) × Strategic Alignment (1-5).
+  anchor: Look for the scoring formula components, including 'Strategic 
+    Alignment', in the prioritization section.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      needle: Strategic Alignment
+      path: july-2026-feedback-summary.md
+    llm:
+      question: Priority scoring uses the skill's formula Score = Impact (1-5) ×
+        Frequency (1-5) × Strategic Alignment (1-5).
+      evidence: Look for the scoring formula components, including 'Strategic 
+        Alignment', in the prioritization section.
+      source: workspace
+      needle: Strategic Alignment
+      path: july-2026-feedback-summary.md
+- id: C18
+  category: content
+  fatal: false
+  text: Prioritized backlog items are labeled with high/medium/low priority 
+    tiers.
+  anchor: 'Look for ''priority: high'' (and medium/low) tier labels in the prioritized
+    backlog.'
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      needle: 'priority: high|High priority|High frequency'
+      path: july-2026-feedback-summary.md
+    llm:
+      question: Prioritized backlog items are labeled with high/medium/low 
+        priority tiers.
+      evidence: 'Look for ''priority: high'' (and medium/low) tier labels in the prioritized
+        backlog.'
+      source: workspace
+      needle: 'priority: high|High priority|High frequency'
+      path: july-2026-feedback-summary.md
+- id: C19
+  category: process
+  fatal: false
+  text: The agent applies the Act decision tree — items reported 10+ times go to
+    the roadmap, strategy-aligned items are prioritized, and 2-week-shippable 
+    items are quick wins.
+  anchor: Look for roadmap/decision-tree reasoning (e.g., 'roadmap') in the 
+    recommendations.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      needle: roadmap
+      path: july-2026-feedback-summary.md
+    llm:
+      question: The agent applies the Act decision tree — items reported 10+ 
+        times go to the roadmap, strategy-aligned items are prioritized, and 
+        2-week-shippable items are quick wins.
+      evidence: Look for roadmap/decision-tree reasoning (e.g., 'roadmap') in 
+        the recommendations.
+      source: workspace
+      needle: roadmap
+      path: july-2026-feedback-summary.md
+- id: C20
+  category: process
+  fatal: false
+  text: The NPS score is derived from the survey responses by classifying 
+    respondents as promoters (9-10), passives (7-8), and detractors (0-6), 
+    rather than assumed or omitted.
+  anchor: Review the NPS computation to confirm it is grounded in the 
+    nps-survey.xlsx responses.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      needle: promoters
+      path: july-2026-feedback-summary.md
+    llm:
+      question: The NPS score is derived from the survey responses by 
+        classifying respondents as promoters (9-10), passives (7-8), and 
+        detractors (0-6), rather than assumed or omitted.
+      evidence: Review the NPS computation to confirm it is grounded in the 
+        nps-survey.xlsx responses.
+      source: workspace
+      needle: promoters
+      path: july-2026-feedback-summary.md
+- id: C21
+  category: content
+  fatal: false
+  text: The output tells the user what to focus on next — the top-priority items
+    to build (e.g., next sprint).
+  anchor: Look for the next-focus recommendation, such as 'next sprint', in the 
+    final output.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      needle: next sprint
+      path: july-2026-feedback-summary.md
+    llm:
+      question: The output tells the user what to focus on next — the 
+        top-priority items to build (e.g., next sprint).
+      evidence: Look for the next-focus recommendation, such as 'next sprint', 
+        in the final output.
+      source: workspace
+      needle: next sprint
+      path: july-2026-feedback-summary.md
+- id: C22
+  category: content
+  fatal: false
+  text: The output plans closing the feedback loop — how users who requested a 
+    feature will be notified ('notify users').
+  anchor: Look for the close-the-loop plan for requesters, such as 'notify 
+    users', in the final output.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      needle: notify users|Close-the-loop|How to respond to users
+      path: july-2026-feedback-summary.md
+    llm:
+      question: The output plans closing the feedback loop — how users who 
+        requested a feature will be notified ('notify users').
+      evidence: Look for the close-the-loop plan for requesters, such as 'notify
+        users', in the final output.
+      source: workspace
+      needle: notify users|Close-the-loop|How to respond to users
+      path: july-2026-feedback-summary.md
+- id: C23
+  category: format
+  fatal: false
+  text: The summary is delivered in the skill's structured feedback_summary 
+    format (period, top_themes, nps, prioritized_backlog).
+  anchor: Look for the 'feedback_summary' root key in the final output.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: feedback_summary
+    llm:
+      question: The summary is delivered in the skill's structured 
+        feedback_summary format (period, top_themes, nps, prioritized_backlog).
+      evidence: Look for the 'feedback_summary' root key in the final output.
+      source: output
+      needle: feedback_summary
+- id: C24
+  category: content
+  fatal: false
+  text: The summary states the feedback period it covers (the 'period' time 
+    range).
+  anchor: Look for the 'period' field in the summary, per the Weekly Feedback 
+    Summary template.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      needle: period|July 2026
+      path: july-2026-feedback-summary.md
+    llm:
+      question: The summary states the feedback period it covers (the 'period' 
+        time range).
+      evidence: Look for the 'period' field in the summary, per the Weekly 
+        Feedback Summary template.
+      source: workspace
+      needle: period|July 2026
+      path: july-2026-feedback-summary.md
+- id: C25
+  category: negative
+  fatal: false
+  text: The agent does not fabricate feedback themes, quotes, or counts; every 
+    theme, example quote, and frequency in the summary traces back to the 
+    provided data.
+  anchor: Cross-check the summary's example quotes and frequency counts against 
+    the source data files (in-app-feedback.csv, support-tickets.csv, 
+    nps-survey.xlsx, interview-notes.md).
+  judge: llm
+  check:
+    question: The agent does not fabricate feedback themes, quotes, or counts; 
+      every theme, example quote, and frequency in the summary traces back to 
+      the provided data.
+    evidence: Cross-check the summary's example quotes and frequency counts 
+      against the source data files (in-app-feedback.csv, support-tickets.csv, 
+      nps-survey.xlsx, interview-notes.md).
+- id: C26
+  category: negative
+  fatal: false
+  text: The agent does not recommend building every requested variant; it 
+    prefers a generic solution to cover similar requests (feature-bloat 
+    avoidance).
+  anchor: Review the recommendations for a generic-solution preference over 
+    per-variant builds (e.g., the word 'generic').
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      needle: generic
+      path: july-2026-feedback-summary.md
+    llm:
+      question: The agent does not recommend building every requested variant; 
+        it prefers a generic solution to cover similar requests (feature-bloat 
+        avoidance).
+      evidence: Review the recommendations for a generic-solution preference 
+        over per-variant builds (e.g., the word 'generic').
+      source: workspace
+      needle: generic
+      path: july-2026-feedback-summary.md
+- id: C28
+  category: boundary
+  fatal: false
+  text: When a channel has sparse or no data, the agent reports the gap rather 
+    than inventing counts to fill the summary.
+  anchor: Check how channels with little/no feedback are handled — gaps should 
+    be acknowledged, not fabricated.
+  judge: llm
+  check:
+    question: When a channel has sparse or no data, the agent reports the gap 
+      rather than inventing counts to fill the summary.
+    evidence: Check how channels with little/no feedback are handled — gaps 
+      should be acknowledged, not fabricated.

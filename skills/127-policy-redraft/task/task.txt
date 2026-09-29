@@ -1,0 +1,11 @@
+## Background
+During a rules cross-check, legal found that the PII definition in our "Personal Information Protection Policy" doesn't match the new regulation, gap number GAP-2026-014.
+
+## Task
+During the regulatory cross-check, legal found that the PII definition in section 2.1 of our Personal Information Protection Policy doesn't line up with the new regulation, gap number GAP-2026-014. I've sent you the gap item, the current policy text, and the new regulation provisions. Please draft a proposed revision with tracked changes for the affected part of the policy: keep changes minimal — only touch the parts with gaps — annotate next to each change why it's made, and mark effective dates, thresholds, and similar information as to-be-verified. This is a draft for legal review: don't touch the official policy document, and don't make any updates to the gap tracker. Write all output in English.
+
+## Materials
+- privacy-policy.md (current official policy)
+- rule-amendment-2026.md (new regulation provisions, effective 2026-06-01)
+- gap-tracker.yaml (contains the GAP-2026-014 entry)
+- House practice config: .claude/plugins/config/claude-for-legal/regulatory-legal/CLAUDE.md (policy library index, rule-status check, memo output format) ? read it before drafting

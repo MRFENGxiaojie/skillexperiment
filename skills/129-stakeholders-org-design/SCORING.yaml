@@ -1,0 +1,249 @@
+skill: 129-stakeholders-org-design
+version: 2
+total_items: 15
+criteria:
+- id: C01
+  category: content
+  fatal: false
+  text: The memo maps stakeholders onto a power-interest matrix.
+  anchor: Final memo output — look for the power-interest matrix section.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: power and interest|power-interest|power/interest
+    llm:
+      question: The memo maps stakeholders onto a power-interest matrix.
+      evidence: Final memo output — look for the power-interest matrix section.
+      source: output
+      needle: power and interest|power-interest|power/interest
+- id: C02
+  category: content
+  fatal: false
+  text: The memo assigns an engagement strategy per power-interest quadrant and explicitly names stakeholders who are kept informed.
+  anchor: Final memo output — stakeholder quadrant lists.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: keep informed|stay informed
+    llm:
+      question: The memo assigns an engagement strategy per power-interest quadrant and explicitly names stakeholders who are kept informed.
+      evidence: Final memo output — stakeholder quadrant lists.
+      source: output
+      needle: keep informed|stay informed
+- id: C03
+  category: content
+  fatal: false
+  text: The memo defines a RACI matrix for key decisions.
+  anchor: Final memo output — RACI table.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: RACI matrix|RACI-style|\\bRACI\\b
+    llm:
+      question: The memo defines a RACI matrix for key decisions.
+      evidence: Final memo output — RACI table.
+      source: output
+      needle: RACI matrix|RACI-style|\\bRACI\\b
+- id: C04
+  category: content
+  fatal: false
+  text: Each RACI/DACI decision in the memo assigns exactly one Accountable (Approver) role.
+  anchor: Final memo output — RACI/DACI rows.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Accountable
+    llm:
+      question: Each RACI/DACI decision in the memo assigns exactly one Accountable (Approver) role.
+      evidence: Final memo output — RACI/DACI rows.
+      source: output
+      needle: Accountable
+- id: C08
+  category: content
+  fatal: false
+  text: The proposed structure includes a dedicated 商品 (product) service team.
+  anchor: Final memo output — team structure section.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: products|product|items
+    llm:
+      question: The proposed structure includes a dedicated 商品 (product) service team.
+      evidence: Final memo output — team structure section.
+      source: output
+      needle: products|product|items
+- id: C11
+  category: content
+  fatal: false
+  text: The memo defines team interface contracts that include SLAs between teams.
+  anchor: Final memo output — interface contracts section.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: SLA|SLO
+    llm:
+      question: The memo defines team interface contracts that include SLAs between teams.
+      evidence: Final memo output — interface contracts section.
+      source: output
+      needle: SLA|SLO
+- id: C13
+  category: content
+  fatal: false
+  text: The memo specifies handoff protocols between teams (e.g., design to engineering, engineering to QA/support).
+  anchor: Final memo output — interface contracts / handoff section.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: handoff
+    llm:
+      question: The memo specifies handoff protocols between teams (e.g., design to engineering, engineering to QA/support).
+      evidence: Final memo output — interface contracts / handoff section.
+      source: output
+      needle: handoff
+- id: C19
+  category: boundary
+  fatal: false
+  text: The new structure accounts for the full 40-person headcount given in the task (12 frontend + 18 backend + 6 QA + 4 ops).
+  anchor: Final memo output — headcount reconciliation between current and target structure.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: numeric_threshold
+      in: output
+      key: '40'
+      op: eq
+      n: 40
+    llm:
+      question: The new structure accounts for the full 40-person headcount given in the task (12 frontend + 18 backend + 6 QA + 4 ops).
+      evidence: Final memo output — headcount reconciliation between current and target structure.
+      source: output
+      needle: '40'
+- id: C22
+  category: tool
+  fatal: false
+  text: The run reads resources/methodology.md for the Conway's Law / complex org-design flow.
+  anchor: Tool log — Read calls on resources/methodology.md.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_contains
+      cmd: resources/methodology.md
+    llm:
+      question: The run reads resources/methodology.md for the Conway's Law / complex org-design flow.
+      evidence: Tool log — Read calls on resources/methodology.md.
+      source: tool_log
+      pattern: resources/methodology.md
+- id: C23
+  category: evidence
+  fatal: false
+  text: The run consults resources/evaluators/rubric_stakeholders_org_design.json for the Step 5 self-check.
+  anchor: Tool log — Read call on the bundled rubric JSON.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_contains
+      cmd: resources/evaluators/rubric_stakeholders_org_design.json
+    llm:
+      question: The run consults resources/evaluators/rubric_stakeholders_org_design.json for the Step 5 self-check.
+      evidence: Tool log — Read call on the bundled rubric JSON.
+      source: tool_log
+      pattern: resources/evaluators/rubric_stakeholders_org_design.json
+- id: C24
+  category: process
+  fatal: false
+  text: The methodology study happens before the rubric self-check, matching the prescribed workflow order (design work in Step 2 before self-check in Step 5).
+  anchor: Tool log — ordering of Read calls for methodology.md then rubric JSON.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_order
+      cmds:
+      - resources/methodology.md
+      - resources/evaluators/rubric_stakeholders_org_design.json
+    llm:
+      question: The methodology study happens before the rubric self-check, matching the prescribed workflow order (design work in Step 2 before self-check in Step 5).
+      evidence: Tool log — ordering of Read calls for methodology.md then rubric JSON.
+      source: tool_log
+      pattern: resources/methodology.md|resources/evaluators/rubric_stakeholders_org_design.json
+- id: C25
+  category: termination
+  fatal: false
+  text: The run reports a self-check average score at or above the 3.5 minimum before declaring completion.
+  anchor: Final memo output — self-check score statement.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: '3.5'
+    llm:
+      question: The run reports a self-check average score at or above the 3.5 minimum before declaring completion.
+      evidence: Final memo output — self-check score statement.
+      source: output
+      needle: '3.5'
+- id: C26
+  category: boundary
+  fatal: false
+  text: Proposed team sizes stay within the skill's 2-pizza range (5-9 people), matching the task's 5-8 people per domain target.
+  anchor: Final memo output — team sizing / guardrail rationale.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: 2-pizza|two-pizza|7-person|teams of seven
+    llm:
+      question: Proposed team sizes stay within the skill's 2-pizza range (5-9 people), matching the task's 5-8 people per domain target.
+      evidence: Final memo output — team sizing / guardrail rationale.
+      source: output
+      needle: 2-pizza|two-pizza|7-person|teams of seven
+- id: C27
+  category: negative
+  fatal: false
+  text: The maturity assessment does not present fabricated metrics as fact; any assumed baseline values are explicitly labeled as assumptions.
+  anchor: Final memo output — maturity section; no invented numbers stated as real data.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: assumption|assumptions|hypothesis|hypotheses
+    llm:
+      question: The maturity assessment does not present fabricated metrics as fact; any assumed baseline values are explicitly labeled as assumptions.
+      evidence: Final memo output — maturity section; no invented numbers stated as real data.
+      source: output
+      needle: assumption|assumptions|hypothesis|hypotheses
+- id: C29
+  category: format
+  fatal: false
+  text: The deliverable is an org design memo that includes the five required sections, including the transition-plan section.
+  anchor: Final memo output — section structure; at minimum a transition plan section header.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: transition plan
+    llm:
+      question: The deliverable is an org design memo that includes the five required sections, including the transition-plan section.
+      evidence: Final memo output — section structure; at minimum a transition plan section header.
+      source: output
+      needle: transition plan

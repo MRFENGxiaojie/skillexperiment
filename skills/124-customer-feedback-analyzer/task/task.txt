@@ -1,0 +1,8 @@
+## Background
+Our SaaS product has been live for six months, and feedback has accumulated across channels. We need a monthly comprehensive analysis.
+
+## Task
+Our SaaS has been live six months, and last month's feedback piled up across scattered channels: in-app feedback, support tickets, the NPS survey sent last month, and interview notes from a few key accounts. Help me systematically organize all this feedback: categorize it, consolidate it into a few major themes, mark which are high-frequency and high-impact, rank by importance, and finally produce this month's feedback summary telling me what to focus on next and how to respond to users who asked for features. I've exported all the data. Write all output in English.
+
+## Materials
+feedback-data.zip (contains in-app-feedback.csv, support-tickets.csv, nps-survey.xlsx, interview-notes.md)

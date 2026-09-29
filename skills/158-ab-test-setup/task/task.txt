@@ -1,0 +1,8 @@
+## Background
+Our SaaS signup conversion has stalled recently. The PM wants to change the signup page from a single-step form to two steps (first email+password, then company info). I want to run an experiment to validate before making the full change, but I don't understand statistics and am afraid of wasting effort.
+
+## Task
+Help me design this A/B test: first write the hypothesis clearly (based on what observation, what change is expected, how success is measured), then tell me how much sample is needed, how long to run, how to split traffic, what the primary metric is, and what guardrail metrics to watch; finally give a plan I can execute and record test results with directly. Our signup page gets ~5,000 visitors/day with a current completion rate of 8%. Write all output in English.
+
+## Materials
+None

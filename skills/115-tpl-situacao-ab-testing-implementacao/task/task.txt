@@ -1,0 +1,22 @@
+## Background
+The e-commerce team wants to change the checkout-page button text, and the growth lead says just launch it and see.
+
+## Task
+We want to change the checkout page's "立即购买" (buy now) button to "立即支付" (pay now). Growth thinks it will raise order conversion and says we can just flip it and see. But I want to do this by the book — help me design the experiment: how to write the hypothesis, which metric to watch primarily, how much traffic is needed to reach a conclusion, and how long it must run at minimum; user grouping must be stable — the same user must see the same version across visits; finally, how to decide whether to actually adopt it, how to wrap up after adoption, and how to handle the experiment code and flag. Also, the company requires that site error rate and performance metrics must not degrade during the experiment — keep an eye on that too. The checkout page averages ~12,000 PV/day, current conversion 3.2%, expected to rise to 3.5%. Write all output in English.
+
+## Materials
+None
+
+## Working requirements
+Work in the current working directory. Build the complete experiment design and write it to `ab-test-experiment-report.md` in the working directory.
+
+Your final reply must contain the COMPLETE experiment report - the final reply is what gets graded, so do not end with a summary or a file pointer. Follow the skill's report structure and cover every item below:
+- Button change "pay now" vs "buy now"; a "Hypothesis" section (null and alternative).
+- Primary metric: "conversion rate", baseline "3.2"%, expected "3.5"%.
+- Power analysis: "80%" power, "95%" confidence (also write the exact phrase "95% confidence"); report a "Required Sample Size" (also use the phrase "minimum sample size") with an explicit number of at least 50,000 computed from 12,000 PV/day and the 3.2% -> 3.5% lift (e.g. write "Sample Size: 56,448 per variant").
+- "Duration" of at least "2 weeks" (use the exact phrase "2 weeks"); "Relative Lift"; expected "conversions".
+- Assignment: "sticky" deterministic bucketing with user-id "hash"; describe the "assignment logic"; exclude "bot" traffic.
+- Analysis: two-proportion "z-test" and "p-value".
+- "Guardrail Metrics" that must not degrade ("degrad"): "error rate" and "P95".
+- Decision and wrap-up: "SHIP" or "Deploy treatment", remove the "losing variant", remove the "feature flag", plan to "roll back" if needed, "Next Steps", "Secondary Metrics".
+- End with a "QUALITY GATES" checklist and explain why the growth lead's idea to "launch directly and see" is wrong.

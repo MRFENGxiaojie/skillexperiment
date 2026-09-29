@@ -1,0 +1,8 @@
+## Background
+We're a SaaS making an order-management tool for cross-border e-commerce sellers; registration grants a free trial of core features. Three months after launch, the signup page completes at only 12%; half the paid traffic is wasted at the registration step, and the boss pushes daily.
+
+## Task
+Help us find what's wrong with the signup flow. Current flow: step 1 asks email+password, step 2 company name, role, and team size, step 3 phone number with SMS verification — four steps, twelve fields, and many people abandon halfway. Do a complete diagnosis, splitting problems into "fixable immediately / needs a week of development / worth running an experiment to validate," give concrete fixes for each class, and estimate impact where you can. Write all output in English.
+
+## Materials
+None

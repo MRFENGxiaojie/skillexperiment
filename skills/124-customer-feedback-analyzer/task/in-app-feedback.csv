@@ -1,0 +1,19 @@
+id,user,channel,category,rating,content,created_at
+1,j.parker@northwind.io,in-app,performance,2,"The dashboard takes forever to load on my laptop. Every time I switch boards there is a spinner for 5+ seconds.",2026-07-03
+2,maria.santos@cafeinternacional.com.br,in-app,onboarding,3,"Hard to figure out how to invite my whole team. The getting-started guide did not mention team invites at all.",2026-07-04
+3,devin@brightmedia.io,in-app,dark_mode,5,"Please add dark mode! I work late and the white screens are painful on the eyes.",2026-07-05
+4,alice@lambda.dev,in-app,billing,2,"Upgraded to Pro but the invoice still shows the old amount. The line items are really confusing.",2026-07-06
+5,kenji.t@hanami.gg,in-app,performance,1,"App is unusable in the afternoon. Reports time out constantly and I lose my work.",2026-07-07
+6,sarah@figagency.com,in-app,features,4,"We need a Gantt chart view. The timeline view is nice but not enough for our project managers.",2026-07-08
+7,r.nguyen@lumina.co,in-app,onboarding,3,"Took a full day to set up our project templates. There should be preset templates to start from.",2026-07-09
+8,tom@greenhouse.eco,in-app,billing,2,"Cancelled the trial but I was still charged. Support has not replied to my email yet.",2026-07-10
+9,lena@stacktack.io,in-app,dark_mode,4,"Dark mode would be a huge win for us - half our dev team asked for it this week.",2026-07-12
+10,priya@nimbus.co.in,in-app,integrations,4,"The Zapier integration keeps failing silently. We get no notification when the sync breaks.",2026-07-13
+11,markus@vektor.de,in-app,features,3,"Wish there were per-user workload limits. Right now we cannot see who is over capacity.",2026-07-14
+12,elena@brightmode.nl,in-app,performance,2,"Mobile web app is slow and janky. It crashed twice while I was adding tasks on my phone.",2026-07-15
+13,carlos@triptico.com.br,in-app,billing,3,"Pricing is only in USD? We pay in BRL and the tax calculation is wrong on our invoice.",2026-07-17
+14,hana@kitsune.jp,in-app,features,4,"A native mobile app with offline mode would be amazing for our field teams.",2026-07-18
+15,gabe@paperplane.io,in-app,dark_mode,5,"Dark mode please. Our whole team switched to dark OS themes and this app is blinding us.",2026-07-19
+16,sofia@meridien.fr,in-app,onboarding,3,"The invite emails land in spam. New teammates cannot find the workspace they were added to.",2026-07-21
+17,ian@compasslabs.com,in-app,performance,2,"Search across all projects is extremely slow once you pass about 5k tasks.",2026-07-22
+18,yuki@tidepool.dev,in-app,features,5,"Would love a way to duplicate tasks together with their subtasks and due dates.",2026-07-24

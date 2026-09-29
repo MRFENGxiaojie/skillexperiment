@@ -1,0 +1,355 @@
+skill: 146-tpl-situacao-testes-codigo-sem-testes
+version: 2
+total_items: 23
+criteria:
+- id: C02
+  category: format
+  fatal: false
+  text: The final output contains a 'Test inventory' section listing what is tested and what is not.
+  anchor: In the agent's final response, look for a 'Test inventory' section.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: D:/skillif-proj/order-service/TEST_REPORT.md
+      needle: Test inventory|Deliberately not tested|Affected files
+    llm:
+      question: The final output contains a 'Test inventory' section listing what is tested and what is not.
+      evidence: In the agent's final response, look for a 'Test inventory' section.
+      source: workspace
+      path: D:/skillif-proj/order-service/TEST_REPORT.md
+      needle: Test inventory|Deliberately not tested|Affected files
+- id: C06
+  category: content
+  fatal: false
+  text: The Coverage Report compares coverage before and after adding tests.
+  anchor: In the Coverage Report section of the final output, check for a before/after comparison.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: before and after
+    llm:
+      question: The Coverage Report compares coverage before and after adding tests.
+      evidence: In the Coverage Report section of the final output, check for a before/after comparison.
+      source: output
+      needle: before and after
+- id: C07
+  category: content
+  fatal: false
+  text: The output lists the files affected by the testing work.
+  anchor: In the final response or strategy section, look for the affected-files list.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: affected
+    llm:
+      question: The output lists the files affected by the testing work.
+      evidence: In the final response or strategy section, look for the affected-files list.
+      source: output
+      needle: affected
+- id: C09
+  category: coverage
+  fatal: false
+  text: Tests exercise the payment-callback module, the highest-risk area.
+  anchor: In the tool log (source reads and test-file writes), look for the payment module being exercised.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_contains
+      cmd: payment
+    llm:
+      question: Tests exercise the payment-callback module, the highest-risk area.
+      evidence: In the tool log (source reads and test-file writes), look for the payment module being exercised.
+      source: tool_log
+      pattern: payment
+- id: C10
+  category: coverage
+  fatal: false
+  text: Tests exercise the user authentication/login module.
+  anchor: In the tool log, look for the auth/login module being exercised.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_contains
+      cmd: auth
+    llm:
+      question: Tests exercise the user authentication/login module.
+      evidence: In the tool log, look for the auth/login module being exercised.
+      source: tool_log
+      pattern: auth
+- id: C11
+  category: coverage
+  fatal: false
+  text: Tests exercise order status transitions.
+  anchor: In the tool log, look for order status logic being exercised.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_contains
+      cmd: order status
+    llm:
+      question: Tests exercise order status transitions.
+      evidence: In the tool log, look for order status logic being exercised.
+      source: tool_log
+      pattern: order status
+- id: C12
+  category: content
+  fatal: false
+  text: At least one test is a characterization test marked with the 'CHARACTERIZATION TEST' comment.
+  anchor: In the tool log (test-file writes), look for the 'CHARACTERIZATION TEST' comment.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_contains
+      cmd: CHARACTERIZATION TEST
+    llm:
+      question: At least one test is a characterization test marked with the 'CHARACTERIZATION TEST' comment.
+      evidence: In the tool log (test-file writes), look for the 'CHARACTERIZATION TEST' comment.
+      source: tool_log
+      pattern: CHARACTERIZATION TEST
+- id: C13
+  category: content
+  fatal: false
+  text: Characterization test comments state that they capture current behavior.
+  anchor: In the tool log (test-file writes), look for 'Captures current behavior' in characterization comments.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_contains
+      cmd: CHARACTERIZATION TEST
+    llm:
+      question: Characterization test comments state that they capture current behavior.
+      evidence: In the tool log (test-file writes), look for 'Captures current behavior' in characterization comments.
+      source: tool_log
+      pattern: CHARACTERIZATION TEST
+- id: C14
+  category: content
+  fatal: false
+  text: Characterization test comments include a guard not to alter the test without verifying the business requirement.
+  anchor: In the tool log (test-file writes), look for the 'Do not change this test' guard note.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_contains
+      cmd: Do not change this test
+    llm:
+      question: Characterization test comments include a guard not to alter the test without verifying the business requirement.
+      evidence: In the tool log (test-file writes), look for the 'Do not change this test' guard note.
+      source: tool_log
+      pattern: Do not change this test
+- id: C15
+  category: evidence
+  fatal: false
+  text: The agent runs the Jest test suite at least once.
+  anchor: In the tool log, look for a jest test-run command.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_contains
+      cmd: jest
+    llm:
+      question: The agent runs the Jest test suite at least once.
+      evidence: In the tool log, look for a jest test-run command.
+      source: tool_log
+      pattern: jest
+- id: C16
+  category: evidence
+  fatal: false
+  text: The agent runs or configures tests with coverage collection.
+  anchor: In the tool log, look for coverage collection (e.g., jest --coverage).
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_contains
+      cmd: --coverage
+    llm:
+      question: The agent runs or configures tests with coverage collection.
+      evidence: In the tool log, look for coverage collection (e.g., jest --coverage).
+      source: tool_log
+      pattern: --coverage
+- id: C19
+  category: tool
+  fatal: false
+  text: External boundaries (database, HTTP, filesystem) are mocked using Jest module mocks.
+  anchor: In the tool log (test-file writes), look for jest.mock() calls faking DB/HTTP/fs.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_contains
+      cmd: jest.mock|makeRepo|jest.spyOn
+    llm:
+      question: External boundaries (database, HTTP, filesystem) are mocked using Jest module mocks.
+      evidence: In the tool log (test-file writes), look for jest.mock() calls faking DB/HTTP/fs.
+      source: tool_log
+      pattern: jest.mock|makeRepo|jest.spyOn
+- id: C20
+  category: format
+  fatal: false
+  text: Test names follow the 'should [behavior] when [condition]' pattern.
+  anchor: In the tool log (test-file writes), check that test names start with 'should'.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_contains
+      cmd: 'should '
+    llm:
+      question: Test names follow the 'should [behavior] when [condition]' pattern.
+      evidence: In the tool log (test-file writes), check that test names start with 'should'.
+      source: tool_log
+      pattern: 'should '
+- id: C21
+  category: boundary
+  fatal: false
+  text: Tests cover error/edge paths, e.g., 'should throw ... when ...' cases.
+  anchor: In the tool log (test-file writes), look for 'should throw' error-path tests.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_contains
+      cmd: should throw|should reject|should propagate|should fail
+    llm:
+      question: Tests cover error/edge paths, e.g., 'should throw ... when ...' cases.
+      evidence: In the tool log (test-file writes), look for 'should throw' error-path tests.
+      source: tool_log
+      pattern: should throw|should reject|should propagate|should fail
+- id: C22
+  category: process
+  fatal: false
+  text: Tests reset mutable state per test using beforeEach rather than beforeAll.
+  anchor: In the tool log (test-file writes), look for beforeEach usage.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_contains
+      cmd: beforeEach
+    llm:
+      question: Tests reset mutable state per test using beforeEach rather than beforeAll.
+      evidence: In the tool log (test-file writes), look for beforeEach usage.
+      source: tool_log
+      pattern: beforeEach
+- id: C24
+  category: evidence
+  fatal: false
+  text: The test suite finishes with all tests passing.
+  anchor: In the tool log (jest output), check for 'passed' in the test summary.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: command_succeeded
+      cmd: skillif-proj/order-service\" test
+      expect: success
+    llm:
+      question: The test suite finishes with all tests passing.
+      evidence: In the tool log (jest output), check for 'passed' in the test summary.
+      source: tool_log
+      pattern: jest
+- id: C25
+  category: process
+  fatal: false
+  text: Tests are added and verified one at a time, keeping the feedback loop short.
+  anchor: In the tool log sequence, look for write-test-run cycles rather than one bulk write.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: count
+      what: npm
+      op: ge
+      n: 3
+    llm:
+      question: Tests are added and verified one at a time (write-test-run cycles) rather than
+        written in one bulk pass and run once at the end.
+      evidence: In the tool log sequence, look for interleaved write-then-run cycles rather than one
+        bulk write followed by a single run.
+      source: tool_log
+      pattern: npm|pytest|jest|vitest|python -m
+- id: C26
+  category: process
+  fatal: false
+  text: Seams are identified and minimal seams added before writing tests.
+  anchor: In the tool log and seams list, look for seam identification preceding test writing.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_order
+      cmds:
+      - seam
+      - jest
+    llm:
+      question: Seams are identified and minimal seams added before writing tests.
+      evidence: In the tool log and seams list, look for seam identification preceding test writing.
+      source: tool_log
+      pattern: seam|jest
+- id: C27
+  category: negative
+  fatal: false
+  text: The tests do not mock the project's own business logic.
+  anchor: In the written test files, verify mocks are applied only to external dependencies.
+  judge: llm
+  check:
+    question: The tests do not mock the project's own business logic.
+    evidence: In the written test files, verify mocks are applied only to external dependencies.
+- id: C28
+  category: negative
+  fatal: false
+  text: The tests do not call private methods or internal implementation details directly.
+  anchor: In the written test files, verify no direct access to private/internal methods.
+  judge: llm
+  check:
+    question: The tests do not call private methods or internal implementation details directly.
+    evidence: In the written test files, verify no direct access to private/internal methods.
+- id: C30
+  category: negative
+  fatal: false
+  text: No console.log statements are left in test files.
+  anchor: In the written test files, verify no console.log statements remain.
+  judge: llm
+  check:
+    question: No console.log statements are left in test files.
+    evidence: In the written test files, verify no console.log statements remain.
+- id: C31
+  category: negative
+  fatal: false
+  text: No tests are skipped with xtest or .skip.
+  anchor: In the written test files, verify no xtest or .skip usage.
+  judge: llm
+  check:
+    question: No tests are skipped with xtest or .skip.
+    evidence: In the written test files, verify no xtest or .skip usage.
+- id: C32
+  category: content
+  fatal: false
+  text: The coverage plan sets tiered targets by risk (critical ≥90%, core ≥80%, utilities ≥60%) rather than uniform 100%.
+  anchor: In the strategy or coverage report, look for the core-logic 80% tier target.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: D:/skillif-proj/order-service/TEST_REPORT.md
+      needle: 80%
+    llm:
+      question: The coverage plan sets tiered targets by risk (critical ≥90%, core ≥80%, utilities ≥60%) rather than uniform 100%.
+      evidence: In the strategy or coverage report, look for the core-logic 80% tier target.
+      source: workspace
+      path: D:/skillif-proj/order-service/TEST_REPORT.md
+      needle: 80%

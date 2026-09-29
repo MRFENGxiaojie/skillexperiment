@@ -1,0 +1,64 @@
+# Regulatory Gap Tracker
+# Maintained by: Regulatory Legal — Compliance Team
+# Owner: M. Chen (Senior Legal Counsel)
+# Last updated: 2026-05-27
+#
+# Tracks known gaps between company policies and applicable regulations.
+# A gap is closed only when the redraft is applied to the policy AND approved
+# by the policy owner. This file is read-only for drafting purposes.
+
+gaps:
+  - id: "GAP-2026-012"
+    status: "closed"
+    affected_document: "data-retention-schedule.md"
+    section: "4.0"
+    description: >-
+      The retention schedule listed a 48-month period for customer account
+      records that exceeded the maximum permitted under the prior retention
+      rule. The schedule was corrected to 36 months.
+    related_regulation: "Data Retention Directive 2023"
+    severity: "medium"
+    raised_date: "2026-03-11"
+    raised_by: "K. Lindqvist (Privacy Lead)"
+    owner: "A. Patel (Head of Privacy)"
+    resolution_note: "Applied and approved on 2026-04-02; retention schedule updated to 36 months."
+
+  - id: "GAP-2026-013"
+    status: "open"
+    affected_document: "data-breach-response-policy.md"
+    section: "3.2"
+    description: >-
+      The breach-notification window in Section 3.2 is 96 hours, but the new
+      regulation requires notification to the competent authority within 72
+      hours. A redraft is required to align the internal notification
+      timeline and the escalation steps.
+    related_regulation: "Regulation (PPI) 2026 (No. 2026/014), effective 2026-06-01"
+    severity: "high"
+    raised_date: "2026-05-20"
+    raised_by: "M. Chen (Senior Legal Counsel)"
+    owner: "A. Patel (Head of Privacy)"
+    resolution_note: null
+
+  - id: "GAP-2026-014"
+    status: "open"
+    affected_document: "privacy-policy.md"
+    section: "2.1"
+    description: >-
+      The definition of "Personal Information" in Section 2.1 of the
+      Personal Information Protection Policy does not match Regulation (PPI)
+      2026 (No. 2026/014), effective 2026-06-01. The current policy defines
+      Personal Information narrowly as information that directly identifies a
+      person by name, government-issued identifier, or contact details, and it
+      excludes pseudonymized data, behavioral/derived data, data combined from
+      multiple sources, and information not stored in a structured system. The
+      regulation defines Personal Information as any information relating to an
+      identified or identifiable natural person, and expressly includes
+      pseudonymized data, behavioral/derived data, and data combined from
+      multiple sources, with no carve-out for unstructured storage. The policy
+      definition must be expanded to close this gap.
+    related_regulation: "Regulation (PPI) 2026 (No. 2026/014), effective 2026-06-01"
+    severity: "high"
+    raised_date: "2026-05-27"
+    raised_by: "M. Chen (Senior Legal Counsel)"
+    owner: "A. Patel (Head of Privacy)"
+    resolution_note: null

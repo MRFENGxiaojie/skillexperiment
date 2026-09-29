@@ -1,0 +1,8 @@
+## Background
+Our order system (Node.js + Express) has been in production for nearly a year with zero tests. The last two releases both had regressions, so the team decided to add tests.
+
+## Task
+Please systematically add tests for us. The most core code is the payment callback, user login authentication, and order status transitions — cover these first, then schedule the rest by risk. I know adding tests to legacy code means locking down current behavior before talking about what "should" be. First output the test strategy and the list of affected files, then write the tests — don't change behavior just to make them pass. Finally give a coverage report and the test inventory, clearly stating what's deliberately untested and why. Write all output in English.
+
+## Materials
+Project at D:\skillif-proj\order-service

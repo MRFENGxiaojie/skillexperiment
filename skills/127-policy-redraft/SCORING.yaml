@@ -1,0 +1,230 @@
+skill: 127-policy-redraft
+version: 2
+total_items: 14
+criteria:
+- id: C05
+  category: coverage
+  fatal: false
+  text: 'All three required inputs are gathered before drafting: the gap (GAP-2026-014), the current approved policy text, and the rule text; none is inferred or fabricated.'
+  anchor: 'Tool log combined: reads of gap-tracker.yaml, privacy-policy.md, rule-amendment-2026.md (C02–C04)'
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_order
+      cmds:
+      - gap-tracker.yaml
+      - privacy-policy.md
+      - rule-amendment-2026.md
+      - proposed-redraft
+    llm:
+      question: 'All three required inputs are gathered before drafting: the gap (GAP-2026-014), the current approved policy text, and the rule text; none is inferred or fabricated.'
+      evidence: 'Tool log combined: reads of gap-tracker.yaml, privacy-policy.md, rule-amendment-2026.md (C02–C04)'
+      source: tool_log
+      pattern: gap-tracker.yaml|privacy-policy.md|rule-amendment-2026.md|proposed-redraft
+- id: C07
+  category: negative
+  fatal: true
+  text: The run never writes to the source policy document privacy-policy.md.
+  anchor: 'Filesystem: privacy-policy.md must be unmodified; output exists only as the proposed-redraft file'
+  judge: llm
+  check:
+    question: The run never writes to the source policy document privacy-policy.md.
+    evidence: 'Filesystem: privacy-policy.md must be unmodified; output exists only as the proposed-redraft file'
+- id: C09
+  category: content
+  fatal: false
+  text: The memo's Gap field identifies the gap as GAP-2026-014.
+  anchor: Memo file / memo Gap line
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: GAP-2026-014
+    llm:
+      question: The memo's Gap field identifies the gap as GAP-2026-014.
+      evidence: Memo file / memo Gap line
+      source: workspace
+      path: '*proposed-redraft-*.md'
+      needle: GAP-2026-014
+- id: C10
+  category: content
+  fatal: false
+  text: The memo's Regulation field cites the new rule and its effective date 2026-06-01.
+  anchor: Memo file / memo Regulation line
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: '2026-06-01'
+    llm:
+      question: The memo's Regulation field cites the new rule and its effective date 2026-06-01.
+      evidence: Memo file / memo Regulation line
+      source: workspace
+      path: '*proposed-redraft-*.md'
+      needle: '2026-06-01'
+- id: C12
+  category: format
+  fatal: false
+  text: Deleted text in the redline is marked with struck-through syntax ~~...~~.
+  anchor: Memo file / memo marked-up policy section
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: ~~
+    llm:
+      question: Deleted text in the redline is marked with struck-through syntax ~~...~~.
+      evidence: Memo file / memo marked-up policy section
+      source: workspace
+      path: '*proposed-redraft-*.md'
+      needle: ~~
+- id: C13
+  category: format
+  fatal: false
+  text: Inserted text in the redline is marked with bold **...** syntax.
+  anchor: Memo file / memo marked-up policy section
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: '**'
+    llm:
+      question: Inserted text in the redline is marked with bold **...** syntax.
+      evidence: Memo file / memo marked-up policy section
+      source: workspace
+      path: '*proposed-redraft-*.md'
+      needle: '**'
+- id: C14
+  category: content
+  fatal: false
+  text: 'Each change carries an inline [Change: ...] comment explaining WHY the change was made (the rule, the cite, or the gap being closed).'
+  anchor: Memo file / memo marked-up section inline comments
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: '[Change:'
+    llm:
+      question: 'Each change carries an inline [Change: ...] comment explaining WHY the change was made (the rule, the cite, or the gap being closed).'
+      evidence: Memo file / memo marked-up section inline comments
+      source: workspace
+      path: '*proposed-redraft-*.md'
+      needle: '[Change:'
+- id: C15
+  category: content
+  fatal: false
+  text: The redraft targets the PII definition in section 2.1 of the policy, which is the section affected by the gap.
+  anchor: Memo file / memo marked-up section
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: PII
+    llm:
+      question: The redraft targets the PII definition in section 2.1 of the policy, which is the section affected by the gap.
+      evidence: Memo file / memo marked-up section
+      source: workspace
+      path: '*proposed-redraft-*.md'
+      needle: PII
+- id: C16
+  category: content
+  fatal: false
+  text: Source tags are carried through from the user-supplied materials, including [user provided] for the rule text.
+  anchor: Memo file / memo marked-up section and change summary tags
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: '[user provided]'
+    llm:
+      question: Source tags are carried through from the user-supplied materials, including [user provided] for the rule text.
+      evidence: Memo file / memo marked-up section and change summary tags
+      source: workspace
+      path: '*proposed-redraft-*.md'
+      needle: '[user provided]'
+- id: C18
+  category: format
+  fatal: false
+  text: The memo includes the '⚠️ Reviewer note' blockquote with its confirmation lines (including the 'Before relying' line).
+  anchor: Memo file / memo opening blockquote
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Reviewer note
+    llm:
+      question: The memo includes the '⚠️ Reviewer note' blockquote with its confirmation lines (including the 'Before relying' line).
+      evidence: Memo file / memo opening blockquote
+      source: workspace
+      path: '*proposed-redraft-*.md'
+      needle: Reviewer note
+- id: C23
+  category: content
+  fatal: false
+  text: The memo's Status line reads 'PROPOSAL — not yet reviewed or approved', marking the deliverable as a draft for review.
+  anchor: Memo file / memo Status line
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: not yet reviewed or approved
+    llm:
+      question: The memo's Status line reads 'PROPOSAL — not yet reviewed or approved', marking the deliverable as a draft for review.
+      evidence: Memo file / memo Status line
+      source: workspace
+      path: '*proposed-redraft-*.md'
+      needle: not yet reviewed or approved
+- id: C25
+  category: process
+  fatal: false
+  text: The run confirms (or flags in the reviewer note) that the policy being redrafted is the approved, latest version before redrafting.
+  anchor: Memo file / agent's response for the confirmation question or the reviewer-note flag
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: approved version
+    llm:
+      question: The run confirms (or flags in the reviewer note) that the policy being redrafted is the approved, latest version before redrafting.
+      evidence: Memo file / agent's response for the confirmation question or the reviewer-note flag
+      source: workspace
+      path: '*proposed-redraft-*.md'
+      needle: approved version
+- id: C26
+  category: process
+  fatal: false
+  text: The run reads the gap/policy/rule materials before writing the redraft memo (inputs gathered first, output produced last).
+  anchor: 'Tool log ordering: reads of materials precede the Write of the proposed-redraft file'
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_order
+      cmds:
+      - rule-amendment-2026.md
+      - proposed-redraft
+    llm:
+      question: The run reads the gap/policy/rule materials before writing the redraft memo (inputs gathered first, output produced last).
+      evidence: 'Tool log ordering: reads of materials precede the Write of the proposed-redraft file'
+      source: tool_log
+      pattern: rule-amendment-2026.md|proposed-redraft
+- id: C27
+  category: negative
+  fatal: false
+  text: Only the affected section (2.1 PII definition) is redrafted — smallest-possible edit — and unrelated policy sections are left untouched, with no restyling of the policy.
+  anchor: Memo file / memo marked-up section scope
+  judge: llm
+  check:
+    question: Only the affected section (2.1 PII definition) is redrafted — smallest-possible edit — and unrelated policy sections are left untouched, with no restyling of the policy.
+    evidence: Memo file / memo marked-up section scope

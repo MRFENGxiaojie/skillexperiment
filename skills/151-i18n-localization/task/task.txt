@@ -1,0 +1,12 @@
+## Background
+Our React admin system currently supports only Chinese. It's going overseas this year, starting with English; the Arabic market is also being discussed and will likely follow. The project is full of hardcoded Chinese strings, and date formats are hardcoded too.
+
+## Task
+Help me assess the internationalization effort and give a plan: first sweep the code to find all hardcoded strings and quantify the scale; then give the retrofit plan, including how to organize language files, how to handle plurals, how to format dates and numbers per language, and what to watch for with Arabic's right-to-left layout; finally provide a pre-launch checklist. Produce the plan first — don't change code yet. Write all output in English.
+
+## Materials
+The project is in the demo-admin-app directory in the current directory (React 18 + i18next installed but not configured). Key points:
+- src/views/Orders.tsx has 60+ hardcoded strings such as `<h1>订单列表</h1>`, `<button>导出</button>`, `{o.count} 条订单`, `已支付/待支付`
+- Dates are output with `new Date(o.createdAt).toLocaleString()`
+- Amounts in src/utils/date.ts are formatted as `'¥' + n.toFixed(2)`
+- Components use physical-direction styles like margin-left, padding-right

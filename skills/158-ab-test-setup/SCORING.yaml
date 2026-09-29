@@ -1,0 +1,369 @@
+skill: 158-ab-test-setup
+version: 2
+total_items: 24
+criteria:
+- id: C05
+  category: content
+  fatal: false
+  text: The plan uses the user's given daily traffic of 5,000 visitors to the signup page.
+  anchor: Test context or test-duration section of the agent's final test plan output.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: '5000|5,000'
+    llm:
+      question: The plan uses the user's given daily traffic of 5,000 visitors to the signup page.
+      evidence: Test context or test-duration section of the agent's final test plan output.
+      source: output
+      needle: '5000|5,000'
+- id: C10
+  category: content
+  fatal: false
+  text: The plan defines secondary metrics to support interpretation of the primary metric.
+  anchor: Metric-selection section of the agent's final test plan output.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Secondary
+    llm:
+      question: The plan defines secondary metrics to support interpretation of the primary metric.
+      evidence: Metric-selection section of the agent's final test plan output.
+      source: output
+      needle: Secondary
+- id: C11
+  category: content
+  fatal: false
+  text: The plan specifies the test type as a classic A/B (split) test of the form change.
+  anchor: Test Design section of the agent's final test plan output.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: A/B
+    llm:
+      question: The plan specifies the test type as a classic A/B (split) test of the form change.
+      evidence: Test Design section of the agent's final test plan output.
+      source: output
+      needle: A/B
+- id: C13
+  category: content
+  fatal: false
+  text: The plan includes a results-recording template with fields such as Test Name, Owner, Decision, Action, and Learnings.
+  anchor: Documenting / Test Documentation section of the agent's final test plan output.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Test Name|Experiment ID|Experiment name
+    llm:
+      question: The plan includes a results-recording template with fields such as Test Name, Owner, Decision, Action, and Learnings.
+      evidence: Documenting / Test Documentation section of the agent's final test plan output.
+      source: output
+      needle: Test Name|Experiment ID|Experiment name
+- id: C14
+  category: format
+  fatal: false
+  text: The output contains a 'Test Design' section covering type, duration, sample size, and traffic allocation.
+  anchor: Section structure of the agent's final test plan output.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Test Design
+    llm:
+      question: The output contains a 'Test Design' section covering type, duration, sample size, and traffic allocation.
+      evidence: Section structure of the agent's final test plan output.
+      source: output
+      needle: Test Design
+- id: C16
+  category: format
+  fatal: false
+  text: The output contains a 'Reference Files' section pointing to the bundled skill references.
+  anchor: End of the agent's final test plan output.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Reference Files
+    llm:
+      question: The output contains a 'Reference Files' section pointing to the bundled skill references.
+      evidence: End of the agent's final test plan output.
+      source: output
+      needle: Reference Files
+- id: C17
+  category: content
+  fatal: false
+  text: The Reference Files section links references/analysis-plan.md.
+  anchor: Reference Files section of the agent's final test plan output.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: references/analysis-plan.md
+    llm:
+      question: The Reference Files section links references/analysis-plan.md.
+      evidence: Reference Files section of the agent's final test plan output.
+      source: output
+      needle: references/analysis-plan.md
+- id: C18
+  category: content
+  fatal: false
+  text: The Reference Files section links references/metrics.md.
+  anchor: Reference Files section of the agent's final test plan output.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: references/metrics.md
+    llm:
+      question: The Reference Files section links references/metrics.md.
+      evidence: Reference Files section of the agent's final test plan output.
+      source: output
+      needle: references/metrics.md
+- id: C19
+  category: content
+  fatal: false
+  text: The Reference Files section links references/common-mistakes.md.
+  anchor: Reference Files section of the agent's final test plan output.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: references/common-mistakes.md
+    llm:
+      question: The Reference Files section links references/common-mistakes.md.
+      evidence: Reference Files section of the agent's final test plan output.
+      source: output
+      needle: references/common-mistakes.md
+- id: C20
+  category: process
+  fatal: false
+  text: 'The plan presents the workflow in the skill''s order: hypothesis first, then test design/metrics/variants, then running guidance, then analysis/documentation.'
+  anchor: Overall ordering of sections in the agent's final test plan output.
+  judge: llm
+  check:
+    question: 'The plan presents the workflow in the skill''s order: hypothesis first, then test design/metrics/variants, then running guidance, then analysis/documentation.'
+    evidence: Overall ordering of sections in the agent's final test plan output.
+- id: C22
+  category: negative
+  fatal: true
+  text: The plan tests a single variable only and does not test multiple variables at once without justification.
+  anchor: Test design / 'Test One Thing' discussion in the agent's final test plan output.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: single variable|change only|only the form|one change
+    llm:
+      question: The plan tests a single variable only and does not test multiple variables at once without justification.
+      evidence: Test design / 'Test One Thing' discussion in the agent's final test plan output.
+      source: output
+      needle: single variable|change only|only the form|one change
+- id: C23
+  category: negative
+  fatal: false
+  text: The plan does not fabricate the user's baseline data; it uses the given 8% completion rate and 5,000 daily visitors.
+  anchor: Context and sample-size numbers in the agent's final test plan output.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: 8%
+    llm:
+      question: The plan does not fabricate the user's baseline data; it uses the given 8% completion rate and 5,000 daily visitors.
+      evidence: Context and sample-size numbers in the agent's final test plan output.
+      source: output
+      needle: 8%
+- id: C24
+  category: boundary
+  fatal: false
+  text: Because the minimum detectable effect (MDE) is not provided by the user, the plan explicitly states an assumed MDE instead of silently omitting it.
+  anchor: Sample-size inputs section of the agent's final test plan output.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: MDE
+    llm:
+      question: Because the minimum detectable effect (MDE) is not provided by the user, the plan explicitly states an assumed MDE instead of silently omitting it.
+      evidence: Sample-size inputs section of the agent's final test plan output.
+      source: output
+      needle: MDE
+- id: C25
+  category: boundary
+  fatal: false
+  text: The plan bounds the test duration with a minimum of about 1-2 business cycles and warns against running too long (novelty effects).
+  anchor: Test Duration section of the agent's final test plan output.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: business cycle|weekly cycle
+    llm:
+      question: The plan bounds the test duration with a minimum of about 1-2 business cycles and warns against running too long (novelty effects).
+      evidence: Test Duration section of the agent's final test plan output.
+      source: output
+      needle: business cycle|weekly cycle
+- id: C26
+  category: termination
+  fatal: false
+  text: The plan gates conclusions on reaching the pre-determined sample size — if it is not reached, the result is only preliminary.
+  anchor: Analyzing Results section of the agent's final test plan output.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: preliminary|required sample and duration|required sample was reached
+    llm:
+      question: The plan gates conclusions on reaching the pre-determined sample size — if it is not reached, the result is only preliminary.
+      evidence: Analyzing Results section of the agent's final test plan output.
+      source: output
+      needle: preliminary|required sample and duration|required sample was reached
+- id: C27
+  category: termination
+  fatal: false
+  text: 'The plan includes a stop condition: halt the test if a guardrail metric is significantly negative.'
+  anchor: Guardrail-metric guidance in the agent's final test plan output.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: stop the test|halt the test|serious guardrail deteriorates|unacceptable harm
+    llm:
+      question: 'The plan includes a stop condition: halt the test if a guardrail metric is significantly negative.'
+      evidence: Guardrail-metric guidance in the agent's final test plan output.
+      source: output
+      needle: stop the test|halt the test|serious guardrail deteriorates|unacceptable harm
+- id: C28
+  category: evidence
+  fatal: false
+  text: The plan includes a pre-launch checklist covering tracking verification, QA on all variants, and informing stakeholders.
+  anchor: Running the Test / pre-launch checklist section of the agent's final test plan output.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: pre-launch|Before launch|Before launching
+    llm:
+      question: The plan includes a pre-launch checklist covering tracking verification, QA on all variants, and informing stakeholders.
+      evidence: Running the Test / pre-launch checklist section of the agent's final test plan output.
+      source: output
+      needle: pre-launch|Before launch|Before launching
+- id: C29
+  category: evidence
+  fatal: false
+  text: The plan's analysis section cross-checks results using p-values or confidence intervals and compares the effect size against the MDE.
+  anchor: Analyzing Results section of the agent's final test plan output.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: p-value
+    llm:
+      question: The plan's analysis section cross-checks results using p-values or confidence intervals and compares the effect size against the MDE.
+      evidence: Analyzing Results section of the agent's final test plan output.
+      source: output
+      needle: p-value
+- id: C30
+  category: evidence
+  fatal: false
+  text: The plan distinguishes statistical significance from practical/business significance.
+  anchor: Analyzing Results section of the agent's final test plan output.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: practical significance|business significance|commercially worthwhile
+    llm:
+      question: The plan distinguishes statistical significance from practical/business significance.
+      evidence: Analyzing Results section of the agent's final test plan output.
+      source: output
+      needle: practical significance|business significance|commercially worthwhile
+- id: C31
+  category: content
+  fatal: false
+  text: The plan explains the statistical inputs and decisions in plain language suited to a non-statistician and flags the assumptions for the user to confirm.
+  anchor: Overall tone and assumptions section of the agent's final test plan output.
+  judge: llm
+  check:
+    question: The plan explains the statistical inputs and decisions in plain language suited to a non-statistician and flags the assumptions for the user to confirm.
+    evidence: Overall tone and assumptions section of the agent's final test plan output.
+- id: C32
+  category: tool
+  fatal: false
+  text: The agent reads at least one bundled reference file (references/analysis-plan.md, references/metrics.md, or references/common-mistakes.md) while composing the plan.
+  anchor: tool_log.jsonl — Read calls whose args contain a references/ path.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_contains
+      cmd: references/
+    llm:
+      question: The agent reads at least one bundled reference file (references/analysis-plan.md, references/metrics.md, or references/common-mistakes.md) while composing the plan.
+      evidence: tool_log.jsonl — Read calls whose args contain a references/ path.
+      source: tool_log
+      pattern: references/
+- id: C33
+  category: coverage
+  fatal: false
+  text: 'The plan covers all seven deliverables the user requested: clear hypothesis, required sample size, test duration, traffic allocation, primary metric, guardrail metrics, and an executable results-recording
+    plan.'
+  anchor: Complete agent final test plan output.
+  judge: llm
+  check:
+    question: 'The plan covers all seven deliverables the user requested: clear hypothesis, required sample size, test duration, traffic allocation, primary metric, guardrail metrics, and an executable
+      results-recording plan.'
+    evidence: Complete agent final test plan output.
+- id: C34
+  category: negative
+  fatal: true
+  text: The plan does not recommend peeking at results and stopping early, and does not propose running the test without a pre-determined sample size.
+  anchor: Running-the-test guidance in the agent's final test plan output.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: peek|peeking|stop early|do not stop early
+    llm:
+      question: The plan does not recommend peeking at results and stopping early, and does not propose running the test without a pre-determined sample size.
+      evidence: Running-the-test guidance in the agent's final test plan output.
+      source: output
+      needle: peek|peeking|stop early|do not stop early
+- id: C35
+  category: content
+  fatal: false
+  text: The plan instructs the user not to change variants or add new traffic sources mid-test.
+  anchor: Running-the-test guidance in the agent's final test plan output.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: changes to variants|no unrelated signup changes|new traffic sources|add new traffic
+    llm:
+      question: The plan instructs the user not to change variants or add new traffic sources mid-test.
+      evidence: Running-the-test guidance in the agent's final test plan output.
+      source: output
+      needle: changes to variants|no unrelated signup changes|new traffic sources|add new traffic

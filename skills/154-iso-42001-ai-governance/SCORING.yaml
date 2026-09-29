@@ -1,0 +1,407 @@
+skill: 154-iso-42001-ai-governance
+version: 2
+total_items: 26
+criteria:
+- id: C01
+  category: process
+  fatal: false
+  text: The agent reads the bundled system-description material task/docs/model-description.md to obtain the AI system description.
+  anchor: Look in the tool log for a Read call on task/docs/model-description.md.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_contains
+      cmd: model-description.md
+    llm:
+      question: The agent reads the bundled system-description material task/docs/model-description.md to obtain the AI system description.
+      evidence: Look in the tool log for a Read call on task/docs/model-description.md.
+      source: tool_log
+      pattern: task/docs/model-description.md
+- id: C02
+  category: process
+  fatal: false
+  text: The agent reads the bundled privacy material task/docs/privacy-policy.md as existing documentation.
+  anchor: Look in the tool log for a Read call on task/docs/privacy-policy.md.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_contains
+      cmd: privacy-policy.md
+    llm:
+      question: The agent reads the bundled privacy material task/docs/privacy-policy.md as existing documentation.
+      evidence: Look in the tool log for a Read call on task/docs/privacy-policy.md.
+      source: tool_log
+      pattern: task/docs/privacy-policy.md
+- id: C03
+  category: process
+  fatal: false
+  text: The agent reads the bundled data-retention material task/docs/data-retention-policy.md as existing documentation.
+  anchor: Look in the tool log for a Read call on task/docs/data-retention-policy.md.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_contains
+      cmd: data-retention-policy.md
+    llm:
+      question: The agent reads the bundled data-retention material task/docs/data-retention-policy.md as existing documentation.
+      evidence: Look in the tool log for a Read call on task/docs/data-retention-policy.md.
+      source: tool_log
+      pattern: task/docs/data-retention-policy.md
+- id: C04
+  category: process
+  fatal: false
+  text: The agent reads the step-by-step procedure file references/audit-procedure.md rather than working from memory.
+  anchor: Look in the tool log for a Read call on references/audit-procedure.md.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_contains
+      cmd: audit-procedure.md
+    llm:
+      question: The agent reads the step-by-step procedure file references/audit-procedure.md rather than working from memory.
+      evidence: Look in the tool log for a Read call on references/audit-procedure.md.
+      source: tool_log
+      pattern: references/audit-procedure.md
+- id: C05
+  category: process
+  fatal: false
+  text: The agent reads the report template file references/report-template.md.
+  anchor: Look in the tool log for a Read call on references/report-template.md.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_contains
+      cmd: report-template.md
+    llm:
+      question: The agent reads the report template file references/report-template.md.
+      evidence: Look in the tool log for a Read call on references/report-template.md.
+      source: tool_log
+      pattern: references/report-template.md
+- id: C06
+  category: coverage
+  fatal: false
+  text: 'The assessment covers all seven audit dimensions: organizational context, leadership, planning and risk management, support and resources, AI lifecycle operation, performance evaluation, and improvement.'
+  anchor: Check the final report for coverage of all seven clauses (context, leadership, planning, support, operation, performance, improvement).
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: context|leadership|planning|support|operation|performance|improvement
+    llm:
+      question: 'The assessment covers all seven audit dimensions: organizational context, leadership, planning and risk management, support and resources, AI lifecycle operation, performance evaluation,
+        and improvement.'
+      evidence: Check the final report for coverage of all seven clauses (context, leadership, planning, support, operation, performance, improvement).
+      source: output
+      needle: context|leadership|planning|support|operation|performance|improvement
+- id: C08
+  category: content
+  fatal: false
+  text: The final report states that the system outputs a score on the 1-100 scale and ranks candidates for hiring decisions.
+  anchor: Search the final report for the 1-100 scoring/ranking description.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: 1-100|rank
+    llm:
+      question: The final report states that the system outputs a score on the 1-100 scale and ranks candidates for hiring decisions.
+      evidence: Search the final report for the 1-100 scoring/ranking description.
+      source: output
+      needle: 1-100|rank
+- id: C09
+  category: content
+  fatal: false
+  text: The final report classifies the resume-screening system as high-risk under the EU AI Act employment context.
+  anchor: Search the Risk Classification area of the final report for a high-risk classification.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: High-Risk|high-risk
+    llm:
+      question: The final report classifies the resume-screening system as high-risk under the EU AI Act employment context.
+      evidence: Search the Risk Classification area of the final report for a high-risk classification.
+      source: output
+      needle: High-Risk|high-risk
+- id: C12
+  category: content
+  fatal: false
+  text: The final report notes the training data scale of roughly 200,000 historical resumes.
+  anchor: Search the final report for the ~200k training data figure.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: 200,000|200K
+    llm:
+      question: The final report notes the training data scale of roughly 200,000 historical resumes.
+      evidence: Search the final report for the ~200k training data figure.
+      source: output
+      needle: 200,000|200K
+- id: C15
+  category: format
+  fatal: false
+  text: The final report opens with an Executive Summary section.
+  anchor: Look for an Executive Summary header near the top of the final report.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Executive Summary
+    llm:
+      question: The final report opens with an Executive Summary section.
+      evidence: Look for an Executive Summary header near the top of the final report.
+      source: output
+      needle: Executive Summary
+- id: C18
+  category: format
+  fatal: false
+  text: The final report includes a Compliance Roadmap section.
+  anchor: Look for a Compliance Roadmap header in the final report.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Compliance Roadmap
+    llm:
+      question: The final report includes a Compliance Roadmap section.
+      evidence: Look for a Compliance Roadmap header in the final report.
+      source: output
+      needle: Compliance Roadmap
+- id: C22
+  category: format
+  fatal: false
+  text: The final report includes an Appendices section (checklist, risk register, glossary, references).
+  anchor: Look for an Appendices/Appendix header in the final report.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Appendices|Appendix
+    llm:
+      question: The final report includes an Appendices section (checklist, risk register, glossary, references).
+      evidence: Look for an Appendices/Appendix header in the final report.
+      source: output
+      needle: Appendices|Appendix
+- id: C23
+  category: content
+  fatal: false
+  text: The Executive Summary states an overall conformance level (conformant / partially conformant / non-conformant) for the assessed system.
+  anchor: Look for an overall conformance statement in the Executive Summary.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Overall Conformance|Overall Score|Conformant
+    llm:
+      question: The Executive Summary states an overall conformance level (conformant / partially conformant / non-conformant) for the assessed system.
+      evidence: Look for an overall conformance statement in the Executive Summary.
+      source: output
+      needle: Overall Conformance|Overall Score|Conformant
+- id: C24
+  category: content
+  fatal: false
+  text: The Executive Summary includes a per-clause conformance table showing status and scores for clauses 4 through 10.
+  anchor: Look for the 'Conformance by Clause' status table in the Executive Summary.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Conformance by Clause
+    llm:
+      question: The Executive Summary includes a per-clause conformance table showing status and scores for clauses 4 through 10.
+      evidence: Look for the 'Conformance by Clause' status table in the Executive Summary.
+      source: output
+      needle: Conformance by Clause
+- id: C25
+  category: content
+  fatal: false
+  text: The Executive Summary lists the top 5 critical findings.
+  anchor: Look for a 'Top 5 Critical Findings' list in the Executive Summary.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Top 5
+    llm:
+      question: The Executive Summary lists the top 5 critical findings.
+      evidence: Look for a 'Top 5 Critical Findings' list in the Executive Summary.
+      source: output
+      needle: Top 5
+- id: C26
+  category: content
+  fatal: false
+  text: Each clause is assigned a score on a 0-10 scale in the report.
+  anchor: Look for clause scores formatted like [X]/10 in the conformance table or detailed findings.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: /10
+    llm:
+      question: Each clause is assigned a score on a 0-10 scale in the report.
+      evidence: Look for clause scores formatted like [X]/10 in the conformance table or detailed findings.
+      source: output
+      needle: /10
+- id: C27
+  category: content
+  fatal: false
+  text: The report identifies algorithmic bias / fairness as a key risk for the hiring system.
+  anchor: Search the Risk Assessment Summary for bias/fairness risk analysis.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: bias|Bias
+    llm:
+      question: The report identifies algorithmic bias / fairness as a key risk for the hiring system.
+      evidence: Search the Risk Assessment Summary for bias/fairness risk analysis.
+      source: output
+      needle: bias|Bias
+- id: C29
+  category: content
+  fatal: false
+  text: Risk items and roadmap actions are assigned owners and deadlines.
+  anchor: Look for Owner/负责人 assignments on risks and roadmap actions.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Owner
+    llm:
+      question: Risk items and roadmap actions are assigned owners and deadlines.
+      evidence: Look for Owner/负责人 assignments on risks and roadmap actions.
+      source: output
+      needle: Owner
+- id: C30
+  category: content
+  fatal: false
+  text: The compliance roadmap is phased across 0-3, 3-6, and 6-12 month windows.
+  anchor: Look for phased time windows (0-3 / 3-6 / 6-12 months) in the Compliance Roadmap.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: 0-3|0–3|3-6|3–6|6-12|6–12
+    llm:
+      question: The compliance roadmap is phased across 0-3, 3-6, and 6-12 month windows.
+      evidence: Look for phased time windows (0-3 / 3-6 / 6-12 months) in the Compliance Roadmap.
+      source: output
+      needle: 0-3|0–3|3-6|3–6|6-12|6–12
+- id: C34
+  category: content
+  fatal: false
+  text: The report records the absence of a complaint-handling process as a gap.
+  anchor: Look in Documentation Requirements / gaps for the missing complaint-handling process.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: complaint
+    llm:
+      question: The report records the absence of a complaint-handling process as a gap.
+      evidence: Look in Documentation Requirements / gaps for the missing complaint-handling process.
+      source: output
+      needle: complaint
+- id: C36
+  category: evidence
+  fatal: false
+  text: The report cites the existing privacy policy as evidence of current practice.
+  anchor: Look in Detailed Findings for a citation of the privacy policy.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: privacy policy|Privacy Policy
+    llm:
+      question: The report cites the existing privacy policy as evidence of current practice.
+      evidence: Look in Detailed Findings for a citation of the privacy policy.
+      source: output
+      needle: privacy policy|Privacy Policy
+- id: C37
+  category: evidence
+  fatal: false
+  text: The report cites the existing data retention policy as evidence of current practice.
+  anchor: Look in Detailed Findings for a citation of the data retention policy.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: data retention|Data Retention
+    llm:
+      question: The report cites the existing data retention policy as evidence of current practice.
+      evidence: Look in Detailed Findings for a citation of the data retention policy.
+      source: output
+      needle: data retention|Data Retention
+- id: C38
+  category: evidence
+  fatal: false
+  text: The report explicitly distinguishes existing evidence from gaps for the findings.
+  anchor: Look in Detailed Findings for explicit evidence-vs-gap labeling.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: evidence
+    llm:
+      question: The report explicitly distinguishes existing evidence from gaps for the findings.
+      evidence: Look in Detailed Findings for explicit evidence-vs-gap labeling.
+      source: output
+      needle: evidence
+- id: C40
+  category: negative
+  fatal: false
+  text: The report does not provide legal advice and notes that jurisdictional obligations may be additional.
+  anchor: Read the final report for legal advice; only jurisdictional caveats are acceptable.
+  judge: llm
+  check:
+    question: The report does not provide legal advice and notes that jurisdictional obligations may be additional.
+    evidence: Read the final report for legal advice; only jurisdictional caveats are acceptable.
+- id: C42
+  category: boundary
+  fatal: false
+  text: If a required input (system description or use case) were missing, the agent would ask for it before assessing rather than assume it.
+  anchor: If required inputs were missing, check the agent's first response for a clarifying question.
+  judge: llm
+  check:
+    question: If a required input (system description or use case) were missing, the agent would ask for it before assessing rather than assume it.
+    evidence: If required inputs were missing, check the agent's first response for a clarifying question.
+- id: C43
+  category: content
+  fatal: false
+  text: 'The report identifies the stakeholders: hiring managers as users and job seekers as affected parties.'
+  anchor: Search the report's context/stakeholder analysis for hiring managers and job seekers.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: hiring manager|hiring managers|job seeker|job seekers
+    llm:
+      question: 'The report identifies the stakeholders: hiring managers as users and job seekers as affected parties.'
+      evidence: Search the report's context/stakeholder analysis for hiring managers and job seekers.
+      source: output
+      needle: hiring manager|hiring managers|job seeker|job seekers

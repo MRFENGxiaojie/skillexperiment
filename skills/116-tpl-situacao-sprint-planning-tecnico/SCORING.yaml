@@ -1,0 +1,519 @@
+skill: 116-tpl-situacao-sprint-planning-tecnico
+version: 2
+total_items: 29
+criteria:
+- id: C01
+  category: format
+  fatal: false
+  text: The final deliverable is a markdown sprint plan that opens with a 
+    top-level '## Sprint' heading line.
+  anchor: Check the agent's final output for a '## Sprint [N] Plan' heading at 
+    the top.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: '## Sprint'
+    llm:
+      question: The final deliverable is a markdown sprint plan that opens with 
+        a top-level '## Sprint' heading line.
+      evidence: Check the agent's final output for a '## Sprint [N] Plan' 
+        heading at the top.
+      source: output
+      needle: '## Sprint'
+- id: C02
+  category: format
+  fatal: false
+  text: The plan includes a '### Capacity' section.
+  anchor: Look for the '### Capacity' heading in the plan body.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: '## Capacity'
+    llm:
+      question: The plan includes a '### Capacity' section.
+      evidence: Look for the '### Capacity' heading in the plan body.
+      source: output
+      needle: '## Capacity'
+- id: C03
+  category: format
+  fatal: false
+  text: The plan includes a '### Stories' section listing stories by priority.
+  anchor: Look for the '### Stories' heading (or '### Stories (by priority)') in
+    the plan body.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: 'Product Backlog Breakdown'
+    llm:
+      question: The plan includes a '### Stories' section listing stories by 
+        priority.
+      evidence: Look for the '### Stories' heading (or '### Stories (by 
+        priority)') in the plan body.
+      source: output
+      needle: 'Product Backlog Breakdown'
+- id: C04
+  category: format
+  fatal: false
+  text: The plan includes a '### Tech Debt Budget' section.
+  anchor: Look for the 'Tech Debt Budget' heading in the plan body.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Technical Debt Budget
+    llm:
+      question: The plan includes a '### Tech Debt Budget' section.
+      evidence: Look for the 'Tech Debt Budget' heading in the plan body.
+      source: output
+      needle: Technical Debt Budget
+- id: C05
+  category: format
+  fatal: false
+  text: The plan includes a risks-and-blockers section headed '### Risks & 
+    Blockers'.
+  anchor: Look for the 'Risks & Blockers' heading in the plan body.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Risks and Blockers
+    llm:
+      question: The plan includes a risks-and-blockers section headed '### Risks
+        & Blockers'.
+      evidence: Look for the 'Risks & Blockers' heading in the plan body.
+      source: output
+      needle: Risks and Blockers
+- id: C06
+  category: format
+  fatal: false
+  text: The plan includes a '### Sprint Goal' section.
+  anchor: Look for the 'Sprint Goal' heading in the plan body.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Sprint Goal
+    llm:
+      question: The plan includes a '### Sprint Goal' section.
+      evidence: Look for the 'Sprint Goal' heading in the plan body.
+      source: output
+      needle: Sprint Goal
+- id: C07
+  category: coverage
+  fatal: false
+  text: The plan breaks down the mobile login/registration requirement into user
+    stories.
+  anchor: Search the Stories section for a story addressing mobile 
+    login/registration (移动端登录注册).
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: mobile login and registration
+    llm:
+      question: The plan breaks down the mobile login/registration requirement 
+        into user stories.
+      evidence: Search the Stories section for a story addressing mobile 
+        login/registration (移动端登录注册).
+      source: output
+      needle: mobile login and registration
+- id: C08
+  category: coverage
+  fatal: false
+  text: The plan breaks down the order-export performance optimization 
+    requirement into user stories.
+  anchor: Search the Stories section for a story addressing order export 
+    performance (订单导出).
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: order export
+    llm:
+      question: The plan breaks down the order-export performance optimization 
+        requirement into user stories.
+      evidence: Search the Stories section for a story addressing order export 
+        performance (订单导出).
+      source: output
+      needle: order export
+- id: C09
+  category: coverage
+  fatal: false
+  text: The plan breaks down the admin permission-system upgrade requirement 
+    into user stories.
+  anchor: Search the Stories section for a story addressing the permission 
+    system (权限系统/RBAC).
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: RBAC
+    llm:
+      question: The plan breaks down the admin permission-system upgrade 
+        requirement into user stories.
+      evidence: Search the Stories section for a story addressing the permission
+        system (权限系统/RBAC).
+      source: output
+      needle: RBAC
+- id: C10
+  category: content
+  fatal: true
+  text: The plan states estimated capacity as 60-70% of theoretical capacity 
+    after overhead, not 100% of working hours.
+  anchor: Look in the Capacity section for the 60-70% overhead rule applied to a
+    figure below theoretical.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: 65%
+    llm:
+      question: The plan states estimated capacity as 60-70% of theoretical 
+        capacity after overhead, not 100% of working hours.
+      evidence: Look in the Capacity section for the 60-70% overhead rule 
+        applied to a figure below theoretical.
+      source: output
+      needle: 65%
+- id: C12
+  category: content
+  fatal: false
+  text: The capacity calculation is based on the 5-developer team and 10-day 
+    biweekly sprint given in the task.
+  anchor: Look in the Capacity section for team size 5 (5 人) and working days.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: 5 developers|Five developers
+    llm:
+      question: The capacity calculation is based on the 5-developer team and 
+        10-day biweekly sprint given in the task.
+      evidence: Look in the Capacity section for team size 5 (5 人) and working 
+        days.
+      source: output
+      needle: 5 developers|Five developers
+- id: C13
+  category: content
+  fatal: false
+  text: The tech debt budget includes decommissioning the deprecated 
+    '/api/v1/orders' API.
+  anchor: Look in the Tech Debt Budget section for the deprecated orders API 
+    reference.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: /api/v1/orders
+    llm:
+      question: The tech debt budget includes decommissioning the deprecated 
+        '/api/v1/orders' API.
+      evidence: Look in the Tech Debt Budget section for the deprecated orders 
+        API reference.
+      source: output
+      needle: /api/v1/orders
+- id: C15
+  category: content
+  fatal: true
+  text: Every story in the plan lists at least 2 testable, falsifiable 
+    acceptance criteria.
+  anchor: Scan each story entry for an 'Acceptance Criteria' block with 
+    falsifiable Given/When/Then criteria.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Acceptance Criteria
+    llm:
+      question: Every story in the plan lists at least 2 testable, falsifiable 
+        acceptance criteria.
+      evidence: Scan each story entry for an 'Acceptance Criteria' block with 
+        falsifiable Given/When/Then criteria.
+      source: output
+      needle: Acceptance Criteria
+- id: C16
+  category: content
+  fatal: true
+  text: Every story carries a story-point estimate expressed in points 
+    (estimated by complexity, not hours/days).
+  anchor: Scan the Stories section for per-story point values (e.g., '— 3 
+    points').
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: points
+    llm:
+      question: Every story carries a story-point estimate expressed in points 
+        (estimated by complexity, not hours/days).
+      evidence: Scan the Stories section for per-story point values (e.g., '— 3 
+        points').
+      source: output
+      needle: points
+- id: C17
+  category: content
+  fatal: false
+  text: Each story is assigned an owner.
+  anchor: Scan each story line for an owner field (e.g., 'owner Dev A').
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: owner
+    llm:
+      question: Each story is assigned an owner.
+      evidence: Scan each story line for an owner field (e.g., 'owner Dev A').
+      source: output
+      needle: owner
+- id: C18
+  category: content
+  fatal: false
+  text: Dependencies between stories and on external services/teams are declared
+    for the relevant stories.
+  anchor: Scan the Stories and Risks sections for dependency declarations (e.g.,
+    'depends on').
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: 'Dependencies:'
+    llm:
+      question: Dependencies between stories and on external services/teams are 
+        declared for the relevant stories.
+      evidence: Scan the Stories and Risks sections for dependency declarations 
+        (e.g., 'depends on').
+      source: output
+      needle: 'Dependencies:'
+- id: C19
+  category: content
+  fatal: false
+  text: The sprint goal is stated in one sentence as a business outcome, not a 
+    task list.
+  anchor: Read the Sprint Goal section and judge whether it is a single 
+    business-outcome sentence.
+  judge: llm
+  check:
+    question: The sprint goal is stated in one sentence as a business outcome, 
+      not a task list.
+    evidence: Read the Sprint Goal section and judge whether it is a single 
+      business-outcome sentence.
+- id: C20
+  category: boundary
+  fatal: false
+  text: Acceptance criteria include explicit error cases (e.g., validation 
+    failure, network error).
+  anchor: Scan the acceptance criteria blocks for an error-case item.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: error
+    llm:
+      question: Acceptance criteria include explicit error cases (e.g., 
+        validation failure, network error).
+      evidence: Scan the acceptance criteria blocks for an error-case item.
+      source: output
+      needle: error
+- id: C21
+  category: boundary
+  fatal: false
+  text: The order-export story's acceptance criteria include a performance/scale
+    check covering the 100k-order async-export target.
+  anchor: Look in the order-export story's ACs for the 100k (10 万) order or 
+    async/chunked scale target.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: 100K|100,000
+    llm:
+      question: The order-export story's acceptance criteria include a 
+        performance/scale check covering the 100k-order async-export target.
+      evidence: Look in the order-export story's ACs for the 100k (10 万) order 
+        or async/chunked scale target.
+      source: output
+      needle: 100K|100,000
+- id: C22
+  category: termination
+  fatal: false
+  text: 'The mobile login/registration stories that depend on the unfinished UI design
+    are gated: flagged blocked or moved to the backlog rather than planned as ready.'
+  anchor: Look in the Stories/Risks section for the mobile stories marked 
+    blocked pending UI design.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: blocked
+    llm:
+      question: 'The mobile login/registration stories that depend on the unfinished
+        UI design are gated: flagged blocked or moved to the backlog rather than planned
+        as ready.'
+      evidence: Look in the Stories/Risks section for the mobile stories marked 
+        blocked pending UI design.
+      source: output
+      needle: blocked
+- id: C23
+  category: content
+  fatal: false
+  text: The plan explicitly assesses the impact of the mobile requirement's 
+    unfinalized UI design.
+  anchor: Read the Risks section or the mobile story notes for an impact 
+    statement about the missing UI design.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Mobile Design Impact
+    llm:
+      question: The plan explicitly assesses the impact of the mobile 
+        requirement's unfinalized UI design.
+      evidence: Read the Risks section or the mobile story notes for an impact 
+        statement about the missing UI design.
+      source: output
+      needle: Mobile Design Impact
+- id: C24
+  category: negative
+  fatal: false
+  text: No story is estimated by time (e.g., '3 points because it takes 3 
+    hours').
+  anchor: Scan story estimates and rationale for any hours/days anchoring.
+  judge: llm
+  check:
+    question: No story is estimated by time (e.g., '3 points because it takes 3 
+      hours').
+    evidence: Scan story estimates and rationale for any hours/days anchoring.
+- id: C25
+  category: negative
+  fatal: false
+  text: No catch-all 'Miscellaneous' or 'Chores' story is created.
+  anchor: Scan the Stories list to confirm no catch-all placeholder story 
+    exists.
+  judge: llm
+  check:
+    question: No catch-all 'Miscellaneous' or 'Chores' story is created.
+    evidence: Scan the Stories list to confirm no catch-all placeholder story 
+      exists.
+- id: C26
+  category: negative
+  fatal: false
+  text: The agent does not use the planning output to make final architectural 
+    decisions; architecture-heavy items are routed to a separate RFC/ADR 
+    session.
+  anchor: Check that the plan keeps stories at feature level and does not 
+    finalize architecture.
+  judge: llm
+  check:
+    question: The agent does not use the planning output to make final 
+      architectural decisions; architecture-heavy items are routed to a separate
+      RFC/ADR session.
+    evidence: Check that the plan keeps stories at feature level and does not 
+      finalize architecture.
+- id: C28
+  category: process
+  fatal: false
+  text: Acceptance criteria are closed/defined before stories are estimated 
+    (requirements clarification not interleaved with estimation).
+  anchor: Judge whether ACs are settled before point estimates are assigned.
+  judge: llm
+  check:
+    question: Acceptance criteria are closed/defined before stories are 
+      estimated (requirements clarification not interleaved with estimation).
+    evidence: Judge whether ACs are settled before point estimates are assigned.
+- id: C29
+  category: termination
+  fatal: false
+  text: Any story estimated above the 8-point ceiling is split into vertical 
+    slices; no planned story exceeds 8 points.
+  anchor: Scan story estimates to confirm none exceed 8 points and any such 
+    story was split.
+  judge: llm
+  check:
+    question: Any story estimated above the 8-point ceiling is split into 
+      vertical slices; no planned story exceeds 8 points.
+    evidence: Scan story estimates to confirm none exceed 8 points and any such 
+      story was split.
+- id: C30
+  category: evidence
+  fatal: false
+  text: The agent verifies the finalized plan against the skill's quality gates 
+    (AC, 8-point ceiling, dependencies, overhead, 20% reserve, one-sentence 
+    goal).
+  anchor: Look for an explicit self-check of the plan against the quality-gate 
+    checklist.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Quality Gates
+    llm:
+      question: The agent verifies the finalized plan against the skill's 
+        quality gates (AC, 8-point ceiling, dependencies, overhead, 20% reserve,
+        one-sentence goal).
+      evidence: Look for an explicit self-check of the plan against the 
+        quality-gate checklist.
+      source: output
+      needle: Quality Gates
+- id: C31
+  category: process
+  fatal: false
+  text: The plan records that all team members voiced concerns or questions 
+    before it was finalized.
+  anchor: Look in the planning output for a record of team concerns/questions 
+    solicited before finalization.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: concerns
+    llm:
+      question: The plan records that all team members voiced concerns or 
+        questions before it was finalized.
+      evidence: Look in the planning output for a record of team 
+        concerns/questions solicited before finalization.
+      source: output
+      needle: concerns
+- id: C32
+  category: content
+  fatal: false
+  text: Stories are defined as vertical slices delivering end-to-end value (UI +
+    API + DB for a user scenario), not horizontal layers.
+  anchor: Scan the story breakdown for end-to-end vertical-slice framing rather 
+    than layer-based tasks.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: vertical slice
+    llm:
+      question: Stories are defined as vertical slices delivering end-to-end 
+        value (UI + API + DB for a user scenario), not horizontal layers.
+      evidence: Scan the story breakdown for end-to-end vertical-slice framing 
+        rather than layer-based tasks.
+      source: output
+      needle: vertical slice

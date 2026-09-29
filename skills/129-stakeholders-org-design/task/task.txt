@@ -1,0 +1,8 @@
+## Background
+Our company's backend is splitting from a monolith into microservices. The R&D team is around 40 people, currently organized into functional groups by frontend, backend, QA, and ops — a structure that clearly won't keep up after the split.
+
+## Task
+Please produce a complete org-redesign plan: first map out the stakeholders involved in this change — who needs key management, who just needs to be kept informed, and how to manage each — then design the new team structure aligned to the new service boundaries; then define how teams collaborate — interfaces, service agreements, deliverable handoffs, and decision authority all spelled out; then assess our current engineering maturity level — data-driven, not gut feel; finally give a phased transition plan including decision mechanisms and review cadence. Current state: R&D 40 people (12 frontend + 18 backend + 6 QA + 4 ops), planning to split into 5 service domains (user, order, product, payment, notification), each domain forming a 5-8 person team. Write all output in English.
+
+## Materials
+None
