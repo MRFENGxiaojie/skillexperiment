@@ -1,0 +1,8 @@
+## Background
+The MSA we signed with a supplier has been amended three times over the years, and we want to understand the contract's overall current state.
+
+## Task
+Help me sort out, end to end, what has changed in this contract from initial signing to now; specifically, trace the indemnification-related clauses completely from the original version to the current one and tell me what the operative language is today. The attachment has several files with messy names — first figure out a sensible order for them. Write all output in English.
+
+## Materials
+Attachment: msa-2021.pdf, msa-v2.pdf, msa-final.pdf, msa-markup.pdf (each PDF has a text version .pdf.md)

@@ -1,0 +1,8 @@
+## Background
+Engineer Xiao Lin submitted an invention disclosure: a new cache-eviction algorithm that uses a lightweight learning model to predict access probability instead of traditional LRU. The prototype is validated with clear performance gains. He says he published a version of the approach on the company tech blog in May this year.
+
+## Task
+Help me assess whether this invention is worth advancing. I only have his brief disclosure form, which is incomplete; where information is insufficient, assess on the available information and list the missing items as open questions in the memo — do not ask for them. Judge each dimension — novelty, non-obviousness, patentability, public-disclosure timing, detectability, and strategic value — then give a clear conclusion and next-step recommendation. This is time-sensitive; prioritize and put time-related issues first. Write all output in English.
+
+## Materials
+docs/disclosure-form.md: Xiao Lin's brief disclosure form (title "Learning-model-based cache-eviction algorithm" with a short technical summary; the rest of the fields are blank)

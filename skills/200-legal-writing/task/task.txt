@@ -1,0 +1,9 @@
+## Background
+I'm a second-year law student writing a torts class memo assignment. The first draft is done, and I want AI to review whether it's well written.
+
+## Task
+Read through the entire memo draft and give me feedback against the standard memo structure: structure and organization, depth of analysis, clarity and writing — what are the three most important things to fix, with feedback specific to paragraphs. For paragraphs where you think the writing is weak, feel free to polish and rewrite them directly. Write all output in English.
+
+## Materials
+Draft full text:
+"Plaintiff Jane slipped in a mall. The defendant mall company breached its duty of care. The slip occurred on March 2, 2025. The floor was wet. A mall employee passed the area 20 minutes before the incident. No warning sign was posted at the scene. Under common law, a premises possessor owes invitees a duty of reasonable care. A wet floor constitutes a dangerous condition. The defendant should be held liable. In addition, the plaintiff's own negligence was minor. Therefore, the defendant breached its duty to the plaintiff, and the plaintiff is entitled to damages."

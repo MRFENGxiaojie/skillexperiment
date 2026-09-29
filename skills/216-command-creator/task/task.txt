@@ -1,0 +1,10 @@
+## Background
+Before every PR I manually run formatting, lint, unit tests, and type checks, and I often skip a step.
+
+## Task
+I want a command that does it all in one go: first check the workspace for uncommitted changes, then run prettier format (auto-fix), ESLint, vitest, and tsc in order; if all pass, give me a summary report; if any step fails, stop at that step and give me the error and fix suggestions. Suggest how to organize the command and what to name it. I'll use it across several repositories — some are git repos, some aren't. Write all output in English.
+
+## Materials
+None
+## Working requirements
+Read the skill's references/patterns.md and the workflow automation guidance, then create the slash command file at .claude/commands/<name>.md in the current working directory (file name without underscores, .md extension, frontmatter with a description). The command must check the repo state (git rev-parse / git status), then run prettier --write, eslint, vitest, and tsc in that order, stopping on the first failure with suggestions, and end with a summary and cleanup. End your final reply with the command content and its usage.

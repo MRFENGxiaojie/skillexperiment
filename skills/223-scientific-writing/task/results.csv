@@ -1,0 +1,3 @@
+group,n,events,mace_rate_pct,hr_adjusted,hr_lower_ci,hr_upper_ci,psm_hr,psm_lower_ci,psm_upper_ci
+SGLT2 inhibitor,612,,6.9,0.72,0.58,0.89,0.74,0.60,0.91
+Other oral antidiabetic drugs,1235,,9.4,1.00,,,

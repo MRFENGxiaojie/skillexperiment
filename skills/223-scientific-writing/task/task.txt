@@ -1,0 +1,8 @@
+## Background
+Our group finished a retrospective cohort study; statistics are all computed and we're ready to start writing the paper.
+
+## Task
+Help me draft the Methods and Results sections, written per the STROBE reporting guideline — don't omit the required elements (inclusion/exclusion criteria, follow-up, statistical methods, effect sizes). The target journal isn't finalized, but most likely a clinical journal; help me pick an appropriate citation format and apply it consistently. The materials contain the study basics and the computed results. Write all output in English.
+
+## Materials
+Single-center retrospective cohort: 1,847 type-2 diabetes patients enrolled 2019-2023; exposure group = SGLT2 inhibitors (n=612), control group = other oral glucose-lowering drugs (n=1,235); primary outcome MACE (composite of cardiovascular death/MI/stroke); median follow-up 3.2 years; MACE in the SGLT2 group 6.9% vs 9.4% control, adjusted HR=0.72 (95% CI 0.58–0.89); consistent after PSM (HR=0.74, 95% CI 0.60–0.91). Ethics approval number and data-availability statement to be filled in later.

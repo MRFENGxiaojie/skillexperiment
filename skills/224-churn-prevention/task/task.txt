@@ -1,0 +1,20 @@
+## Background
+We are a B2B SaaS project collaboration tool at $49/month, ~$400K MRR. Monthly churn has risen from 3% to 6% over the last six months. Currently, users who click "cancel subscription" just disappear — there's no retention flow; users whose payments fail get one email and are never followed up, so we lose them for nothing. We use Stripe for payments.
+
+## Task
+Help me systematically address the churn problem: design a complete cancellation flow (every step from when the user clicks cancel to final confirmation, what to ask and how to guide at each step), with a retention playbook that matches different responses based on the exit reason; then design an automatic payment-failure recovery mechanism, including retry cadence and notification email sequence. Finally give an estimate of how much revenue this approach can recover and which metrics to track continuously. Write all output in English.
+
+## Materials
+None — design based on the background above.
+
+## Working requirements
+Work in the current working directory. First read `marketing-context.md` (it contains the product, ICP, churn and Stripe payment facts - every number in your answer must come from it). Then design the complete retention program and write it to `churn-prevention-plan.md`.
+
+Your final reply must contain the COMPLETE plan text - the final reply is what gets graded, so do not end with a summary or a file pointer. Cover every item below:
+- Diagnosis: "instant cancel flow" today, "missing dunning" for failed payments, and the ICP for this product.
+- A "cancel flow" / "cancellation flow" with 5 stages; an exit survey with 6-8 "reasons" (Too expensive, Not using, Missing a feature, Switching to a competitor, Project ended, Too complicated, Just testing, etc.); a retention "offer type" playbook (discount, pause, downgrade, extended trial, feature unlock, human support); a branch to "let them go" with no offer; a "decline" confirmation.
+- Confirmation copy: a final button labeled "Yes, cancel my account"; reassure about "access"/"data" vs "billing"/"charged"; do not use "pre-checked" retention offers.
+- Win-back: "Before you go" screen with "countdown"; avoid a "generic discount" as the only lever; send post-cancellation / "cancellation emails".
+- Dunning / payment "recovery": retry cadence with explicit days ("5 days", "day 7", "day 12"); email sequence with subject lines "Payment failed", "Action needed", "Account at risk", "Final notice", then "paused"/"canceled"; use "Account Updater"/"card update"; send users to a "payment update page"; never "blame"/"shame"; include a "reactivation link" and a 7-day "win-back" (re-engagement) email; track "win-back rate".
+- Revenue impact: state concrete recovery benchmarks (e.g. recover "10-15%" of at-risk MRR, or "20%+" with the full stack, "25-35%" win-back rate) and target metrics (monthly churn "below 2%" then "below 1%"; exit-survey "completion" rate "80%"; dunning non-response "below 70%" and hard-fail rate "below 5%", "below 20%" after the sequence).
+- Governance: metrics with named "Owners" and a 30-day "Deadline"; status "🟢"/"🟡"/"🔴"; a "checklist" including "card updater"/"Account Updater"; email "template" wording; "Stripe" integration points; and an MRR "Impact"/"Recovered" estimate.

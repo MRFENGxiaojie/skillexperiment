@@ -1,0 +1,8 @@
+## Background
+The company is opening a new general account at China Merchants Bank, which requires written board approval (the company is incorporated in Delaware).
+
+## Task
+Help us draft a board written consent. One complication: one of our directors (Li) has some business dealings with the bank — should that be addressed in the document? The board currently has three directors total. We want the account opened as soon as possible, ideally sending the document out for signature today. Write all output in English.
+
+## Materials
+None

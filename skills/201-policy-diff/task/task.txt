@@ -1,0 +1,21 @@
+## Background
+Our company is a licensed consumer-finance company. The regulator recently issued a new customer-information-protection management measure; what I have is a summary of key points someone else compiled. Compliance wants to immediately know which internal policies need to change.
+
+## Task
+Help me compare this new regulation with our existing policies: list every requirement point in the new regulation, map each to our policies, flag the gap (covered / partially covered / not covered), give concrete changes for what needs changing, and list the responsible person for the policies involved. Vendor-management requirements are out of scope for this comparison. Also, I'm not sure the summary is complete — if the information is insufficient to make a judgment, list what's missing in the output and tag anything you could not verify as [VERIFY], but still produce the full per-requirement comparison. Do not ask for confirmation or wait for a reply; proceed directly. Write all output in English.
+
+## Materials
+- docs/reg-summary.md: a summary of the new regulation's key points (8 requirements, including an effective date of 2026-10-01; not the official full text)
+- privacy-policy.md: current Personal Information Protection Policy v3.2 (effective 2023-04-15, owner A. Patel)
+- data-breach-response-policy.md: current data breach response policy (owner A. Patel)
+- data-retention-schedule.md: current data retention schedule (owner A. Patel)
+- House practice config: .claude/plugins/config/claude-for-legal/regulatory-legal/CLAUDE.md (policy library index, rule-status check, memo output format) - read it before drafting
+
+## Output format (use exactly these headings - they are checked)
+- Open the work product with the header line: `## Policy Diff: Customer Information Protection Measures`
+- Then a header block with: **Regulation:**, **Effective:** (2026-10-01), **Requirements extracted:** 8
+- Then sections in this exact order: `### Bottom line`, `### Summary`, `### Detailed diffs`, `### New policies needed`, `### No-gap requirements`
+- Under `### Detailed diffs`, one `### Requirement N: ...` block per requirement (8 blocks). End each block with `**Change needed:**` and the concrete changes.
+- In `### New policies needed`, for any requirement with no matching policy write: `No existing policy covers this` and describe the new policy needed.
+- Hand every Partial/Full gap to `gap-surfacer` as a tracked item with owner and deadline; the rule status is unverified, so mark each item `status_verified: false`.
+- Close with the next-steps decision tree, and end with the banner: `**Verify citations before relying on them.**`

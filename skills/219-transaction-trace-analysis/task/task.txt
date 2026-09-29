@@ -1,0 +1,8 @@
+## Background
+Last week there was an incident: a batch of order-transaction logs stalled at "processing" with nothing further. We need to determine from the evidence whether each transaction actually committed.
+
+## Task
+The attachment is the trace log (TSV) for this batch of transactions, containing write, validation-failure, and abort records. Classify each transaction by the log evidence as "committed / aborted / insufficient evidence", give the basis for each judgment, and finally output the list of order IDs needing manual review, in a uniform format. Write all output in English.
+
+## Materials
+The full trace log is the file trace.tsv in the current working directory (all transactions for this batch, including write, validation-failure, and abort records). Read trace.tsv directly and classify every transaction in it - do not rely on any excerpt. (Format example of one line: txn_id\tkey\top\tts\tcounter\tstatus)

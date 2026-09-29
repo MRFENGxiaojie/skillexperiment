@@ -1,0 +1,3 @@
+# Memo Draft: Jane v. Mall Company (Slip-and-Fall Case)
+
+Plaintiff Jane slipped in a mall. The defendant mall company breached its duty of care. The slip occurred on March 2, 2025. The floor was wet. A mall employee passed the area 20 minutes before the incident. No warning sign was posted at the scene. Under common law, a premises possessor owes invitees a duty of reasonable care. A wet floor constitutes a dangerous condition. The defendant should be held liable. In addition, the plaintiff's own negligence was minor. Therefore, the defendant breached its duty to the plaintiff, and the plaintiff is entitled to damages.
