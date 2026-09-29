@@ -1,0 +1,433 @@
+skill: 074-social-media-analyzer
+version: 2
+total_items: 27
+criteria:
+- id: C01
+  category: tool
+  fatal: false
+  text: The agent invokes the social-media-analyzer skill (074-social-media-analyzer) to load the analysis workflow before computing metrics.
+  anchor: tool_log.jsonl — look for a Skill tool call naming 074-social-media-analyzer.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_contains
+      cmd: 074-social-media-analyzer
+    llm:
+      question: The agent invokes the social-media-analyzer skill (074-social-media-analyzer) to load the analysis workflow before computing metrics.
+      evidence: tool_log.jsonl — look for a Skill tool call naming 074-social-media-analyzer.
+      source: tool_log
+      pattern: 074-social-media-analyzer
+- id: C05
+  category: tool
+  fatal: false
+  text: The agent runs the metric computation as a Python program.
+  anchor: tool_log.jsonl — look for a Bash command invoking python.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: command_succeeded
+      cmd: python
+      expect: success
+    llm:
+      question: The agent runs the metric computation as a Python program.
+      evidence: tool_log.jsonl — look for a Bash command invoking python.
+      source: tool_log
+      pattern: python
+- id: C06
+  category: process
+  fatal: false
+  text: The agent reads the input data before running the analysis computation.
+  anchor: tool_log.jsonl — posts.csv must appear before the first python command.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_order
+      cmds:
+      - posts.csv
+      - python
+    llm:
+      question: The agent reads the input data before running the analysis computation.
+      evidence: tool_log.jsonl — posts.csv must appear before the first python command.
+      source: tool_log
+      pattern: posts.csv|python
+- id: C07
+  category: boundary
+  fatal: false
+  text: The analysis flags that post-06 has no recorded spend, reporting the 1,150 yuan gap against the 5,000 yuan budget.
+  anchor: Final output (data-quality section) — look for the derived gap figure 1150.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: numeric_threshold
+      in: output
+      key: '1150'
+      op: eq
+      n: 1150
+    llm:
+      question: The analysis flags that post-06 has no recorded spend, reporting the 1,150 yuan gap against the 5,000 yuan budget.
+      evidence: Final output (data-quality section) — look for the derived gap figure 1150.
+      source: output
+      needle: '1150'
+- id: C09
+  category: process
+  fatal: false
+  text: The report includes an explicit data-quality check step performed before computing metrics.
+  anchor: 'Final output — look for a validation/quality-check section (reference title: 数据质量检查).'
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: data quality check
+    llm:
+      question: The report includes an explicit data-quality check step performed before computing metrics.
+      evidence: 'Final output — look for a validation/quality-check section (reference title: 数据质量检查).'
+      source: output
+      needle: data quality check
+- id: C10
+  category: process
+  fatal: false
+  text: The analysis validates that all post dates fall within the July 2026 campaign period.
+  anchor: Final output data-quality section — look for the post date 07-02 in a date-range statement.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: 07-02
+    llm:
+      question: The analysis validates that all post dates fall within the July 2026 campaign period.
+      evidence: Final output data-quality section — look for the post date 07-02 in a date-range statement.
+      source: output
+      needle: 07-02
+- id: C15
+  category: content
+  fatal: false
+  text: The output reports an overall click-through rate of 0.68%.
+  anchor: Final output campaign-level metrics — look for 0.68.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: '0.68'
+    llm:
+      question: The output reports an overall click-through rate of 0.68%.
+      evidence: Final output campaign-level metrics — look for 0.68.
+      source: output
+      needle: '0.68'
+- id: C16
+  category: content
+  fatal: false
+  text: The output reports total reach of 92,500 across the campaign.
+  anchor: Final output campaign-level metrics — look for the derived total 92,500.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: numeric_threshold
+      in: output
+      key: 92,500
+      op: eq
+      n: 92500
+    llm:
+      question: The output reports total reach of 92,500 across the campaign.
+      evidence: Final output campaign-level metrics — look for the derived total 92,500.
+      source: output
+      needle: 92,500
+- id: C20
+  category: content
+  fatal: false
+  text: The analysis estimates engagement value using the skill's per-action values, totaling $26,932.
+  anchor: Final output ROI section — look for the derived total value 26,932.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: numeric_threshold
+      in: output
+      key: 26,932
+      op: eq
+      n: 26932
+    llm:
+      question: The analysis estimates engagement value using the skill's per-action values, totaling $26,932.
+      evidence: Final output ROI section — look for the derived total value 26,932.
+      source: output
+      needle: 26,932
+- id: C21
+  category: negative
+  fatal: false
+  text: The analysis marks that true ROAS cannot be computed without revenue/conversion data, presenting the value-based ROI as an estimate rather than verified profit.
+  anchor: Final output ROI section — look for the ROAS limitation note.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: ROAS
+    llm:
+      question: The analysis marks that true ROAS cannot be computed without revenue/conversion data, presenting the value-based ROI as an estimate rather than verified profit.
+      evidence: Final output ROI section — look for the ROAS limitation note.
+      source: output
+      needle: ROAS
+- id: C22
+  category: content
+  fatal: false
+  text: The benchmark comparison uses the 1.95% industry average for Reels engagement.
+  anchor: Final output benchmark section — look for 1.95 against the Reels row.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: '1.95'
+    llm:
+      question: The benchmark comparison uses the 1.95% industry average for Reels engagement.
+      evidence: Final output benchmark section — look for 1.95 against the Reels row.
+      source: output
+      needle: '1.95'
+- id: C23
+  category: content
+  fatal: false
+  text: The benchmark comparison uses the 1.40% industry average for Carousel engagement.
+  anchor: Final output benchmark section — look for 1.40 against the Carousel row.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: '1.40'
+    llm:
+      question: The benchmark comparison uses the 1.40% industry average for Carousel engagement.
+      evidence: Final output benchmark section — look for 1.40 against the Carousel row.
+      source: output
+      needle: '1.40'
+- id: C24
+  category: content
+  fatal: false
+  text: The benchmark comparison uses the 0.90% industry average for Image engagement.
+  anchor: Final output benchmark section — look for 0.90 against the Image row.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: '0.90'
+    llm:
+      question: The benchmark comparison uses the 0.90% industry average for Image engagement.
+      evidence: Final output benchmark section — look for 0.90 against the Image row.
+      source: output
+      needle: '0.90'
+- id: C25
+  category: content
+  fatal: false
+  text: The benchmark comparison concludes the campaign engagement exceeds the industry excellent line.
+  anchor: Final output benchmark section — look for the 'excellent line' (优秀线) comparison.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: excellence line|excellent threshold
+    llm:
+      question: The benchmark comparison concludes the campaign engagement exceeds the industry excellent line.
+      evidence: Final output benchmark section — look for the 'excellent line' (优秀线) comparison.
+      source: output
+      needle: excellence line|excellent threshold
+- id: C26
+  category: negative
+  fatal: false
+  text: The analysis presents the industry benchmarks as directional references, noting the organic-post basis and paid/campaign caveats rather than treating them as guarantees.
+  anchor: Final output benchmark section — look for the organic-post (自然帖) caveat.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: organic posts
+    llm:
+      question: The analysis presents the industry benchmarks as directional references, noting the organic-post basis and paid/campaign caveats rather than treating them as guarantees.
+      evidence: Final output benchmark section — look for the organic-post (自然帖) caveat.
+      source: output
+      needle: organic posts
+- id: C27
+  category: content
+  fatal: false
+  text: The analysis ranks the top-performing posts, led by Reels post-04 with 909 engagements.
+  anchor: Final output ranking section — look for the derived interactions value 909 for post-04.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: numeric_threshold
+      in: output
+      key: '909'
+      op: eq
+      n: 909
+    llm:
+      question: The analysis ranks the top-performing posts, led by Reels post-04 with 909 engagements.
+      evidence: Final output ranking section — look for the derived interactions value 909 for post-04.
+      source: output
+      needle: '909'
+- id: C28
+  category: content
+  fatal: false
+  text: The analysis ranks the bottom-performing posts, e.g., static-image post-03 with a 25.00 yuan CPC.
+  anchor: Final output ranking section — look for the derived CPC value 25.00 for post-03.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: '25.00'
+    llm:
+      question: The analysis ranks the bottom-performing posts, e.g., static-image post-03 with a 25.00 yuan CPC.
+      evidence: Final output ranking section — look for the derived CPC value 25.00 for post-03.
+      source: output
+      needle: '25.00'
+- id: C29
+  category: content
+  fatal: false
+  text: The analysis identifies a shared pattern among top performers (video/Reels content with high sharing and saves).
+  anchor: Final output top/bottom pattern section — look for the video-content commonality statement.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: video|videos
+    llm:
+      question: The analysis identifies a shared pattern among top performers (video/Reels content with high sharing and saves).
+      evidence: Final output top/bottom pattern section — look for the video-content commonality statement.
+      source: output
+      needle: video|videos
+- id: C30
+  category: content
+  fatal: false
+  text: The analysis recommends increasing next month's budget.
+  anchor: Final output recommendations section — look for an add-budget (加投) recommendation.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: increase investment|add more budget
+    llm:
+      question: The analysis recommends increasing next month's budget.
+      evidence: Final output recommendations section — look for an add-budget (加投) recommendation.
+      source: output
+      needle: increase investment|add more budget
+- id: C31
+  category: content
+  fatal: false
+  text: The analysis recommends reallocating budget from static images to Reels.
+  anchor: Final output recommendations section — look for the budget-reallocation (预算重配) action.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: budget reallocation
+    llm:
+      question: The analysis recommends reallocating budget from static images to Reels.
+      evidence: Final output recommendations section — look for the budget-reallocation (预算重配) action.
+      source: output
+      needle: budget reallocation
+- id: C32
+  category: format
+  fatal: false
+  text: The recommendations are structured as Conclusion, What (with confidence), Why, and How to Act.
+  anchor: Final output recommendations section — assess the presence of the four-part structure.
+  judge: llm
+  check:
+    question: The recommendations are structured as Conclusion, What (with confidence), Why, and How to Act.
+    evidence: Final output recommendations section — assess the presence of the four-part structure.
+- id: C33
+  category: format
+  fatal: false
+  text: Findings are tagged with confidence markers (🟢 verified / 🟡 medium / 🔴 assumed).
+  anchor: Final output — look for the 🟢/🟡/🔴 markers.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: 🟢
+    llm:
+      question: Findings are tagged with confidence markers (🟢 verified / 🟡 medium / 🔴 assumed).
+      evidence: Final output — look for the 🟢/🟡/🔴 markers.
+      source: output
+      needle: 🟢
+- id: C34
+  category: evidence
+  fatal: false
+  text: The analysis cross-checks recorded spend (3,850 yuan across 7 posts) against the 5,000 yuan budget to reconcile the gap.
+  anchor: Final output data-quality section — look for the derived spend sum 3850.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: numeric_threshold
+      in: output
+      key: '3850'
+      op: eq
+      n: 3850
+    llm:
+      question: The analysis cross-checks recorded spend (3,850 yuan across 7 posts) against the 5,000 yuan budget to reconcile the gap.
+      evidence: Final output data-quality section — look for the derived spend sum 3850.
+      source: output
+      needle: '3850'
+- id: C35
+  category: evidence
+  fatal: false
+  text: The analysis self-validates that computed rates are plausible (engagement rate below 100%) and that totals are internally consistent with the input data.
+  anchor: Final output — assess the stated/implied self-validation of the arithmetic.
+  judge: llm
+  check:
+    question: The analysis self-validates that computed rates are plausible (engagement rate below 100%) and that totals are internally consistent with the input data.
+    evidence: Final output — assess the stated/implied self-validation of the arithmetic.
+- id: C36
+  category: negative
+  fatal: false
+  text: The missing spend on post-06 is handled as an explicit scenario or assumption rather than silently inventing a single value.
+  anchor: Final output ROI/data-quality section — look for the scenario (情景) framing of post-06's spend.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: scenarios|scenario|situations
+    llm:
+      question: The missing spend on post-06 is handled as an explicit scenario or assumption rather than silently inventing a single value.
+      evidence: Final output ROI/data-quality section — look for the scenario (情景) framing of post-06's spend.
+      source: output
+      needle: scenarios|scenario|situations
+- id: C37
+  category: negative
+  fatal: false
+  text: The analysis does not claim qualitative insights (sentiment, brand health, demographics) that the quantitative data cannot support.
+  anchor: Final output — assess whether claims stay within the quantitative data.
+  judge: llm
+  check:
+    question: The analysis does not claim qualitative insights (sentiment, brand health, demographics) that the quantitative data cannot support.
+    evidence: Final output — assess whether claims stay within the quantitative data.
+- id: C38
+  category: coverage
+  fatal: false
+  text: The post-by-post breakdown covers the full set of 8 posts through post-08.
+  anchor: Final output per-post table — confirm the last post post-08 is present.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: post-08
+    llm:
+      question: The post-by-post breakdown covers the full set of 8 posts through post-08.
+      evidence: Final output per-post table — confirm the last post post-08 is present.
+      source: output
+      needle: post-08

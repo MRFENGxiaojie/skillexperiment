@@ -1,0 +1,22 @@
+SUPERIOR COURT OF THE STATE OF CALIFORNIA
+COUNTY OF SANTA CLARA
+
+ACME CORP, a Delaware corporation,
+          Plaintiff,
+     v.                                    Case No. 2026-CV-001847
+OURCOMPANY, INC., a California corporation,
+          Defendant.
+
+COMPLAINT FOR BREACH OF CONTRACT
+
+1. Plaintiff Acme Corp is a Delaware corporation with principal place of business in San Jose, California.
+2. Defendant OurCompany, Inc. is a California corporation with principal place of business in Palo Alto, California.
+3. On March 15, 2024, Plaintiff and Defendant entered into a Supply Agreement for industrial fasteners.
+4. Defendant failed to pay invoices totaling $35,625 for Q4 2024 and Q1 2025 deliveries.
+5. Defendant's payment delays constitute breach of contract under §4.2 of the Agreement.
+6. Plaintiff seeks: (a) $35,625 in unpaid invoices, (b) $5,344 in late payment interest per §4.3, (c) declaratory judgment that Defendant's default claims are without merit, (d) attorneys' fees and costs.
+
+Filed: July 14, 2026
+
+/s/ Thomas Park, Esq.
+Attorney for Plaintiff

@@ -1,0 +1,196 @@
+skill: 070-discover-important-function
+version: 2
+total_items: 12
+criteria:
+- id: C06
+  category: format
+  fatal: false
+  text: APIs.txt contains a notes_to_self section with one note per selected FUT.
+  anchor: Open APIs.txt and search for the token 'notes_to_self'.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: APIs.txt
+      needle: notes_to_self
+    llm:
+      question: APIs.txt contains a notes_to_self section with one note per selected FUT.
+      evidence: Open APIs.txt and search for the token 'notes_to_self'.
+      source: workspace
+      path: APIs.txt
+      needle: notes_to_self
+- id: C07
+  category: format
+  fatal: false
+  text: APIs.txt ends with a JSON block whose keys appear in quoted JSON form (e.g., "notes_to_self").
+  anchor: Open APIs.txt and search for the quoted key '"notes_to_self"'.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: APIs.txt
+      needle: '"notes_to_self"'
+    llm:
+      question: APIs.txt ends with a JSON block whose keys appear in quoted JSON form (e.g., "notes_to_self").
+      evidence: Open APIs.txt and search for the quoted key '"notes_to_self"'.
+      source: workspace
+      path: APIs.txt
+      needle: '"notes_to_self"'
+- id: C09
+  category: format
+  fatal: false
+  text: The important_functions entries include a harnessability field rated low/medium/high.
+  anchor: Open APIs.txt and search for the token 'harnessability'.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: APIs.txt
+      needle: harnessability
+    llm:
+      question: The important_functions entries include a harnessability field rated low/medium/high.
+      evidence: Open APIs.txt and search for the token 'harnessability'.
+      source: workspace
+      path: APIs.txt
+      needle: harnessability
+- id: C12
+  category: content
+  fatal: false
+  text: The test_summary reports ranked coverage gaps for untested or weakly-tested candidates.
+  anchor: Open APIs.txt and search for the token 'gaps'.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: APIs.txt
+      needle: gaps
+    llm:
+      question: The test_summary reports ranked coverage gaps for untested or weakly-tested candidates.
+      evidence: Open APIs.txt and search for the token 'gaps'.
+      source: workspace
+      path: APIs.txt
+      needle: gaps
+- id: C16
+  category: content
+  fatal: false
+  text: The report references the repository's packaging/test configuration file pyproject.toml.
+  anchor: Open APIs.txt and search for the filename 'pyproject.toml'.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: APIs.txt
+      needle: pyproject.toml
+    llm:
+      question: The report references the repository's packaging/test configuration file pyproject.toml.
+      evidence: Open APIs.txt and search for the filename 'pyproject.toml'.
+      source: workspace
+      path: APIs.txt
+      needle: pyproject.toml
+- id: C17
+  category: content
+  fatal: false
+  text: Each selected FUT is accompanied by a 'Fuzzing Target Note'.
+  anchor: Open APIs.txt and search for the phrase 'Fuzzing Target Note'.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: APIs.txt
+      needle: Fuzzing Target Note
+    llm:
+      question: Each selected FUT is accompanied by a 'Fuzzing Target Note'.
+      evidence: Open APIs.txt and search for the phrase 'Fuzzing Target Note'.
+      source: workspace
+      path: APIs.txt
+      needle: Fuzzing Target Note
+- id: C18
+  category: content
+  fatal: false
+  text: The Fuzzing Target Note includes an Input model field.
+  anchor: Open APIs.txt and search for the field label 'Input model'.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: APIs.txt
+      needle: Input model
+    llm:
+      question: The Fuzzing Target Note includes an Input model field.
+      evidence: Open APIs.txt and search for the field label 'Input model'.
+      source: workspace
+      path: APIs.txt
+      needle: Input model
+- id: C23
+  category: termination
+  fatal: false
+  text: The selected FUT shortlist is kept small, between 1 and 5 functions.
+  anchor: Review the selected_futs list in APIs.txt and count the FUT entries.
+  judge: llm
+  check:
+    question: The selected FUT shortlist is kept small, between 1 and 5 functions.
+    evidence: Review the selected_futs list in APIs.txt and count the FUT entries.
+- id: C24
+  category: process
+  fatal: false
+  text: The agent builds a repository overview using the preferred tree command.
+  anchor: Inspect the tool_log for a 'tree' command invocation.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_contains
+      cmd: tree
+    llm:
+      question: The agent builds a repository overview using the preferred tree command.
+      evidence: Inspect the tool_log for a 'tree' command invocation.
+      source: tool_log
+      pattern: tree
+- id: C25
+  category: evidence
+  fatal: false
+  text: The agent inspects existing tests before finalizing FUT selection (e.g., by running pytest).
+  anchor: Inspect the tool_log for a 'pytest' command invocation.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_contains
+      cmd: pytest
+    llm:
+      question: The agent inspects existing tests before finalizing FUT selection (e.g., by running pytest).
+      evidence: Inspect the tool_log for a 'pytest' command invocation.
+      source: tool_log
+      pattern: pytest
+- id: C27
+  category: negative
+  fatal: false
+  text: The agent does not modify any existing source files under yaml_utils/ or tests/.
+  anchor: Review the tool_log for any Edit/Write operations targeting files under yaml_utils/ or tests/.
+  judge: llm
+  check:
+    question: The agent does not modify any existing source files under yaml_utils/ or tests/.
+    evidence: Review the tool_log for any Edit/Write operations targeting files under yaml_utils/ or tests/.
+- id: C30
+  category: content
+  fatal: false
+  text: The agent mirrors the report deliverables in its final reply (referencing APIs.txt).
+  anchor: Inspect the agent's final reply for a reference to 'APIs.txt'.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: APIs.txt
+    llm:
+      question: The agent mirrors the report deliverables in its final reply (referencing APIs.txt).
+      evidence: Inspect the agent's final reply for a reference to 'APIs.txt'.
+      source: output
+      needle: APIs.txt

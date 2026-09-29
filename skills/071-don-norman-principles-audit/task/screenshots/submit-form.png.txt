@@ -1,0 +1,6 @@
+[Text description] Screenshot of the new reimbursement form page (submit-form.png, 1440x900, light theme)
+- Page title "New Reimbursement", located at the top-left, with a relatively small font size.
+- Form fields (top to bottom): reimbursement type (dropdown, empty by default), amount (input field, CNY), invoice upload (dashed-border drag-and-drop area), remarks (multi-line input field).
+- A "Submit" button at the bottom-right of the form (blue, regular size, no loading state, no icon).
+- The page has no asterisk marks for required fields, no amount format hint, and no success feedback after invoice upload (only the button text changes briefly).
+- At the time of the screenshot the form was about halfway filled in; the browser tab at the top shows "New Reimbursement | Kuaibao".

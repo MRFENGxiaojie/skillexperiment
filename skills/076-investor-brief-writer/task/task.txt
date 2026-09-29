@@ -1,0 +1,19 @@
+## Background
+I'm the founder of "小鲸笔记" (Little Whale Notes), an AI notes SaaS for students, preparing a ¥3M seed round. Over the past month I've sent investor emails but most went unanswered; a friend suggested producing a one-page brief to go with cold outreach.
+
+## Task
+Condense our company info into a fast-scannable one-page brief (problem, solution, market, data, team, funding ask), then write a 200-300 word cold email (subject line + body) aiming to get the recipient to agree to a 15-minute call; then give 3 email templates (intro, follow-up, post-meeting); finally list a 5-10 person target-investor list and a follow-up cadence. Use only the real numbers I give you — don't make anything up. Write all output in English.
+
+## Materials
+All materials are under the task/ directory in the current working directory:
+- Company profile: task/company-profile.md (product, metrics, market, team, funding ask, including a requirement to mark estimated values)
+- Growth data: task/data/traction.csv (MRR and paying-user growth over the past 7 months)
+- Market notes: task/market-notes.md (market-size estimation method and sources)
+- Investor leads: task/investor-candidates.md (a list of seed and angel institutions focused on education/consumer/AI)
+## Deliverables
+Read all four materials (company-profile.md, data/traction.csv, market-notes.md, investor-candidates.md) first, and use only the real numbers from them - mark estimated figures (market sizes, CAC, retention) as estimates. If a material file cannot be found, locate it with a directory listing (find/ls) instead of inventing data. Then save two files in the current working directory (workspace root):
+
+- `little-whale-notes-investor-brief.html` - the complete one-page investor brief as a self-contained HTML file. It must show the company name Little Whale Notes (小鲸笔记), the ¥3M seed ask, the real MRR (38K / 38,000), 1,500 paying users, the market sizes (TAM ≈ 6B / SAM ≈ 5.1B plus a SOM figure), a Chart block with the real month-by-month MRR values, the team names (founder Chen Yu / CTO Lin Zhou), the inference cost, an emerald accent color (#10b981), and estimated labels.
+- `fundraising-outreach-pack.md` - the outreach kit: cold emails headed "Cold emails" (subject line + ~200-300 word body aiming for a 15-minute call), 3 email templates (intro, follow-up, post-meeting / after the meeting), the 5-10 row investor table (including Blue Elephant, MiraclePlus, and FreeS Fund, each with a status), a follow-up cadence of 3-5 business days, and personalization guidance.
+
+Read `data/traction.csv` before writing the one-page brief. In your final reply, state the one-page format, mention the warm-intro strategy, and close by offering to iterate (e.g., "Let me know if you need me to adjust anything").

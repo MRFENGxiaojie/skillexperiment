@@ -1,0 +1,8 @@
+## Background
+We're the legal department of a manufacturing company handling a contract dispute with supplier Acme, who filed suit in July 2026.
+
+## Task
+Organize the key events of the "Acme v. us" case to date into a complete chronology, in time order: from the initial contract, several delivery delays, our notices of breach, to their attorney's letter in May and the July filing — cover as much as you can. Produce it as a working document ready to show the partner, flag important events, and list separately any periods where no supporting materials exist. Where the same event appears in multiple documents, merge the references — don't count duplicates. Deliver the final version directly when done; no need to wait for my confirmation. Write all output in English.
+
+## Materials
+The case-files/ directory has the case's raw materials — contracts, emails, attorney letters, etc. Use them directly.

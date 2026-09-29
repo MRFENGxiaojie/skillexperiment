@@ -1,0 +1,8 @@
+## Background
+We maintain the Python library "yaml-utils", which parses and serializes a custom YAML variant; input comes from external untrusted sources. A security review requires a round of fuzzing, but the library has hundreds of functions and can't all be tested. The repository code is in the current working directory.
+
+## Task
+Help us find the best fuzzing targets in the codebase: first locate which files are most important (parsing, decoding, validation, protocol-boundary related), then identify the functions worth testing within them and rank them by priority; summarize which behaviors the existing unit tests cover and which are gaps; finally pick 1-5 functions and write test points for each (input model, invariants that must hold, acceptable exceptions, risk spots) into a single file at the repository root, so it's ready to guide fuzz harnesses later. Write all output in English.
+
+## Materials
+The repository is in the current working directory (includes pyproject.toml and a tests/ directory). Base your analysis on the real code and tests in the repository — don't guess or fabricate.

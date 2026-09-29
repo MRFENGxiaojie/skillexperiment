@@ -1,0 +1,10 @@
+## Background
+Our company's legal team received a demand letter from a law firm representing a distributor that claims we owe payment for goods and threatens suit if not paid within 10 days.
+
+## Task
+The letter arrived today. Read it in full first, then help me do an initial assessment: what amount and basis are they claiming, what exactly do they want, does it relate to any existing or historical legal matter of our company, how serious is this really, and is it worth taking seriously? Give me several handling options with a recommendation, stating the pros and cons of each, and help me list a next-step action checklist and deadlines to watch. Base details on the letter's content, and mark anything uncertain about legal provisions. Write all output in English.
+
+## Materials
+The demand-letter scan is in inbox/demand-2026-08-08.pdf (text version: inbox/demand-2026-08-08.pdf.md).
+
+Deliverable location: write the triage to inbound/demand-2026-08-08/triage.md in the current working directory (the plugin inbound directory is not reachable here — this is the skill's documented workspace fallback), and copy the source letter next to it as inbound/demand-2026-08-08/incoming.pdf.

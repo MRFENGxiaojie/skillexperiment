@@ -1,0 +1,11 @@
+## Background
+Last month we ran a new-product campaign on Instagram with a 5,000 yuan ad budget and 8 posts. Now we want to review the results and decide whether to increase next month's budget.
+
+## Task
+Help me crunch the campaign numbers: each post's engagement rate, overall engagement and click performance, and ROI; compare where we stand against industry averages; find the common traits of the best- and worst-performing posts; finally give recommendations for next month. Before computing, first check the data itself for issues. Write all output in English.
+
+## Materials
+All materials are under the task/ directory in the current working directory:
+- Post data: task/data/posts.csv (likes/comments/shares/saves/reach/impressions/clicks and the spend for 8 posts)
+- Campaign background: task/campaign-brief.md (campaign dates, budget, targeting goals)
+- Industry benchmarks: task/industry-benchmarks.md (reference engagement rates on Instagram by content format)

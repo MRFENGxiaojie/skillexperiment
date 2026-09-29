@@ -1,0 +1,270 @@
+skill: 067-chronology
+version: 2
+total_items: 15
+criteria:
+- id: C03
+  category: content
+  fatal: false
+  text: Because no plugin config is mounted, the chronology header notes 'Firm config not loaded — mode/framing defaults per this skill applied.'
+  anchor: Top of the chronology header.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: '**/matters/**/chronology.md'
+      needle: Firm config not loaded
+    llm:
+      question: Because no plugin config is mounted, the chronology header notes 'Firm config not loaded — mode/framing defaults per this skill applied.'
+      evidence: Top of the chronology header.
+      source: workspace
+      path: '**/matters/**/chronology.md'
+      needle: Firm config not loaded
+- id: C04
+  category: process
+  fatal: false
+  text: Before building, the agent checks the matter log `_log.yaml` (conflicts gate); when no matter is intaken it falls back to `--documents` mode and records the fallback rather than refusing or silently
+    skipping the gate.
+  anchor: Tool log for a Bash/Read referencing _log.yaml.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_contains
+      cmd: _log.yaml
+    llm:
+      question: Before building, the agent checks the matter log `_log.yaml` (conflicts gate); when no matter is intaken it falls back to `--documents` mode and records the fallback rather than refusing
+        or silently skipping the gate.
+      evidence: Tool log for a Bash/Read referencing _log.yaml.
+      source: tool_log
+      pattern: _log.yaml
+- id: C07
+  category: content
+  fatal: false
+  text: The timeline includes the first delivery-delay event (Q3 batch, 7 days late) dated 2024-10-08.
+  anchor: Timeline section of chronology.md.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: '**/matters/**/chronology.md'
+      needle: '2024-10-08'
+    llm:
+      question: The timeline includes the first delivery-delay event (Q3 batch, 7 days late) dated 2024-10-08.
+      evidence: Timeline section of chronology.md.
+      source: workspace
+      path: '**/matters/**/chronology.md'
+      needle: '2024-10-08'
+- id: C09
+  category: content
+  fatal: false
+  text: The timeline includes Acme's response citing force majeure and offering a 5% discount, dated 2025-02-25.
+  anchor: Timeline section of chronology.md.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: '**/matters/**/chronology.md'
+      needle: '2025-02-25'
+    llm:
+      question: The timeline includes Acme's response citing force majeure and offering a 5% discount, dated 2025-02-25.
+      evidence: Timeline section of chronology.md.
+      source: workspace
+      path: '**/matters/**/chronology.md'
+      needle: '2025-02-25'
+- id: C10
+  category: content
+  fatal: false
+  text: The timeline includes OurCompany's Notice of Default / demand letter, dated 2025-03-20.
+  anchor: Timeline section of chronology.md.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: '**/matters/**/chronology.md'
+      needle: '2025-03-20'
+    llm:
+      question: The timeline includes OurCompany's Notice of Default / demand letter, dated 2025-03-20.
+      evidence: Timeline section of chronology.md.
+      source: workspace
+      path: '**/matters/**/chronology.md'
+      needle: '2025-03-20'
+- id: C11
+  category: content
+  fatal: false
+  text: The timeline includes Acme's counsel response asserting reciprocal breach over the late Q2 2024 payment, dated 2025-04-10.
+  anchor: Timeline section of chronology.md.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: '**/matters/**/chronology.md'
+      needle: '2025-04-10'
+    llm:
+      question: The timeline includes Acme's counsel response asserting reciprocal breach over the late Q2 2024 payment, dated 2025-04-10.
+      evidence: Timeline section of chronology.md.
+      source: workspace
+      path: '**/matters/**/chronology.md'
+      needle: '2025-04-10'
+- id: C18
+  category: content
+  fatal: false
+  text: Significance tagging is disciplined — not every entry is 🔴; at least one entry carries 🟡 or ⚪.
+  anchor: Tag column of the timeline.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: '**/matters/**/chronology.md'
+      needle: 🟡
+    llm:
+      question: Significance tagging is disciplined — not every entry is 🔴; at least one entry carries 🟡 or ⚪.
+      evidence: Tag column of the timeline.
+      source: workspace
+      path: '**/matters/**/chronology.md'
+      needle: 🟡
+- id: C19
+  category: content
+  fatal: false
+  text: The output includes a Key-events section that pulls out the 🔴 events with theory-tie lines.
+  anchor: Section between Timeline and Gaps in chronology.md.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: section_nonempty
+      path: '**/matters/**/chronology.md'
+      headers:
+      - Key events
+      min_chars: 20
+    llm:
+      question: The output includes a Key-events section that pulls out the 🔴 events with theory-tie lines.
+      evidence: Section between Timeline and Gaps in chronology.md.
+      source: workspace
+      path: '**/matters/**/chronology.md'
+- id: C20
+  category: content
+  fatal: false
+  text: The output includes a Gaps section listing date ranges with no events and expected-but-missing items (e.g., the never-documented Q1 2025 batch delivery).
+  anchor: Gaps section of chronology.md.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: section_nonempty
+      path: '**/matters/**/chronology.md'
+      headers:
+      - Gaps
+      min_chars: 20
+    llm:
+      question: The output includes a Gaps section listing date ranges with no events and expected-but-missing items (e.g., the never-documented Q1 2025 batch delivery).
+      evidence: Gaps section of chronology.md.
+      source: workspace
+      path: '**/matters/**/chronology.md'
+- id: C21
+  category: content
+  fatal: false
+  text: The output includes the marker-discipline legend defining the VERIFY/UNCERTAIN/CITE NEEDED/SME VERIFY markers.
+  anchor: Marker discipline section of chronology.md.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: section_nonempty
+      path: '**/matters/**/chronology.md'
+      headers:
+      - Marker discipline
+      min_chars: 20
+    llm:
+      question: The output includes a marker-discipline legend that actually defines the VERIFY /
+        UNCERTAIN / CITE NEEDED / SME VERIFY markers.
+      evidence: Marker discipline section of chronology.md.
+      source: workspace
+      path: '**/matters/**/chronology.md'
+      needle: '[Mm]arker discipline'
+- id: C23
+  category: negative
+  fatal: true
+  text: The chronology does not invent events absent from the case files — every dated timeline row traces to one of the seven case-files documents (no fabricated events, no web/model-knowledge fill).
+  anchor: Cross-check every dated timeline row against the seven case files; any event without a file source fails.
+  judge: llm
+  check:
+    question: The chronology does not invent events absent from the case files — every dated timeline row traces to one of the seven case-files documents (no fabricated events, no web/model-knowledge fill).
+    evidence: Cross-check every dated timeline row against the seven case files; any event without a file source fails.
+- id: C24
+  category: content
+  fatal: false
+  text: Timeline entries carry source attribution to the underlying files (e.g., .eml/.txt file paths) rather than being bare assertions.
+  anchor: Sources column of timeline rows.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: '**/matters/**/chronology.md'
+      needle: .eml
+    llm:
+      question: Timeline entries carry source attribution to the underlying files (e.g., .eml/.txt file paths) rather than being bare assertions.
+      evidence: Sources column of timeline rows.
+      source: workspace
+      path: '**/matters/**/chronology.md'
+      needle: .eml
+- id: C28
+  category: format
+  fatal: false
+  text: The chronology header includes the entries count field (`**Entries:**`).
+  anchor: Header block of chronology.md.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: '**/matters/**/chronology.md'
+      needle: 'Entries:'
+    llm:
+      question: The chronology header includes the entries count field (`**Entries:**`).
+      evidence: Header block of chronology.md.
+      source: workspace
+      path: '**/matters/**/chronology.md'
+      needle: 'Entries:'
+- id: C29
+  category: format
+  fatal: false
+  text: The chronology header includes the pivot-fact field (`**Pivot fact:**`).
+  anchor: Header block of chronology.md.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: '**/matters/**/chronology.md'
+      needle: Pivot fact
+    llm:
+      question: The chronology header includes the pivot-fact field (`**Pivot fact:**`).
+      evidence: Header block of chronology.md.
+      source: workspace
+      path: '**/matters/**/chronology.md'
+      needle: Pivot fact
+- id: C32
+  category: content
+  fatal: false
+  text: The output states the significance framing applied, e.g., 'Significance tags applied from [defense] perspective' for the defending side.
+  anchor: Top of the chronology output per the side-framing note.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: '**/matters/**/chronology.md'
+      needle: Significance tags applied from
+    llm:
+      question: The output states the significance framing applied, e.g., 'Significance tags applied from [defense] perspective' for the defending side.
+      evidence: Top of the chronology output per the side-framing note.
+      source: workspace
+      path: '**/matters/**/chronology.md'
+      needle: Significance tags applied from

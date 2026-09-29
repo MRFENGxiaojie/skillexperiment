@@ -1,0 +1,9 @@
+post_id,format,post_date,likes,comments,shares,saves,reach,impressions,link_clicks,spend_yuan,content
+post-01,reel,2026-07-02,480,52,61,37,18900,21300,142,600,"Reel: 30s product demo of the new light-meal energy bar, close-up shots, hook text overlay \"3 flavors, 0 guilt\", swipe-up link to product page"
+post-02,carousel,2026-07-05,210,18,25,44,8100,9600,96,550,"Carousel: 5 \"what to eat before a workout\" tips, clean educational slides, CTA to save the post"
+post-03,image,2026-07-08,95,7,4,9,3200,2800,18,450,"Static image: product photo on plain background with price tag and discount code in caption"
+post-04,reel,2026-07-11,660,71,120,58,22400,25100,178,800,"Reel: user testimonial (UGC) — customer shows 2-week results, high-energy editing, link in bio CTA"
+post-05,story,2026-07-14,310,0,22,15,9700,12400,63,350,"Story: behind-the-scenes at the studio, poll sticker asking followers their favorite flavor"
+post-06,carousel,2026-07-17,175,12,18,31,5900,6800,44,,"Carousel: comparison chart — energy bar vs protein shake (calories, protein, price), educational angle"
+post-07,reel,2026-07-21,540,48,95,66,19600,22100,151,700,"Reel: 3 quick recipes using the bar, step-by-step demo, recipe names as text overlays"
+post-08,image,2026-07-26,130,9,6,12,4700,5200,29,400,"Static image: lifestyle flat-lay with gym gear and the product, no clear CTA"

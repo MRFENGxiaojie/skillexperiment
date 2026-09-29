@@ -1,0 +1,7 @@
+[Text description] Screenshot of the "My Documents" list page (list-page.png, 1440x900, light theme)
+- Page title "My Documents"; a filter dropdown (All statuses) in the top-right corner.
+- Document list: each row displays "document number + reimbursement type + amount + status badge + submission date".
+- Status badge styles: pending approval (orange rounded label), approved (green), rejected (red).
+- The newly submitted document at the top of the list looks exactly the same as the other documents, with no highlight and no "new" marker.
+- Each document cannot be clicked to expand details (no drill-down interaction), and rows with "rejected" status have no reason field either.
+- The empty area at the bottom of the page has no action buttons or guidance text.

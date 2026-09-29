@@ -1,0 +1,11 @@
+## Background
+We just launched the internal expense-reimbursement system "快报" (Kuai Bao). Employees use it to submit invoices and approvers approve them. The PM thinks it's "pretty intuitive," but support receives a pile of tickets every week: "can't find the submit button," "don't know what stage my reimbursement is at."
+
+## Task
+Help us review this system's usability from the basic principles of human-computer interaction: whether users can tell at a glance what they can do, whether buttons look clickable, whether actions give feedback, and whether control placement and effects correspond. Walk through each area, point out exactly where principles are violated and how severe, give a concrete fix for each, and finally give an overall usability score. Write all output in English.
+
+## Materials
+All materials are under the task/ directory in the current working directory:
+- System description: task/system-description.md (full description of the 快报 web UI: homepage dashboard layout, the reimbursement-submission flow, the approval flow, common tasks)
+- User feedback: task/user-feedback.md (feedback and frequencies collected by support over the past 4 weeks)
+- UI screenshots (text descriptions, since screenshots can't accompany the materials): three files under task/screenshots/ corresponding to the homepage dashboard, the new-reimbursement form, and the document list page

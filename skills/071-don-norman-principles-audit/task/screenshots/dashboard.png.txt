@@ -1,0 +1,6 @@
+[Text description] Screenshot of the Kuaibao homepage dashboard (dashboard.png, 1440x900, light theme)
+- Top navigation bar: logo "Kuaibao" on the left; on the right, 4 small icons all without text labels (plus sign, bell, person, gear).
+- Middle statistics card area: 4 white cards — "Total monthly reimbursement CNY 12,480", "Pending approval 23", "Approved 156", "Rejected 7"; display-only, not clickable.
+- Quick actions area: 4 icon buttons, icons only with no text (plus sign, document, invoice, question mark), similar in appearance to the top plus sign icon.
+- Bottom recent documents list: 10 rows, each row "document number + status badge" (pending approval = orange / approved = green / rejected = red).
+- The page as a whole has no "Submit" button emphasized with a primary color; visual focus is scattered across multiple same-weight icons.
