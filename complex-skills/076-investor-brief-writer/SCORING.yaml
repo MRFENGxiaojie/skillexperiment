@@ -1,0 +1,663 @@
+skill: 076-investor-brief-writer
+version: 2
+total_items: 39
+criteria:
+- id: C01
+  category: format
+  fatal: true
+  text: An HTML one-pager investor brief file is created in the workspace.
+  anchor: Check the workspace root for the HTML deliverable (reference trace produces little-whale-notes-investor-brief.html).
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_exists
+      path: little-whale-notes-investor-brief.html
+    llm:
+      question: An HTML one-pager investor brief file is created in the workspace.
+      evidence: Check the workspace root for the HTML deliverable (reference trace produces little-whale-notes-investor-brief.html).
+      source: workspace
+      path: little-whale-notes-investor-brief.html
+- id: C02
+  category: format
+  fatal: false
+  text: A companion outreach-kit text file is created holding the cold email, email templates, investor list, and follow-up cadence.
+  anchor: Check the workspace root for the markdown deliverable (reference trace produces fundraising-outreach-pack.md).
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_exists
+      path: fundraising-outreach-pack.md
+- id: C03
+  category: content
+  fatal: false
+  text: The one-pager names the company 小鲸笔记.
+  anchor: Search the one-pager HTML for the company name.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: little-whale-notes-investor-brief.html
+      needle: Little Whale Notes
+    llm:
+      question: The one-pager names the company 小鲸笔记.
+      evidence: Search the one-pager HTML for the company name.
+      source: workspace
+      path: little-whale-notes-investor-brief.html
+      needle: Little Whale Notes
+- id: C04
+  category: content
+  fatal: false
+  text: The one-pager states the seed raise of ¥300万.
+  anchor: Search the one-pager HTML score banner/ask section for the raise amount.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: little-whale-notes-investor-brief.html
+      needle: 3M|3 million|3,000,000
+    llm:
+      question: The one-pager states the seed raise of ¥300万.
+      evidence: Search the one-pager HTML score banner/ask section for the raise amount.
+      source: workspace
+      path: little-whale-notes-investor-brief.html
+      needle: 3M|3 million|3,000,000
+- id: C05
+  category: content
+  fatal: false
+  text: The one-pager shows current MRR of ¥3.8万.
+  anchor: Search the one-pager HTML traction section for the MRR figure.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: little-whale-notes-investor-brief.html
+      needle: 38K|38,000
+    llm:
+      question: The one-pager shows current MRR of ¥3.8万.
+      evidence: Search the one-pager HTML traction section for the MRR figure.
+      source: workspace
+      path: little-whale-notes-investor-brief.html
+      needle: 38K|38,000
+- id: C06
+  category: content
+  fatal: false
+  text: The one-pager shows 1,500 paying users.
+  anchor: Search the one-pager HTML traction section for the customer count.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: little-whale-notes-investor-brief.html
+      needle: 1,500
+    llm:
+      question: The one-pager shows 1,500 paying users.
+      evidence: Search the one-pager HTML traction section for the customer count.
+      source: workspace
+      path: little-whale-notes-investor-brief.html
+      needle: 1,500
+- id: C07
+  category: content
+  fatal: false
+  text: The one-pager includes the TAM figure of ≈¥60亿/年.
+  anchor: Search the one-pager HTML market section for the TAM value.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: little-whale-notes-investor-brief.html
+      needle: 6B|6 billion
+    llm:
+      question: The one-pager includes the TAM figure of ≈¥60亿/年.
+      evidence: Search the one-pager HTML market section for the TAM value.
+      source: workspace
+      path: little-whale-notes-investor-brief.html
+      needle: 6B|6 billion
+- id: C08
+  category: content
+  fatal: false
+  text: The one-pager includes the SAM figure of ≈¥51亿/年.
+  anchor: Search the one-pager HTML market section for the SAM value.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: little-whale-notes-investor-brief.html
+      needle: 5.1B|5.1 billion
+    llm:
+      question: The one-pager includes the SAM figure of ≈¥51亿/年.
+      evidence: Search the one-pager HTML market section for the SAM value.
+      source: workspace
+      path: little-whale-notes-investor-brief.html
+      needle: 5.1B|5.1 billion
+- id: C09
+  category: coverage
+  fatal: false
+  text: The market section covers all three of TAM, SAM, and SOM.
+  anchor: Search the one-pager HTML market section for the SOM label, which only appears if the full TAM/SAM/SOM set is present.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: little-whale-notes-investor-brief.html
+      needle: SOM
+    llm:
+      question: The market section covers all three of TAM, SAM, and SOM.
+      evidence: Search the one-pager HTML market section for the SOM label, which only appears if the full TAM/SAM/SOM set is present.
+      source: workspace
+      path: little-whale-notes-investor-brief.html
+      needle: SOM
+- id: C10
+  category: content
+  fatal: false
+  text: The revenue chart data ends at the real CSV value 38000 for 2026-08.
+  anchor: Search the one-pager HTML chart data block for the final MRR value from traction.csv.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: little-whale-notes-investor-brief.html
+      needle: '38000'
+    llm:
+      question: The revenue chart data ends at the real CSV value 38000 for 2026-08.
+      evidence: Search the one-pager HTML chart data block for the final MRR value from traction.csv.
+      source: workspace
+      path: little-whale-notes-investor-brief.html
+      needle: '38000'
+- id: C11
+  category: content
+  fatal: false
+  text: The revenue chart data includes the real CSV start value 28600 for 2026-02, i.e., the full monthly series not a summary.
+  anchor: Search the one-pager HTML chart data block for the first MRR value from traction.csv.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: little-whale-notes-investor-brief.html
+      needle: '28600'
+    llm:
+      question: The revenue chart data includes the real CSV start value 28600 for 2026-02, i.e., the full monthly series not a summary.
+      evidence: Search the one-pager HTML chart data block for the first MRR value from traction.csv.
+      source: workspace
+      path: little-whale-notes-investor-brief.html
+      needle: '28600'
+- id: C12
+  category: format
+  fatal: false
+  text: The one-pager HTML embeds a revenue growth chart built with Chart.js.
+  anchor: Search the one-pager HTML for the Chart.js library/chart element per the html-output-verification checklist.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: little-whale-notes-investor-brief.html
+      needle: Chart
+    llm:
+      question: The one-pager HTML embeds a revenue growth chart built with Chart.js.
+      evidence: Search the one-pager HTML for the Chart.js library/chart element per the html-output-verification checklist.
+      source: workspace
+      path: little-whale-notes-investor-brief.html
+      needle: Chart
+- id: C13
+  category: evidence
+  fatal: false
+  text: The agent computes and reports the MRR growth rate derived from traction.csv (latest MoM +6.1% and/or 6-month cumulative +33%).
+  anchor: Check the final agent output for the computed growth figure; the reference run reports 最新月环比 +6.1%.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: +6.1%
+    llm:
+      question: The agent computes and reports the MRR growth rate derived from traction.csv (latest MoM +6.1% and/or 6-month cumulative +33%).
+      evidence: Check the final agent output for the computed growth figure; the reference run reports 最新月环比 +6.1%.
+      source: output
+      needle: +6.1%
+- id: C14
+  category: content
+  fatal: false
+  text: The one-pager team section lists founder 陈屿.
+  anchor: Search the one-pager HTML team section for the founder name from company-profile.md.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: little-whale-notes-investor-brief.html
+      needle: 陈屿|Chen Yu
+    llm:
+      question: The one-pager team section lists founder 陈屿.
+      evidence: Search the one-pager HTML team section for the founder name from company-profile.md.
+      source: workspace
+      path: little-whale-notes-investor-brief.html
+      needle: 陈屿|Chen Yu
+- id: C15
+  category: content
+  fatal: false
+  text: The one-pager team section lists CTO 林舟.
+  anchor: Search the one-pager HTML team section for the CTO name from company-profile.md.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: little-whale-notes-investor-brief.html
+      needle: 林舟|Lin Zhou
+    llm:
+      question: The one-pager team section lists CTO 林舟.
+      evidence: Search the one-pager HTML team section for the CTO name from company-profile.md.
+      source: workspace
+      path: little-whale-notes-investor-brief.html
+      needle: 林舟|Lin Zhou
+- id: C16
+  category: content
+  fatal: false
+  text: The ask section states the use of funds (team expansion / AI inference cost).
+  anchor: Search the one-pager HTML ask section for the use-of-funds line from company-profile.md.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: little-whale-notes-investor-brief.html
+      needle: inference cost
+    llm:
+      question: The ask section states the use of funds (team expansion / AI inference cost).
+      evidence: Search the one-pager HTML ask section for the use-of-funds line from company-profile.md.
+      source: workspace
+      path: little-whale-notes-investor-brief.html
+      needle: inference cost
+- id: C17
+  category: format
+  fatal: false
+  text: 'The one-pager HTML applies the required visual theme with the emerald accent color #10b981.'
+  anchor: Search the one-pager HTML styles for the emerald accent defined in html-output-verification.md.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: little-whale-notes-investor-brief.html
+      needle: '#10b981'
+    llm:
+      question: 'The one-pager HTML applies the required visual theme with the emerald accent color #10b981.'
+      evidence: Search the one-pager HTML styles for the emerald accent defined in html-output-verification.md.
+      source: workspace
+      path: little-whale-notes-investor-brief.html
+      needle: '#10b981'
+- id: C18
+  category: content
+  fatal: false
+  text: The cold email includes a subject line.
+  anchor: Search the outreach kit for the cold email subject (主题) preceding the body.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: fundraising-outreach-pack.md
+      needle: theme|themes|topic|topics
+    llm:
+      question: The cold email includes a subject line.
+      evidence: Search the outreach kit for the cold email subject (主题) preceding the body.
+      source: workspace
+      path: fundraising-outreach-pack.md
+      needle: theme|themes|topic|topics
+- id: C19
+  category: content
+  fatal: false
+  text: The cold email asks for a 15-minute call rather than requesting investment directly.
+  anchor: Search the outreach kit cold-email body for the 15-minute ask per the task requirement.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: fundraising-outreach-pack.md
+      needle: 15[- ]minute
+    llm:
+      question: The cold email asks for a 15-minute call rather than requesting investment directly.
+      evidence: Search the outreach kit cold-email body for the 15-minute ask per the task requirement.
+      source: workspace
+      path: fundraising-outreach-pack.md
+      needle: 15[- ]minute
+- id: C20
+  category: content
+  fatal: false
+  text: The cold email body is 200-300 words/characters.
+  anchor: Count the cold-email body length in the outreach kit; reference run is ~280 Chinese characters.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: section_nonempty
+      path: fundraising-outreach-pack.md
+      headers:
+      - 一、冷邮件
+      min_chars: 200
+    llm:
+      question: The cold email body is 200-300 words/characters.
+      evidence: Count the cold-email body length in the outreach kit; reference run is ~280 Chinese characters.
+      source: workspace
+      path: fundraising-outreach-pack.md
+- id: C21
+  category: content
+  fatal: false
+  text: The cold email is signed by founder 陈屿.
+  anchor: Search the outreach kit cold-email signature for the founder name.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: fundraising-outreach-pack.md
+      needle: 陈屿|Chen Yu
+    llm:
+      question: The cold email is signed by founder 陈屿.
+      evidence: Search the outreach kit cold-email signature for the founder name.
+      source: workspace
+      path: fundraising-outreach-pack.md
+      needle: 陈屿|Chen Yu
+- id: C22
+  category: coverage
+  fatal: false
+  text: The outreach kit delivers all three email templates — warm intro, follow-up, and post-meeting.
+  anchor: Search the outreach kit for the post-meeting (见面后) template, the last of the three required by the task.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: fundraising-outreach-pack.md
+      needle: after the meeting
+    llm:
+      question: The outreach kit delivers all three email templates — warm intro, follow-up, and post-meeting.
+      evidence: Search the outreach kit for the post-meeting (见面后) template, the last of the three required by the task.
+      source: workspace
+      path: fundraising-outreach-pack.md
+      needle: after the meeting
+- id: C23
+  category: content
+  fatal: false
+  text: A warm-intro email template (介绍) is present in the outreach kit.
+  anchor: Search the outreach kit for the warm-intro template label.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: fundraising-outreach-pack.md
+      needle: introduction|overview
+    llm:
+      question: A warm-intro email template (介绍) is present in the outreach kit.
+      evidence: Search the outreach kit for the warm-intro template label.
+      source: workspace
+      path: fundraising-outreach-pack.md
+      needle: introduction|overview
+- id: C24
+  category: content
+  fatal: false
+  text: A follow-up email template (跟进) is present in the outreach kit.
+  anchor: Search the outreach kit for the follow-up template label.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: fundraising-outreach-pack.md
+      needle: follow up|follow-up
+    llm:
+      question: A follow-up email template (跟进) is present in the outreach kit.
+      evidence: Search the outreach kit for the follow-up template label.
+      source: workspace
+      path: fundraising-outreach-pack.md
+      needle: follow up|follow-up
+- id: C25
+  category: content
+  fatal: false
+  text: The investor list includes the top-priority fund 蓝象资本.
+  anchor: Search the outreach kit investor list for the first-tier education fund from investor-candidates.md.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: fundraising-outreach-pack.md
+      needle: 蓝象资本|Blue Elephant
+    llm:
+      question: The investor list includes the top-priority fund 蓝象资本.
+      evidence: Search the outreach kit investor list for the first-tier education fund from investor-candidates.md.
+      source: workspace
+      path: fundraising-outreach-pack.md
+      needle: 蓝象资本|Blue Elephant
+- id: C26
+  category: content
+  fatal: false
+  text: The investor list includes AI-focused 奇绩创坛.
+  anchor: Search the outreach kit investor list for the AI-early-stage fund from investor-candidates.md.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: fundraising-outreach-pack.md
+      needle: 奇绩创坛|MiraclePlus|Miracle Plus
+    llm:
+      question: The investor list includes AI-focused 奇绩创坛.
+      evidence: Search the outreach kit investor list for the AI-early-stage fund from investor-candidates.md.
+      source: workspace
+      path: fundraising-outreach-pack.md
+      needle: 奇绩创坛|MiraclePlus|Miracle Plus
+- id: C27
+  category: content
+  fatal: false
+  text: The investor list includes a second-tier fund such as 峰瑞资本, demonstrating prioritization tiers.
+  anchor: Search the outreach kit investor list for a second-tier candidate beyond the top tier.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: fundraising-outreach-pack.md
+      needle: 峰瑞资本|FreeS Fund
+    llm:
+      question: The investor list includes a second-tier fund such as 峰瑞资本, demonstrating prioritization tiers.
+      evidence: Search the outreach kit investor list for a second-tier candidate beyond the top tier.
+      source: workspace
+      path: fundraising-outreach-pack.md
+      needle: 峰瑞资本|FreeS Fund
+- id: C28
+  category: content
+  fatal: false
+  text: The follow-up cadence is specified as 3-5 business days.
+  anchor: Search the outreach kit follow-up section for the cadence given in investor-candidates.md.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: fundraising-outreach-pack.md
+      needle: 3-5 business days|3–5 business days
+    llm:
+      question: The follow-up cadence is specified as 3-5 business days.
+      evidence: Search the outreach kit follow-up section for the cadence given in investor-candidates.md.
+      source: workspace
+      path: fundraising-outreach-pack.md
+      needle: 3-5 business days|3–5 business days
+- id: C29
+  category: content
+  fatal: false
+  text: The investor CRM rows include status and next-step fields for tracking.
+  anchor: Search the outreach kit investor table for a status column per the SKILL.md CRM spec.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: fundraising-outreach-pack.md
+      needle: status
+    llm:
+      question: The investor CRM rows include status and next-step fields for tracking.
+      evidence: Search the outreach kit investor table for a status column per the SKILL.md CRM spec.
+      source: workspace
+      path: fundraising-outreach-pack.md
+      needle: status
+- id: C30
+  category: content
+  fatal: false
+  text: Market-size figures in the one-pager are explicitly labeled as estimates (估算).
+  anchor: Search the one-pager HTML market section for the estimate label required by company-profile.md.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: little-whale-notes-investor-brief.html
+      needle: estimate|estimation
+    llm:
+      question: Market-size figures in the one-pager are explicitly labeled as estimates (估算).
+      evidence: Search the one-pager HTML market section for the estimate label required by company-profile.md.
+      source: workspace
+      path: little-whale-notes-investor-brief.html
+      needle: estimate|estimation
+- id: C31
+  category: negative
+  fatal: true
+  text: The deliverables contain no metrics invented beyond the numbers provided in the task materials.
+  anchor: Compare every figure in the brief/emails against company-profile.md, traction.csv, and market-notes.md; the reference run uses only real values.
+  judge: llm
+  check:
+    question: The deliverables contain no metrics invented beyond the numbers provided in the task materials.
+    evidence: Compare every figure in the brief/emails against company-profile.md, traction.csv, and market-notes.md; the reference run uses only real values.
+- id: C32
+  category: negative
+  fatal: true
+  text: The deliverables contain no raw [X]-style placeholder tokens — figures are concrete.
+  anchor: Scan the one-pager HTML and outreach kit for bracket placeholders; none may remain per the skill output format.
+  judge: llm
+  check:
+    question: The deliverables contain no raw [X]-style placeholder tokens — figures are concrete.
+    evidence: Scan the one-pager HTML and outreach kit for bracket placeholders; none may remain per the skill output format.
+- id: C33
+  category: process
+  fatal: false
+  text: The agent reads the source data (traction.csv) before writing the brief deliverable.
+  anchor: In the tool log, a Read of traction.csv must precede the Write of the HTML brief.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_order
+      cmds:
+      - traction.csv
+      - 一页纸投资人简报
+    llm:
+      question: The agent reads the source data (traction.csv) before writing the brief deliverable.
+      evidence: In the tool log, a Read of traction.csv must precede the Write of the HTML brief.
+      source: tool_log
+      pattern: traction.csv|一页纸投资人简报
+- id: C35
+  category: boundary
+  fatal: false
+  text: If the stated task/ material paths fail to resolve, the agent locates the actual files via a directory scan instead of inventing data.
+  anchor: In the tool log, a find/ls-style directory listing appears after the initial read failures.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_contains
+      cmd: find
+    llm:
+      question: If the stated task/ material paths fail to resolve, the agent locates the actual files via a directory scan instead of inventing data.
+      evidence: In the tool log, a find/ls-style directory listing appears after the initial read failures.
+      source: tool_log
+      pattern: find
+- id: C36
+  category: content
+  fatal: false
+  text: The agent explicitly states the chosen format (one-pager) and target audience before drafting.
+  anchor: Check the final output for an explicit one-pager format statement; the reference run frames everything as a 一页纸简报.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: one-page|one pager
+    llm:
+      question: The agent explicitly states the chosen format (one-pager) and target audience before drafting.
+      evidence: Check the final output for an explicit one-pager format statement; the reference run frames everything as a 一页纸简报.
+      source: output
+      needle: one-page|one pager
+- id: C37
+  category: coverage
+  fatal: false
+  text: The distribution plan covers warm-intro, cold-outreach, and post-meeting follow-up channels.
+  anchor: Check the final output for warm-intro strategy per the SKILL.md distribution guidance.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: warm intro
+    llm:
+      question: The distribution plan covers warm-intro, cold-outreach, and post-meeting follow-up channels.
+      evidence: Check the final output for warm-intro strategy per the SKILL.md distribution guidance.
+      source: output
+      needle: warm intro
+- id: C39
+  category: process
+  fatal: false
+  text: The agent loads the skill instructions before reading the task materials.
+  anchor: In the tool log, the skill activation appears before any Read of the material files.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_order
+      cmds:
+      - investor-brief-writer
+      - company-profile.md
+    llm:
+      question: The agent loads the skill instructions before reading the task materials.
+      evidence: In the tool log, the skill activation appears before any Read of the material files.
+      source: tool_log
+      pattern: investor-brief-writer|company-profile.md
+- id: C40
+  category: content
+  fatal: false
+  text: The outreach guidance emphasizes personalizing emails per investor rather than sending identical blasts.
+  anchor: Review the outreach-kit guidance for personalization/prioritization advice per the 8 critical guidelines.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: fundraising-outreach-pack.md
+      needle: personalization|personalized
+    llm:
+      question: The outreach guidance emphasizes personalizing emails per investor rather than sending identical blasts.
+      evidence: Review the outreach-kit guidance for personalization/prioritization advice per the 8 critical guidelines.
+      source: workspace
+      path: fundraising-outreach-pack.md
+      needle: personalization|personalized
+- id: C41
+  category: negative
+  fatal: false
+  text: The outreach copy does not promise meetings, responses, or funding outcomes.
+  anchor: Review the brief and emails for outcome guarantees; the reference run frames materials as raising the odds of a meeting only.
+  judge: llm
+  check:
+    question: The outreach copy does not promise meetings, responses, or funding outcomes.
+    evidence: Review the brief and emails for outcome guarantees; the reference run frames materials as raising the odds of a meeting only.

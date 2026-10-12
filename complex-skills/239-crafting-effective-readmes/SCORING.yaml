@@ -1,0 +1,94 @@
+skill: 239-crafting-effective-readmes
+version: 2
+total_items: 6
+criteria:
+- id: C07
+  category: content
+  fatal: false
+  text: The README's new-machine setup covers dependencies and reflects that install.sh branches between Homebrew (macOS) and apt (Linux).
+  anchor: Check the Dependencies / setup section of README.md for the word brew (or Homebrew, which contains it).
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: README.md
+      needle: brew
+    llm:
+      question: The README's new-machine setup covers dependencies and reflects that install.sh branches between Homebrew (macOS) and apt (Linux).
+      evidence: Check the Dependencies / setup section of README.md for the word brew (or Homebrew, which contains it).
+      source: workspace
+      path: README.md
+      needle: brew
+- id: C08
+  category: content
+  fatal: false
+  text: The README is written in a practical, plain, non-academic tone aimed at the owner and possible future colleagues, per the task's '别写太学术，实用为主'.
+  anchor: Read the README prose and the agent's framing for accessibility and practicality; judge the tone quality.
+  judge: llm
+  check:
+    question: The README is written in a practical, plain, non-academic tone aimed at the owner and possible future colleagues, per the task's '别写太学术，实用为主'.
+    evidence: Read the README prose and the agent's framing for accessibility and practicality; judge the tone quality.
+- id: C09
+  category: coverage
+  fatal: false
+  text: The README's component inventory includes the zsh config file .zshrc.
+  anchor: Search README.md for the literal .zshrc (e.g., in the What's Here table).
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: README.md
+      needle: .zshrc
+    llm:
+      question: The README's component inventory includes the zsh config file .zshrc.
+      evidence: Search README.md for the literal .zshrc (e.g., in the What's Here table).
+      source: workspace
+      path: README.md
+      needle: .zshrc
+- id: C18
+  category: process
+  fatal: false
+  text: The agent identifies the README task as 'create' (there is no existing README in the repo) before drafting, and produces a new README rather than updating or reviewing an existing file.
+  anchor: Check the agent's final output for language stating it created/wrote a new README (创建).
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: create|creation
+    llm:
+      question: The agent identifies the README task as 'create' (there is no existing README in the repo) before drafting, and produces a new README rather than updating or reviewing an existing file.
+      evidence: Check the agent's final output for language stating it created/wrote a new README (创建).
+      source: output
+      needle: create|creation
+- id: C23
+  category: negative
+  fatal: false
+  text: The README does not fabricate repository contents — it does not attribute the setup to dotfile-management tools absent from the repo (e.g., GNU stow, chezmoi, yadm) or invent files/commands.
+  anchor: Scan README.md for claims about tools not in the materials (probe checks the representative token stow).
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_not_contains
+      path: README.md
+      needle: stow
+    llm:
+      question: The README does not fabricate repository contents - it does not attribute the setup
+        to dotfile-management tools absent from the repo (e.g. GNU stow, chezmoi, yadm) or invent
+        files and commands that do not exist.
+      evidence: Scan README.md for claims about tools or files not present in the provided
+        materials.
+      source: workspace
+      path: README.md
+- id: C27
+  category: evidence
+  fatal: false
+  text: Before finishing, the agent cross-checks the draft README against the actual repository materials so that the component inventory and install command match the real files.
+  anchor: Review the tool log and final summary for a verification pass (re-reading files or a coverage summary); assess whether the README's facts match the materials.
+  judge: llm
+  check:
+    question: Before finishing, the agent cross-checks the draft README against the actual repository materials so that the component inventory and install command match the real files.
+    evidence: Review the tool log and final summary for a verification pass (re-reading files or a coverage summary); assess whether the README's facts match the materials.

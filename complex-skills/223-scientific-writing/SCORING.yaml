@@ -1,0 +1,538 @@
+skill: 223-scientific-writing
+version: 2
+total_items: 35
+criteria:
+- id: C01
+  category: content
+  fatal: false
+  text: The final manuscript states the study design as a retrospective cohort study.
+  anchor: Read the Methods section in the agent's final output for the design statement.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: retrospective cohort
+    llm:
+      question: The final manuscript states the study design as a retrospective cohort study.
+      evidence: Read the Methods section in the agent's final output for the design statement.
+      source: output
+      needle: retrospective cohort
+- id: C02
+  category: content
+  fatal: false
+  text: The final manuscript identifies the study as single-center.
+  anchor: Read the Methods 'setting' text in the final output for 'single-center' / '单中心'.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: single-center
+    llm:
+      question: The final manuscript identifies the study as single-center.
+      evidence: Read the Methods 'setting' text in the final output for 'single-center' / '单中心'.
+      source: output
+      needle: single-center
+- id: C03
+  category: content
+  fatal: false
+  text: The final manuscript reports the total cohort size of 1,847 patients.
+  anchor: Search the final manuscript text for the cohort total.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: 1,847|1847
+    llm:
+      question: The final manuscript reports the total cohort size of 1,847 patients.
+      evidence: Search the final manuscript text for the cohort total.
+      source: output
+      needle: 1,847|1847
+- id: C04
+  category: content
+  fatal: false
+  text: The final manuscript describes the study population as adult patients with type 2 diabetes (inclusion criteria).
+  anchor: Read the Methods participants text in the final output.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: type 2 diabetes|T2DM
+    llm:
+      question: The final manuscript describes the study population as adult patients with type 2 diabetes (inclusion criteria).
+      evidence: Read the Methods participants text in the final output.
+      source: output
+      needle: type 2 diabetes|T2DM
+- id: C05
+  category: content
+  fatal: false
+  text: The final manuscript identifies the exposure group as SGLT2 inhibitors.
+  anchor: Search the final output for the exposure-group name.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: SGLT2
+    llm:
+      question: The final manuscript identifies the exposure group as SGLT2 inhibitors.
+      evidence: Search the final output for the exposure-group name.
+      source: output
+      needle: SGLT2
+- id: C06
+  category: content
+  fatal: false
+  text: The final manuscript reports the SGLT2 inhibitor group size of 612 patients.
+  anchor: Search the final output for the exposure group n.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: '612'
+    llm:
+      question: The final manuscript reports the SGLT2 inhibitor group size of 612 patients.
+      evidence: Search the final output for the exposure group n.
+      source: output
+      needle: '612'
+- id: C07
+  category: content
+  fatal: false
+  text: The final manuscript identifies the comparison group as other oral antidiabetic drugs.
+  anchor: Read the Methods exposure definition in the final output.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: other oral antidiabetic|control
+    llm:
+      question: The final manuscript identifies the comparison group as other oral antidiabetic drugs.
+      evidence: Read the Methods exposure definition in the final output.
+      source: output
+      needle: other oral antidiabetic|control
+- id: C08
+  category: content
+  fatal: false
+  text: The final manuscript reports the comparison group size of 1,235 patients.
+  anchor: Search the final output for the comparison group n.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: 1,235|1235
+    llm:
+      question: The final manuscript reports the comparison group size of 1,235 patients.
+      evidence: Search the final output for the comparison group n.
+      source: output
+      needle: 1,235|1235
+- id: C09
+  category: content
+  fatal: false
+  text: The final manuscript reports the primary outcome MACE.
+  anchor: Search the final output for the outcome name.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: MACE
+    llm:
+      question: The final manuscript reports the primary outcome MACE.
+      evidence: Search the final output for the outcome name.
+      source: output
+      needle: MACE
+- id: C10
+  category: content
+  fatal: false
+  text: The final manuscript defines MACE as a composite outcome (cardiovascular death, myocardial infarction, stroke).
+  anchor: Read the outcome definition in the final output.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: composite outcome
+    llm:
+      question: The final manuscript defines MACE as a composite outcome (cardiovascular death, myocardial infarction, stroke).
+      evidence: Read the outcome definition in the final output.
+      source: output
+      needle: composite outcome
+- id: C11
+  category: content
+  fatal: false
+  text: The final manuscript reports the median follow-up of 3.2 years.
+  anchor: Read the Methods follow-up text in the final output.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: '3.2'
+    llm:
+      question: The final manuscript reports the median follow-up of 3.2 years.
+      evidence: Read the Methods follow-up text in the final output.
+      source: output
+      needle: '3.2'
+- id: C12
+  category: content
+  fatal: false
+  text: The final manuscript reports the SGLT2 group MACE event rate of 6.9%.
+  anchor: Search the Results section for the SGLT2 event rate.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: '6.9'
+    llm:
+      question: The final manuscript reports the SGLT2 group MACE event rate of 6.9%.
+      evidence: Search the Results section for the SGLT2 event rate.
+      source: output
+      needle: '6.9'
+- id: C13
+  category: content
+  fatal: false
+  text: The final manuscript reports the control group MACE event rate of 9.4%.
+  anchor: Search the Results section for the control event rate.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: '9.4'
+    llm:
+      question: The final manuscript reports the control group MACE event rate of 9.4%.
+      evidence: Search the Results section for the control event rate.
+      source: output
+      needle: '9.4'
+- id: C14
+  category: content
+  fatal: false
+  text: The final manuscript reports the adjusted hazard ratio of 0.72.
+  anchor: Search the Results section for the adjusted HR.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: '0.72'
+    llm:
+      question: The final manuscript reports the adjusted hazard ratio of 0.72.
+      evidence: Search the Results section for the adjusted HR.
+      source: output
+      needle: '0.72'
+- id: C16
+  category: content
+  fatal: false
+  text: The final manuscript reports the PSM (propensity score matching) sensitivity analysis.
+  anchor: Search the Methods/Results for the sensitivity analysis.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: PSM
+    llm:
+      question: The final manuscript reports the PSM (propensity score matching) sensitivity analysis.
+      evidence: Search the Methods/Results for the sensitivity analysis.
+      source: output
+      needle: PSM
+- id: C19
+  category: content
+  fatal: false
+  text: The final manuscript states that the PSM sensitivity analysis yielded results consistent with the primary analysis.
+  anchor: Read the Results interpretation of the PSM analysis in the final output.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: consistent
+    llm:
+      question: The final manuscript states that the PSM sensitivity analysis yielded results consistent with the primary analysis.
+      evidence: Read the Results interpretation of the PSM analysis in the final output.
+      source: output
+      needle: consistent
+- id: C20
+  category: content
+  fatal: false
+  text: The Methods section describes the statistical method used to derive the hazard ratios (Cox regression).
+  anchor: Read the statistical-analysis paragraph in the Methods section.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Cox
+    llm:
+      question: The Methods section describes the statistical method used to derive the hazard ratios (Cox regression).
+      evidence: Read the statistical-analysis paragraph in the Methods section.
+      source: output
+      needle: Cox
+- id: C21
+  category: content
+  fatal: false
+  text: The Methods section includes an ethics approval statement.
+  anchor: Read the Methods ethics/declarations text in the final output.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: ethics
+    llm:
+      question: The Methods section includes an ethics approval statement.
+      evidence: Read the Methods ethics/declarations text in the final output.
+      source: output
+      needle: ethics
+- id: C22
+  category: negative
+  fatal: false
+  text: The manuscript marks the ethics approval number and data availability statement as pending rather than fabricating them.
+  anchor: Read the Methods declarations text for a pending placeholder.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: pending|placeholder
+    llm:
+      question: The manuscript marks the ethics approval number and data availability statement as pending rather than fabricating them.
+      evidence: Read the Methods declarations text for a pending placeholder.
+      source: output
+      needle: pending|placeholder
+- id: C25
+  category: format
+  fatal: false
+  text: The agent selects a citation style appropriate for a clinical journal (AMA or Vancouver) and states it.
+  anchor: Read the final output / commentary for the chosen citation style.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: AMA|Vancouver
+    llm:
+      question: The agent selects a citation style appropriate for a clinical journal (AMA or Vancouver) and states it.
+      evidence: Read the final output / commentary for the chosen citation style.
+      source: output
+      needle: AMA|Vancouver
+- id: C26
+  category: evidence
+  fatal: false
+  text: The manuscript contains in-text citations formatted in a recognized citation style (author-date, et al., or numbered).
+  anchor: Scan the manuscript text in the final output for citation formatting.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: \(\d{4}\)|et al\.|\[\d+\]
+    llm:
+      question: The manuscript contains in-text citations formatted in a recognized citation style (author-date, et al., or numbered).
+      evidence: Scan the manuscript text in the final output for citation formatting.
+      source: output
+      needle: \(\d{4}\)|et al\.|\[\d+\]
+- id: C27
+  category: evidence
+  fatal: false
+  text: The agent reads the study data file (task/study_data.md) before drafting.
+  anchor: Search the tool call log for a Read of study_data.md.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_contains
+      cmd: study_data.md
+    llm:
+      question: The agent reads the study data file (task/study_data.md) before drafting.
+      evidence: Search the tool call log for a Read of study_data.md.
+      source: tool_log
+      pattern: study_data.md
+- id: C28
+  category: evidence
+  fatal: false
+  text: The agent reads the results data file (task/results.csv) before drafting.
+  anchor: Search the tool call log for a Read of results.csv.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_contains
+      cmd: results.csv
+    llm:
+      question: The agent reads the results data file (task/results.csv) before drafting.
+      evidence: Search the tool call log for a Read of results.csv.
+      source: tool_log
+      pattern: results.csv
+- id: C29
+  category: evidence
+  fatal: false
+  text: The agent consults the reporting-guidelines reference file (STROBE guidance).
+  anchor: Search the tool call log for references/reporting_guidelines.md.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_contains
+      cmd: reporting_guidelines
+    llm:
+      question: The agent consults the reporting-guidelines reference file (STROBE guidance).
+      evidence: Search the tool call log for references/reporting_guidelines.md.
+      source: tool_log
+      pattern: reporting_guidelines
+- id: C30
+  category: evidence
+  fatal: false
+  text: The agent consults the citation-styles reference file to pick the citation format.
+  anchor: Search the tool call log for references/citation_styles.md.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_contains
+      cmd: citation_styles
+    llm:
+      question: The agent consults the citation-styles reference file to pick the citation format.
+      evidence: Search the tool call log for references/citation_styles.md.
+      source: tool_log
+      pattern: citation_styles
+- id: C31
+  category: process
+  fatal: false
+  text: The agent references the IMRAD structure during the run.
+  anchor: Search the tool call log for mention of IMRAD.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_contains
+      cmd: imrad_structure
+    llm:
+      question: The agent references the IMRAD structure during the run.
+      evidence: Search the tool call log for mention of IMRAD.
+      source: tool_log
+      pattern: imrad_structure
+- id: C33
+  category: tool
+  fatal: false
+  text: The agent generates at least one AI-generated schematic/figure using the scientific-schematics generation command (mandatory per skill).
+  anchor: Search the tool call log for the schematic generation command.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_contains
+      cmd: generate_schematic.py
+    llm:
+      question: The agent generates at least one AI-generated schematic/figure using the scientific-schematics generation command (mandatory per skill).
+      evidence: Search the tool call log for the schematic generation command.
+      source: tool_log
+      pattern: generate_schematic.py
+- id: C34
+  category: evidence
+  fatal: false
+  text: At least one figure file is produced in the figures/ directory.
+  anchor: List the run's filesystem under figures/ for any output file.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: count
+      what: figures/*
+      op: ge
+      n: 1
+    llm:
+      question: At least one figure file is produced in the figures/ directory.
+      evidence: List the run's filesystem under figures/ for any output file.
+      source: workspace
+      path: figures/*
+- id: C35
+  category: negative
+  fatal: false
+  text: The final manuscript is written in complete paragraphs with no bullet-point lists in Methods or Results.
+  anchor: Visually scan the final manuscript text for bulleted/list-format prose.
+  judge: llm
+  check:
+    question: The final manuscript is written in complete paragraphs with no bullet-point lists in Methods or Results.
+    evidence: Visually scan the final manuscript text for bulleted/list-format prose.
+- id: C36
+  category: negative
+  fatal: false
+  text: The manuscript presents no fabricated or unverifiable citations as real references.
+  anchor: Cross-check any cited sources in the reference list for verifiability.
+  judge: llm
+  check:
+    question: The manuscript presents no fabricated or unverifiable citations as real references.
+    evidence: Cross-check any cited sources in the reference list for verifiability.
+- id: C37
+  category: negative
+  fatal: false
+  text: The Results section reports findings objectively without causal overinterpretation.
+  anchor: Read the Results section for interpretive/causal language beyond the data.
+  judge: llm
+  check:
+    question: The Results section reports findings objectively without causal overinterpretation.
+    evidence: Read the Results section for interpretive/causal language beyond the data.
+- id: C38
+  category: evidence
+  fatal: false
+  text: The agent flags study details not provided in the materials (PSM covariate list, secondary outcomes) for PI confirmation rather than inventing them.
+  anchor: Read the final output / notes for a flag about the missing covariates or secondary outcomes.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: covariate
+    llm:
+      question: The agent flags study details not provided in the materials (PSM covariate list, secondary outcomes) for PI confirmation rather than inventing them.
+      evidence: Read the final output / notes for a flag about the missing covariates or secondary outcomes.
+      source: output
+      needle: covariate
+- id: C39
+  category: boundary
+  fatal: false
+  text: The Methods section addresses the exclusion criteria, noting them as pending rather than inventing them.
+  anchor: Read the Methods participants text for an exclusion-criteria statement.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: exclusion criteria
+    llm:
+      question: The Methods section addresses the exclusion criteria, noting them as pending rather than inventing them.
+      evidence: Read the Methods participants text for an exclusion-criteria statement.
+      source: output
+      needle: exclusion criteria
+- id: C41
+  category: content
+  fatal: false
+  text: The Methods section reports the enrollment period 2019–2023.
+  anchor: Read the Methods setting/participants text for the year range.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: '2019'
+    llm:
+      question: The Methods section reports the enrollment period 2019–2023.
+      evidence: Read the Methods setting/participants text for the year range.
+      source: output
+      needle: '2019'
+- id: C42
+  category: process
+  fatal: false
+  text: 'The agent follows the two-step writing process: build a section outline with key points, then convert it to flowing prose.'
+  anchor: Review the workflow description in the agent's output/tool log for outline-then-prose sequencing.
+  judge: llm
+  check:
+    question: 'The agent follows the two-step writing process: build a section outline with key points, then convert it to flowing prose.'
+    evidence: Review the workflow description in the agent's output/tool log for outline-then-prose sequencing.

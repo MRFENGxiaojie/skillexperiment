@@ -1,0 +1,442 @@
+skill: 318-startup-business-models
+version: 2
+total_items: 29
+criteria:
+- id: F04
+  category: format
+  fatal: false
+  text: The deliverable contains the section heading 'Risk Assessment'.
+  anchor: The agent's final output / written report; look for this heading after the unit economics section.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Risk Assessment
+    llm:
+      question: The deliverable contains the section heading 'Risk Assessment'.
+      evidence: The agent's final output / written report; look for this heading after the unit economics section.
+      source: output
+      needle: Risk Assessment
+- id: F05
+  category: format
+  fatal: false
+  text: The deliverable contains the section heading 'Pricing Recommendations'.
+  anchor: The agent's final output / written report; look for this heading after the risk section.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Pricing Recommendations
+    llm:
+      question: The deliverable contains the section heading 'Pricing Recommendations'.
+      evidence: The agent's final output / written report; look for this heading after the risk section.
+      source: output
+      needle: Pricing Recommendations
+- id: F06
+  category: format
+  fatal: false
+  text: The deliverable contains the section heading 'Measurement Plan'.
+  anchor: The agent's final output / written report; look for this heading after the pricing section.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Measurement Plan
+    llm:
+      question: The deliverable contains the section heading 'Measurement Plan'.
+      evidence: The agent's final output / written report; look for this heading after the pricing section.
+      source: output
+      needle: Measurement Plan
+- id: C01
+  category: content
+  fatal: false
+  text: The deliverable classifies the current flat-rate $99/month unlimited plan as a subscription-style model whose economics behave like usage-based because compute cost scales with usage.
+  anchor: Model Classification section of the deliverable.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: subscription
+    llm:
+      question: The deliverable classifies the current flat-rate $99/month unlimited plan as a subscription-style model whose economics behave like usage-based because compute cost scales with usage.
+      evidence: Model Classification section of the deliverable.
+      source: output
+      needle: subscription
+- id: C03
+  category: content
+  fatal: false
+  text: The unit economics use the compute cost of $0.002 per 1K tokens provided in the task.
+  anchor: Segment-Level Unit Economics section, compute-cost line.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: '0.002'
+    llm:
+      question: The unit economics use the compute cost of $0.002 per 1K tokens provided in the task.
+      evidence: Segment-Level Unit Economics section, compute-cost line.
+      source: output
+      needle: '0.002'
+- id: C04
+  category: content
+  fatal: false
+  text: The unit economics use a fully-loaded CAC of approximately $800.
+  anchor: Segment-Level Unit Economics section, CAC line.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: $800
+    llm:
+      question: The unit economics use a fully-loaded CAC of approximately $800.
+      evidence: Segment-Level Unit Economics section, CAC line.
+      source: output
+      needle: $800
+- id: C05
+  category: content
+  fatal: false
+  text: Unit economics are computed for the individual-developer segment (e.g., ~30K tokens/month, 12% monthly churn).
+  anchor: Segment-Level Unit Economics section, individual-developer row.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: 30K
+    llm:
+      question: Unit economics are computed for the individual-developer segment (e.g., ~30K tokens/month, 12% monthly churn).
+      evidence: Segment-Level Unit Economics section, individual-developer row.
+      source: output
+      needle: 30K
+- id: C06
+  category: content
+  fatal: false
+  text: Unit economics are computed for the small-team segment (e.g., ~800K tokens/month, 6% monthly churn).
+  anchor: Segment-Level Unit Economics section, small-team row.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: 800K
+    llm:
+      question: Unit economics are computed for the small-team segment (e.g., ~800K tokens/month, 6% monthly churn).
+      evidence: Segment-Level Unit Economics section, small-team row.
+      source: output
+      needle: 800K
+- id: C07
+  category: content
+  fatal: false
+  text: Unit economics are computed for the enterprise segment (e.g., ~6M tokens/month, 2% monthly churn, ~$600-900/month compute cost).
+  anchor: Segment-Level Unit Economics section, enterprise row.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: 6M
+    llm:
+      question: Unit economics are computed for the enterprise segment (e.g., ~6M tokens/month, 2% monthly churn, ~$600-900/month compute cost).
+      evidence: Segment-Level Unit Economics section, enterprise row.
+      source: output
+      needle: 6M
+- id: C08
+  category: content
+  fatal: false
+  text: The analysis acknowledges gross margin below 60% driven by variable compute cost.
+  anchor: Segment-Level Unit Economics and/or Risk Assessment section.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: 60%
+    llm:
+      question: The analysis acknowledges gross margin below 60% driven by variable compute cost.
+      evidence: Segment-Level Unit Economics and/or Risk Assessment section.
+      source: output
+      needle: 60%
+- id: C09
+  category: content
+  fatal: false
+  text: The pricing recommendations reference competitive anchors such as CodeRabbit, CodeClimate, or SonarQube.
+  anchor: Pricing Recommendations section, competitive-anchor discussion.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: CodeRabbit
+    llm:
+      question: The pricing recommendations reference competitive anchors such as CodeRabbit, CodeClimate, or SonarQube.
+      evidence: Pricing Recommendations section, competitive-anchor discussion.
+      source: output
+      needle: CodeRabbit
+- id: C10
+  category: content
+  fatal: false
+  text: The pricing design defines a value metric tied to usage (tokens/API calls) rather than seats.
+  anchor: Pricing Recommendations section, value-metric discussion.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: value metric
+    llm:
+      question: The pricing design defines a value metric tied to usage (tokens/API calls) rather than seats.
+      evidence: Pricing Recommendations section, value-metric discussion.
+      source: output
+      needle: value metric
+- id: C11
+  category: content
+  fatal: false
+  text: The packaging includes a free/entry tier and at least one paid tier priced above it.
+  anchor: Pricing Recommendations section, tier design.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: free tier
+    llm:
+      question: The packaging includes a free/entry tier and at least one paid tier priced above it.
+      evidence: Pricing Recommendations section, tier design.
+      source: output
+      needle: free tier
+- id: C12
+  category: content
+  fatal: false
+  text: Usage limits and overage rules are mapped to usage units, including how overage is charged.
+  anchor: Pricing Recommendations section, limits/overage discussion.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: overage
+    llm:
+      question: Usage limits and overage rules are mapped to usage units, including how overage is charged.
+      evidence: Pricing Recommendations section, limits/overage discussion.
+      source: output
+      needle: overage
+- id: C16
+  category: content
+  fatal: false
+  text: The measurement plan defines a primary success metric such as NRR, ARPA/ARPU, gross margin, or payback.
+  anchor: Measurement Plan section, success-metric definition.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: NRR
+    llm:
+      question: The measurement plan defines a primary success metric such as NRR, ARPA/ARPU, gross margin, or payback.
+      evidence: Measurement Plan section, success-metric definition.
+      source: output
+      needle: NRR
+- id: C20
+  category: content
+  fatal: false
+  text: The deliverable includes a written go/no-go decision rule for the pricing change.
+  anchor: Measurement Plan section, decision rule.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: go/no-go
+    llm:
+      question: The deliverable includes a written go/no-go decision rule for the pricing change.
+      evidence: Measurement Plan section, decision rule.
+      source: output
+      needle: go/no-go
+- id: C21
+  category: content
+  fatal: false
+  text: 'The measurement report is an all-in view: gross margin impact including variable compute/COGS, not just conversion.'
+  anchor: Measurement Plan section, revenue-quality view.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: COGS
+    llm:
+      question: 'The measurement report is an all-in view: gross margin impact including variable compute/COGS, not just conversion.'
+      evidence: Measurement Plan section, revenue-quality view.
+      source: output
+      needle: COGS
+- id: C22
+  category: content
+  fatal: false
+  text: Scenarios are presented in the documented base/best/worst notation.
+  anchor: The scenarios subsection of the deliverable (recommendation/rationale).
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: worst
+    llm:
+      question: Scenarios are presented in the documented base/best/worst notation.
+      evidence: The scenarios subsection of the deliverable (recommendation/rationale).
+      source: output
+      needle: worst
+- id: C23
+  category: process
+  fatal: false
+  text: Willingness to pay is validated via pricing interviews with 5-8 current or prospective customers (state current price, then a higher one, and watch for hesitation).
+  anchor: Pricing Recommendations section, WTP validation.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: 5-8
+    llm:
+      question: Willingness to pay is validated via pricing interviews with 5-8 current or prospective customers (state current price, then a higher one, and watch for hesitation).
+      evidence: Pricing Recommendations section, WTP validation.
+      source: output
+      needle: 5-8
+- id: C24
+  category: content
+  fatal: false
+  text: The recommendation prioritizes payback and gross margin over a single ratio and notes that LTV:CAC is the easiest ratio to game.
+  anchor: Recommendation/rationale and assumptions sections.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: LTV:CAC
+    llm:
+      question: The recommendation prioritizes payback and gross margin over a single ratio and notes that LTV:CAC is the easiest ratio to game.
+      evidence: Recommendation/rationale and assumptions sections.
+      source: output
+      needle: LTV:CAC
+- id: C25
+  category: content
+  fatal: false
+  text: The risk assessment evaluates margin compression (e.g., enterprise over-consumption against a flat fee).
+  anchor: Risk Assessment section.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: margin compression
+    llm:
+      question: The risk assessment evaluates margin compression (e.g., enterprise over-consumption against a flat fee).
+      evidence: Risk Assessment section.
+      source: output
+      needle: margin compression
+- id: C27
+  category: content
+  fatal: false
+  text: The risk assessment evaluates metering/overage friction.
+  anchor: Risk Assessment section.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: metering
+    llm:
+      question: The risk assessment evaluates metering/overage friction.
+      evidence: Risk Assessment section.
+      source: output
+      needle: metering
+- id: C28
+  category: evidence
+  fatal: false
+  text: Unit economics are checked against the documented benchmark ranges (LTV:CAC 3-5x, payback 6-12 months, NRR >100%, gross margin >70% software-only).
+  anchor: Segment-Level Unit Economics or recommendation section, benchmark comparison.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: 70%
+    llm:
+      question: Unit economics are checked against the documented benchmark ranges (LTV:CAC 3-5x, payback 6-12 months, NRR >100%, gross margin >70% software-only).
+      evidence: Segment-Level Unit Economics or recommendation section, benchmark comparison.
+      source: output
+      needle: 70%
+- id: P01
+  category: process
+  fatal: false
+  text: 'The agent follows the 6-step workflow in order: classify the model, build a segment-level unit economics snapshot, evaluate model fit and risks, propose pricing/packaging changes, define measurement
+    and roll-out, and deliver a decision-ready output.'
+  anchor: Overall structure of the agent's analysis (order of sections/reasoning).
+  judge: llm
+  check:
+    question: 'The agent follows the 6-step workflow in order: classify the model, build a segment-level unit economics snapshot, evaluate model fit and risks, propose pricing/packaging changes, define
+      measurement and roll-out, and deliver a decision-ready output.'
+    evidence: Overall structure of the agent's analysis (order of sections/reasoning).
+- id: T01
+  category: tool
+  fatal: false
+  text: The agent reads the reference file references/saas-metrics-playbook.md while building the unit economics snapshot.
+  anchor: 'tool_log: look for a Read call whose path contains saas-metrics-playbook.'
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_contains
+      cmd: saas-metrics-playbook
+    llm:
+      question: The agent reads the reference file references/saas-metrics-playbook.md while building the unit economics snapshot.
+      evidence: 'tool_log: look for a Read call whose path contains saas-metrics-playbook.'
+      source: tool_log
+      pattern: saas-metrics-playbook
+- id: T02
+  category: tool
+  fatal: false
+  text: The agent uses the Write tool to produce the deliverable report.
+  anchor: 'tool_log: look for a Write tool call creating the report file.'
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_contains
+      cmd: Write
+    llm:
+      question: The agent uses the Write tool to produce the deliverable report.
+      evidence: 'tool_log: look for a Write tool call creating the report file.'
+      source: tool_log
+      pattern: Write
+- id: COV01
+  category: coverage
+  fatal: false
+  text: 'The risk assessment covers all five documented failure modes: margin compression, adverse selection, channel conflict, support cost explosions, and metering/overage friction.'
+  anchor: Risk Assessment section; verify each of the five modes is addressed.
+  judge: llm
+  check:
+    question: 'The risk assessment covers all five documented failure modes: margin compression, adverse selection, channel conflict, support cost explosions, and metering/overage friction.'
+    evidence: Risk Assessment section; verify each of the five modes is addressed.
+- id: COMM01
+  category: process
+  fatal: false
+  text: The agent uses the data already provided in the task (segment mix, token usage, compute cost, churn, conversion, competitor pricing) directly and does not re-ask for inputs that were supplied.
+  anchor: The agent's opening response and whether it asks for already-provided inputs.
+  judge: llm
+  check:
+    question: The agent uses the data already provided in the task (segment mix, token usage, compute cost, churn, conversion, competitor pricing) directly and does not re-ask for inputs that were supplied.
+    evidence: The agent's opening response and whether it asks for already-provided inputs.
+- id: N03
+  category: negative
+  fatal: false
+  text: The agent does not compute LTV from immature cohorts and present it as reliable without caveat.
+  anchor: How LTV is computed and caveated in the unit economics section.
+  judge: llm
+  check:
+    question: The agent does not compute LTV from immature cohorts and present it as reliable without caveat.
+    evidence: How LTV is computed and caveated in the unit economics section.

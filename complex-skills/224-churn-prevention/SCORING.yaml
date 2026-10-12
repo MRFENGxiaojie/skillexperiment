@@ -1,0 +1,463 @@
+skill: 224-churn-prevention
+version: 2
+total_items: 30
+criteria:
+- id: C01
+  category: content
+  fatal: false
+  text: The final output addresses voluntary churn by designing a cancel flow with matched retention offers.
+  anchor: Agent final output — search for 'cancel flow' or 'cancellation flow'.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: 'cancel flow|cancellation flow'
+    llm:
+      question: The final output addresses voluntary churn by designing a cancel flow with matched retention offers.
+      evidence: Agent final output — search for 'cancel flow' or 'cancellation flow'.
+      source: output
+      needle: 'cancel flow|cancellation flow'
+- id: C02
+  category: content
+  fatal: false
+  text: The final output addresses involuntary churn by designing a dunning / payment-recovery plan (retry logic plus recovery emails).
+  anchor: Agent final output — search for the term 'dunning'.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: dunning
+    llm:
+      question: The final output addresses involuntary churn by designing a dunning / payment-recovery plan (retry logic plus recovery emails).
+      evidence: Agent final output — search for the term 'dunning'.
+      source: output
+      needle: dunning
+- id: C09
+  category: termination
+  fatal: false
+  text: The output flags that monthly churn above 5% cannot be fixed by churn prevention alone and recommends product/ICP review.
+  anchor: Agent final output — search for 'ICP' (from 'product/ICP review').
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: ICP
+    llm:
+      question: The output flags that monthly churn above 5% cannot be fixed by churn prevention alone and recommends product/ICP review.
+      evidence: Agent final output — search for 'ICP' (from 'product/ICP review').
+      source: output
+      needle: ICP
+- id: C10
+  category: coverage
+  fatal: false
+  text: 'The cancel-flow deliverable covers all 5 stages: cancel trigger, exit survey, dynamic retention offer, confirmation, and post-cancellation.'
+  anchor: Cancel-flow section of the final output — verify all five stage names (trigger, survey, offer, confirmation, post-cancellation emails).
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: 'post-cancellation|post-cancel|after cancellation|cancellation emails|cancellation email|reactivation email'
+    llm:
+      question: 'The cancel-flow deliverable covers all 5 stages: cancel trigger, exit survey, dynamic retention offer, confirmation, and post-cancellation.'
+      evidence: Cancel-flow section of the final output — verify all five stage names (trigger, survey, offer, confirmation, post-cancellation emails).
+      source: output
+      needle: 'post-cancellation|after cancellation|cancellation emails|reactivation email'
+- id: C11
+  category: content
+  fatal: false
+  text: The exit survey is designed as a single required multiple-choice question with 6-8 reason options.
+  anchor: Exit-survey section of the final output — search for 'six or seven', '6-8 reasons', or '6 or 7' options.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: '6-8 reasons|6-8 options|six or seven|6 or 7|six to eight|6-8 categories'
+    llm:
+      question: The exit survey is designed as a single required multiple-choice question with 6-8 reason options.
+      evidence: Exit-survey section of the final output — search for 'six or seven', '6-8 reasons', or '6 or 7' options.
+      source: output
+      needle: 'six or seven|6-8 reasons|6 or 7|exit survey'
+- id: C12
+  category: content
+  fatal: false
+  text: The exit-reason answer is collected before any retention offer is shown (the reason gates the offer).
+  anchor: Exit-survey / flow-order description in the final output — confirm the reason is captured before the offer is presented.
+  judge: llm
+  check:
+    question: The exit-reason answer is collected before any retention offer is shown (the reason gates the offer).
+    evidence: Exit-survey / flow-order description in the final output — confirm the reason is captured before the offer is presented.
+- id: C13
+  category: content
+  fatal: false
+  text: Retention offers are mapped per exit reason (reason to offer type), not a single generic offer for everyone.
+  anchor: Retention-offer map in the final output — search for 'offer type'.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: offer type
+    llm:
+      question: Retention offers are mapped per exit reason (reason to offer type), not a single generic offer for everyone.
+      evidence: Retention-offer map in the final output — search for 'offer type'.
+      source: output
+      needle: offer type
+- id: C15
+  category: content
+  fatal: false
+  text: The confirmation stage summarizes what happens to access, data, and billing on cancellation.
+  anchor: Confirmation-stage copy in the final output — verify a summary of what happens to access, data, and billing (e.g. 'not be charged', 'retained until').
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: '(?:access|data).{0,200}(?:billing|charged)|(?:billing|charged).{0,200}(?:access|data)'
+    llm:
+      question: The confirmation stage summarizes what happens to access, data, and billing on cancellation.
+      evidence: Confirmation-stage copy in the final output — verify a summary of what happens to access, data, and billing (e.g. 'not be charged', 'retained until').
+      source: output
+      needle: 'not be charged after|no further charges|billing will stop|after you cancel|what happens when you cancel'
+- id: C18
+  category: boundary
+  fatal: false
+  text: The 'just testing / never needed' reason maps to no offer and the customer is let go.
+  anchor: Retention-offer map in the final output — search for 'let them go', 'let them leave', or 'no retention offer' for the just-testing reason.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: 'let them go|let them leave|no retention offer|no offer|make no offer'
+    llm:
+      question: The 'just testing / never needed' reason maps to no offer and the customer is let go.
+      evidence: Retention-offer map in the final output — search for 'let them go', 'let them leave', or 'no retention offer' for the just-testing reason.
+      source: output
+      needle: 'let them go|let them leave|no retention offer|make no offer'
+- id: C19
+  category: boundary
+  fatal: false
+  text: If the customer declines the retention offer, the flow lets them cancel (one offer per attempt).
+  anchor: Dynamic-offer stage in the final output — search for 'decline'.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: decline
+    llm:
+      question: If the customer declines the retention offer, the flow lets them cancel (one offer per attempt).
+      evidence: Dynamic-offer stage in the final output — search for 'decline'.
+      source: output
+      needle: decline
+- id: C20
+  category: content
+  fatal: false
+  text: Offer copy follows the presentation rule of one clear headline ('Before you go — [offer]') with a quantified value.
+  anchor: Offer-copy examples in the final output — search for 'Before you go'.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Before you go
+    llm:
+      question: Offer copy follows the presentation rule of one clear headline ('Before you go — [offer]') with a quantified value.
+      evidence: Offer-copy examples in the final output — search for 'Before you go'.
+      source: output
+      needle: Before you go
+- id: C21
+  category: negative
+  fatal: false
+  text: The design avoids artificial countdown timers on retention offers unless an offer genuinely expires.
+  anchor: Offer-presentation notes in the final output — search for 'countdown'.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: countdown
+    llm:
+      question: The design avoids artificial countdown timers on retention offers unless an offer genuinely expires.
+      evidence: Offer-presentation notes in the final output — search for 'countdown'.
+      source: output
+      needle: countdown
+- id: C23
+  category: content
+  fatal: false
+  text: 'The offer playbook distinguishes the offer types: discount, pause, downgrade, extended trial, feature unlock, and human support.'
+  anchor: Offer playbook in the final output — verify the offer types discount, pause, downgrade, extended trial, feature unlock, and human support are distinguished.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: '(?=.*[Dd]iscount)(?=.*[Pp]ause)(?=.*[Dd]owngrade)(?=.*(?:[Ee]xtended trial|[Ff]eature unlock))(?=.*(?:[Hh]uman support|[Hh]uman help|[Hh]uman review))'
+    llm:
+      question: 'The offer playbook distinguishes the offer types: discount, pause, downgrade, extended trial, feature unlock, and human support.'
+      evidence: Offer playbook in the final output — verify the offer types discount, pause, downgrade, extended trial, feature unlock, and human support are distinguished.
+      source: output
+      needle: 'downgrade|discount|pause|extended trial|feature unlock|human support|playbook'
+- id: C24
+  category: content
+  fatal: false
+  text: The dunning retry schedule escalates with spacing of 3 days after failure, then +5, then +7 days.
+  anchor: Dunning retry schedule in the final output — search for 'retry 2', '+5', or '5 days' spacing evidence.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: '5 days|+5|retry 2|retry 3|day 7|day 12'
+    llm:
+      question: The dunning retry schedule escalates with spacing of 3 days after failure, then +5, then +7 days.
+      evidence: Dunning retry schedule in the final output — search for 'retry 2', '+5', or '5 days' spacing evidence.
+      source: output
+      needle: '5 days|retry 1|retry 2|retry 3'
+- id: C25
+  category: content
+  fatal: false
+  text: The dunning deliverable includes the 5-email sequence with escalating urgency (Payment failed, Action needed, Account at risk, Final notice, Account paused/canceled).
+  anchor: Dunning email sequence in the final output — verify the 5-email sequence (Payment failed, Action needed, Account at risk, Final notice, Account paused/canceled).
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: '(?=.*Payment failed)(?=.*Action needed)(?=.*Account at risk)(?=.*Final notice)(?=.*(?:[Pp]aused|[Cc]anceled))'
+    llm:
+      question: The dunning deliverable includes the 5-email sequence with escalating urgency (Payment failed, Action needed, Account at risk, Final notice, Account paused/canceled).
+      evidence: Dunning email sequence in the final output — verify the 5-email sequence (Payment failed, Action needed, Account at risk, Final notice, Account paused/canceled).
+      source: output
+      needle: 'Final notice|Payment failed|Action needed|Account at risk|paused'
+- id: C28
+  category: content
+  fatal: false
+  text: Dunning subject lines are specific (e.g., 'Your [Product] payment failed') rather than vague.
+  anchor: Dunning email sequence in the final output — search for 'payment failed'.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: payment failed
+    llm:
+      question: Dunning subject lines are specific (e.g., 'Your [Product] payment failed') rather than vague.
+      evidence: Dunning email sequence in the final output — search for 'payment failed'.
+      source: output
+      needle: payment failed
+- id: C29
+  category: negative
+  fatal: false
+  text: The dunning emails avoid blame/shame framing toward the customer.
+  anchor: Dunning email tone in the final output — review the 'payment failed' email copy for blame/shame framing (expect none).
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: 'payment failed|blame|shame|no blame|no shame'
+    llm:
+      question: The dunning emails avoid blame/shame framing toward the customer.
+      evidence: Dunning email tone in the final output — review the 'payment failed' email copy for blame/shame framing (expect none).
+      source: output
+      needle: 'payment failed|blame|shame|no blame|no shame'
+- id: C30
+  category: content
+  fatal: false
+  text: The immediate post-cancellation confirmation email includes the cancellation date, data retention policy, and a reactivation link.
+  anchor: Immediate post-cancellation email in the final output — verify cancellation date, data-retention policy, and a reactivation link (search for 'reactivate').
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: 'reactivation link|reactivate|re-activate'
+    llm:
+      question: The immediate post-cancellation confirmation email includes the cancellation date, data retention policy, and a reactivation link.
+      evidence: Immediate post-cancellation email in the final output — verify cancellation date, data-retention policy, and a reactivation link (search for 'reactivate').
+      source: output
+      needle: 'immediate confirmation|reactivation link|reactivate|re-activate|data-retention policy'
+- id: C31
+  category: content
+  fatal: false
+  text: The post-cancellation lifecycle includes a 7-day re-engagement email and a 30-day win-back email.
+  anchor: Post-cancellation section of the final output — verify the 7-day re-engagement email and the 30-day win-back email are both present.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: '(?=.*(?:seven-day|7[- ]day|re-engagement))(?=.*win-back)'
+    llm:
+      question: The post-cancellation lifecycle includes a 7-day re-engagement email and a 30-day win-back email.
+      evidence: Post-cancellation section of the final output — verify the 7-day re-engagement email and the 30-day win-back email are both present.
+      source: output
+      needle: 'win-back|seven-day|7-day|re-engagement|reactivation email|cancellation emails'
+- id: C32
+  category: coverage
+  fatal: false
+  text: 'The metrics section tracks the six core metrics: save rate, voluntary churn, involuntary churn, recovery rate, win-back rate, and exit survey completion.'
+  anchor: Metrics section of the final output — at minimum 'win-back rate' present.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: win-back rate
+    llm:
+      question: 'The metrics section tracks the six core metrics: save rate, voluntary churn, involuntary churn, recovery rate, win-back rate, and exit survey completion.'
+      evidence: Metrics section of the final output — at minimum 'win-back rate' present.
+      source: output
+      needle: win-back rate
+- id: C33
+  category: content
+  fatal: false
+  text: 'Metrics are tied to benchmarks: save rate 10-15% is good / 20%+ excellent, and recovery rate 25-35% is good.'
+  anchor: Metrics/benchmarks section of the final output — search for '10-15%' / '20%+' save-rate and '25-35%' recovery benchmarks (hyphen or en dash).
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: '(?=.*(?:10[-–—]15%|20%[+]))(?=.*25[-–—]35%)'
+    llm:
+      question: 'Metrics are tied to benchmarks: save rate 10-15% is good / 20%+ excellent, and recovery rate 25-35% is good.'
+      evidence: Metrics/benchmarks section of the final output — search for '10-15%' / '20%+' save-rate and '25-35%' recovery benchmarks (hyphen or en dash).
+      source: output
+      needle: '10-15%|10–15%|25-35%|25–35%|20%+'
+- id: C34
+  category: content
+  fatal: false
+  text: 'Metrics are tied to targets: voluntary churn below 2% monthly, involuntary churn below 1%, exit survey completion above 80%.'
+  anchor: Metrics targets in the final output — verify voluntary churn below 2%, involuntary churn below 1%, and exit-survey completion above 80%.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: '(?=.*(?:<2[%]|below 2[%]|under 2[%]))(?=.*(?:<1[%]|below 1[%]|under 1[%]))(?=.*(?:[Ss]urvey|[Cc]ompletion).{0,80}80[%])'
+    llm:
+      question: 'Metrics are tied to targets: voluntary churn below 2% monthly, involuntary churn below 1%, exit survey completion above 80%.'
+      evidence: Metrics targets in the final output — verify voluntary churn below 2%, involuntary churn below 1%, and exit-survey completion above 80%.
+      source: output
+      needle: '<2%|<1%|below 2|below 1|80%'
+- id: C35
+  category: content
+  fatal: false
+  text: 'Red-flag thresholds are included: save rate below 5%, exit survey completion below 70%, recovery rate below 20%.'
+  anchor: Metrics red-flags in the final output — verify save rate below 5%, exit-survey completion below 70%, and recovery rate below 20%.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: '(?=.*(?:below 5[%]|<5[%]|under 5[%]))(?=.*(?:below 70[%]|<70[%]|under 70[%]))(?=.*(?:below 20[%]|<20[%]|under 20[%]))'
+    llm:
+      question: 'Red-flag thresholds are included: save rate below 5%, exit survey completion below 70%, recovery rate below 20%.'
+      evidence: Metrics red-flags in the final output — verify save rate below 5%, exit-survey completion below 70%, and recovery rate below 20%.
+      source: output
+      needle: 'below 5%|<5%|below 70%|<70%|below 20%|<20%|70%'
+- id: C36
+  category: evidence
+  fatal: false
+  text: The revenue-impact estimate is derived from the task figures via (MRR × churn-rate reduction) ÷ current churn rate, with the calculation inputs shown.
+  anchor: Impact-estimate section of the final output — confirm a computed monthly/annual dollar figure derived from the $400K (40万) MRR and 6% churn is shown, not a bare formula.
+  judge: llm
+  check:
+    question: The revenue-impact estimate is derived from the task figures via (MRR × churn-rate reduction) ÷ current churn rate, with the calculation inputs shown.
+    evidence: Impact-estimate section of the final output — confirm a computed monthly/annual dollar figure derived from the $400K (40万) MRR and 6% churn is shown, not a bare formula.
+- id: C37
+  category: format
+  fatal: false
+  text: The output leads with the conclusion (recovery potential / save-rate estimate) before methodology.
+  anchor: Opening of the final output — the first section states the recovery potential rather than starting with process detail.
+  judge: llm
+  check:
+    question: The output leads with the conclusion (recovery potential / save-rate estimate) before methodology.
+    evidence: Opening of the final output — the first section states the recovery potential rather than starting with process detail.
+- id: C38
+  category: format
+  fatal: false
+  text: Recommendations follow the What + Why + How structure and include owners and deadlines.
+  anchor: Recommendations section of the final output — verify owners and deadlines (e.g. 'ownership' plus a 30-day timeline).
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: '(?=.*(?:[Oo]wners|[Oo]wnership))(?=.*(?:30 [d]ays|[Dd]eadline))'
+    llm:
+      question: Recommendations follow the What + Why + How structure and include owners and deadlines.
+      evidence: Recommendations section of the final output — verify owners and deadlines (e.g. 'ownership' plus a 30-day timeline).
+      source: output
+      needle: 'owners|ownership|deadline|30 days|days 31|days 61'
+- id: C39
+  category: format
+  fatal: false
+  text: The output uses confidence marking (green verified / yellow estimated / red assumed) for its numbers.
+  anchor: Metrics and impact sections of the final output — search for a confidence marker (green 🟢 / yellow 🟡 / red 🔴).
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: '🟢|🟡|🔴'
+    llm:
+      question: The output uses confidence marking (green verified / yellow estimated / red assumed) for its numbers.
+      evidence: Metrics and impact sections of the final output — search for a confidence marker (green 🟢 / yellow 🟡 / red 🔴).
+      source: output
+      needle: '🟢|🟡|🔴'
+- id: C40
+  category: format
+  fatal: false
+  text: 'The dunning deliverable is structured as three parts: a retry schedule, a 5-email sequence with subject lines and body, and a card updater setup checklist.'
+  anchor: Dunning section of the final output — verify the three parts (retry schedule, 5-email sequence, card-updater setup); search for 'card-update' or 'checklist'.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: 'checklist|card updater|card-update|Account Updater'
+    llm:
+      question: 'The dunning deliverable is structured as three parts: a retry schedule, a 5-email sequence with subject lines and body, and a card updater setup checklist.'
+      evidence: Dunning section of the final output — verify the three parts (retry schedule, 5-email sequence, card-updater setup); search for 'card-update' or 'checklist'.
+      source: output
+      needle: 'checklist|card updater|card-update|Account Updater'
+- id: C41
+  category: format
+  fatal: false
+  text: The cancel-flow deliverable includes a confirmation email template alongside the 5-stage flow and offer map.
+  anchor: Cancel-flow section of the final output — verify a confirmation email template; search for 'template', 'confirmation email', or the 'Cancellation emails' section.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: 'template|email template|confirmation email|immediate confirmation|cancellation emails'
+    llm:
+      question: The cancel-flow deliverable includes a confirmation email template alongside the 5-stage flow and offer map.
+      evidence: Cancel-flow section of the final output — verify a confirmation email template; search for 'template', 'confirmation email', or the 'Cancellation emails' section.
+      source: output
+      needle: 'template|confirmation email|immediate confirmation|cancellation emails'
+- id: C42
+  category: coverage
+  fatal: false
+  text: 'The output covers all deliverables the task requested: cancel flow, retention-offer mapping, payment-recovery mechanism, impact estimate, and metrics to track.'
+  anchor: Overall structure of the final output — verify the five deliverable areas (cancel flow, offer map, payment recovery, impact estimate, metrics).
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: '(?=.*(?:cancel flow|cancellation flow))(?=.*(?:retention offer|offer [t]ype|offer))(?=.*(?:recovery|dunning))(?=.*(?:[Ii]mpact|[Rr]ecovered|MRR))(?=.*metrics)'
+    llm:
+      question: 'The output covers all deliverables the task requested: cancel flow, retention-offer mapping, payment-recovery mechanism, impact estimate, and metrics to track.'
+      evidence: Overall structure of the final output — verify the five deliverable areas (cancel flow, offer map, payment recovery, impact estimate, metrics).
+      source: output
+      needle: 'metrics'

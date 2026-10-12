@@ -1,0 +1,458 @@
+skill: 096-nist-ai-rmf
+version: 2
+total_items: 27
+criteria:
+- id: C09
+  category: format
+  fatal: false
+  text: The report contains a 'Rating Aggregation' section explaining how category and function ratings roll up.
+  anchor: In the report content (tool_log Write payload) find the Rating Aggregation heading.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: '*.md'
+      needle: Rating Aggregation
+    llm:
+      question: The report contains a 'Rating Aggregation' section explaining how category and function ratings roll up.
+      evidence: In the report content (tool_log Write payload) find the Rating Aggregation heading.
+      source: workspace
+      path: '*.md'
+      needle: Rating Aggregation
+- id: C10
+  category: format
+  fatal: false
+  text: The report contains a 'Scope' or 'Scope / Limitations' section.
+  anchor: In the report content (tool_log Write payload) find the Scope heading.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: '*.md'
+      needle: Scope / Limitations
+    llm:
+      question: The report contains a 'Scope' or 'Scope / Limitations' section.
+      evidence: In the report content (tool_log Write payload) find the Scope heading.
+      source: workspace
+      path: '*.md'
+      needle: Scope / Limitations
+- id: C15
+  category: coverage
+  fatal: true
+  text: 'The assessment is complete: all four AI RMF functions (GOVERN, MAP, MEASURE, MANAGE) are assessed; covering only 1-2 functions and presenting the result as a full NIST AI RMF assessment is a critical
+    failure.'
+  anchor: Cross-check the four function section headings in the report (tool_log Write payload); a missing function section means incompleteness.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: '*.md'
+      needle: GOVERN Function Assessment.*MAP Function Assessment.*MEASURE Function Assessment.*MANAGE Function Assessment
+    llm:
+      question: 'The assessment is complete: all four AI RMF functions (GOVERN, MAP, MEASURE, MANAGE) are assessed; covering only 1-2 functions and presenting the result as a full NIST AI RMF assessment
+        is a critical failure.'
+      evidence: Cross-check the four function section headings in the report (tool_log Write payload); a missing function section means incompleteness.
+      source: workspace
+      path: '*.md'
+      needle: GOVERN Function Assessment.*MAP Function Assessment.*MEASURE Function Assessment.*MANAGE Function Assessment
+- id: C16
+  category: content
+  fatal: false
+  text: Each function assessment includes Findings, Gaps, and Recommendations subsections.
+  anchor: In the report content (tool_log Write payload) find Recommendations / Gaps entries under each function section.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: '*.md'
+      needle: Findings.*Gaps.*Recommendations
+    llm:
+      question: Each function assessment includes Findings, Gaps, and Recommendations subsections.
+      evidence: In the report content (tool_log Write payload) find Recommendations / Gaps entries under each function section.
+      source: workspace
+      path: '*.md'
+      needle: Findings.*Gaps.*Recommendations
+- id: C18
+  category: content
+  fatal: false
+  text: The Executive Summary's Key Findings report issue counts by severity, including a Total Issues line with Critical / High / Medium / Low counts.
+  anchor: In the report's Executive Summary (tool_log Write payload) find the Total Issues line.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: '*.md'
+      needle: Total Issues
+    llm:
+      question: The Executive Summary's Key Findings report issue counts by severity, including a Total Issues line with Critical / High / Medium / Low counts.
+      evidence: In the report's Executive Summary (tool_log Write payload) find the Total Issues line.
+      source: workspace
+      path: '*.md'
+      needle: Total Issues
+- id: C19
+  category: content
+  fatal: false
+  text: The report rates the 'Valid & Reliable' trustworthiness characteristic.
+  anchor: In the Trustworthiness Summary (tool_log Write payload) find the Valid & Reliable line.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: '*.md'
+      needle: Valid & Reliable
+    llm:
+      question: The report rates the 'Valid & Reliable' trustworthiness characteristic.
+      evidence: In the Trustworthiness Summary (tool_log Write payload) find the Valid & Reliable line.
+      source: workspace
+      path: '*.md'
+      needle: Valid & Reliable
+- id: C20
+  category: content
+  fatal: false
+  text: The report rates the 'Safe' trustworthiness characteristic.
+  anchor: In the Trustworthiness Summary (tool_log Write payload) find the 'Safe:' rating line.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: '*.md'
+      needle: 'Safe:'
+    llm:
+      question: The report rates the 'Safe' trustworthiness characteristic.
+      evidence: In the Trustworthiness Summary (tool_log Write payload) find the 'Safe:' rating line.
+      source: workspace
+      path: '*.md'
+      needle: 'Safe:'
+- id: C21
+  category: content
+  fatal: false
+  text: The report rates the 'Secure & Resilient' trustworthiness characteristic.
+  anchor: In the Trustworthiness Summary (tool_log Write payload) find the Secure & Resilient line.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: '*.md'
+      needle: Secure & Resilient
+    llm:
+      question: The report rates the 'Secure & Resilient' trustworthiness characteristic.
+      evidence: In the Trustworthiness Summary (tool_log Write payload) find the Secure & Resilient line.
+      source: workspace
+      path: '*.md'
+      needle: Secure & Resilient
+- id: C22
+  category: content
+  fatal: false
+  text: The report rates the 'Accountable & Transparent' trustworthiness characteristic.
+  anchor: In the Trustworthiness Summary (tool_log Write payload) find the Accountable & Transparent line.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: '*.md'
+      needle: Accountable & Transparent
+    llm:
+      question: The report rates the 'Accountable & Transparent' trustworthiness characteristic.
+      evidence: In the Trustworthiness Summary (tool_log Write payload) find the Accountable & Transparent line.
+      source: workspace
+      path: '*.md'
+      needle: Accountable & Transparent
+- id: C23
+  category: content
+  fatal: false
+  text: The report rates the 'Explainable & Interpretable' trustworthiness characteristic.
+  anchor: In the Trustworthiness Summary (tool_log Write payload) find the Explainable & Interpretable line.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: '*.md'
+      needle: Explainable & Interpretable
+    llm:
+      question: The report rates the 'Explainable & Interpretable' trustworthiness characteristic.
+      evidence: In the Trustworthiness Summary (tool_log Write payload) find the Explainable & Interpretable line.
+      source: workspace
+      path: '*.md'
+      needle: Explainable & Interpretable
+- id: C26
+  category: content
+  fatal: false
+  text: The trustworthiness characteristic ratings use the 1-5 scale defined in references/scoring-guide.md.
+  anchor: In the Trustworthiness Summary (tool_log Write payload) find the '1-5' scale notation.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: '*.md'
+      needle: 1-5 scale|1–5 scale
+    llm:
+      question: The trustworthiness characteristic ratings use the 1-5 scale defined in references/scoring-guide.md.
+      evidence: In the Trustworthiness Summary (tool_log Write payload) find the '1-5' scale notation.
+      source: workspace
+      path: '*.md'
+      needle: 1-5 scale|1–5 scale
+- id: C28
+  category: content
+  fatal: false
+  text: The report includes a 'Generative AI Considerations' section, as required because the system is generative (GPT-4o based).
+  anchor: In the report content (tool_log Write payload) find the Generative AI Considerations section.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: '*.md'
+      needle: Generative AI Considerations
+    llm:
+      question: The report includes a 'Generative AI Considerations' section, as required because the system is generative (GPT-4o based).
+      evidence: In the report content (tool_log Write payload) find the Generative AI Considerations section.
+      source: workspace
+      path: '*.md'
+      needle: Generative AI Considerations
+- id: C32
+  category: content
+  fatal: false
+  text: The Risk Register lists risks with likelihood, impact, priority (P0-P3), and mitigation strategy per entry.
+  anchor: In the Risk Register section (tool_log Write payload) find the 'mitigation' field of the risk entries.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: '*.md'
+      needle: mitigation
+    llm:
+      question: The Risk Register lists risks with likelihood, impact, priority (P0-P3), and mitigation strategy per entry.
+      evidence: In the Risk Register section (tool_log Write payload) find the 'mitigation' field of the risk entries.
+      source: workspace
+      path: '*.md'
+      needle: mitigation
+- id: C33
+  category: content
+  fatal: false
+  text: The Compliance Alignment maps the EU AI Act to the relevant AI RMF functions.
+  anchor: In the Compliance Alignment section (tool_log Write payload) find 'EU AI Act'.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: '*.md'
+      needle: EU AI Act
+    llm:
+      question: The Compliance Alignment maps the EU AI Act to the relevant AI RMF functions.
+      evidence: In the Compliance Alignment section (tool_log Write payload) find 'EU AI Act'.
+      source: workspace
+      path: '*.md'
+      needle: EU AI Act
+- id: C35
+  category: content
+  fatal: false
+  text: The Compliance Alignment maps State AI Laws to the relevant AI RMF functions.
+  anchor: In the Compliance Alignment section (tool_log Write payload) find 'State AI Laws'.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: '*.md'
+      needle: State AI Laws
+    llm:
+      question: The Compliance Alignment maps State AI Laws to the relevant AI RMF functions.
+      evidence: In the Compliance Alignment section (tool_log Write payload) find 'State AI Laws'.
+      source: workspace
+      path: '*.md'
+      needle: State AI Laws
+- id: C36
+  category: content
+  fatal: false
+  text: The Compliance Alignment maps Sector Regulations to the relevant AI RMF functions.
+  anchor: In the Compliance Alignment section (tool_log Write payload) find 'Sector Regulations'.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: '*.md'
+      needle: Sector Regulations
+    llm:
+      question: The Compliance Alignment maps Sector Regulations to the relevant AI RMF functions.
+      evidence: In the Compliance Alignment section (tool_log Write payload) find 'Sector Regulations'.
+      source: workspace
+      path: '*.md'
+      needle: Sector Regulations
+- id: C37
+  category: content
+  fatal: false
+  text: The report reflects the brief's control baseline — the prompt-level refusal guideline ('拒绝回答敏感问题') as the only existing AI control.
+  anchor: In the report content (tool_log Write payload) find the Chinese phrase '敏感问题' quoted from the brief.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: '*.md'
+      needle: refuse to answer sensitive questions
+    llm:
+      question: The report reflects the brief's control baseline — the prompt-level refusal guideline ('拒绝回答敏感问题') as the only existing AI control.
+      evidence: In the report content (tool_log Write payload) find the Chinese phrase '敏感问题' quoted from the brief.
+      source: workspace
+      path: '*.md'
+      needle: refuse to answer sensitive questions
+- id: C38
+  category: content
+  fatal: false
+  text: The report notes the absence of a dedicated AI governance team and independent data protection officer, per the brief.
+  anchor: In the report content (tool_log Write payload) find the phrase 'AI 治理团队' reflecting the brief's '无专职 AI 治理团队'.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: '*.md'
+      needle: AI governance team|AI governance
+    llm:
+      question: The report notes the absence of a dedicated AI governance team and independent data protection officer, per the brief.
+      evidence: In the report content (tool_log Write payload) find the phrase 'AI 治理团队' reflecting the brief's '无专职 AI 治理团队'.
+      source: workspace
+      path: '*.md'
+      needle: AI governance team|AI governance
+- id: C39
+  category: content
+  fatal: false
+  text: The report assesses the hallucination / confabulation risk of the LLM in the financial context.
+  anchor: In the report content (tool_log Write payload) find the '幻觉' concern stated in the brief.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: '*.md'
+      needle: hallucination|hallucinations
+    llm:
+      question: The report assesses the hallucination / confabulation risk of the LLM in the financial context.
+      evidence: In the report content (tool_log Write payload) find the '幻觉' concern stated in the brief.
+      source: workspace
+      path: '*.md'
+      needle: hallucination|hallucinations
+- id: C40
+  category: content
+  fatal: false
+  text: The report explicitly addresses human oversight and system knowledge limits (the MAP 2.2 subcategory).
+  anchor: In the MAP section (tool_log Write payload) find the 'MAP 2.2' subcategory reference.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: '*.md'
+      needle: MAP 2.2
+    llm:
+      question: The report explicitly addresses human oversight and system knowledge limits (the MAP 2.2 subcategory).
+      evidence: In the MAP section (tool_log Write payload) find the 'MAP 2.2' subcategory reference.
+      source: workspace
+      path: '*.md'
+      needle: MAP 2.2
+- id: C41
+  category: process
+  fatal: false
+  text: The agent reads the system brief (materials/system_brief.md) before writing the report.
+  anchor: In tool_log.jsonl, confirm a Read call referencing 'system_brief' occurs before the Write call containing the report title.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_order
+      cmds:
+      - system_brief
+      - NIST AI RMF Assessment Report
+    llm:
+      question: The agent reads the system brief (materials/system_brief.md) before writing the report.
+      evidence: In tool_log.jsonl, confirm a Read call referencing 'system_brief' occurs before the Write call containing the report title.
+      source: tool_log
+      pattern: system_brief|NIST AI RMF Assessment Report
+- id: C42
+  category: process
+  fatal: false
+  text: The assessment follows the skill's canonical order, presenting GOVERN before MAP, per the 'start with GOVERN' best practice in references/best-practices.md.
+  anchor: Read the report section ordering in the tool_log Write payload; the GOVERN section precedes the MAP section.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: '*.md'
+      needle: GOVERN Function Assessment.*MAP Function Assessment
+    llm:
+      question: The assessment follows the skill's canonical order, presenting GOVERN before MAP, per the 'start with GOVERN' best practice in references/best-practices.md.
+      evidence: Read the report section ordering in the tool_log Write payload; the GOVERN section precedes the MAP section.
+      source: workspace
+      path: '*.md'
+      needle: GOVERN Function Assessment.*MAP Function Assessment
+- id: C43
+  category: tool
+  fatal: false
+  text: The agent reads the provided system brief material via the Read tool (file task/materials/system_brief.md).
+  anchor: In tool_log.jsonl, find a Read tool call whose file_path contains 'system_brief'.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: '*.md'
+      needle: task/materials/system_brief.md
+    llm:
+      question: The agent reads the provided system brief material via the Read tool (file task/materials/system_brief.md).
+      evidence: In tool_log.jsonl, find a Read tool call whose file_path contains 'system_brief'.
+      source: workspace
+      path: '*.md'
+      needle: task/materials/system_brief.md
+- id: C45
+  category: negative
+  fatal: true
+  text: The report does not fabricate controls, processes, or incidents absent from the brief (e.g., it does not claim the company has a model-testing pipeline, human-review sampling, prompt versioning,
+    an incident-response plan, or vendor risk assessment).
+  anchor: Read the findings in the report (tool_log Write payload) and verify each stated control/incident can be traced to the brief; invented ones violate this constraint.
+  judge: llm
+  check:
+    question: The report does not fabricate controls, processes, or incidents absent from the brief (e.g., it does not claim the company has a model-testing pipeline, human-review sampling, prompt versioning,
+      an incident-response plan, or vendor risk assessment).
+    evidence: Read the findings in the report (tool_log Write payload) and verify each stated control/incident can be traced to the brief; invented ones violate this constraint.
+- id: C46
+  category: boundary
+  fatal: false
+  text: Where the brief omits operational specifics (e.g., log samples, user counts, model call frequency), the agent does not invent concrete values and instead marks assumptions or leaves them unquantified.
+  anchor: Read the report's Assumptions field and findings (tool_log Write payload) for invented operational metrics not in the brief.
+  judge: llm
+  check:
+    question: Where the brief omits operational specifics (e.g., log samples, user counts, model call frequency), the agent does not invent concrete values and instead marks assumptions or leaves them unquantified.
+    evidence: Read the report's Assumptions field and findings (tool_log Write payload) for invented operational metrics not in the brief.
+- id: C47
+  category: evidence
+  fatal: false
+  text: Each function/category rating is justified by evidence from the brief or an explicitly stated assumption, making ratings traceable to the described system rather than generic boilerplate.
+  anchor: Read the findings text under each function section (tool_log Write payload) and check that ratings cite brief facts (e.g., 3 engineers, prompt-only controls) or state assumptions.
+  judge: llm
+  check:
+    question: Each function/category rating is justified by evidence from the brief or an explicitly stated assumption, making ratings traceable to the described system rather than generic boilerplate.
+    evidence: Read the findings text under each function section (tool_log Write payload) and check that ratings cite brief facts (e.g., 3 engineers, prompt-only controls) or state assumptions.
+- id: C48
+  category: process
+  fatal: false
+  text: The agent proceeds using the provided brief without asking the user to re-supply information that is already in the materials (per the task's instruction to use provided material directly).
+  anchor: Scan the agent's final output and tool_log for clarifying questions to the user about already-provided facts (system type, controls, deployment).
+  judge: llm
+  check:
+    question: The agent proceeds using the provided brief without asking the user to re-supply information that is already in the materials (per the task's instruction to use provided material directly).
+    evidence: Scan the agent's final output and tool_log for clarifying questions to the user about already-provided facts (system type, controls, deployment).

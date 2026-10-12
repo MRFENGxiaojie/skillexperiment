@@ -1,0 +1,665 @@
+skill: 165-marketing-strategy-pmm
+version: 2
+total_items: 43
+criteria:
+- id: C01
+  category: content
+  fatal: false
+  text: The deliverable defines the ICP as German mid-large enterprises with 100-500 person customer service teams.
+  anchor: ICP section of the final output
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: 100[-–]500
+    llm:
+      question: The deliverable defines the ICP as German mid-large enterprises with 100-500 person customer service teams.
+      evidence: ICP section of the final output
+      source: output
+      needle: 100[-–]500
+- id: C02
+  category: format
+  fatal: false
+  text: The ICP profile includes a firmographics dimension (company size, industry, geography).
+  anchor: ICP section, Firmographics header
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Firmographics
+    llm:
+      question: The ICP profile includes a firmographics dimension (company size, industry, geography).
+      evidence: ICP section, Firmographics header
+      source: output
+      needle: Firmographics
+- id: C03
+  category: format
+  fatal: false
+  text: The ICP profile includes a technographics dimension (tech stack, integration needs).
+  anchor: ICP section, Technographics header
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Technographics
+    llm:
+      question: The ICP profile includes a technographics dimension (tech stack, integration needs).
+      evidence: ICP section, Technographics header
+      source: output
+      needle: Technographics
+- id: C04
+  category: format
+  fatal: false
+  text: The ICP profile includes a psychographics dimension (pain, motivation, risk tolerance).
+  anchor: ICP section, Psychographics header
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Psychographics
+    llm:
+      question: The ICP profile includes a psychographics dimension (pain, motivation, risk tolerance).
+      evidence: ICP section, Psychographics header
+      source: output
+      needle: Psychographics
+- id: C05
+  category: format
+  fatal: false
+  text: The deliverable includes an ICP validation checklist.
+  anchor: ICP section, validation checklist block
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Validation Checklist
+    llm:
+      question: The deliverable includes an ICP validation checklist.
+      evidence: ICP section, validation checklist block
+      source: output
+      needle: Validation Checklist
+- id: C06
+  category: content
+  fatal: false
+  text: Persona-specific messaging covers the economic buyer with ROI/business-outcome messaging and proof.
+  anchor: Messaging by persona section
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Economic Buyer
+    llm:
+      question: Persona-specific messaging covers the economic buyer with ROI/business-outcome messaging and proof.
+      evidence: Messaging by persona section
+      source: output
+      needle: Economic Buyer
+- id: C07
+  category: content
+  fatal: false
+  text: Persona-specific messaging covers the technical buyer with fit/security/GDPR messaging and proof.
+  anchor: Messaging by persona section
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Technical Buyer
+    llm:
+      question: Persona-specific messaging covers the technical buyer with fit/security/GDPR messaging and proof.
+      evidence: Messaging by persona section
+      source: output
+      needle: Technical Buyer
+- id: C08
+  category: content
+  fatal: false
+  text: Persona-specific messaging covers the end user with ease-of-use messaging and proof.
+  anchor: Messaging by persona section
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: End User
+    llm:
+      question: Persona-specific messaging covers the end user with ease-of-use messaging and proof.
+      evidence: Messaging by persona section
+      source: output
+      needle: End User
+- id: C09
+  category: content
+  fatal: false
+  text: The positioning lists Zendesk as a real competitive alternative.
+  anchor: Competitive Alternatives list
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Zendesk
+    llm:
+      question: The positioning lists Zendesk as a real competitive alternative.
+      evidence: Competitive Alternatives list
+      source: output
+      needle: Zendesk
+- id: C10
+  category: content
+  fatal: false
+  text: The positioning lists GermanSuite as a real competitive alternative.
+  anchor: Competitive Alternatives list
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: GermanSuite
+    llm:
+      question: The positioning lists GermanSuite as a real competitive alternative.
+      evidence: Competitive Alternatives list
+      source: output
+      needle: GermanSuite
+- id: C11
+  category: content
+  fatal: false
+  text: The positioning lists the status-quo alternative of email + Excel.
+  anchor: Competitive Alternatives list (Tier 3 / status quo)
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Excel
+    llm:
+      question: The positioning lists the status-quo alternative of email + Excel.
+      evidence: Competitive Alternatives list (Tier 3 / status quo)
+      source: output
+      needle: Excel
+- id: C12
+  category: content
+  fatal: false
+  text: Unique attributes include the 40% German-ticket auto-routing capability from the brief.
+  anchor: Unique Attributes list
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: 40%
+    llm:
+      question: Unique attributes include the 40% German-ticket auto-routing capability from the brief.
+      evidence: Unique Attributes list
+      source: output
+      needle: 40%
+- id: C13
+  category: content
+  fatal: false
+  text: Unique attributes include Salesforce integration from the brief.
+  anchor: Unique Attributes list
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Salesforce
+    llm:
+      question: Unique attributes include Salesforce integration from the brief.
+      evidence: Unique Attributes list
+      source: output
+      needle: Salesforce
+- id: C14
+  category: content
+  fatal: false
+  text: Unique attributes include SAP integration from the brief.
+  anchor: Unique Attributes list
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: SAP
+    llm:
+      question: Unique attributes include SAP integration from the brief.
+      evidence: Unique Attributes list
+      source: output
+      needle: SAP
+- id: C15
+  category: content
+  fatal: false
+  text: Unique attributes include GDPR compliance as a differentiator.
+  anchor: Unique Attributes / messaging sections
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: GDPR
+    llm:
+      question: Unique attributes include GDPR compliance as a differentiator.
+      evidence: Unique Attributes / messaging sections
+      source: output
+      needle: GDPR
+- id: C16
+  category: content
+  fatal: false
+  text: Data residency in Frankfurt is used as a differentiator (German data sovereignty).
+  anchor: Unique Attributes / technical buyer proof
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Frankfurt
+    llm:
+      question: Data residency in Frankfurt is used as a differentiator (German data sovereignty).
+      evidence: Unique Attributes / technical buyer proof
+      source: output
+      needle: Frankfurt
+- id: C17
+  category: format
+  fatal: false
+  text: The positioning walks the April Dunford value-mapping step (Map Attributes to Value).
+  anchor: Positioning section, value mapping step
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Map Attributes to Value
+    llm:
+      question: The positioning walks the April Dunford value-mapping step (Map Attributes to Value).
+      evidence: Positioning section, value mapping step
+      source: output
+      needle: Map Attributes to Value
+- id: C18
+  category: format
+  fatal: false
+  text: The positioning includes the best-fit customers step.
+  anchor: Positioning section
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Best-Fit Customers
+    llm:
+      question: The positioning includes the best-fit customers step.
+      evidence: Positioning section
+      source: output
+      needle: Best-Fit Customers
+- id: C19
+  category: format
+  fatal: false
+  text: The positioning includes a market category decision.
+  anchor: Positioning section
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Market Category
+    llm:
+      question: The positioning includes a market category decision.
+      evidence: Positioning section
+      source: output
+      needle: Market Category
+- id: C20
+  category: format
+  fatal: false
+  text: The messaging architecture includes a value proposition one-liner.
+  anchor: Messaging section, value proposition
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Value Proposition
+    llm:
+      question: The messaging architecture includes a value proposition one-liner.
+      evidence: Messaging section, value proposition
+      source: output
+      needle: Value Proposition
+- id: C21
+  category: format
+  fatal: false
+  text: The messaging architecture includes a key benefits level with outcomes.
+  anchor: Messaging hierarchy, Key Benefits level
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Key Benefits
+    llm:
+      question: The messaging architecture includes a key benefits level with outcomes.
+      evidence: Messaging hierarchy, Key Benefits level
+      source: output
+      needle: Key Benefits
+- id: C22
+  category: format
+  fatal: false
+  text: The messaging architecture includes proof points (stats, case evidence, or customer references).
+  anchor: Messaging hierarchy, Proof Points level
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Proof Points
+    llm:
+      question: The messaging architecture includes proof points (stats, case evidence, or customer references).
+      evidence: Messaging hierarchy, Proof Points level
+      source: output
+      needle: Proof Points
+- id: C23
+  category: coverage
+  fatal: false
+  text: 'The deliverable covers all four requested components: ICP, positioning methodology, persona-specific messaging, and a competitor battlecard, with none omitted.'
+  anchor: Overall final output; judge confirms each component present
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: (?=[\s\S]*ICP)(?=[\s\S]*Positioning)(?=[\s\S]*Messaging)(?=[\s\S]*Battlecard)
+    llm:
+      question: 'The deliverable covers all four requested components: ICP, positioning methodology, persona-specific messaging, and a competitor battlecard, with none omitted.'
+      evidence: Overall final output; judge confirms each component present
+      source: output
+      needle: (?=[\s\S]*ICP)(?=[\s\S]*Positioning)(?=[\s\S]*Messaging)(?=[\s\S]*Battlecard)
+- id: C24
+  category: format
+  fatal: false
+  text: The battlecard includes an OVERVIEW section for the target competitor.
+  anchor: Battlecard section
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: OVERVIEW
+    llm:
+      question: The battlecard includes an OVERVIEW section for the target competitor.
+      evidence: Battlecard section
+      source: output
+      needle: OVERVIEW
+- id: C25
+  category: format
+  fatal: false
+  text: The battlecard includes a KEY STRENGTHS section.
+  anchor: Battlecard section
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: KEY STRENGTHS
+    llm:
+      question: The battlecard includes a KEY STRENGTHS section.
+      evidence: Battlecard section
+      source: output
+      needle: KEY STRENGTHS
+- id: C26
+  category: format
+  fatal: false
+  text: The battlecard includes a KEY WEAKNESSES section.
+  anchor: Battlecard section
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: KEY WEAKNESSES
+    llm:
+      question: The battlecard includes a KEY WEAKNESSES section.
+      evidence: Battlecard section
+      source: output
+      needle: KEY WEAKNESSES
+- id: C27
+  category: format
+  fatal: false
+  text: The battlecard includes an OUR ADVANTAGES section.
+  anchor: Battlecard section
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: OUR ADVANTAGES
+    llm:
+      question: The battlecard includes an OUR ADVANTAGES section.
+      evidence: Battlecard section
+      source: output
+      needle: OUR ADVANTAGES
+- id: C28
+  category: format
+  fatal: false
+  text: The battlecard includes WHEN TO WIN scenarios.
+  anchor: Battlecard section
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: WHEN TO WIN
+    llm:
+      question: The battlecard includes WHEN TO WIN scenarios.
+      evidence: Battlecard section
+      source: output
+      needle: WHEN TO WIN
+- id: C29
+  category: format
+  fatal: false
+  text: The battlecard includes WHEN TO LOSE scenarios.
+  anchor: Battlecard section
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: WHEN TO LOSE
+    llm:
+      question: The battlecard includes WHEN TO LOSE scenarios.
+      evidence: Battlecard section
+      source: output
+      needle: WHEN TO LOSE
+- id: C30
+  category: format
+  fatal: false
+  text: The battlecard includes TALK TRACKS with objection handling.
+  anchor: Battlecard section
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: TALK TRACKS
+    llm:
+      question: The battlecard includes TALK TRACKS with objection handling.
+      evidence: Battlecard section
+      source: output
+      needle: TALK TRACKS
+- id: C31
+  category: format
+  fatal: false
+  text: The battlecard includes a PROOF POINTS section.
+  anchor: Battlecard section
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: PROOF POINTS
+    llm:
+      question: The battlecard includes a PROOF POINTS section.
+      evidence: Battlecard section
+      source: output
+      needle: PROOF POINTS
+- id: C32
+  category: content
+  fatal: false
+  text: The deliverable is framed for the requester's PMM role.
+  anchor: Opening or role framing of final output
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: PMM|Product Marketing Manager
+    llm:
+      question: The deliverable is framed for the requester's PMM role.
+      evidence: Opening or role framing of final output
+      source: output
+      needle: PMM|Product Marketing Manager
+- id: C33
+  category: content
+  fatal: false
+  text: The hybrid PLG/Sales-Led go-to-market motion from the background is acknowledged in the strategy.
+  anchor: Strategy/ICP context in final output
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: PLG|Product-Led|Sales-Led|Hybrid
+    llm:
+      question: The hybrid PLG/Sales-Led go-to-market motion from the background is acknowledged in the strategy.
+      evidence: Strategy/ICP context in final output
+      source: output
+      needle: PLG|Product-Led|Sales-Led|Hybrid
+- id: C35
+  category: evidence
+  fatal: false
+  text: The German ACV of ~$60k/year from the materials is used as an input (e.g., in ICP, pricing, or battlecard).
+  anchor: ICP or battlecard where ACV is cited
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: 60,000|60k|60K
+    llm:
+      question: The German ACV of ~$60k/year from the materials is used as an input (e.g., in ICP, pricing, or battlecard).
+      evidence: ICP or battlecard where ACV is cited
+      source: output
+      needle: 60,000|60k|60K
+- id: C36
+  category: evidence
+  fatal: false
+  text: The 4-6 month German sales cycle from the materials is used as an input (e.g., in ICP or when-to-win/lose).
+  anchor: ICP or battlecard where sales cycle is cited
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: 4[-–]6
+    llm:
+      question: The 4-6 month German sales cycle from the materials is used as an input (e.g., in ICP or when-to-win/lose).
+      evidence: ICP or battlecard where sales cycle is cited
+      source: output
+      needle: 4[-–]6
+- id: C37
+  category: process
+  fatal: false
+  text: The agent reads the bundled material brief (task/market-entry-brief.md) before producing the deliverable.
+  anchor: tool_log for a Read of the brief
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_contains
+      cmd: market-entry-brief.md
+    llm:
+      question: The agent reads the bundled material brief (task/market-entry-brief.md) before producing the deliverable.
+      evidence: tool_log for a Read of the brief
+      source: tool_log
+      pattern: market-entry-brief.md
+- id: C38
+  category: process
+  fatal: false
+  text: The agent reads the task file (task/task.txt).
+  anchor: tool_log for a Read of the task file
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_contains
+      cmd: task/task.txt
+    llm:
+      question: The agent reads the task file (task/task.txt).
+      evidence: tool_log for a Read of the task file
+      source: tool_log
+      pattern: task/task.txt
+- id: C39
+  category: tool
+  fatal: false
+  text: The agent consults at least one bundled reference file under references/.
+  anchor: tool_log for a Read under references/
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_contains
+      cmd: references/
+    llm:
+      question: The agent consults at least one bundled reference file under references/.
+      evidence: tool_log for a Read under references/
+      source: tool_log
+      pattern: references/
+- id: C40
+  category: boundary
+  fatal: false
+  text: Because win/loss data is explicitly unavailable, the deliverable marks win-rate/win-loss metrics as an assumption or notes they are unavailable, rather than inventing figures.
+  anchor: Battlecard proof points or ICP validation in final output
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: assumption|estimated|assumed|unavailable|not available
+    llm:
+      question: Because win/loss data is explicitly unavailable, the deliverable marks win-rate/win-loss metrics as an assumption or notes they are unavailable, rather than inventing figures.
+      evidence: Battlecard proof points or ICP validation in final output
+      source: output
+      needle: assumption|estimated|assumed|unavailable|not available
+- id: C41
+  category: negative
+  fatal: false
+  text: The agent does not present teaching-illustration figures from the skill (e.g., '10,000+ teams', '35% win rate', customer logos) as real customer or competitor data.
+  anchor: Deliverable content; judge checks no template examples passed off as real
+  judge: llm
+  check:
+    question: The agent does not present teaching-illustration figures from the skill (e.g., '10,000+ teams', '35% win rate', customer logos) as real customer or competitor data.
+    evidence: Deliverable content; judge checks no template examples passed off as real
+- id: C42
+  category: negative
+  fatal: false
+  text: The output stays within strategy and planning and does not claim to run campaigns, buy media, or operate marketing tools (HubSpot, GA, Gong, etc.).
+  anchor: Scope handling in deliverable
+  judge: llm
+  check:
+    question: The output stays within strategy and planning and does not claim to run campaigns, buy media, or operate marketing tools (HubSpot, GA, Gong, etc.).
+    evidence: Scope handling in deliverable
+- id: C43
+  category: negative
+  fatal: false
+  text: The deliverable matches the requested type (ICP + positioning + persona messaging + battlecard) and is not substituted with an unrelated artifact such as a launch playbook or a 90-day GTM plan.
+  anchor: Overall deliverable type
+  judge: llm
+  check:
+    question: The deliverable matches the requested type (ICP + positioning + persona messaging + battlecard) and is not substituted with an unrelated artifact such as a launch playbook or a 90-day GTM
+      plan.
+    evidence: Overall deliverable type
+- id: C44
+  category: evidence
+  fatal: false
+  text: When required metrics are missing (e.g., win/loss data), the agent flags the gap to the user or marks it as an assumption instead of silently fabricating numbers.
+  anchor: Agent's handling of the stated missing win/loss data
+  judge: llm
+  check:
+    question: When required metrics are missing (e.g., win/loss data), the agent flags the gap to the user or marks it as an assumption instead of silently fabricating numbers.
+    evidence: Agent's handling of the stated missing win/loss data

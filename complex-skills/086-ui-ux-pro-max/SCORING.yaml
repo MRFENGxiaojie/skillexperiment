@@ -1,0 +1,354 @@
+skill: 086-ui-ux-pro-max
+version: 2
+total_items: 23
+criteria:
+- id: C01
+  category: process
+  fatal: true
+  text: The agent runs the mandatory design-system generation command, invoking scripts/search.py with the --design-system flag, before producing any design recommendations or code.
+  anchor: 'tool_log: first search.py invocation containing the --design-system flag'
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: command_succeeded
+      cmd: --design-system
+      expect: success
+    llm:
+      question: The agent runs the mandatory design-system generation command, invoking scripts/search.py with the --design-system flag, before producing any design recommendations or code.
+      evidence: 'tool_log: first search.py invocation containing the --design-system flag'
+      source: tool_log
+      pattern: --design-system
+- id: C02
+  category: process
+  fatal: false
+  text: The --design-system search is executed before the html-tailwind stack search.
+  anchor: 'tool_log: ordering of search.py invocations — design-system must precede the stack search'
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_order
+      cmds:
+      - --design-system
+      - --stack html-tailwind
+    llm:
+      question: The --design-system search is executed before the html-tailwind stack search.
+      evidence: 'tool_log: ordering of search.py invocations — design-system must precede the stack search'
+      source: tool_log
+      pattern: --design-system|--stack html-tailwind
+- id: C03
+  category: process
+  fatal: false
+  text: The agent verifies Python is installed (python3 --version or python --version) before running the search script.
+  anchor: 'tool_log: Python version-check command near the start of the trace'
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: command_succeeded
+      cmd: python3 --version
+      expect: success
+    llm:
+      question: The agent verifies Python is installed (python3 --version or python --version) before running the search script.
+      evidence: 'tool_log: Python version-check command near the start of the trace'
+      source: tool_log
+      pattern: python3 --version
+- id: C04
+  category: process
+  fatal: false
+  text: The agent runs a stack search with --stack html-tailwind, defaulting to html-tailwind because the task specifies no technology stack.
+  anchor: 'tool_log: search.py invocation containing --stack html-tailwind'
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: command_succeeded
+      cmd: --stack html-tailwind
+      expect: success
+    llm:
+      question: The agent runs a stack search with --stack html-tailwind, defaulting to html-tailwind because the task specifies no technology stack.
+      evidence: 'tool_log: search.py invocation containing --stack html-tailwind'
+      source: tool_log
+      pattern: --stack html-tailwind
+- id: C05
+  category: process
+  fatal: false
+  text: The agent runs at least one domain search with --domain ux to obtain accessibility and interaction guidelines for the landing page.
+  anchor: 'tool_log: search.py invocation containing --domain ux'
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: command_succeeded
+      cmd: --domain ux
+      expect: success
+    llm:
+      question: The agent runs at least one domain search with --domain ux to obtain accessibility and interaction guidelines for the landing page.
+      evidence: 'tool_log: search.py invocation containing --domain ux'
+      source: tool_log
+      pattern: --domain ux
+- id: C06
+  category: tool
+  fatal: false
+  text: The landing page is implemented with Tailwind CSS.
+  anchor: final output message and the generated HTML file (Tailwind CDN link or utility classes)
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Tailwind
+    llm:
+      question: The landing page is implemented with Tailwind CSS.
+      evidence: final output message and the generated HTML file (Tailwind CDN link or utility classes)
+      source: output
+      needle: Tailwind
+- id: C09
+  category: content
+  fatal: false
+  text: The design solution recommends a font pairing (typography).
+  anchor: 'final output: design-recommendation section that names the chosen fonts (字体)'
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: font|fonts|typography
+    llm:
+      question: The design solution recommends a font pairing (typography).
+      evidence: 'final output: design-recommendation section that names the chosen fonts (字体)'
+      source: output
+      needle: font|fonts|typography
+- id: C10
+  category: content
+  fatal: false
+  text: The agent explains why each design choice (style, color, typography) was selected.
+  anchor: 'final output: rationale paragraphs accompanying the recommendations (为什么)'
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: why
+    llm:
+      question: The agent explains why each design choice (style, color, typography) was selected.
+      evidence: 'final output: rationale paragraphs accompanying the recommendations (为什么)'
+      source: output
+      needle: why
+- id: C11
+  category: content
+  fatal: true
+  text: The agent produces an HTML landing page deliverable as the implementation result.
+  anchor: 'run''s filesystem: at least one .html file (e.g., index.html) created by the agent'
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: count
+      what: '*.html'
+      op: ge
+      n: 1
+- id: C13
+  category: content
+  fatal: false
+  text: The landing page includes a feature-highlights section (功能亮点).
+  anchor: 'final output / landing page HTML: 功能亮点 block'
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: feature highlights
+    llm:
+      question: The landing page includes a feature-highlights section (功能亮点).
+      evidence: 'final output / landing page HTML: 功能亮点 block'
+      source: output
+      needle: feature highlights
+- id: C14
+  category: content
+  fatal: false
+  text: The landing page includes a three-tier pricing section (三档定价).
+  anchor: 'final output / landing page HTML: pricing table with three tiers'
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: three tiers|three levels
+    llm:
+      question: The landing page includes a three-tier pricing section (三档定价).
+      evidence: 'final output / landing page HTML: pricing table with three tiers'
+      source: output
+      needle: three tiers|three levels
+- id: C17
+  category: content
+  fatal: false
+  text: 'The landing page supports colorblind users: color is not the only indicator of meaning and an accessible palette is used.'
+  anchor: 'final output: accessibility notes mentioning 色盲 support; HTML uses icons/labels/patterns in addition to color'
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: color blindness|color-blind
+    llm:
+      question: 'The landing page supports colorblind users: color is not the only indicator of meaning and an accessible palette is used.'
+      evidence: 'final output: accessibility notes mentioning 色盲 support; HTML uses icons/labels/patterns in addition to color'
+      source: output
+      needle: color blindness|color-blind
+- id: C18
+  category: content
+  fatal: false
+  text: 'The landing page supports keyboard-only users: focus states are visible and all interactive elements are reachable via Tab navigation.'
+  anchor: 'final output: accessibility notes mentioning 键盘 support; HTML has visible focus styles'
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: keyboard
+    llm:
+      question: 'The landing page supports keyboard-only users: focus states are visible and all interactive elements are reachable via Tab navigation.'
+      evidence: 'final output: accessibility notes mentioning 键盘 support; HTML has visible focus styles'
+      source: output
+      needle: keyboard
+- id: C19
+  category: boundary
+  fatal: false
+  text: The landing page is responsive at narrow viewports down to 375px with no horizontal scroll on mobile.
+  anchor: 'final output: self-check mentioning the 375px breakpoint (from the skill''s responsive checklist)'
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: 375px
+    llm:
+      question: The landing page is responsive at narrow viewports down to 375px with no horizontal scroll on mobile.
+      evidence: 'final output: self-check mentioning the 375px breakpoint (from the skill''s responsive checklist)'
+      source: output
+      needle: 375px
+- id: C20
+  category: boundary
+  fatal: false
+  text: Normal body text maintains a minimum color-contrast ratio of 4.5:1.
+  anchor: 'final output: self-check mentioning 4.5:1 contrast (from the skill''s checklist)'
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: 4.5:1
+    llm:
+      question: Normal body text maintains a minimum color-contrast ratio of 4.5:1.
+      evidence: 'final output: self-check mentioning 4.5:1 contrast (from the skill''s checklist)'
+      source: output
+      needle: 4.5:1
+- id: C21
+  category: termination
+  fatal: false
+  text: The agent completes the item-by-item self-check against the quality checklist before delivering the landing page.
+  anchor: 'final output: 自查 self-check report present in the handoff message'
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: self-check|self-review
+    llm:
+      question: The agent completes the item-by-item self-check against the quality checklist before delivering the landing page.
+      evidence: 'final output: 自查 self-check report present in the handoff message'
+      source: output
+      needle: self-check|self-review
+- id: C22
+  category: evidence
+  fatal: false
+  text: The self-check verifies that prefers-reduced-motion is respected.
+  anchor: 'final output: self-check line covering prefers-reduced-motion'
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: prefers-reduced-motion
+    llm:
+      question: The self-check verifies that prefers-reduced-motion is respected.
+      evidence: 'final output: self-check line covering prefers-reduced-motion'
+      source: output
+      needle: prefers-reduced-motion
+- id: C23
+  category: evidence
+  fatal: false
+  text: The self-check verifies that all images have alt text.
+  anchor: 'final output: self-check line covering image alt text'
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: alt text
+    llm:
+      question: The self-check verifies that all images have alt text.
+      evidence: 'final output: self-check line covering image alt text'
+      source: output
+      needle: alt text
+- id: C24
+  category: evidence
+  fatal: false
+  text: The self-check verifies that clickable elements have cursor-pointer.
+  anchor: 'final output: self-check line covering cursor-pointer on interactive elements'
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: cursor-pointer
+    llm:
+      question: The self-check verifies that clickable elements have cursor-pointer.
+      evidence: 'final output: self-check line covering cursor-pointer on interactive elements'
+      source: output
+      needle: cursor-pointer
+- id: C25
+  category: negative
+  fatal: false
+  text: The landing page does not use emoji as UI icons; icons are SVG-based.
+  anchor: 'landing page HTML: icon elements are <svg>/inline SVG, no emoji glyphs as icons'
+  judge: llm
+  check:
+    question: The landing page does not use emoji as UI icons; icons are SVG-based.
+    evidence: 'landing page HTML: icon elements are <svg>/inline SVG, no emoji glyphs as icons'
+- id: C26
+  category: negative
+  fatal: false
+  text: The agent does not present the accessibility work as a full WCAG certification-grade audit; it stays within the skill's sanity-check scope.
+  anchor: 'final output: accessibility claims are scoped as a quick check, not certification'
+  judge: llm
+  check:
+    question: The agent does not present the accessibility work as a full WCAG certification-grade audit; it stays within the skill's sanity-check scope.
+    evidence: 'final output: accessibility claims are scoped as a quick check, not certification'
+- id: C27
+  category: format
+  fatal: false
+  text: The self-check is delivered as an item-by-item checklist.
+  anchor: 'final output: checklist rendered with - [ ] / - [x] checkbox items'
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: '- ['
+    llm:
+      question: The self-check is delivered as an item-by-item checklist.
+      evidence: 'final output: checklist rendered with - [ ] / - [x] checkbox items'
+      source: output
+      needle: '- ['
+- id: C28
+  category: content
+  fatal: false
+  text: The implemented landing page visually follows the design-system recommendations (style, colors, typography) produced by the earlier searches.
+  anchor: landing page HTML compared against the recommended style/palette/fonts in the design-system output
+  judge: llm
+  check:
+    question: The implemented landing page visually follows the design-system recommendations (style, colors, typography) produced by the earlier searches.
+    evidence: landing page HTML compared against the recommended style/palette/fonts in the design-system output

@@ -1,0 +1,305 @@
+skill: 240-design-doc
+version: 2
+total_items: 20
+criteria:
+- id: C05
+  category: process
+  fatal: false
+  text: The worked-example reference is read before the design doc is produced, so the example read precedes the drafting (Mermaid diagram) step.
+  anchor: 'tool_log: the line containing references/worked-example.md must appear before the line containing the Mermaid diagram block.'
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_order
+      cmds:
+      - references/worked-example.md
+      - mermaid
+    llm:
+      question: The worked-example reference is read before the design doc is produced, so the example read precedes the drafting (Mermaid diagram) step.
+      evidence: 'tool_log: the line containing references/worked-example.md must appear before the line containing the Mermaid diagram block.'
+      source: tool_log
+      pattern: references/worked-example.md|mermaid
+- id: C06
+  category: process
+  fatal: false
+  text: The agent runs the when-to-write checklist and concludes the order-retrieval project clears the bar (multiple teams, long production life, sensitive data), rather than skipping the judgment.
+  anchor: 'Final output: the scoping decision should reference the checklist, e.g., the word cross-team.'
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: cross-team
+    llm:
+      question: The agent runs the when-to-write checklist and concludes the order-retrieval project clears the bar (multiple teams, long production life, sensitive data), rather than skipping the judgment.
+      evidence: 'Final output: the scoping decision should reference the checklist, e.g., the word cross-team.'
+      source: output
+      needle: cross-team
+- id: C07
+  category: process
+  fatal: false
+  text: The agent right-sizes the doc to the project's risk and deadlines, stating that there is no universal right length.
+  anchor: 'Final output: a statement that doc length is scaled to risk (the phrase right length).'
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: right length
+    llm:
+      question: The agent right-sizes the doc to the project's risk and deadlines, stating that there is no universal right length.
+      evidence: 'Final output: a statement that doc length is scaled to risk (the phrase right length).'
+      source: output
+      needle: right length
+- id: C08
+  category: process
+  fatal: false
+  text: The agent applies the penalty-for-being-wrong filter when deciding which sections and decisions belong in the doc.
+  anchor: 'Final output / tool_log: the agent names the penalty-for-being-wrong filter.'
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: penalty-for-being-wrong
+    llm:
+      question: The agent applies the penalty-for-being-wrong filter when deciding which sections and decisions belong in the doc.
+      evidence: 'Final output / tool_log: the agent names the penalty-for-being-wrong filter.'
+      source: output
+      needle: penalty-for-being-wrong
+- id: C09
+  category: process
+  fatal: false
+  text: The agent explicitly weighs a hard-to-reverse decision such as the data model (or storage/interface/trust boundary) when scoping the doc.
+  anchor: 'tool_log: the agent mentions a high-penalty decision category, e.g., data model.'
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_contains
+      cmd: data model
+    llm:
+      question: The agent explicitly weighs a hard-to-reverse decision such as the data model (or storage/interface/trust boundary) when scoping the doc.
+      evidence: 'tool_log: the agent mentions a high-penalty decision category, e.g., data model.'
+      source: tool_log
+      pattern: data model
+- id: C17
+  category: content
+  fatal: false
+  text: The doc includes a data-sync approach describing how order data is synchronized from Postgres to Elasticsearch.
+  anchor: 'Final output: a section or paragraph on synchronization (the token sync).'
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: sync
+    llm:
+      question: The doc includes a data-sync approach describing how order data is synchronized from Postgres to Elasticsearch.
+      evidence: 'Final output: a section or paragraph on synchronization (the token sync).'
+      source: output
+      needle: sync
+- id: C18
+  category: content
+  fatal: false
+  text: The doc includes an Interfaces section defining the search API contract callers depend on.
+  anchor: 'Final output: the section header Interfaces.'
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Interfaces
+    llm:
+      question: The doc includes an Interfaces section defining the search API contract callers depend on.
+      evidence: 'Final output: the section header Interfaces.'
+      source: output
+      needle: Interfaces
+- id: C22
+  category: content
+  fatal: false
+  text: The doc includes a Privacy section covering the sensitive order data handled by the service.
+  anchor: 'Final output: the section header Privacy.'
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Privacy
+    llm:
+      question: The doc includes a Privacy section covering the sensitive order data handled by the service.
+      evidence: 'Final output: the section header Privacy.'
+      source: output
+      needle: Privacy
+- id: C23
+  category: content
+  fatal: false
+  text: The doc flags the sensitive customer fields (names and phone numbers) as PII requiring protection.
+  anchor: 'Final output: the token PII.'
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: PII
+    llm:
+      question: The doc flags the sensitive customer fields (names and phone numbers) as PII requiring protection.
+      evidence: 'Final output: the token PII.'
+      source: output
+      needle: PII
+- id: C24
+  category: content
+  fatal: false
+  text: The doc includes a Security section addressing threats and trust boundaries.
+  anchor: 'Final output: the section header Security.'
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Security
+    llm:
+      question: The doc includes a Security section addressing threats and trust boundaries.
+      evidence: 'Final output: the section header Security.'
+      source: output
+      needle: Security
+- id: C28
+  category: content
+  fatal: false
+  text: The doc includes Metadata (author, date, canonical location) making it locatable and attributable.
+  anchor: 'Final output: the section header Metadata or a metadata table.'
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Metadata
+    llm:
+      question: The doc includes Metadata (author, date, canonical location) making it locatable and attributable.
+      evidence: 'Final output: the section header Metadata or a metadata table.'
+      source: output
+      needle: Metadata
+- id: C29
+  category: content
+  fatal: false
+  text: Key decisions in the doc are justified with rationale (e.g., why Elasticsearch and why the chosen sync approach), not asserted bare.
+  anchor: Read the doc's design/dependencies sections for a why-line behind each major choice.
+  judge: llm
+  check:
+    question: Key decisions in the doc are justified with rationale (e.g., why Elasticsearch and why the chosen sync approach), not asserted bare.
+    evidence: Read the doc's design/dependencies sections for a why-line behind each major choice.
+- id: C31
+  category: format
+  fatal: false
+  text: The doc proposes a concrete query-latency target value (e.g., a 200ms-class target) for the search/query path.
+  anchor: 'tool_log: the latency value 200ms appears (in the written doc or a tool call).'
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_contains
+      cmd: 200ms
+    llm:
+      question: The doc proposes a concrete query-latency target value (e.g., a 200ms-class target) for the search/query path.
+      evidence: 'tool_log: the latency value 200ms appears (in the written doc or a tool call).'
+      source: tool_log
+      pattern: 200ms
+- id: C32
+  category: format
+  fatal: false
+  text: The doc proposes a measurable sync/consistency latency target given as a number with a unit (e.g., a few seconds), since sync latency was undefined.
+  anchor: 'Final output: a sync-lag or consistency line with a unit, e.g., seconds.'
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: seconds
+    llm:
+      question: The doc proposes a measurable sync/consistency latency target given as a number with a unit (e.g., a few seconds), since sync latency was undefined.
+      evidence: 'Final output: a sync-lag or consistency line with a unit, e.g., seconds.'
+      source: output
+      needle: seconds
+- id: C33
+  category: format
+  fatal: false
+  text: The doc includes an editable Mermaid diagram of the system/data flow.
+  anchor: 'tool_log: a Mermaid code block (flowchart/graph) appears when the doc is written.'
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_contains
+      cmd: mermaid
+    llm:
+      question: The doc includes an editable Mermaid diagram of the system/data flow.
+      evidence: 'tool_log: a Mermaid code block (flowchart/graph) appears when the doc is written.'
+      source: tool_log
+      pattern: mermaid
+- id: C34
+  category: format
+  fatal: false
+  text: The doc keeps its diagram editable and source-linked (e.g., referencing draw.io or an editable source URL), not a whiteboard photo.
+  anchor: 'Final output: a note naming an editable diagram tool such as draw.io.'
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: draw.io
+    llm:
+      question: The doc keeps its diagram editable and source-linked (e.g., referencing draw.io or an editable source URL), not a whiteboard photo.
+      evidence: 'Final output: a note naming an editable diagram tool such as draw.io.'
+      source: output
+      needle: draw.io
+- id: C36
+  category: format
+  fatal: false
+  text: Goals are written as outcomes (the world after launch), not as named implementations.
+  anchor: 'Read the Goals section: each goal should state a result, not a technology.'
+  judge: llm
+  check:
+    question: Goals are written as outcomes (the world after launch), not as named implementations.
+    evidence: 'Read the Goals section: each goal should state a result, not a technology.'
+- id: C37
+  category: negative
+  fatal: true
+  text: The doc does not over-specify reversible implementation details (exact field mappings, pagination sizes, button spacing) to the point of being the implementation.
+  anchor: Skim the doc for implementation-level prose that a one-afternoon code change would obviate.
+  judge: llm
+  check:
+    question: The doc does not over-specify reversible implementation details (exact field mappings, pagination sizes, button spacing) to the point of being the implementation.
+    evidence: Skim the doc for implementation-level prose that a one-afternoon code change would obviate.
+- id: C39
+  category: process
+  fatal: false
+  text: The agent addresses the review lifecycle — the doc is to be circulated and meaningful feedback gathered, with unresolved items tracked in open issues.
+  anchor: 'tool_log / final output: the agent refers to circulating the doc and gathering feedback.'
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_contains
+      cmd: meaningful feedback
+    llm:
+      question: The agent addresses the review lifecycle — the doc is to be circulated and meaningful feedback gathered, with unresolved items tracked in open issues.
+      evidence: 'tool_log / final output: the agent refers to circulating the doc and gathering feedback.'
+      source: tool_log
+      pattern: meaningful feedback
+- id: C40
+  category: process
+  fatal: false
+  text: The agent notes the doc is written before code, with details below the cost-of-error line settled in code rather than prose.
+  anchor: 'Final output: a statement that the doc precedes implementation (the phrase before writing code).'
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: before writing code
+    llm:
+      question: The agent notes the doc is written before code, with details below the cost-of-error line settled in code rather than prose.
+      evidence: 'Final output: a statement that the doc precedes implementation (the phrase before writing code).'
+      source: output
+      needle: before writing code

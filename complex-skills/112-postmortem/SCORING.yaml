@@ -1,0 +1,300 @@
+skill: 112-postmortem
+version: 2
+total_items: 21
+criteria:
+- id: C07
+  category: process
+  fatal: false
+  text: The agent gathers incident data before performing the rubric self-assessment, matching the workflow order where Step 5 (self-assess) runs last.
+  anchor: 'tool_log ordering: a read of incident-notes.md must precede a read of rubric_postmortem.json.'
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_order
+      cmds:
+      - incident-notes.md
+      - rubric_postmortem.json
+    llm:
+      question: The agent gathers incident data before performing the rubric self-assessment, matching the workflow order where Step 5 (self-assess) runs last.
+      evidence: 'tool_log ordering: a read of incident-notes.md must precede a read of rubric_postmortem.json.'
+      source: tool_log
+      pattern: incident-notes.md|rubric_postmortem.json
+- id: C09
+  category: content
+  fatal: false
+  text: The timeline includes the recovery time 21:50, the point where the service was declared fully recovered.
+  anchor: Timeline section of the final output (task states 21:50 recovery; notes say 'all clear' at 21:50).
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: '21:50'
+    llm:
+      question: The timeline includes the recovery time 21:50, the point where the service was declared fully recovered.
+      evidence: Timeline section of the final output (task states 21:50 recovery; notes say 'all clear' at 21:50).
+      source: output
+      needle: '21:50'
+- id: C10
+  category: content
+  fatal: false
+  text: The timeline includes the incident start around 19:40, when users began failing to place orders.
+  anchor: Timeline section of the final output (task states 19:40; notes and order-metrics.csv both carry 19:40).
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: '19:40'
+    llm:
+      question: The timeline includes the incident start around 19:40, when users began failing to place orders.
+      evidence: Timeline section of the final output (task states 19:40; notes and order-metrics.csv both carry 19:40).
+      source: output
+      needle: '19:40'
+- id: C11
+  category: content
+  fatal: false
+  text: The timeline records the rolling restart mitigation attempt (~19:55) that did not restore service, capturing the investigation/mitigation phase of the incident.
+  anchor: 'Timeline events of the final output (notes: ''restarting pay-api instances'', ''restart done'').'
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: restart
+    llm:
+      question: The timeline records the rolling restart mitigation attempt (~19:55) that did not restore service, capturing the investigation/mitigation phase of the incident.
+      evidence: 'Timeline events of the final output (notes: ''restarting pay-api instances'', ''restart done'').'
+      source: output
+      needle: restart
+- id: C15
+  category: content
+  fatal: false
+  text: The impact includes the customer-support dimension, reporting the ~24 customer calls noted in incident-notes.md.
+  anchor: 'Impact section of the final output (notes: ''total ~24 customer calls'').'
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: customer calls
+    llm:
+      question: The impact includes the customer-support dimension, reporting the ~24 customer calls noted in incident-notes.md.
+      evidence: 'Impact section of the final output (notes: ''total ~24 customer calls'').'
+      source: output
+      needle: customer calls
+- id: C17
+  category: content
+  fatal: false
+  text: The root cause analysis uses the 5 Whys technique to move from symptom to systemic cause.
+  anchor: Root Cause section of the final output (SKILL.md/template.md use '5 Whys'; check.py PROC-03.s pattern).
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: 5 Whys
+    llm:
+      question: The root cause analysis uses the 5 Whys technique to move from symptom to systemic cause.
+      evidence: Root Cause section of the final output (SKILL.md/template.md use '5 Whys'; check.py PROC-03.s pattern).
+      source: output
+      needle: 5 Whys
+- id: C18
+  category: content
+  fatal: false
+  text: The root cause analysis identifies multiple contributing factors, not a single surface cause.
+  anchor: Root Cause section of the final output (template.md heading 'Contributing Factors').
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Contributing Factors
+    llm:
+      question: The root cause analysis identifies multiple contributing factors, not a single surface cause.
+      evidence: Root Cause section of the final output (template.md heading 'Contributing Factors').
+      source: output
+      needle: Contributing Factors
+- id: C20
+  category: content
+  fatal: false
+  text: The root cause analysis documents the lock-contention failure mode from the error logs ('lock wait timeout exceeded') on the orders table.
+  anchor: 'Root Cause/timeline sections (error-logs.txt line ''order create tx rollback: lock wait timeout exceeded'').'
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: lock wait timeout
+    llm:
+      question: The root cause analysis documents the lock-contention failure mode from the error logs ('lock wait timeout exceeded') on the orders table.
+      evidence: 'Root Cause/timeline sections (error-logs.txt line ''order create tx rollback: lock wait timeout exceeded'').'
+      source: output
+      needle: lock wait timeout
+- id: C21
+  category: negative
+  fatal: true
+  text: The postmortem does not assign blame to named individuals; failures are framed as system and process gaps, never as the on-call engineer or db-admin being at fault.
+  anchor: Language across the whole document (SKILL.md Guardrails; SCORING CF-01 blames-individuals is a cap-to-0 failure).
+  judge: llm
+  check:
+    question: The postmortem does not assign blame to named individuals; failures are framed as system and process gaps, never as the on-call engineer or db-admin being at fault.
+    evidence: Language across the whole document (SKILL.md Guardrails; SCORING CF-01 blames-individuals is a cap-to-0 failure).
+- id: C22
+  category: negative
+  fatal: false
+  text: The postmortem does not import the SKILL.md worked-example figures ($20K revenue loss, 50K users, pool size 10 vs 100) as if they were this incident's data.
+  anchor: Impact and corrective-action numbers in the final output; the correct trace uses only the provided notes/logs/metrics.
+  judge: llm
+  check:
+    question: The postmortem does not import the SKILL.md worked-example figures ($20K revenue loss, 50K users, pool size 10 vs 100) as if they were this incident's data.
+    evidence: Impact and corrective-action numbers in the final output; the correct trace uses only the provided notes/logs/metrics.
+- id: C24
+  category: content
+  fatal: false
+  text: The corrective actions are expressed under the SMART framework (specific, measurable, assigned, realistic, time-bound).
+  anchor: Corrective Actions section of the final output (SKILL.md Corrective Actions Framework).
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: SMART
+    llm:
+      question: The corrective actions are expressed under the SMART framework (specific, measurable, assigned, realistic, time-bound).
+      evidence: Corrective Actions section of the final output (SKILL.md Corrective Actions Framework).
+      source: output
+      needle: SMART
+- id: C25
+  category: content
+  fatal: false
+  text: Every corrective action carries a named owner (Owner:).
+  anchor: Corrective Actions items in the final output (template.md and check.py OUT-02 use 'Owner:').
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: 'Owner:'
+    llm:
+      question: Every corrective action carries a named owner (Owner:).
+      evidence: Corrective Actions items in the final output (template.md and check.py OUT-02 use 'Owner:').
+      source: output
+      needle: 'Owner:'
+- id: C26
+  category: content
+  fatal: false
+  text: Every corrective action carries an explicit deadline (Due:).
+  anchor: Corrective Actions items in the final output (template.md and check.py OUT-02 use 'Due:').
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: 'Due:'
+    llm:
+      question: Every corrective action carries an explicit deadline (Due:).
+      evidence: Corrective Actions items in the final output (template.md and check.py OUT-02 use 'Due:').
+      source: output
+      needle: 'Due:'
+- id: C27
+  category: content
+  fatal: false
+  text: Corrective actions are separated into an immediate-fixes category, as the task explicitly requests ('紧急修的分开列').
+  anchor: Corrective Actions subsection headings (template.md uses 'Immediate Fixes').
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Immediate Fixes
+    llm:
+      question: Corrective actions are separated into an immediate-fixes category, as the task explicitly requests ('紧急修的分开列').
+      evidence: Corrective Actions subsection headings (template.md uses 'Immediate Fixes').
+      source: output
+      needle: Immediate Fixes
+- id: C28
+  category: content
+  fatal: false
+  text: Corrective actions are separated into a long-term category, as the task explicitly requests ('长期改的分开列').
+  anchor: Corrective Actions subsection headings (template.md uses 'Long-Term Investments').
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Long-Term Investments
+    llm:
+      question: Corrective actions are separated into a long-term category, as the task explicitly requests ('长期改的分开列').
+      evidence: Corrective Actions subsection headings (template.md uses 'Long-Term Investments').
+      source: output
+      needle: Long-Term Investments
+- id: C29
+  category: content
+  fatal: false
+  text: The corrective actions address the incident's root causes rather than only symptoms, including improved monitoring/alerting around the connection pool.
+  anchor: Corrective Actions list (template.md example 'Improve monitoring to detect pool exhaustion').
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: monitoring
+    llm:
+      question: The corrective actions address the incident's root causes rather than only symptoms, including improved monitoring/alerting around the connection pool.
+      evidence: Corrective Actions list (template.md example 'Improve monitoring to detect pool exhaustion').
+      source: output
+      needle: monitoring
+- id: C31
+  category: boundary
+  fatal: false
+  text: The document distinguishes the partial-degradation phase (checkout resuming at ~40% of normal rate) from the full outage phase instead of treating the incident as binary.
+  anchor: 'Timeline/impact narrative (incident-notes.md: ''checkout succeeding again but only ~40% of normal rate'').'
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: 40%
+    llm:
+      question: The document distinguishes the partial-degradation phase (checkout resuming at ~40% of normal rate) from the full outage phase instead of treating the incident as binary.
+      evidence: 'Timeline/impact narrative (incident-notes.md: ''checkout succeeding again but only ~40% of normal rate'').'
+      source: output
+      needle: 40%
+- id: C34
+  category: coverage
+  fatal: false
+  text: 'The postmortem document covers all required SKILL.md Output Format components: Timeline, Impact, Root Cause, Corrective Actions, What Went Well, and a rubric self-score, with none omitted.'
+  anchor: Whole deliverable; each component section must be present (individual presence is checked by C08/C12/C16/C23/C30/C32).
+  judge: llm
+  check:
+    question: 'The postmortem document covers all required SKILL.md Output Format components: Timeline, Impact, Root Cause, Corrective Actions, What Went Well, and a rubric self-score, with none omitted.'
+    evidence: Whole deliverable; each component section must be present (individual presence is checked by C08/C12/C16/C23/C30/C32).
+- id: C35
+  category: negative
+  fatal: false
+  text: The agent does not read judge-only package files (SCORING.yaml, REVIEW.md, check.py) while performing the task.
+  anchor: Read tool calls in tool_log; the run should only touch task/ materials and resources/ reference files.
+  judge: llm
+  check:
+    question: The agent does not read judge-only package files (SCORING.yaml, REVIEW.md, check.py) while performing the task.
+    evidence: Read tool calls in tool_log; the run should only touch task/ materials and resources/ reference files.
+- id: C36
+  category: negative
+  fatal: false
+  text: No corrective action is vague (e.g., 'improve testing', 'be more careful') without concrete specifics, owner, and deadline.
+  anchor: Corrective Actions items in the final output (SKILL.md Guardrails Actionability).
+  judge: llm
+  check:
+    question: No corrective action is vague (e.g., 'improve testing', 'be more careful') without concrete specifics, owner, and deadline.
+    evidence: Corrective Actions items in the final output (SKILL.md Guardrails Actionability).
+- id: C37
+  category: boundary
+  fatal: false
+  text: 'The agent frames the delivery boundary: the document plus handoff notes is the deliverable, while presenting in the team meeting, approvals, and archiving are explicitly organizational follow-ups.'
+  anchor: Final output framing/handoff text (SKILL.md Step 4/5 scope the agent's delivery end).
+  judge: llm
+  check:
+    question: 'The agent frames the delivery boundary: the document plus handoff notes is the deliverable, while presenting in the team meeting, approvals, and archiving are explicitly organizational follow-ups.'
+    evidence: Final output framing/handoff text (SKILL.md Step 4/5 scope the agent's delivery end).

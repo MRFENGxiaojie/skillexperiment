@@ -1,0 +1,290 @@
+skill: 200-legal-writing
+version: 2
+total_items: 19
+criteria:
+- id: C01
+  category: tool
+  fatal: false
+  text: Agent reads the bundled draft file (task/draft.md) in full before giving feedback.
+  anchor: 'Tool log: the Read call for the draft file appears before the feedback output.'
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_contains
+      cmd: task/draft.md
+    llm:
+      question: Agent reads the bundled draft file (task/draft.md) in full before giving feedback.
+      evidence: 'Tool log: the Read call for the draft file appears before the feedback output.'
+      source: tool_log
+      pattern: task/draft.md
+- id: C02
+  category: process
+  fatal: false
+  text: Agent attempts to load the law-student config CLAUDE.md and, if it is absent, proceeds with feedback based on the draft alone rather than stalling.
+  anchor: Tool log for a Read targeting the law-student CLAUDE.md path; feedback proceeds regardless.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_contains
+      cmd: law-student/CLAUDE.md
+    llm:
+      question: Agent attempts to load the law-student config CLAUDE.md and, if it is absent, proceeds with feedback based on the draft alone rather than stalling.
+      evidence: Tool log for a Read targeting the law-student CLAUDE.md path; feedback proceeds regardless.
+      source: tool_log
+      pattern: law-student/CLAUDE.md
+- id: C04
+  category: format
+  fatal: false
+  text: Feedback opens with the '# Writing Feedback' heading line.
+  anchor: First line of the final output.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: '# Writing Feedback'
+    llm:
+      question: Feedback opens with the '# Writing Feedback' heading line.
+      evidence: First line of the final output.
+      source: output
+      needle: '# Writing Feedback'
+- id: C05
+  category: format
+  fatal: false
+  text: Feedback includes a 'Length' field reporting the draft's word count.
+  anchor: Final output, the 'Length' field.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: numeric_threshold
+      in: output
+      key: Length
+      op: ge
+      n: 50
+    llm:
+      question: Feedback includes a 'Length' field reporting the draft's word count.
+      evidence: Final output, the 'Length' field.
+      source: output
+      needle: Length
+- id: C08
+  category: coverage
+  fatal: false
+  text: Feedback includes the Clarity & style section covering conclusory sentences, passive voice, wordiness, and citation form.
+  anchor: Final output, the '## Clarity & style' section.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: '## Clarity & style'
+    llm:
+      question: Feedback includes the Clarity & style section covering conclusory sentences, passive voice, wordiness, and citation form.
+      evidence: Final output, the '## Clarity & style' section.
+      source: output
+      needle: '## Clarity & style'
+- id: C09
+  category: coverage
+  fatal: false
+  text: Feedback lists three top fixes in priority order (structural, analysis-depth, clarity).
+  anchor: Final output, the '## Top three fixes' numbered list.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: '## Top three fixes'
+    llm:
+      question: Feedback lists three top fixes in priority order (structural, analysis-depth, clarity).
+      evidence: Final output, the '## Top three fixes' numbered list.
+      source: output
+      needle: '## Top three fixes'
+- id: C11
+  category: content
+  fatal: false
+  text: Feedback flags substantive-rule and citation points it is unsure about with a '[VERIFY]' marker.
+  anchor: Final output, any '[VERIFY]' marker.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: '[VERIFY]'
+    llm:
+      question: Feedback flags substantive-rule and citation points it is unsure about with a '[VERIFY]' marker.
+      evidence: Final output, any '[VERIFY]' marker.
+      source: output
+      needle: '[VERIFY]'
+- id: C13
+  category: content
+  fatal: false
+  text: Feedback is specific to the draft, pinning observations to a concrete passage such as the wet-floor fact or the plaintiff Jane.
+  anchor: Final output, references to specific draft facts/passages.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Jane
+    llm:
+      question: Feedback is specific to the draft, pinning observations to a concrete passage such as the wet-floor fact or the plaintiff Jane.
+      evidence: Final output, references to specific draft facts/passages.
+      source: output
+      needle: Jane
+- id: C15
+  category: negative
+  fatal: false
+  text: Agent refuses the user's request to rewrite or polish the draft paragraphs, stating the no-rewrite rule.
+  anchor: Final output, the rewrite-refusal passage.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: don't rewrite
+    llm:
+      question: Agent refuses the user's request to rewrite or polish the draft paragraphs, stating the no-rewrite rule.
+      evidence: Final output, the rewrite-refusal passage.
+      source: output
+      needle: don't rewrite
+- id: C16
+  category: boundary
+  fatal: false
+  text: After refusing the rewrite, the agent offers an alternative path such as more targeted structural feedback, a labeled example, or a socratic drill.
+  anchor: Final output, the offer that follows the refusal.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: more specific structural feedback
+    llm:
+      question: After refusing the rewrite, the agent offers an alternative path such as more targeted structural feedback, a labeled example, or a socratic drill.
+      evidence: Final output, the offer that follows the refusal.
+      source: output
+      needle: more specific structural feedback
+- id: C17
+  category: boundary
+  fatal: false
+  text: The rewrite refusal is brief and non-preachy, turning quickly to offered help rather than lecturing the user.
+  anchor: Final output, tone of the refusal passage.
+  judge: llm
+  check:
+    question: The rewrite refusal is brief and non-preachy, turning quickly to offered help rather than lecturing the user.
+    evidence: Final output, tone of the refusal passage.
+- id: C18
+  category: format
+  fatal: false
+  text: Feedback ends with the 'Not rewritten. Not a model answer. Your draft stays yours.' disclaimer.
+  anchor: Closing line of the final output.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Not rewritten
+    llm:
+      question: Feedback ends with the 'Not rewritten. Not a model answer. Your draft stays yours.' disclaimer.
+      evidence: Closing line of the final output.
+      source: output
+      needle: Not rewritten
+- id: C19
+  category: negative
+  fatal: false
+  text: Any example phrasing is labeled with the 'write yours, don't copy' instruction.
+  anchor: Final output, the Example block.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Don't copy
+    llm:
+      question: Any example phrasing is labeled with the 'write yours, don't copy' instruction.
+      evidence: Final output, the Example block.
+      source: output
+      needle: Don't copy
+- id: C20
+  category: negative
+  fatal: false
+  text: Example phrasing, if any, demonstrates a structural move in generic placeholder form rather than on the user's slip-and-fall topic.
+  anchor: Final output, the Example block content.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: '[fact]'
+    llm:
+      question: Example phrasing, if any, demonstrates a structural move in generic placeholder form rather than on the user's slip-and-fall topic.
+      evidence: Final output, the Example block content.
+      source: output
+      needle: '[fact]'
+- id: C21
+  category: negative
+  fatal: false
+  text: At most two labeled example phrasings are provided across the whole session.
+  anchor: Final output, the Example block.
+  judge: llm
+  check:
+    question: At most two labeled example phrasings are provided across the whole session.
+    evidence: Final output, the Example block.
+- id: C22
+  category: process
+  fatal: false
+  text: Agent appends a dated session summary to the writing-feedback tracker file under the law-student config, creating the directory if needed.
+  anchor: Tool log, Write call targeting the writing-feedback tracker path.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_contains
+      cmd: writing-feedback
+    llm:
+      question: Agent appends a dated session summary to the writing-feedback tracker file under the law-student config, creating the directory if needed.
+      evidence: Tool log, Write call targeting the writing-feedback tracker path.
+      source: tool_log
+      pattern: writing-feedback
+- id: C23
+  category: boundary
+  fatal: false
+  text: If the tracker path is not writable, the agent notes in the feedback that this session's patterns were not archived.
+  anchor: Final output, archival note; relevant only when the tracker Write fails.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: not archived
+    llm:
+      question: If the tracker path is not writable, the agent notes in the feedback that this session's patterns were not archived.
+      evidence: Final output, archival note; relevant only when the tracker Write fails.
+      source: output
+      needle: not archived
+- id: C24
+  category: coverage
+  fatal: false
+  text: Feedback ends with the next-steps decision tree naming branches such as revise, escalate, get-more-facts, and watch-and-wait.
+  anchor: Final output, closing decision-tree section.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Escalate
+    llm:
+      question: Feedback ends with the next-steps decision tree naming branches such as revise, escalate, get-more-facts, and watch-and-wait.
+      evidence: Final output, closing decision-tree section.
+      source: output
+      needle: Escalate
+- id: C26
+  category: process
+  fatal: false
+  text: 'Feedback is organized top-down: structure first, then paragraph-level analysis, then sentence-level clarity, not jumping straight to sentence polish.'
+  anchor: Final output, section ordering.
+  judge: llm
+  check:
+    question: 'Feedback is organized top-down: structure first, then paragraph-level analysis, then sentence-level clarity, not jumping straight to sentence polish.'
+    evidence: Final output, section ordering.

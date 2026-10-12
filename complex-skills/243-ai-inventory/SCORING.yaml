@@ -1,0 +1,440 @@
+skill: 243-ai-inventory
+version: 2
+total_items: 26
+criteria:
+- id: C01
+  category: process
+  fatal: false
+  text: The agent reads the ai-governance-legal config file (CLAUDE.md) before touching the inventory.
+  anchor: Look in tool_log for a Read call whose argument contains CLAUDE.md.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_contains
+      cmd: CLAUDE.md
+    llm:
+      question: The agent reads the ai-governance-legal config file (CLAUDE.md) before touching the inventory.
+      evidence: Look in tool_log for a Read call whose argument contains CLAUDE.md.
+      source: tool_log
+      pattern: CLAUDE.md
+- id: C02
+  category: process
+  fatal: false
+  text: The agent reads the existing inventory state (ai-systems.yaml) before writing the first new record.
+  anchor: Look in tool_log for a Read call whose argument contains ai-systems.yaml, occurring before the file is written.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_contains
+      cmd: ai-systems.yaml
+    llm:
+      question: The agent reads the existing inventory state (ai-systems.yaml) before writing the first new record.
+      evidence: Look in tool_log for a Read call whose argument contains ai-systems.yaml, occurring before the file is written.
+      source: tool_log
+      pattern: ai-systems.yaml
+- id: C03
+  category: process
+  fatal: false
+  text: The config read happens before the inventory is read or written, per the workflow order.
+  anchor: 'Check tool_log ordering: a call containing CLAUDE.md must appear before any call containing ai-systems.yaml.'
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_order
+      cmds:
+      - CLAUDE.md
+      - ai-systems.yaml
+    llm:
+      question: The config read happens before the inventory is read or written, per the workflow order.
+      evidence: 'Check tool_log ordering: a call containing CLAUDE.md must appear before any call containing ai-systems.yaml.'
+      source: tool_log
+      pattern: CLAUDE.md|ai-systems.yaml
+- id: C04
+  category: content
+  fatal: true
+  text: The run produces the inventory file at ai-systems.yaml.
+  anchor: Check for the file at ai-systems.yaml.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_exists
+      path: '**/ai-systems.yaml'
+    llm:
+      question: The run produces the inventory file at ai-systems.yaml.
+      evidence: Check for the file at ai-systems.yaml.
+      source: workspace
+      path: '**/ai-systems.yaml'
+- id: C05
+  category: content
+  fatal: false
+  text: The inventory contains a top-level YAML key `systems:` holding the list of records.
+  anchor: Search ai-systems.yaml for the substring `systems:`.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: yaml_config
+      path: '**/ai-systems.yaml'
+      require_fields:
+      - systems
+    llm:
+      question: The inventory contains a top-level YAML key `systems:` holding the list of records.
+      evidence: Search ai-systems.yaml for the substring `systems:`.
+      source: workspace
+      path: '**/ai-systems.yaml'
+- id: C06
+  category: content
+  fatal: true
+  text: The inventory contains a record with id sys-001 (the resume screening tool).
+  anchor: Search ai-systems.yaml for the substring `sys-001`.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: '**/ai-systems.yaml'
+      needle: sys-001
+    llm:
+      question: The inventory contains a record with id sys-001 (the resume screening tool).
+      evidence: Search ai-systems.yaml for the substring `sys-001`.
+      source: workspace
+      path: '**/ai-systems.yaml'
+      needle: sys-001
+- id: C07
+  category: content
+  fatal: true
+  text: The inventory contains a record with id sys-002 (the email drafting assistant).
+  anchor: Search ai-systems.yaml for the substring `sys-002`.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: '**/ai-systems.yaml'
+      needle: sys-002
+    llm:
+      question: The inventory contains a record with id sys-002 (the email drafting assistant).
+      evidence: Search ai-systems.yaml for the substring `sys-002`.
+      source: workspace
+      path: '**/ai-systems.yaml'
+      needle: sys-002
+- id: C08
+  category: content
+  fatal: true
+  text: The inventory contains a record with id sys-003 (the ticket classification robot).
+  anchor: Search ai-systems.yaml for the substring `sys-003`.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: '**/ai-systems.yaml'
+      needle: sys-003
+    llm:
+      question: The inventory contains a record with id sys-003 (the ticket classification robot).
+      evidence: Search ai-systems.yaml for the substring `sys-003`.
+      source: workspace
+      path: '**/ai-systems.yaml'
+      needle: sys-003
+- id: C09
+  category: content
+  fatal: false
+  text: The resume screening record is recorded with status in_production.
+  anchor: Search ai-systems.yaml for the substring `in_production`.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: '**/ai-systems.yaml'
+      needle: in_production
+    llm:
+      question: The resume screening record is recorded with status in_production.
+      evidence: Search ai-systems.yaml for the substring `in_production`.
+      source: workspace
+      path: '**/ai-systems.yaml'
+      needle: in_production
+- id: C10
+  category: content
+  fatal: false
+  text: The resume screening tool is classified with role deployer (it is an external SaaS used internally).
+  anchor: 'Search ai-systems.yaml for the YAML line `role: deployer`.'
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: '**/ai-systems.yaml'
+      needle: 'role: deployer'
+    llm:
+      question: The resume screening tool is classified with role deployer (it is an external SaaS used internally).
+      evidence: 'Search ai-systems.yaml for the YAML line `role: deployer`.'
+      source: workspace
+      path: '**/ai-systems.yaml'
+      needle: 'role: deployer'
+- id: C11
+  category: content
+  fatal: false
+  text: The resume screening tool is classified as tier high_risk (employment / recruitment, Annex III area 4).
+  anchor: 'Search ai-systems.yaml for the YAML line `tier: high_risk`.'
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: '**/ai-systems.yaml'
+      needle: 'tier: high_risk'
+    llm:
+      question: The resume screening tool is classified as tier high_risk (employment / recruitment, Annex III area 4).
+      evidence: 'Search ai-systems.yaml for the YAML line `tier: high_risk`.'
+      source: workspace
+      path: '**/ai-systems.yaml'
+      needle: 'tier: high_risk'
+- id: C12
+  category: content
+  fatal: false
+  text: The ticket classification robot record is recorded with status in_development (planned for next quarter).
+  anchor: Search ai-systems.yaml for the substring `in_development`.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: '**/ai-systems.yaml'
+      needle: in_development
+    llm:
+      question: The ticket classification robot record is recorded with status in_development (planned for next quarter).
+      evidence: Search ai-systems.yaml for the substring `in_development`.
+      source: workspace
+      path: '**/ai-systems.yaml'
+      needle: in_development
+- id: C13
+  category: content
+  fatal: false
+  text: The self-built systems (email drafting assistant and ticket robot) are classified with role provider.
+  anchor: 'Search ai-systems.yaml for the YAML line `role: provider`.'
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: '**/ai-systems.yaml'
+      needle: 'role: provider'
+    llm:
+      question: The self-built systems (email drafting assistant and ticket robot) are classified with role provider.
+      evidence: 'Search ai-systems.yaml for the YAML line `role: provider`.'
+      source: workspace
+      path: '**/ai-systems.yaml'
+      needle: 'role: provider'
+- id: C14
+  category: content
+  fatal: false
+  text: 'The inventory records eu_nexus: true for the systems that affect people in the EU/EEA (resume screening and email drafting).'
+  anchor: 'Search ai-systems.yaml for the substring `eu_nexus: true`.'
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: '**/ai-systems.yaml'
+      needle: 'eu_nexus: true'
+    llm:
+      question: 'The inventory records eu_nexus: true for the systems that affect people in the EU/EEA (resume screening and email drafting).'
+      evidence: 'Search ai-systems.yaml for the substring `eu_nexus: true`.'
+      source: workspace
+      path: '**/ai-systems.yaml'
+      needle: 'eu_nexus: true'
+- id: C15
+  category: content
+  fatal: false
+  text: The role_basis and tier_basis values carry the `[verify against current AI Act text]` tag.
+  anchor: Search ai-systems.yaml for the substring `[verify against current AI Act text]`.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: '**/ai-systems.yaml'
+      needle: '[verify against current AI Act text]'
+    llm:
+      question: The role_basis and tier_basis values carry the `[verify against current AI Act text]` tag.
+      evidence: Search ai-systems.yaml for the substring `[verify against current AI Act text]`.
+      source: workspace
+      path: '**/ai-systems.yaml'
+      needle: '[verify against current AI Act text]'
+- id: C16
+  category: format
+  fatal: false
+  text: The basis string values are wrapped in double quotes so the YAML stays parseable.
+  anchor: 'Search ai-systems.yaml for `role_basis: "` (value opened with a double quote).'
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: '**/ai-systems.yaml'
+      needle: 'role_basis: "'
+    llm:
+      question: The basis string values are wrapped in double quotes so the YAML stays parseable.
+      evidence: 'Search ai-systems.yaml for `role_basis: "` (value opened with a double quote).'
+      source: workspace
+      path: '**/ai-systems.yaml'
+      needle: 'role_basis: "'
+- id: C17
+  category: format
+  fatal: false
+  text: The records follow the record schema, including an obligations_assessed field.
+  anchor: Search ai-systems.yaml for the substring `obligations_assessed:`.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: yaml_config
+      path: '**/ai-systems.yaml'
+      require_fields:
+      - obligations_assessed
+    llm:
+      question: The records follow the record schema, including an obligations_assessed field.
+      evidence: Search ai-systems.yaml for the substring `obligations_assessed:`.
+      source: workspace
+      path: '**/ai-systems.yaml'
+- id: C18
+  category: content
+  fatal: false
+  text: The agent's final output presents the current inventory listing the registered systems by ID.
+  anchor: Look in the agent's final output for the substring `sys-001`.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: sys-001
+    llm:
+      question: The agent's final output presents the current inventory listing the registered systems by ID.
+      evidence: Look in the agent's final output for the substring `sys-001`.
+      source: output
+      needle: sys-001
+- id: C19
+  category: content
+  fatal: false
+  text: The list output includes the per-tier counts footer line 'N systems flagged for review within 30 days'.
+  anchor: Look in the agent's final output for `flagged for review within 30 days`.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: flagged for review within 30 days
+    llm:
+      question: The list output includes the per-tier counts footer line 'N systems flagged for review within 30 days'.
+      evidence: Look in the agent's final output for `flagged for review within 30 days`.
+      source: output
+      needle: flagged for review within 30 days
+- id: C20
+  category: coverage
+  fatal: false
+  text: On presenting the list, the agent offers the full dashboard (filter by status / tier / EU nexus / owner).
+  anchor: Look in the agent's final output for `Want the full dashboard?`.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Want the full dashboard?
+    llm:
+      question: On presenting the list, the agent offers the full dashboard (filter by status / tier / EU nexus / owner).
+      evidence: Look in the agent's final output for `Want the full dashboard?`.
+      source: output
+      needle: Want the full dashboard?
+- id: C21
+  category: content
+  fatal: false
+  text: The write flow is closed with the obligations hook telling the user obligations are walked through in conversation, not derived from a table.
+  anchor: Look in the agent's final output for `I don't derive obligations from a table`.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: I don't derive obligations from a table
+    llm:
+      question: The write flow is closed with the obligations hook telling the user obligations are walked through in conversation, not derived from a table.
+      evidence: Look in the agent's final output for `I don't derive obligations from a table`.
+      source: output
+      needle: I don't derive obligations from a table
+- id: C22
+  category: negative
+  fatal: true
+  text: The agent does not assert a role/tier without a visible basis; each system classification is produced through an explicit walk-through (role logic, Annex III/article match) tagged with [verify],
+    either interactively or as per-system reasoning in autonomous output.
+  anchor: 'Review each system classification: role and tier are justified with explicit reasoning and [verify] tagging, not silently inferred from the description alone.'
+  judge: llm
+  check:
+    question: The agent does not assert a role/tier without a visible basis; each system classification is produced through an explicit walk-through (role logic, Annex III/article match) tagged with [verify],
+      either interactively or as per-system reasoning in autonomous output.
+    evidence: 'Review each system classification: role and tier are justified with explicit reasoning and [verify] tagging, not silently inferred from the description alone.'
+- id: C23
+  category: evidence
+  fatal: false
+  text: For each of the three systems, the agent provides a role and risk-tier analysis with explicit basis (and assumption labels where details were inferred) before or alongside recording them, covering
+    all three systems.
+  anchor: Review the output for per-system role/tier analysis covering all three systems, with explicit basis and assumption labels.
+  judge: llm
+  check:
+    question: For each of the three systems, the agent provides a role and risk-tier analysis with explicit basis (and assumption labels where details were inferred) before or alongside recording them,
+      covering all three systems.
+    evidence: Review the output for per-system role/tier analysis covering all three systems, with explicit basis and assumption labels.
+- id: C24
+  category: process
+  fatal: false
+  text: The add flow fills the required fields (name, owner, description, status, eu_nexus) for each system; in autonomous mode, missing details are filled with reasonable values explicitly marked as assumptions.
+  anchor: 'Review the add flow: the five required fields are present per system, with explicit assumption labels for inferred values.'
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: yaml_config
+      path: '**/ai-systems.yaml'
+      require_fields:
+      - name
+      - owner
+      - description
+      - status
+      - eu_nexus
+    llm:
+      question: The add flow fills the required fields (name, owner, description, status, eu_nexus) for each system; in autonomous mode, missing details are filled with reasonable values explicitly marked
+        as assumptions.
+      evidence: 'Review the add flow: the five required fields are present per system, with explicit assumption labels for inferred values.'
+      source: workspace
+      path: '**/ai-systems.yaml'
+- id: C25
+  category: negative
+  fatal: false
+  text: Deferred or unfilled fields are omitted from records rather than written as null or placeholder values.
+  anchor: Inspect ai-systems.yaml records for absent (not null/TBD) optional fields.
+  judge: llm
+  check:
+    question: Deferred or unfilled fields are omitted from records rather than written as null or placeholder values.
+    evidence: Inspect ai-systems.yaml records for absent (not null/TBD) optional fields.
+- id: C26
+  category: termination
+  fatal: false
+  text: If the config file is missing or contains [PLACEHOLDER], the agent explicitly notes the missing/unverified config and directs the user to the cold-start-interview as a follow-up, while still completing
+    the registration with assumptions when the task requires autonomous operation.
+  anchor: 'Apply only when the config was found missing/placeholder at start: the agent mentions the missing config or cold-start in the output AND still produces the inventory file.'
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_exists
+      path: '**/ai-systems.yaml'
+    llm:
+      question: When the config file was missing or contained [PLACEHOLDER], did the agent explicitly note the missing/unverified config and direct the user to the cold-start-interview as a follow-up, while
+        still completing the registration with assumptions under autonomous instruction?
+      evidence: Agent output mentioning the missing config or cold-start alongside a produced inventory file.
+      source: workspace
+      path: '**/ai-systems.yaml'

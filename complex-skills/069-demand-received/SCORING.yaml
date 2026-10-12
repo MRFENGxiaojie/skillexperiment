@@ -1,0 +1,690 @@
+skill: 069-demand-received
+version: 2
+total_items: 40
+criteria:
+- id: C02
+  category: process
+  fatal: false
+  text: The agent reads the incoming demand document before writing the triage file.
+  anchor: 'Tool log entry ordering: a Read of inbox/demand-2026-08-08 must precede the Write of triage.md.'
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_order
+      cmds:
+      - inbox/demand-2026-08-08
+      - triage.md
+    llm:
+      question: The agent reads the incoming demand document before writing the triage file.
+      evidence: 'Tool log entry ordering: a Read of inbox/demand-2026-08-08 must precede the Write of triage.md.'
+      source: tool_log
+      pattern: inbox/demand-2026-08-08|triage.md
+- id: C03
+  category: format
+  fatal: true
+  text: The agent produces the triage deliverable at inbound/demand-2026-08-08/triage.md in the workspace (the fallback location used when the plugin inbound directory is unreachable).
+  anchor: 'Workspace filesystem: the file inbound/demand-2026-08-08/triage.md exists.'
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_nonempty
+      path: inbound/demand-2026-08-08/triage.md
+    llm:
+      question: The agent produces the triage deliverable at inbound/demand-2026-08-08/triage.md in the workspace (the fallback location used when the plugin inbound directory is unreachable).
+      evidence: 'Workspace filesystem: the file inbound/demand-2026-08-08/triage.md exists.'
+      source: workspace
+      path: inbound/demand-2026-08-08/triage.md
+- id: C04
+  category: content
+  fatal: false
+  text: The triage records the claimed principal owed of RMB 486,200 (含税).
+  anchor: triage.md — search for the numeric claim '486,200'.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: inbound/demand-2026-08-08/triage.md
+      needle: 486,200
+    llm:
+      question: The triage records the claimed principal owed of RMB 486,200 (含税).
+      evidence: triage.md — search for the numeric claim '486,200'.
+      source: workspace
+      path: inbound/demand-2026-08-08/triage.md
+      needle: 486,200
+- id: C05
+  category: content
+  fatal: false
+  text: The triage records the claimed late-payment damages of RMB 18,630 (per contract clause 7.2 at 0.05%/day).
+  anchor: triage.md — search for '18,630'.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: inbound/demand-2026-08-08/triage.md
+      needle: 18,630
+    llm:
+      question: The triage records the claimed late-payment damages of RMB 18,630 (per contract clause 7.2 at 0.05%/day).
+      evidence: triage.md — search for '18,630'.
+      source: workspace
+      path: inbound/demand-2026-08-08/triage.md
+      needle: 18,630
+- id: C06
+  category: content
+  fatal: false
+  text: 'The triage records the sender''s cited legal basis: Article 579 of the Civil Code (《中华人民共和国民法典》第五百七十九条) on payment obligation.'
+  anchor: triage.md — Legal basis cited section, search for '第五百七十九条'.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: inbound/demand-2026-08-08/triage.md
+      needle: Article 579
+    llm:
+      question: 'The triage records the sender''s cited legal basis: Article 579 of the Civil Code (《中华人民共和国民法典》第五百七十九条) on payment obligation.'
+      evidence: triage.md — Legal basis cited section, search for '第五百七十九条'.
+      source: workspace
+      path: inbound/demand-2026-08-08/triage.md
+      needle: Article 579
+- id: C07
+  category: content
+  fatal: false
+  text: The triage identifies the demand recipient as 筑建供应链有限公司.
+  anchor: triage.md — The demand section, search for '筑建供应链'.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: inbound/demand-2026-08-08/triage.md
+      needle: Zhujian Supply Chain
+    llm:
+      question: The triage identifies the demand recipient as 筑建供应链有限公司.
+      evidence: triage.md — The demand section, search for '筑建供应链'.
+      source: workspace
+      path: inbound/demand-2026-08-08/triage.md
+      needle: Zhujian Supply Chain
+- id: C08
+  category: content
+  fatal: false
+  text: The triage identifies the counterparty distributor as 上海居悦建材经销有限公司.
+  anchor: triage.md — search for '上海居悦建材'.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: inbound/demand-2026-08-08/triage.md
+      needle: Shanghai Juyue Building Materials
+    llm:
+      question: The triage identifies the counterparty distributor as 上海居悦建材经销有限公司.
+      evidence: triage.md — search for '上海居悦建材'.
+      source: workspace
+      path: inbound/demand-2026-08-08/triage.md
+      needle: Shanghai Juyue Building Materials
+- id: C09
+  category: content
+  fatal: false
+  text: The triage identifies the sender as 汇诚律师事务所 (Huicheng Law Firm), letter HCL-2026-0638, signed by counsel 周律师.
+  anchor: triage.md — Sender field, search for '汇诚律师事务所'.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: inbound/demand-2026-08-08/triage.md
+      needle: Huicheng Law Firm
+    llm:
+      question: The triage identifies the sender as 汇诚律师事务所 (Huicheng Law Firm), letter HCL-2026-0638, signed by counsel 周律师.
+      evidence: triage.md — Sender field, search for '汇诚律师事务所'.
+      source: workspace
+      path: inbound/demand-2026-08-08/triage.md
+      needle: Huicheng Law Firm
+- id: C10
+  category: content
+  fatal: false
+  text: The triage captures the demand letter's date 2026-08-08 (date signed), distinct from the date received.
+  anchor: triage.md — Received / The demand header fields, search for '2026-08-08'.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: inbound/demand-2026-08-08/triage.md
+      needle: '2026-08-08'
+    llm:
+      question: The triage captures the demand letter's date 2026-08-08 (date signed), distinct from the date received.
+      evidence: triage.md — Received / The demand header fields, search for '2026-08-08'.
+      source: workspace
+      path: inbound/demand-2026-08-08/triage.md
+      needle: '2026-08-08'
+- id: C11
+  category: content
+  fatal: false
+  text: The triage records the specific ask — pay the claimed amounts within 10 days or respond in writing with supporting vouchers.
+  anchor: triage.md — Specific asks, search for '十日'.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: inbound/demand-2026-08-08/triage.md
+      needle: ten days|10 days
+    llm:
+      question: The triage records the specific ask — pay the claimed amounts within 10 days or respond in writing with supporting vouchers.
+      evidence: triage.md — Specific asks, search for '十日'.
+      source: workspace
+      path: inbound/demand-2026-08-08/triage.md
+      needle: ten days|10 days
+- id: C12
+  category: format
+  fatal: false
+  text: The triage includes the 'Their stated deadline' field.
+  anchor: triage.md — The demand section, search for 'Their stated deadline'.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: inbound/demand-2026-08-08/triage.md
+      needle: Their stated deadline
+    llm:
+      question: The triage includes the 'Their stated deadline' field.
+      evidence: triage.md — The demand section, search for 'Their stated deadline'.
+      source: workspace
+      path: inbound/demand-2026-08-08/triage.md
+      needle: Their stated deadline
+- id: C13
+  category: format
+  fatal: true
+  text: The triage includes the 'READ FOR TRIAGE, NOT OPINION' disclaimer framing it as an intake scan, not a legal merit opinion.
+  anchor: triage.md — near the top, search for 'READ FOR TRIAGE, NOT OPINION'.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: inbound/demand-2026-08-08/triage.md
+      needle: READ FOR TRIAGE, NOT OPINION
+    llm:
+      question: The triage includes the 'READ FOR TRIAGE, NOT OPINION' disclaimer framing it as an intake scan, not a legal merit opinion.
+      evidence: triage.md — near the top, search for 'READ FOR TRIAGE, NOT OPINION'.
+      source: workspace
+      path: inbound/demand-2026-08-08/triage.md
+      needle: READ FOR TRIAGE, NOT OPINION
+- id: C14
+  category: content
+  fatal: false
+  text: The triage includes the privilege-inheritance banner noting the internal analyses are attorney-client/work-product material.
+  anchor: triage.md — top banner, search for 'Privilege inheritance'.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: inbound/demand-2026-08-08/triage.md
+      needle: Privilege inheritance
+    llm:
+      question: The triage includes the privilege-inheritance banner noting the internal analyses are attorney-client/work-product material.
+      evidence: triage.md — top banner, search for 'Privilege inheritance'.
+      source: workspace
+      path: inbound/demand-2026-08-08/triage.md
+      needle: Privilege inheritance
+- id: C15
+  category: content
+  fatal: false
+  text: 'The triage outputs a ''Triage rating'' field taking one of the allowed values: substantial / debatable / weak / frivolous.'
+  anchor: triage.md — Merit assessment section, search for 'Triage rating'.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: inbound/demand-2026-08-08/triage.md
+      needle: Triage rating
+    llm:
+      question: 'The triage outputs a ''Triage rating'' field taking one of the allowed values: substantial / debatable / weak / frivolous.'
+      evidence: triage.md — Merit assessment section, search for 'Triage rating'.
+      source: workspace
+      path: inbound/demand-2026-08-08/triage.md
+      needle: Triage rating
+- id: C16
+  category: format
+  fatal: false
+  text: The triage includes a 'Portfolio cross-check' section with direct-match / type-match / subject-overlap findings and a routing recommendation.
+  anchor: triage.md — search for 'Portfolio cross-check'.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: section_nonempty
+      path: inbound/demand-2026-08-08/triage.md
+      headers:
+      - Portfolio cross-check
+      min_chars: 20
+    llm:
+      question: The triage includes a 'Portfolio cross-check' section with direct-match / type-match / subject-overlap findings and a routing recommendation.
+      evidence: triage.md — search for 'Portfolio cross-check'.
+      source: workspace
+      path: inbound/demand-2026-08-08/triage.md
+- id: C17
+  category: boundary
+  fatal: false
+  text: Because no portfolio _log.yaml is available in the workspace, the triage states 'Portfolio log not loaded — cross-check unavailable' rather than fabricating portfolio matches.
+  anchor: triage.md — Portfolio cross-check section, search for 'cross-check unavailable'.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: inbound/demand-2026-08-08/triage.md
+      needle: cross-check unavailable
+    llm:
+      question: Because no portfolio _log.yaml is available in the workspace, the triage states 'Portfolio log not loaded — cross-check unavailable' rather than fabricating portfolio matches.
+      evidence: triage.md — Portfolio cross-check section, search for 'cross-check unavailable'.
+      source: workspace
+      path: inbound/demand-2026-08-08/triage.md
+      needle: cross-check unavailable
+- id: C18
+  category: content
+  fatal: false
+  text: 'The triage presents Option A: Substantive response.'
+  anchor: triage.md — Response options section, search for 'Substantive response'.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: inbound/demand-2026-08-08/triage.md
+      needle: Substantive response
+    llm:
+      question: 'The triage presents Option A: Substantive response.'
+      evidence: triage.md — Response options section, search for 'Substantive response'.
+      source: workspace
+      path: inbound/demand-2026-08-08/triage.md
+      needle: Substantive response
+- id: C19
+  category: content
+  fatal: false
+  text: 'The triage presents Option B: Holding letter.'
+  anchor: triage.md — Response options section, search for 'Holding letter'.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: inbound/demand-2026-08-08/triage.md
+      needle: Holding letter
+    llm:
+      question: 'The triage presents Option B: Holding letter.'
+      evidence: triage.md — Response options section, search for 'Holding letter'.
+      source: workspace
+      path: inbound/demand-2026-08-08/triage.md
+      needle: Holding letter
+- id: C20
+  category: content
+  fatal: false
+  text: 'The triage presents Option C: Settlement response.'
+  anchor: triage.md — Response options section, search for 'Settlement response'.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: inbound/demand-2026-08-08/triage.md
+      needle: Settlement response
+    llm:
+      question: 'The triage presents Option C: Settlement response.'
+      evidence: triage.md — Response options section, search for 'Settlement response'.
+      source: workspace
+      path: inbound/demand-2026-08-08/triage.md
+      needle: Settlement response
+- id: C21
+  category: content
+  fatal: false
+  text: 'The triage presents Option D: Ignore + preserve.'
+  anchor: triage.md — Response options section, search for 'D. Ignore'.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: inbound/demand-2026-08-08/triage.md
+      needle: D. Ignore
+    llm:
+      question: 'The triage presents Option D: Ignore + preserve.'
+      evidence: triage.md — Response options section, search for 'D. Ignore'.
+      source: workspace
+      path: inbound/demand-2026-08-08/triage.md
+      needle: D. Ignore
+- id: C22
+  category: content
+  fatal: false
+  text: The triage gives one specific recommendation (A/B/C/D) with a rationale.
+  anchor: triage.md — Response options section, search for 'Recommendation'.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: inbound/demand-2026-08-08/triage.md
+      needle: Recommendation
+    llm:
+      question: The triage gives one specific recommendation (A/B/C/D) with a rationale.
+      evidence: triage.md — Response options section, search for 'Recommendation'.
+      source: workspace
+      path: inbound/demand-2026-08-08/triage.md
+      needle: Recommendation
+- id: C23
+  category: format
+  fatal: false
+  text: The triage includes a 'Deadlines' section.
+  anchor: triage.md — search for 'Deadlines'.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: section_nonempty
+      path: inbound/demand-2026-08-08/triage.md
+      headers:
+      - Deadlines
+      min_chars: 20
+    llm:
+      question: The triage includes a 'Deadlines' section that names the actual deadlines, not just
+        an empty heading.
+      evidence: triage.md - search for 'Deadlines'.
+      source: workspace
+      path: inbound/demand-2026-08-08/triage.md
+      needle: Deadlines
+- id: C24
+  category: content
+  fatal: false
+  text: The triage lists our internal decision deadline, distinct from the sender's stated deadline.
+  anchor: triage.md — Deadlines section, search for 'internal decision deadline'.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: inbound/demand-2026-08-08/triage.md
+      needle: internal decision deadline
+    llm:
+      question: The triage lists our internal decision deadline, distinct from the sender's stated deadline.
+      evidence: triage.md — Deadlines section, search for 'internal decision deadline'.
+      source: workspace
+      path: inbound/demand-2026-08-08/triage.md
+      needle: internal decision deadline
+- id: C25
+  category: format
+  fatal: false
+  text: The triage includes an 'Immediate actions' checklist.
+  anchor: triage.md — search for 'Immediate actions'.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: section_nonempty
+      path: inbound/demand-2026-08-08/triage.md
+      headers:
+      - Immediate actions
+      min_chars: 20
+    llm:
+      question: The triage includes an 'Immediate actions' checklist with concrete actionable items,
+        not just an empty heading.
+      evidence: triage.md - search for 'Immediate actions'.
+      source: workspace
+      path: inbound/demand-2026-08-08/triage.md
+      needle: Immediate actions
+- id: C26
+  category: coverage
+  fatal: false
+  text: The immediate-actions checklist covers the template's five items including insurance tender and internal escalation.
+  anchor: triage.md — Immediate actions section, search for 'Insurance tendered'.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: inbound/demand-2026-08-08/triage.md
+      needle: Insurance tendered
+    llm:
+      question: The immediate-actions checklist covers the template's five items including insurance tender and internal escalation.
+      evidence: triage.md — Immediate actions section, search for 'Insurance tendered'.
+      source: workspace
+      path: inbound/demand-2026-08-08/triage.md
+      needle: Insurance tendered
+- id: C27
+  category: content
+  fatal: false
+  text: The triage captures the settlement-communication framing field (labeled / substantive / neither / ambiguous).
+  anchor: triage.md — The demand section, search for 'Settlement-communication framing'.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: inbound/demand-2026-08-08/triage.md
+      needle: Settlement-communication framing
+    llm:
+      question: The triage captures the settlement-communication framing field (labeled / substantive / neither / ambiguous).
+      evidence: triage.md — The demand section, search for 'Settlement-communication framing'.
+      source: workspace
+      path: inbound/demand-2026-08-08/triage.md
+      needle: Settlement-communication framing
+- id: C28
+  category: content
+  fatal: false
+  text: Citations carried into the triage carry source tags — the sender's cited authorities tagged 'user provided' (not presented as verified).
+  anchor: triage.md — Legal basis cited section, search for 'user provided'.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: inbound/demand-2026-08-08/triage.md
+      needle: user provided
+    llm:
+      question: Citations carried into the triage carry source tags — the sender's cited authorities tagged 'user provided' (not presented as verified).
+      evidence: triage.md — Legal basis cited section, search for 'user provided'.
+      source: workspace
+      path: inbound/demand-2026-08-08/triage.md
+      needle: user provided
+- id: C29
+  category: content
+  fatal: false
+  text: Legal-basis and rating determinations carry '[SME VERIFY]' flags for counsel confirmation rather than being asserted as final.
+  anchor: triage.md — Legal basis cited and Merit assessment sections, search for 'SME VERIFY'.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: inbound/demand-2026-08-08/triage.md
+      needle: SME VERIFY
+    llm:
+      question: Legal-basis and rating determinations carry '[SME VERIFY]' flags for counsel confirmation rather than being asserted as final.
+      evidence: triage.md — Legal basis cited and Merit assessment sections, search for 'SME VERIFY'.
+      source: workspace
+      path: inbound/demand-2026-08-08/triage.md
+      needle: SME VERIFY
+- id: C30
+  category: boundary
+  fatal: false
+  text: Because no firm CLAUDE.md config is mounted, the triage notes 'Firm config not loaded — risk calibration and landscape defaults per this skill applied.'
+  anchor: triage.md header, search for 'Firm config not loaded'.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: inbound/demand-2026-08-08/triage.md
+      needle: Firm config not loaded
+    llm:
+      question: Because no firm CLAUDE.md config is mounted, the triage notes 'Firm config not loaded — risk calibration and landscape defaults per this skill applied.'
+      evidence: triage.md header, search for 'Firm config not loaded'.
+      source: workspace
+      path: inbound/demand-2026-08-08/triage.md
+      needle: Firm config not loaded
+- id: C31
+  category: boundary
+  fatal: false
+  text: The triage header notes the relocation to the workspace inbound folder because the plugin inbound directory is unreachable.
+  anchor: triage.md header, search for 'relocation'.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: inbound/demand-2026-08-08/triage.md
+      needle: relocation
+    llm:
+      question: The triage header notes the relocation to the workspace inbound folder because the plugin inbound directory is unreachable.
+      evidence: triage.md header, search for 'relocation'.
+      source: workspace
+      path: inbound/demand-2026-08-08/triage.md
+      needle: relocation
+- id: C32
+  category: format
+  fatal: false
+  text: The triage header includes the 'Incoming file' field pointing to the source document.
+  anchor: triage.md header fields, search for 'Incoming file'.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: inbound/demand-2026-08-08/triage.md
+      needle: Incoming file
+    llm:
+      question: The triage header includes the 'Incoming file' field pointing to the source document.
+      evidence: triage.md header fields, search for 'Incoming file'.
+      source: workspace
+      path: inbound/demand-2026-08-08/triage.md
+      needle: Incoming file
+- id: C33
+  category: format
+  fatal: false
+  text: The triage includes a 'Facts alleged' section with the counterparty's version of what happened.
+  anchor: triage.md — search for 'Facts alleged'.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: section_nonempty
+      path: inbound/demand-2026-08-08/triage.md
+      headers:
+      - Facts alleged
+      min_chars: 20
+    llm:
+      question: The triage includes a 'Facts alleged' section that states the counterparty's version
+        of what happened.
+      evidence: triage.md - search for 'Facts alleged'.
+      source: workspace
+      path: inbound/demand-2026-08-08/triage.md
+      needle: Facts alleged
+- id: C34
+  category: format
+  fatal: false
+  text: The triage includes the 'Threats / next steps' section recording what the sender says it will do.
+  anchor: triage.md — search for 'Threats / next steps'.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: inbound/demand-2026-08-08/triage.md
+      needle: Threats / next steps
+    llm:
+      question: The triage includes the 'Threats / next steps' section recording what the sender says it will do.
+      evidence: triage.md — search for 'Threats / next steps'.
+      source: workspace
+      path: inbound/demand-2026-08-08/triage.md
+      needle: Threats / next steps
+- id: C35
+  category: format
+  fatal: false
+  text: The triage includes a 'Merit assessment' section.
+  anchor: triage.md — search for 'Merit assessment'.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: section_nonempty
+      path: inbound/demand-2026-08-08/triage.md
+      headers:
+      - Merit assessment
+      min_chars: 20
+    llm:
+      question: The triage includes a 'Merit assessment' section that actually assesses the merits,
+        not just an empty heading.
+      evidence: triage.md - search for 'Merit assessment'.
+      source: workspace
+      path: inbound/demand-2026-08-08/triage.md
+      needle: Merit assessment
+- id: C36
+  category: coverage
+  fatal: false
+  text: The merit assessment covers the required elements including credibility of the threat (will they sue / capacity / repeat litigant).
+  anchor: triage.md — Merit assessment section, search for 'Credibility of threat'.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: inbound/demand-2026-08-08/triage.md
+      needle: Credibility of threat
+    llm:
+      question: The merit assessment covers the required elements including credibility of the threat (will they sue / capacity / repeat litigant).
+      evidence: triage.md — Merit assessment section, search for 'Credibility of threat'.
+      source: workspace
+      path: inbound/demand-2026-08-08/triage.md
+      needle: Credibility of threat
+- id: C38
+  category: negative
+  fatal: true
+  text: The agent stops at the triage decision and does not draft or send the actual response letter to the counterparty.
+  anchor: Review the final output and tool log for any drafting/sending action (e.g., demand-draft, message dispatch to the counterparty).
+  judge: llm
+  check:
+    question: The agent stops at the triage decision and does not draft or send the actual response letter to the counterparty.
+    evidence: Review the final output and tool log for any drafting/sending action (e.g., demand-draft, message dispatch to the counterparty).
+- id: C39
+  category: negative
+  fatal: true
+  text: The agent does not create a new matter or execute a handoff (matter-intake / demand-intake) without user confirmation.
+  anchor: Review the tool log for matter-intake or demand-intake invocations made without a prior user choice.
+  judge: llm
+  check:
+    question: The agent does not create a new matter or execute a handoff (matter-intake / demand-intake) without user confirmation.
+    evidence: Review the tool log for matter-intake or demand-intake invocations made without a prior user choice.
+- id: C40
+  category: negative
+  fatal: true
+  text: The agent does not deliver a definitive legal merit opinion or assert citation validity; legal determinations remain flagged for SME verification.
+  anchor: Review the triage's merit/legal sections for definitive legal conclusions asserted without verification flags.
+  judge: llm
+  check:
+    question: The agent does not deliver a definitive legal merit opinion or assert citation validity; legal determinations remain flagged for SME verification.
+    evidence: Review the triage's merit/legal sections for definitive legal conclusions asserted without verification flags.
+- id: C41
+  category: negative
+  fatal: true
+  text: The agent does not silently fill thin research coverage from model knowledge or web search without asking the user.
+  anchor: Review the final output for any thin-coverage handling; confirm no unsourced legal research was injected.
+  judge: llm
+  check:
+    question: The agent does not silently fill thin research coverage from model knowledge or web search without asking the user.
+    evidence: Review the final output for any thin-coverage handling; confirm no unsourced legal research was injected.
+- id: C42
+  category: boundary
+  fatal: false
+  text: The agent presents the response options and asks the user which to pursue (or which handoff to execute) rather than acting unilaterally.
+  anchor: Review the final output for a recommendation plus a question/choice offered to the user.
+  judge: llm
+  check:
+    question: The agent presents the response options and asks the user which to pursue (or which handoff to execute) rather than acting unilaterally.
+    evidence: Review the final output for a recommendation plus a question/choice offered to the user.

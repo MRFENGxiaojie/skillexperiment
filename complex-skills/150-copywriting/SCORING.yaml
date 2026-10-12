@@ -1,0 +1,252 @@
+skill: 150-copywriting
+version: 2
+total_items: 19
+criteria:
+- id: C03
+  category: content
+  fatal: false
+  text: The copy communicates the core value proposition of quick invoicing, echoing the brief's phrasing 开好发票.
+  anchor: Agent's final output — headline or subheadline.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: issue invoices correctly|invoice properly
+    llm:
+      question: The copy communicates the core value proposition of quick invoicing, echoing the brief's phrasing 开好发票.
+      evidence: Agent's final output — headline or subheadline.
+      source: output
+      needle: issue invoices correctly|invoice properly
+- id: C04
+  category: content
+  fatal: false
+  text: The copy includes the automatic payment-reminder benefit (自动提醒) from the brief.
+  anchor: Agent's final output — benefits/solution section.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: automatic reminders|auto-reminders
+    llm:
+      question: The copy includes the automatic payment-reminder benefit (自动提醒) from the brief.
+      evidence: Agent's final output — benefits/solution section.
+      source: output
+      needle: automatic reminders|auto-reminders
+- id: C06
+  category: content
+  fatal: false
+  text: The copy addresses the freelancer pain point of manual invoicing (手工).
+  anchor: Agent's final output — pain-point section.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: manual
+    llm:
+      question: The copy addresses the freelancer pain point of manual invoicing (手工).
+      evidence: Agent's final output — pain-point section.
+      source: output
+      needle: manual
+- id: C08
+  category: format
+  fatal: false
+  text: The deliverable includes button/CTA copy as a distinct page element (labeled 按钮).
+  anchor: Agent's final output — button/CTA section.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: button|buttons
+    llm:
+      question: The deliverable includes button/CTA copy as a distinct page element (labeled 按钮).
+      evidence: Agent's final output — button/CTA section.
+      source: output
+      needle: button|buttons
+- id: C09
+  category: content
+  fatal: false
+  text: The output offers multiple alternative options for the headline and/or buttons, per the user's request for 备选.
+  anchor: Agent's final output — alternatives section.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: alternatives|backup options
+    llm:
+      question: The output offers multiple alternative options for the headline and/or buttons, per the user's request for 备选.
+      evidence: Agent's final output — alternatives section.
+      source: output
+      needle: alternatives|backup options
+- id: C10
+  category: content
+  fatal: false
+  text: The output explains the rationale behind its copy choices (为什么), not just the copy itself.
+  anchor: Agent's final output — annotations/rationale.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: why
+    llm:
+      question: The output explains the rationale behind its copy choices (为什么), not just the copy itself.
+      evidence: Agent's final output — annotations/rationale.
+      source: output
+      needle: why
+- id: C11
+  category: format
+  fatal: false
+  text: The deliverable includes a subheadline as a distinct element (副标题).
+  anchor: Agent's final output — page structure.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: subtitle
+    llm:
+      question: The deliverable includes a subheadline as a distinct element (副标题).
+      evidence: Agent's final output — page structure.
+      source: output
+      needle: subtitle
+- id: C12
+  category: coverage
+  fatal: false
+  text: The homepage copy includes a pain-point section (痛点) that shows the user's situation is understood.
+  anchor: Agent's final output — body sections.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: pain points|pain point
+    llm:
+      question: The homepage copy includes a pain-point section (痛点) that shows the user's situation is understood.
+      evidence: Agent's final output — body sections.
+      source: output
+      needle: pain points|pain point
+- id: C14
+  category: coverage
+  fatal: false
+  text: The homepage copy includes a final call-to-action section (行动号召).
+  anchor: Agent's final output — body sections.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: call to action
+    llm:
+      question: The homepage copy includes a final call-to-action section (行动号召).
+      evidence: Agent's final output — body sections.
+      source: output
+      needle: call to action
+- id: C15
+  category: process
+  fatal: false
+  text: Before asking context questions, the agent checks for .claude/product-marketing-context.md, and that path appears in the tool log.
+  anchor: tool_log — any Read/Glob referencing the product-marketing-context file.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_contains
+      cmd: .claude/product-marketing-context
+    llm:
+      question: Before asking context questions, the agent checks for .claude/product-marketing-context.md, and that path appears in the tool log.
+      evidence: tool_log — any Read/Glob referencing the product-marketing-context file.
+      source: tool_log
+      pattern: .claude/product-marketing-context
+- id: C16
+  category: format
+  fatal: false
+  text: The output marks its recommendations with confidence levels (🟢/🟡/🔴) as the skill requires.
+  anchor: Agent's final output — alternatives/annotations section.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: 🟢
+    llm:
+      question: The output marks its recommendations with confidence levels (🟢/🟡/🔴) as the skill requires.
+      evidence: Agent's final output — alternatives/annotations section.
+      source: output
+      needle: 🟢
+- id: C17
+  category: content
+  fatal: false
+  text: At least one CTA button uses a strong action-outcome formula (action verb plus what the user gets, e.g., a free-trial CTA) rather than a weak verb like Sign Up or Learn More.
+  anchor: Agent's final output — button/CTA options (semantic judgment).
+  judge: llm
+  check:
+    question: At least one CTA button uses a strong action-outcome formula (action verb plus what the user gets, e.g., a free-trial CTA) rather than a weak verb like Sign Up or Learn More.
+    evidence: Agent's final output — button/CTA options (semantic judgment).
+- id: C18
+  category: content
+  fatal: false
+  text: The output flags that no social proof or proof points were provided and asks the user for testimonials, numbers, or case studies rather than inventing them.
+  anchor: Agent's final output — proactive trigger note (semantic judgment).
+  judge: llm
+  check:
+    question: The output flags that no social proof or proof points were provided and asks the user for testimonials, numbers, or case studies rather than inventing them.
+    evidence: Agent's final output — proactive trigger note (semantic judgment).
+- id: C19
+  category: process
+  fatal: false
+  text: The output identifies a single primary action for the homepage and builds the copy toward that one action.
+  anchor: Agent's final output — stated page goal and CTA hierarchy (semantic judgment).
+  judge: llm
+  check:
+    question: The output identifies a single primary action for the homepage and builds the copy toward that one action.
+    evidence: Agent's final output — stated page goal and CTA hierarchy (semantic judgment).
+- id: C20
+  category: negative
+  fatal: false
+  text: The copy does not fabricate statistics, testimonials, or proof points (no invented numbers or fake customer quotes).
+  anchor: Agent's final output — any claims of proof (semantic judgment).
+  judge: llm
+  check:
+    question: The copy does not fabricate statistics, testimonials, or proof points (no invented numbers or fake customer quotes).
+    evidence: Agent's final output — any claims of proof (semantic judgment).
+- id: C22
+  category: evidence
+  fatal: false
+  text: The agent asks about, or explicitly states assumptions for, context the brief does not provide (primary CTA action, proof points, traffic source) before delivering.
+  anchor: Agent's messages/questions and any stated assumptions (semantic judgment).
+  judge: llm
+  check:
+    question: The agent asks about, or explicitly states assumptions for, context the brief does not provide (primary CTA action, proof points, traffic source) before delivering.
+    evidence: Agent's messages/questions and any stated assumptions (semantic judgment).
+- id: C23
+  category: coverage
+  fatal: false
+  text: The homepage copy includes a How-It-Works section that reduces perceived complexity (a few steps).
+  anchor: Agent's final output — body sections (semantic judgment).
+  judge: llm
+  check:
+    question: The homepage copy includes a How-It-Works section that reduces perceived complexity (a few steps).
+    evidence: Agent's final output — body sections (semantic judgment).
+- id: C24
+  category: coverage
+  fatal: false
+  text: The homepage copy includes an objection-handling section (FAQ, comparison, or guarantee) addressing freelancer hesitations.
+  anchor: Agent's final output — body sections (semantic judgment).
+  judge: llm
+  check:
+    question: The homepage copy includes an objection-handling section (FAQ, comparison, or guarantee) addressing freelancer hesitations.
+    evidence: Agent's final output — body sections (semantic judgment).
+- id: C25
+  category: boundary
+  fatal: false
+  text: The copy avoids guaranteeing financial outcomes (e.g., that payments will be recovered), which would require legal or compliance review.
+  anchor: Agent's final output — any claims about payment recovery (semantic judgment).
+  judge: llm
+  check:
+    question: The copy avoids guaranteeing financial outcomes (e.g., that payments will be recovered), which would require legal or compliance review.
+    evidence: Agent's final output — any claims about payment recovery (semantic judgment).

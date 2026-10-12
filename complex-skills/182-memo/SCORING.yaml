@@ -1,0 +1,481 @@
+skill: 182-memo
+version: 2
+total_items: 30
+criteria:
+- id: C06
+  category: process
+  fatal: false
+  text: The agent loads legal-clinic/CLAUDE.md before reading the intake notes (Load context precedes the workflow).
+  anchor: Check ordering of tool-log entries for CLAUDE.md vs intake-notes.md.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_order
+      cmds:
+      - legal-clinic/CLAUDE.md
+      - intake-notes.md
+    llm:
+      question: The agent loads legal-clinic/CLAUDE.md before reading the intake notes (Load context precedes the workflow).
+      evidence: Check ordering of tool-log entries for CLAUDE.md vs intake-notes.md.
+      source: tool_log
+      pattern: legal-clinic/CLAUDE.md|intake-notes.md
+- id: C07
+  category: content
+  fatal: false
+  text: 'The output states the pedagogy posture with the literal label ''Pedagogy mode: [guide/assist/teach]'' and what the student did vs. what the skill did.'
+  anchor: Search the agent's final output for the 'Pedagogy mode:' label.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: 'Pedagogy mode:'
+    llm:
+      question: 'The output states the pedagogy posture with the literal label ''Pedagogy mode: [guide/assist/teach]'' and what the student did vs. what the skill did.'
+      evidence: Search the agent's final output for the 'Pedagogy mode:' label.
+      source: output
+      needle: 'Pedagogy mode:'
+- id: C09
+  category: content
+  fatal: false
+  text: At least one issue is framed as an interrogative of the form 'Can the client assert a habitability defense...' rather than a bare topic like 'habitability'.
+  anchor: Search the Issues Presented section of the memo for the interrogative phrasing.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: 'Can the client assert a habitability defense|Did the landlord materially breach|Did the loss of heat breach'
+    llm:
+      question: At least one issue is framed as an interrogative of the form 'Can the client assert a habitability defense...' rather than a bare topic like 'habitability'.
+      evidence: Search the Issues Presented section of the memo for the interrogative phrasing.
+      source: output
+      needle: 'Can the client assert a habitability defense|Did the landlord materially breach|Did the loss of heat breach'
+- id: C10
+  category: coverage
+  fatal: false
+  text: The scaffolded issues cover the case's legal questions listed in the intake notes, including implied warranty of habitability, constructive eviction, rent abatement, and the landlord's counterclaim.
+  anchor: Search the memo output for each legal issue term; 'constructive eviction' is the distinguishing token.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: constructive eviction
+    llm:
+      question: The scaffolded issues cover the case's legal questions listed in the intake notes, including implied warranty of habitability, constructive eviction, rent abatement, and the landlord's counterclaim.
+      evidence: Search the memo output for each legal issue term; 'constructive eviction' is the distinguishing token.
+      source: output
+      needle: constructive eviction
+- id: C11
+  category: coverage
+  fatal: false
+  text: The two issues the task names — the tenant's breach/defense question and rent abatement — each get their own scaffolding rather than being collapsed into one.
+  anchor: Search the memo output for rent abatement.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: rent abatement
+    llm:
+      question: The two issues the task names — the tenant's breach/defense question and rent abatement — each get their own scaffolding rather than being collapsed into one.
+      evidence: Search the memo output for rent abatement.
+      source: output
+      needle: rent abatement
+- id: C12
+  category: coverage
+  fatal: false
+  text: Each issue has its own IRAC block containing Rule, Application, and Conclusion sub-sections (repeated per issue).
+  anchor: Search the memo output for the per-issue '### Conclusion' heading.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: '### Conclusion|## Conclusion'
+    llm:
+      question: Each issue has its own IRAC block containing Rule, Application, and Conclusion sub-sections (repeated per issue).
+      evidence: Search the memo output for the per-issue '### Conclusion' heading.
+      source: output
+      needle: '### Conclusion|## Conclusion'
+- id: C14
+  category: content
+  fatal: false
+  text: Each [RESEARCH NEEDED] block names a research starting point (e.g., the [State] landlord-tenant statute, then case law on the heater/heating).
+  anchor: Search the Rule sections of the memo for a research starting point such as 'statute'.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: statute
+    llm:
+      question: Each [RESEARCH NEEDED] block names a research starting point (e.g., the [State] landlord-tenant statute, then case law on the heater/heating).
+      evidence: Search the Rule sections of the memo for a research starting point such as 'statute'.
+      source: output
+      needle: statute
+- id: C15
+  category: content
+  fatal: false
+  text: 'Any framework starting point is explicitly marked unverified with a [VERIFY: ...] flag for jurisdiction-specific elements.'
+  anchor: Search the memo output for '[VERIFY'.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: '[VERIFY'
+    llm:
+      question: 'Any framework starting point is explicitly marked unverified with a [VERIFY: ...] flag for jurisdiction-specific elements.'
+      evidence: Search the memo output for '[VERIFY'.
+      source: output
+      needle: '[VERIFY'
+- id: C16
+  category: format
+  fatal: true
+  text: Application blocks are [STUDENT ANALYSIS] prompts that scaffold the structure and list facts to address rather than filled-in analysis.
+  anchor: Search the memo output for '[STUDENT ANALYSIS'.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: '[STUDENT ANALYSIS'
+    llm:
+      question: Application blocks are [STUDENT ANALYSIS] prompts that scaffold the structure and list facts to address rather than filled-in analysis.
+      evidence: Search the memo output for '[STUDENT ANALYSIS'.
+      source: output
+      needle: '[STUDENT ANALYSIS'
+- id: C17
+  category: content
+  fatal: false
+  text: The Application scaffolds reference the case-specific facts that matter (the broken heater, the notice timeline, the landlord's response).
+  anchor: Search the memo output for 'heater' or equivalent heating reference.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: heater
+    llm:
+      question: The Application scaffolds reference the case-specific facts that matter (the broken heater, the notice timeline, the landlord's response).
+      evidence: Search the memo output for 'heater' or equivalent heating reference.
+      source: output
+      needle: heater
+- id: C18
+  category: format
+  fatal: true
+  text: 'Conclusion blocks are left explicitly blank via [STUDENT CONCLUSION: ...] prompts in every IRAC block.'
+  anchor: Search the memo output for '[STUDENT CONCLUSION'.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: '[STUDENT CONCLUSION'
+    llm:
+      question: 'Conclusion blocks are left explicitly blank via [STUDENT CONCLUSION: ...] prompts in every IRAC block.'
+      evidence: Search the memo output for '[STUDENT CONCLUSION'.
+      source: output
+      needle: '[STUDENT CONCLUSION'
+- id: C19
+  category: format
+  fatal: false
+  text: The memo opens with the prominent banner 'AI-ASSISTED SCAFFOLD — THE ANALYSIS IS YOURS TO WRITE'.
+  anchor: Search the top of the memo output for 'THE ANALYSIS IS YOURS TO WRITE'.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: THE ANALYSIS IS YOURS TO WRITE
+    llm:
+      question: The memo opens with the prominent banner 'AI-ASSISTED SCAFFOLD — THE ANALYSIS IS YOURS TO WRITE'.
+      evidence: Search the top of the memo output for 'THE ANALYSIS IS YOURS TO WRITE'.
+      source: output
+      needle: THE ANALYSIS IS YOURS TO WRITE
+- id: C20
+  category: format
+  fatal: false
+  text: 'The memo uses the title header ''# Case Analysis Memo: [Client] — [Matter]''.'
+  anchor: Search the memo output for '# Case Analysis Memo'.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: '# Case Analysis Memo'
+    llm:
+      question: 'The memo uses the title header ''# Case Analysis Memo: [Client] — [Matter]''.'
+      evidence: Search the memo output for '# Case Analysis Memo'.
+      source: output
+      needle: '# Case Analysis Memo'
+- id: C21
+  category: format
+  fatal: false
+  text: The memo header includes the Date / By / For attribution line.
+  anchor: Search the memo output for '**Date:**'.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: '**Date:**'
+    llm:
+      question: The memo header includes the Date / By / For attribution line.
+      evidence: Search the memo output for '**Date:**'.
+      source: output
+      needle: '**Date:**'
+- id: C22
+  category: content
+  fatal: false
+  text: The [Client]/[Matter] placeholders are populated with the actual case identity (client Maria Chen).
+  anchor: Search the memo output for the client name from the intake notes.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Maria Chen
+    llm:
+      question: The [Client]/[Matter] placeholders are populated with the actual case identity (client Maria Chen).
+      evidence: Search the memo output for the client name from the intake notes.
+      source: output
+      needle: Maria Chen
+- id: C24
+  category: format
+  fatal: false
+  text: The memo includes a '## Bottom line' section stating a recommendation or the need for more information.
+  anchor: Search the memo output for '## Bottom line'.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: '## Bottom line'
+    llm:
+      question: The memo includes a '## Bottom line' section stating a recommendation or the need for more information.
+      evidence: Search the memo output for '## Bottom line'.
+      source: output
+      needle: '## Bottom line'
+- id: C25
+  category: format
+  fatal: false
+  text: The memo includes an '## Issues Presented' section listing the issues.
+  anchor: Search the memo output for '## Issues Presented'.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: '## Issues Presented'
+    llm:
+      question: The memo includes an '## Issues Presented' section listing the issues.
+      evidence: Search the memo output for '## Issues Presented'.
+      source: output
+      needle: '## Issues Presented'
+- id: C26
+  category: format
+  fatal: false
+  text: The memo includes a '## Strengths' section listing apparent helpful facts with caveats for the student to test.
+  anchor: Search the memo output for '## Strengths'.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: '## Strengths|# Apparent Strengths|Apparent Strengths to Test'
+    llm:
+      question: The memo includes a '## Strengths' section listing apparent helpful facts with caveats for the student to test.
+      evidence: Search the memo output for '## Strengths'.
+      source: output
+      needle: '## Strengths|# Apparent Strengths|Apparent Strengths to Test'
+- id: C27
+  category: format
+  fatal: false
+  text: The memo includes a '## Weaknesses' section listing apparently harmful facts for the student to assess.
+  anchor: Search the memo output for '## Weaknesses'.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: '## Weaknesses|# Apparent Weaknesses|Apparent Weaknesses'
+    llm:
+      question: The memo includes a '## Weaknesses' section listing apparently harmful facts for the student to assess.
+      evidence: Search the memo output for '## Weaknesses'.
+      source: output
+      needle: '## Weaknesses|# Apparent Weaknesses|Apparent Weaknesses'
+- id: C28
+  category: content
+  fatal: false
+  text: 'Debatable weakness calls carry [UNCERTAIN: ...] flags tied to jurisdiction-specific rules.'
+  anchor: Search the memo output for '[UNCERTAIN'.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: '[UNCERTAIN'
+    llm:
+      question: 'Debatable weakness calls carry [UNCERTAIN: ...] flags tied to jurisdiction-specific rules.'
+      evidence: Search the memo output for '[UNCERTAIN'.
+      source: output
+      needle: '[UNCERTAIN'
+- id: C29
+  category: format
+  fatal: false
+  text: The Open Questions section is split into Factual, Legal, and Strategic sublists.
+  anchor: Search the memo output for the '**Factual:**' sublist label.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: '**Factual:**|## Factual'
+    llm:
+      question: The Open Questions section is split into Factual, Legal, and Strategic sublists.
+      evidence: Search the memo output for the '**Factual:**' sublist label.
+      source: output
+      needle: '**Factual:**|## Factual'
+- id: C30
+  category: content
+  fatal: false
+  text: The Legal open questions are tied to the research roadmap (/research-start) the student can run on each item.
+  anchor: Search the memo output for '/research-start'.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: '/research-start|research starting point'
+    llm:
+      question: The Legal open questions are tied to the research roadmap (/research-start) the student can run on each item.
+      evidence: Search the memo output for '/research-start'.
+      source: output
+      needle: '/research-start|research starting point'
+- id: C31
+  category: format
+  fatal: false
+  text: The memo includes a '## Research gaps summary' consolidating the research items into one systematic list.
+  anchor: Search the memo output for '## Research gaps summary'.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: '## Research gaps summary|# Research Gaps Summary'
+    llm:
+      question: The memo includes a '## Research gaps summary' consolidating the research items into one systematic list.
+      evidence: Search the memo output for '## Research gaps summary'.
+      source: output
+      needle: '## Research gaps summary|# Research Gaps Summary'
+- id: C32
+  category: format
+  fatal: false
+  text: The memo includes a 'What this memo is NOT' section clarifying that empty student blocks are the intended state.
+  anchor: Search the memo output for 'What this memo is NOT'.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: What this memo is NOT
+    llm:
+      question: The memo includes a 'What this memo is NOT' section clarifying that empty student blocks are the intended state.
+      evidence: Search the memo output for 'What this memo is NOT'.
+      source: output
+      needle: What this memo is NOT
+- id: C33
+  category: content
+  fatal: false
+  text: The memo carries the cite-verification notice that framework rules, cases, or statutes suggested were AI-generated and have not been verified.
+  anchor: Search the memo output for 'Cite verification'.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Cite verification
+    llm:
+      question: The memo carries the cite-verification notice that framework rules, cases, or statutes suggested were AI-generated and have not been verified.
+      evidence: Search the memo output for 'Cite verification'.
+      source: output
+      needle: Cite verification
+- id: C34
+  category: content
+  fatal: false
+  text: Suggested citations are tagged with a source-attribution tag (e.g., [Westlaw], [CourtListener], [web search — verify], [model knowledge — verify], or [user provided]).
+  anchor: Search the memo output for one of the five source tags, e.g., '[Westlaw]'.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: '[Westlaw]'
+    llm:
+      question: Suggested citations are tagged with a source-attribution tag (e.g., [Westlaw], [CourtListener], [web search — verify], [model knowledge — verify], or [user provided]).
+      evidence: Search the memo output for one of the five source tags, e.g., '[Westlaw]'.
+      source: output
+      needle: '[Westlaw]'
+- id: C36
+  category: boundary
+  fatal: false
+  text: When a research query returns few or no results for a needed rule, the agent says so and stops, offering options (broaden query, try another tool, web search with verify tag, or leave [RULE TO VERIFY])
+    instead of silently filling the gap.
+  anchor: Inspect the agent's final output and any research tool results for the thin-coverage handling script.
+  judge: llm
+  check:
+    question: When a research query returns few or no results for a needed rule, the agent says so and stops, offering options (broaden query, try another tool, web search with verify tag, or leave [RULE
+      TO VERIFY]) instead of silently filling the gap.
+    evidence: Inspect the agent's final output and any research tool results for the thin-coverage handling script.
+- id: C37
+  category: content
+  fatal: false
+  text: The output closes with a next-steps decision tree (draft X / escalate / get more facts / watch and wait / something else) for the user to pick the branch.
+  anchor: Search the end of the memo output for the decision tree.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: decision tree
+    llm:
+      question: The output closes with a next-steps decision tree (draft X / escalate / get more facts / watch and wait / something else) for the user to pick the branch.
+      evidence: Search the end of the memo output for the decision tree.
+      source: output
+      needle: decision tree
+- id: C38
+  category: negative
+  fatal: true
+  text: The agent does not write the student's analysis, provide verified rules, or reach conclusions — the [STUDENT ANALYSIS]/[STUDENT CONCLUSION] blocks remain prompts.
+  anchor: Read the memo output and confirm the student blocks are left as prompts, not filled conclusions.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: '[STUDENT CONCLUSION'
+    llm:
+      question: The agent does not write the student's analysis, provide verified rules, or reach conclusions — the [STUDENT ANALYSIS]/[STUDENT CONCLUSION] blocks remain prompts.
+      evidence: Read the memo output and confirm the student blocks are left as prompts, not filled conclusions.
+      source: output
+      needle: '[STUDENT CONCLUSION'
+- id: C39
+  category: boundary
+  fatal: false
+  text: If no supervisor guide exists or it sets no posture, the agent degrades gracefully to the default 'guide' posture rather than failing or inventing a posture.
+  anchor: Check the agent's output for a declared 'Pedagogy mode' even when the external guide is absent from the sandbox.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Pedagogy mode
+    llm:
+      question: If no supervisor guide exists or it sets no posture, the agent degrades gracefully to the default 'guide' posture rather than failing or inventing a posture.
+      evidence: Check the agent's output for a declared 'Pedagogy mode' even when the external guide is absent from the sandbox.
+      source: output
+      needle: Pedagogy mode

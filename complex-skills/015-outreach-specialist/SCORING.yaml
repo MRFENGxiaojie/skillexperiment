@@ -1,0 +1,177 @@
+skill: 015-outreach-specialist
+version: 2
+total_items: 12
+criteria:
+- id: C04
+  category: process
+  fatal: false
+  text: The two reference files are read in Step 1 order (outreach-templates.md then sequence-strategy.md) before FOUNDER_CONTEXT.md is read in Step 2.
+  anchor: Inspect tool_log for the relative ordering of the three Read calls.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_order
+      cmds:
+      - references/outreach-templates.md
+      - references/sequence-strategy.md
+      - FOUNDER_CONTEXT
+    llm:
+      question: The two reference files are read in Step 1 order (outreach-templates.md then sequence-strategy.md) before FOUNDER_CONTEXT.md is read in Step 2.
+      evidence: Inspect tool_log for the relative ordering of the three Read calls.
+      source: tool_log
+      pattern: references/outreach-templates.md|references/sequence-strategy.md|FOUNDER_CONTEXT
+- id: C07
+  category: termination
+  fatal: false
+  text: The agent asks at most 5 diagnostic questions and stops asking as soon as it has enough information to write a confident sequence.
+  anchor: Count questions asked across the agent's transcript.
+  judge: llm
+  check:
+    question: The agent asks at most 5 diagnostic questions and stops asking as soon as it has enough information to write a confident sequence.
+    evidence: Count questions asked across the agent's transcript.
+- id: C08
+  category: format
+  fatal: false
+  text: The output opens with the '## Outreach Sequence' heading.
+  anchor: Look in the agent's final output for the heading line.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: '## Outreach Sequence'
+    llm:
+      question: The output opens with the '## Outreach Sequence' heading.
+      evidence: Look in the agent's final output for the heading line.
+      source: output
+      needle: '## Outreach Sequence'
+- id: C14
+  category: content
+  fatal: false
+  text: The value proposition of roughly 40% lower data-labeling cost is included in the outreach.
+  anchor: Search the final output for the cost-reduction percentage.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: numeric_threshold
+      in: output
+      key: 40%
+      op: eq
+      n: 40
+    llm:
+      question: The value proposition of roughly 40% lower data-labeling cost is included in the outreach.
+      evidence: Search the final output for the cost-reduction percentage.
+      source: output
+      needle: 40%
+- id: C15
+  category: content
+  fatal: false
+  text: 'At least one message includes the approved case study with specific numbers: monthly labeling cost cut from about 24,000 to about 15,000 RMB within 6 weeks.'
+  anchor: Search the message bodies for the post-reduction monthly figure.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: numeric_threshold
+      in: output
+      key: 15,000
+      op: eq
+      n: 15000
+    llm:
+      question: 'At least one message includes the approved case study with specific numbers: monthly labeling cost cut from about 24,000 to about 15,000 RMB within 6 weeks.'
+      evidence: Search the message bodies for the post-reduction monthly figure.
+      source: output
+      needle: 15,000
+- id: C18
+  category: content
+  fatal: false
+  text: Follow-up timing follows the recommended spacing, with Message 2 on Day 3-4 and Message 3 on Day 7-10.
+  anchor: Search the output for the Day 3-4 label.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Day 3-4
+    llm:
+      question: Follow-up timing follows the recommended spacing, with Message 2 on Day 3-4 and Message 3 on Day 7-10.
+      evidence: Search the output for the Day 3-4 label.
+      source: output
+      needle: Day 3-4
+- id: C20
+  category: content
+  fatal: false
+  text: The company is referred to consistently as LabelWorks, per FOUNDER_CONTEXT.md.
+  anchor: Search the final output for the company name.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: LabelWorks
+    llm:
+      question: The company is referred to consistently as LabelWorks, per FOUNDER_CONTEXT.md.
+      evidence: Search the final output for the company name.
+      source: output
+      needle: LabelWorks
+- id: C21
+  category: content
+  fatal: false
+  text: Any assumptions and defaults used (e.g., English-language messages, default sequence structure) are documented in the output.
+  anchor: Search the final output for an assumptions note.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: assum
+    llm:
+      question: Any assumptions and defaults used (e.g., English-language messages, default sequence structure) are documented in the output.
+      evidence: Search the final output for an assumptions note.
+      source: output
+      needle: assum
+- id: C22
+  category: negative
+  fatal: false
+  text: No em dash character (—) appears in any message body.
+  anchor: Scan the message body lines of the final output for the em dash character, ignoring structural headings.
+  judge: llm
+  check:
+    question: No em dash character (—) appears in any message body.
+    evidence: Scan the message body lines of the final output for the em dash character, ignoring structural headings.
+- id: C25
+  category: negative
+  fatal: false
+  text: The first message contains no exclamation marks.
+  anchor: Scan the first message body for '!'.
+  judge: llm
+  check:
+    question: The first message contains no exclamation marks.
+    evidence: Scan the first message body for '!'.
+- id: C33
+  category: process
+  fatal: false
+  text: The agent's template selection logic matches the situation, with the final message explicitly chosen as a breakup/last-touch close.
+  anchor: Search the agent's commentary around the output for the breakup template rationale.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: breakup
+    llm:
+      question: The agent's template selection logic matches the situation, with the final message explicitly chosen as a breakup/last-touch close.
+      evidence: Search the agent's commentary around the output for the breakup template rationale.
+      source: output
+      needle: breakup
+- id: C35
+  category: evidence
+  fatal: false
+  text: The agent performs the quality-checklist self-verification (sound human, one CTA, distinct angles, platform limits, personalization) and revises before presenting the final output.
+  anchor: Look in the agent's working process for a self-check or revision step before the final output.
+  judge: llm
+  check:
+    question: The agent performs the quality-checklist self-verification (sound human, one CTA, distinct angles, platform limits, personalization) and revises before presenting the final output.
+    evidence: Look in the agent's working process for a self-check or revision step before the final output.

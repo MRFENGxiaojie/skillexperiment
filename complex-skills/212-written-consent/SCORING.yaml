@@ -1,0 +1,294 @@
+skill: 212-written-consent
+version: 2
+total_items: 21
+criteria:
+- id: C01
+  category: process
+  fatal: false
+  text: The agent reads the practice-level corporate-legal config (~/.claude/plugins/config/claude-for-legal/corporate-legal/CLAUDE.md) to load the Board & Secretary context (consents repository, house
+    resolution language, state of incorporation, board composition) before drafting.
+  anchor: Tool log — a Read (or reference) call whose path/args contain 'corporate-legal'.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_contains
+      cmd: corporate-legal
+    llm:
+      question: The agent reads the practice-level corporate-legal config (~/.claude/plugins/config/claude-for-legal/corporate-legal/CLAUDE.md) to load the Board & Secretary context (consents repository,
+        house resolution language, state of incorporation, board composition) before drafting.
+      evidence: Tool log — a Read (or reference) call whose path/args contain 'corporate-legal'.
+      source: tool_log
+      pattern: corporate-legal
+- id: C03
+  category: content
+  fatal: false
+  text: The agent classifies the bank-account-opening action as Routine (bank account authorization / signatory update) rather than a review-flag major one-off.
+  anchor: Final output — the action-classification statement before the precedent search.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: routine
+    llm:
+      question: The agent classifies the bank-account-opening action as Routine (bank account authorization / signatory update) rather than a review-flag major one-off.
+      evidence: Final output — the action-classification statement before the precedent search.
+      source: output
+      needle: routine
+- id: C06
+  category: content
+  fatal: false
+  text: The agent flags that Director Li (李总) has a business relationship with China Merchants Bank and identifies it as a potential director conflict of interest to be addressed in the consent.
+  anchor: Final output — 李总 appears in the conflict discussion or in the consent/checklist.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: General Manager Li|Mr. Li|Director Li
+    llm:
+      question: The agent flags that Director Li (李总) has a business relationship with China Merchants Bank and identifies it as a potential director conflict of interest to be addressed in the consent.
+      evidence: Final output — 李总 appears in the conflict discussion or in the consent/checklist.
+      source: output
+      needle: General Manager Li|Mr. Li|Director Li
+- id: C07
+  category: boundary
+  fatal: false
+  text: The agent flags Director Li's business relationship with the bank as a potential director conflict, records it in the consent/checklist, and notes that whether Li may sign (disclosure vs. recusal) is for the attorney — without stopping to ask the user.
+  anchor: Final output — the Conflict disclosures line names Li, and the draft notes that whether Li may sign is for the attorney.
+  judge: llm
+  check:
+    question: The agent flags Director Li's business relationship with the bank as a potential director conflict, records it in the consent/checklist, and notes that whether Li may sign (disclosure vs. recusal) is for the attorney — without stopping to ask the user.
+    evidence: Final output — the Conflict disclosures line names Li, and the draft notes that whether Li may sign is for the attorney.
+- id: C08
+  category: content
+  fatal: false
+  text: The signatory checklist includes a conflict-disclosures line recording Director Li's disclosed interest.
+  anchor: Final output — the 'Conflict disclosures:' line in the signatory checklist names Li.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Conflict disclosures
+    llm:
+      question: The signatory checklist includes a conflict-disclosures line recording Director Li's disclosed interest.
+      evidence: Final output — the 'Conflict disclosures:' line in the signatory checklist names Li.
+      source: output
+      needle: Conflict disclosures
+- id: C10
+  category: termination
+  fatal: false
+  text: With no consents repository or seed consent available, the agent notes the lack of a precedent and proceeds with a house-format draft, flagging that the format should be checked against a prior consent; it does not stop to ask.
+  anchor: Final output — a note that no precedent was available, followed by a completed draft; applies only when no precedent exists.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: precedent
+    llm:
+      question: With no consents repository or seed consent available, the agent notes the lack of a precedent and proceeds with a house-format draft, flagging that the format should be checked against a prior consent; it does not stop to ask.
+      evidence: Final output — a note that no precedent was available, followed by a completed draft; applies only when no precedent exists.
+      source: output
+      needle: precedent
+- id: C12
+  category: format
+  fatal: false
+  text: The consent draft is headed with the house title 'UNANIMOUS WRITTEN CONSENT'.
+  anchor: Final output — top of the consent draft.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: UNANIMOUS WRITTEN CONSENT
+    llm:
+      question: The consent draft is headed with the house title 'UNANIMOUS WRITTEN CONSENT'.
+      evidence: Final output — top of the consent draft.
+      source: output
+      needle: UNANIMOUS WRITTEN CONSENT
+- id: C16
+  category: format
+  fatal: false
+  text: The consent draft includes 'RESOLVED FURTHER' clauses covering implementing and ratifying authority.
+  anchor: Final output — the further-resolutions section of the draft.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: RESOLVED FURTHER
+    llm:
+      question: The consent draft includes 'RESOLVED FURTHER' clauses covering implementing and ratifying authority.
+      evidence: Final output — the further-resolutions section of the draft.
+      source: output
+      needle: RESOLVED FURTHER
+- id: C17
+  category: format
+  fatal: false
+  text: The consent draft includes the counterparts clause providing that it may be executed in counterparts and that electronic signatures are deemed originals.
+  anchor: Final output — the execution/counterparts paragraph of the draft.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: counterparts
+    llm:
+      question: The consent draft includes the counterparts clause providing that it may be executed in counterparts and that electronic signatures are deemed originals.
+      evidence: Final output — the execution/counterparts paragraph of the draft.
+      source: output
+      needle: counterparts
+- id: C18
+  category: coverage
+  fatal: false
+  text: The consent draft includes a signature block for each of the three directors (the full board), with name, title, and date.
+  anchor: Final output — the signature-block section of the draft lists three signatories.
+  judge: llm
+  check:
+    question: The consent draft includes a signature block for each of the three directors (the full board), with name, title, and date.
+    evidence: Final output — the signature-block section of the draft lists three signatories.
+- id: C19
+  category: content
+  fatal: false
+  text: 'The operative resolution is precise: it names the bank and the specific officers authorized to execute the account-opening documents, rather than a vague approval of the transaction.'
+  anchor: Final output — the operative resolution's authorization language.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: authorized
+    llm:
+      question: 'The operative resolution is precise: it names the bank and the specific officers authorized to execute the account-opening documents, rather than a vague approval of the transaction.'
+      evidence: Final output — the operative resolution's authorization language.
+      source: output
+      needle: authorized
+- id: C22
+  category: content
+  fatal: false
+  text: The draft recites that the consent is adopted in lieu of a meeting pursuant to the Delaware General Corporation Law (the applicable statute section).
+  anchor: Final output — the consent's statutory-authority recital.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: General Corporation Law
+    llm:
+      question: The draft recites that the consent is adopted in lieu of a meeting pursuant to the Delaware General Corporation Law (the applicable statute section).
+      evidence: Final output — the consent's statutory-authority recital.
+      source: output
+      needle: General Corporation Law
+- id: C23
+  category: termination
+  fatal: true
+  text: The agent does not block at the consequential-action gate; it produces the consent in DRAFT-for-attorney-review form with the attorney brief, rather than waiting for an interactive attorney-review confirmation.
+  anchor: Final output — the draft carries an attorney-review brief instead of a blocking confirmation.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: attorney
+    llm:
+      question: The agent does not block at the consequential-action gate; it produces the consent in DRAFT-for-attorney-review form with the attorney brief, rather than waiting for an interactive attorney-review confirmation.
+      evidence: Final output — the draft carries an attorney-review brief instead of a blocking confirmation.
+      source: output
+      needle: attorney
+- id: C25
+  category: coverage
+  fatal: false
+  text: The signatory checklist lists all three directors as required signatories (unanimous consent required), consistent with the board composition.
+  anchor: Final output — the 'Required signatories' list in the checklist covers the three-member board.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Required signatories
+    llm:
+      question: The signatory checklist lists all three directors as required signatories (unanimous consent required), consistent with the board composition.
+      evidence: Final output — the 'Required signatories' list in the checklist covers the three-member board.
+      source: output
+      needle: Required signatories
+- id: C26
+  category: format
+  fatal: false
+  text: The output includes the review-prompts section headed 'BEFORE CIRCULATING — check'.
+  anchor: Final output — the review-prompts checklist section.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: BEFORE CIRCULATING
+    llm:
+      question: The output includes the review-prompts section headed 'BEFORE CIRCULATING — check'.
+      evidence: Final output — the review-prompts checklist section.
+      source: output
+      needle: BEFORE CIRCULATING
+- id: C27
+  category: format
+  fatal: false
+  text: The consent draft carries the pre-execution note that it is a draft for attorney review, not an executed consent, and must not be circulated for signature unreviewed.
+  anchor: Final output — the pre-execution note attached to the draft.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: draft for attorney review
+    llm:
+      question: The consent draft carries the pre-execution note that it is a draft for attorney review, not an executed consent, and must not be circulated for signature unreviewed.
+      evidence: Final output — the pre-execution note attached to the draft.
+      source: output
+      needle: draft for attorney review
+- id: C28
+  category: content
+  fatal: false
+  text: The output closes with next-steps guidance / a decision tree for how to proceed with the consent, customized to the action just drafted.
+  anchor: Final output — the closing next-steps section.
+  judge: llm
+  check:
+    question: The output closes with next-steps guidance / a decision tree for how to proceed with the consent, customized to the action just drafted.
+    evidence: Final output — the closing next-steps section.
+- id: C29
+  category: process
+  fatal: false
+  text: The agent confirms the effective date of the consent (today, per the user's request) rather than leaving the date ambiguous.
+  anchor: Final output — the effective-date confirmation during intake or the dated draft.
+  judge: llm
+  check:
+    question: The agent confirms the effective date of the consent (today, per the user's request) rather than leaving the date ambiguous.
+    evidence: Final output — the effective-date confirmation during intake or the dated draft.
+- id: C30
+  category: negative
+  fatal: false
+  text: The agent does NOT determine whether the action legally requires board approval or advise on director fiduciary duties — those questions are flagged for the attorney.
+  anchor: Final output — the agent flags rather than opines on legal-requirement/fiduciary questions.
+  judge: llm
+  check:
+    question: The agent does NOT determine whether the action legally requires board approval or advise on director fiduciary duties — those questions are flagged for the attorney.
+    evidence: Final output — the agent flags rather than opines on legal-requirement/fiduciary questions.
+- id: C31
+  category: process
+  fatal: false
+  text: The agent confirms that the signatories are the full board of three directors (not a committee) before producing the signatory list.
+  anchor: Final output — the signatories confirmation during intake.
+  judge: llm
+  check:
+    question: The agent confirms that the signatories are the full board of three directors (not a committee) before producing the signatory list.
+    evidence: Final output — the signatories confirmation during intake.
+- id: C32
+  category: boundary
+  fatal: false
+  text: If the agent cannot confirm a state-law rule (unanimity, notice, signature form, charter/bylaw override), it flags the uncertainty for attorney verification rather than asserting the rule as settled.
+  anchor: Final output — the State-law notice or analysis flags any unconfirmed rule for attorney verification.
+  judge: llm
+  check:
+    question: If the agent cannot confirm a state-law rule (unanimity, notice, signature form, charter/bylaw override), it flags the uncertainty for attorney verification rather than asserting the rule
+      as settled.
+    evidence: Final output — the State-law notice or analysis flags any unconfirmed rule for attorney verification.

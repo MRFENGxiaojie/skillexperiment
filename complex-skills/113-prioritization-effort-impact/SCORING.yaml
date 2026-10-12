@@ -1,0 +1,221 @@
+skill: 113-prioritization-effort-impact
+version: 2
+total_items: 15
+criteria:
+- id: C04
+  category: content
+  fatal: false
+  text: The deliverable scores the actual CSV feature item 积分商城接入微信支付.
+  anchor: 'final output: scoring table or quadrant listing referencing this item'
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_contains
+      needle: WeChat Pay integration for the points mall|points mall WeChat Pay integration|Integrate WeChat Pay into points mall|WeChat Pay.*points mall
+    llm:
+      question: The deliverable scores the actual CSV feature item 积分商城接入微信支付.
+      evidence: 'tool_log: the build/generation step references this item'
+      source: tool_log
+      pattern: WeChat Pay integration for the points mall|points mall WeChat Pay integration|Integrate WeChat Pay into points mall|WeChat Pay.*points mall
+- id: C05
+  category: content
+  fatal: false
+  text: The deliverable scores the actual CSV bug 结算页运费计算错误.
+  anchor: 'final output: scoring table or quadrant listing referencing this bug'
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_contains
+      needle: shipping fee not recalculated|shipping cost calculation error|shipping fee recalculation|shipping.*recalculation
+    llm:
+      question: The deliverable scores the actual CSV bug 结算页运费计算错误.
+      evidence: 'tool_log: the build/generation step references this bug'
+      source: tool_log
+      pattern: shipping fee not recalculated|shipping cost calculation error|shipping fee recalculation|shipping.*recalculation
+- id: C07
+  category: content
+  fatal: false
+  text: Impact is evaluated on the revenue-impact dimension (收入影响).
+  anchor: 'final output: impact-scoring description mentioning 收入影响'
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: revenue impact
+    llm:
+      question: Impact is evaluated on the revenue-impact dimension (收入影响).
+      evidence: 'final output: impact-scoring description mentioning 收入影响'
+      source: output
+      needle: revenue impact
+- id: C10
+  category: content
+  fatal: false
+  text: The deliverable documents a per-item scoring rationale (评分依据) rather than bare scores.
+  anchor: 'final output: scoring table Notes/Rationale column or rationale section'
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: scoring rationale|scoring basis
+    llm:
+      question: The deliverable documents a per-item scoring rationale (评分依据) rather than bare scores.
+      evidence: 'final output: scoring table Notes/Rationale column or rationale section'
+      source: output
+      needle: scoring rationale|scoring basis
+- id: C11
+  category: format
+  fatal: false
+  text: The deliverable plots items on a 2x2 effort-impact matrix and labels the quick wins quadrant.
+  anchor: 'final output: quadrant/matrix section using the skill''s quadrant label'
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: quick wins
+    llm:
+      question: The deliverable plots items on a 2x2 effort-impact matrix and labels the quick wins quadrant.
+      evidence: 'final output: quadrant/matrix section using the skill''s quadrant label'
+      source: output
+      needle: quick wins
+- id: C12
+  category: content
+  fatal: false
+  text: The deliverable explicitly identifies the items that should not be touched (time sinks, 根本不该碰).
+  anchor: 'final output: quadrant or rejected/deferred section naming the don''t-touch items'
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: should not touch|don
+    llm:
+      question: The deliverable explicitly identifies the items that should not be touched (time sinks, 根本不该碰).
+      evidence: 'final output: quadrant or rejected/deferred section naming the don''t-touch items'
+      source: output
+      needle: should not touch|don
+- id: C14
+  category: content
+  fatal: false
+  text: The deliverable flags high-effort high-impact items (大投入) that require dedicated scheduling.
+  anchor: 'final output: big-bets discussion mentioning 大投入'
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: large investment
+    llm:
+      question: The deliverable flags high-effort high-impact items (大投入) that require dedicated scheduling.
+      evidence: 'final output: big-bets discussion mentioning 大投入'
+      source: output
+      needle: large investment
+- id: C15
+  category: evidence
+  fatal: false
+  text: The agent self-checks the deliverable against the bundled evaluator rubric_prioritization_effort_impact.json.
+  anchor: 'final output: a validation/self-assessment note citing the rubric file'
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_contains
+      needle: rubric_prioritization_effort_impact.json
+    llm:
+      question: The agent self-checks the deliverable against the bundled evaluator rubric_prioritization_effort_impact.json.
+      evidence: 'tool_log: a validation/self-assessment step referencing the rubric file'
+      source: tool_log
+      pattern: rubric_prioritization_effort_impact.json
+- id: C16
+  category: process
+  fatal: false
+  text: The agent reads the bundled evaluator resources/evaluators/rubric_prioritization_effort_impact.json during the run.
+  anchor: 'tool_log: a Read call whose path includes rubric_prioritization_effort_impact.json'
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_contains
+      cmd: rubric_prioritization_effort_impact.json
+    llm:
+      question: The agent reads the bundled evaluator resources/evaluators/rubric_prioritization_effort_impact.json during the run.
+      evidence: 'tool_log: a Read call whose path includes rubric_prioritization_effort_impact.json'
+      source: tool_log
+      pattern: rubric_prioritization_effort_impact.json
+- id: C17
+  category: process
+  fatal: false
+  text: Data gathering (reading the CSV) occurs before validation (reading the evaluator rubric).
+  anchor: 'tool_log: order of Read calls — CSV first, rubric second'
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_order
+      cmds:
+      - backlog-items.csv
+      - rubric_prioritization_effort_impact.json
+    llm:
+      question: Data gathering (reading the CSV) occurs before validation (reading the evaluator rubric).
+      evidence: 'tool_log: order of Read calls — CSV first, rubric second'
+      source: tool_log
+      pattern: backlog-items.csv|rubric_prioritization_effort_impact.json
+- id: C18
+  category: content
+  fatal: false
+  text: The roadmap sequences quick wins first, big bets second, and defers or rejects time sinks.
+  anchor: 'final output: roadmap ordering by quadrant'
+  judge: llm
+  check:
+    question: The roadmap sequences quick wins first, big bets second, and defers or rejects time sinks.
+    evidence: 'final output: roadmap ordering by quadrant'
+- id: C20
+  category: coverage
+  fatal: true
+  text: All 42 backlog items are scored on both effort and impact; none is omitted.
+  anchor: 'final output: scoring table completeness across all 42 CSV rows'
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: numeric_threshold
+      in: output
+      key: '42'
+      op: eq
+      n: 42
+    llm:
+      question: All 42 backlog items are scored on both effort and impact; none is omitted.
+      evidence: 'final output: scoring table completeness across all 42 CSV rows'
+      source: output
+      needle: '42'
+- id: C21
+  category: negative
+  fatal: true
+  text: Items are not ranked in original CSV order; the order follows scored effort/impact priority.
+  anchor: 'final output: roadmap order vs. input CSV order'
+  judge: llm
+  check:
+    question: Items are not ranked in original CSV order; the order follows scored effort/impact priority.
+    evidence: 'final output: roadmap order vs. input CSV order'
+- id: C22
+  category: negative
+  fatal: true
+  text: Effort/impact scores are differentiated — not all items receive identical scores.
+  anchor: 'final output: score distribution across the scoring table'
+  judge: llm
+  check:
+    question: Effort/impact scores are differentiated — not all items receive identical scores.
+    evidence: 'final output: score distribution across the scoring table'
+- id: C23
+  category: negative
+  fatal: false
+  text: The agent does not fabricate scores or stakeholder input beyond what the CSV descriptions support.
+  anchor: 'final output: scoring rationale grounded in the CSV descriptions'
+  judge: llm
+  check:
+    question: The agent does not fabricate scores or stakeholder input beyond what the CSV descriptions support.
+    evidence: 'final output: scoring rationale grounded in the CSV descriptions'

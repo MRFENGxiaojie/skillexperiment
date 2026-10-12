@@ -1,0 +1,236 @@
+skill: 221-amendment-history
+version: 2
+total_items: 17
+criteria:
+- id: C01
+  category: content
+  fatal: true
+  text: The final output includes a Mode 1 overall-change summary headed '# Amendment History:'.
+  anchor: Final agent output (agent_output file) — look for the Mode 1 heading line.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: '# Amendment History:|# Provision Trace:'
+    llm:
+      question: The final output includes an amendment-history summary headed '# Amendment History:' (Mode 1) or a provision trace headed '# Provision Trace:' (Mode 2), matching the task's mode.
+      evidence: Final agent output (agent_output file) — look for the Mode 1 heading line.
+      source: output
+      needle: '# Amendment History:|# Provision Trace:'
+- id: C02
+  category: content
+  fatal: true
+  text: The final output includes a Mode 2 provision trace headed '# Provision Trace:'.
+  anchor: Final agent output (agent_output file) — look for the Mode 2 heading line.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: '# Provision Trace:'
+    llm:
+      question: The final output includes a Mode 2 provision trace headed '# Provision Trace:'.
+      evidence: Final agent output (agent_output file) — look for the Mode 2 heading line.
+      source: output
+      needle: '# Provision Trace:'
+- id: C05
+  category: format
+  fatal: false
+  text: The Mode 1 summary contains a 'Net current state' section per the template.
+  anchor: Mode 1 section of the final output.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Net current state|Current controlling language
+    llm:
+      question: 'The output includes the mode-appropriate current-state section: ''Net current state'' (Mode 1) or ''Current controlling language'' (Mode 2).'
+      evidence: Mode 1 section of the final output.
+      source: output
+      needle: Net current state|Current controlling language
+- id: C08
+  category: content
+  fatal: true
+  text: The trace quotes the earlier 'Was' indemnification cap verbatim as '累计赔偿总额不超过本协议项下十二（12）个月的服务费' (the 12-month service-fee cap introduced by msa-v2).
+  anchor: Was/Now transition for the 2022 amendment in the Mode 2 trace.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: twelve (12) months of service fees
+    llm:
+      question: The trace quotes the earlier 'Was' indemnification cap verbatim as '累计赔偿总额不超过本协议项下十二（12）个月的服务费' (the 12-month service-fee cap introduced by msa-v2).
+      evidence: Was/Now transition for the 2022 amendment in the Mode 2 trace.
+      source: output
+      needle: twelve (12) months of service fees
+- id: C12
+  category: content
+  fatal: false
+  text: The output identifies the first amendment (msa-v2) by its revision date 2022-09-30.
+  anchor: Chronological change entries in Mode 1 or the amendment entries in Mode 2.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: 2022-09-30|September 30, 2022
+    llm:
+      question: The output identifies the first amendment (msa-v2) by its revision date 2022-09-30.
+      evidence: Chronological change entries in Mode 1 or the amendment entries in Mode 2.
+      source: output
+      needle: 2022-09-30|September 30, 2022
+- id: C16
+  category: process
+  fatal: false
+  text: The source documents are read in chronological order — the 2023 markup draft is read before the 2024 consolidated version.
+  anchor: Tool call log — order of Read operations on the source text files.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_order
+      cmds:
+      - msa-markup.pdf.md
+      - msa-final.pdf.md
+    llm:
+      question: The source documents are read in chronological order — the 2023 markup draft is read before the 2024 consolidated version.
+      evidence: Tool call log — order of Read operations on the source text files.
+      source: tool_log
+      pattern: msa-markup.pdf.md|msa-final.pdf.md
+- id: C18
+  category: content
+  fatal: false
+  text: The output flags the numbering anomaly that msa-v2 labels itself '第二次修订' (second revision) although it is the first amendment provided.
+  anchor: Watch items section of the output.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: second revision|second amendment
+    llm:
+      question: The output flags the numbering anomaly that msa-v2 labels itself '第二次修订' (second revision) although it is the first amendment provided.
+      evidence: Watch items section of the output.
+      source: output
+      needle: second revision|second amendment
+- id: C19
+  category: format
+  fatal: false
+  text: For each amendment that touched the provision, the Mode 2 trace shows the before/after transition with 'Was:' and 'Now:' labels.
+  anchor: Amendment entries inside the Mode 2 trace.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: 'Now:'
+    llm:
+      question: For each amendment that touched the provision, the Mode 2 trace shows the before/after transition with 'Was:' and 'Now:' labels.
+      evidence: Amendment entries inside the Mode 2 trace.
+      source: output
+      needle: 'Now:'
+- id: C21
+  category: negative
+  fatal: false
+  text: The agent does not decide which document controls on a conflict; it flags the conflict and routes the question to Legal.
+  anchor: Output watch items and any conflict discussion — should flag and defer, not adjudicate.
+  judge: llm
+  check:
+    question: The agent does not decide which document controls on a conflict; it flags the conflict and routes the question to Legal.
+    evidence: Output watch items and any conflict discussion — should flag and defer, not adjudicate.
+- id: C22
+  category: negative
+  fatal: false
+  text: The agent does not draft new amendments or propose replacement contract language beyond quoting.
+  anchor: Final output — no drafted amendment language.
+  judge: llm
+  check:
+    question: The agent does not draft new amendments or propose replacement contract language beyond quoting.
+    evidence: Final output — no drafted amendment language.
+- id: C23
+  category: negative
+  fatal: false
+  text: The agent does not compare the agreement against the commercial playbook; the analysis stays purely historical.
+  anchor: Final output scope — no playbook compliance assessment.
+  judge: llm
+  check:
+    question: The agent does not compare the agreement against the commercial playbook; the analysis stays purely historical.
+    evidence: Final output scope — no playbook compliance assessment.
+- id: C24
+  category: negative
+  fatal: false
+  text: The agent quotes ambiguous provision language exactly and flags the ambiguity for Legal rather than interpreting it.
+  anchor: Output quotes vs. source text; any ambiguous wording is flagged, not construed.
+  judge: llm
+  check:
+    question: The agent quotes ambiguous provision language exactly and flags the ambiguity for Legal rather than interpreting it.
+    evidence: Output quotes vs. source text; any ambiguous wording is flagged, not construed.
+- id: C25
+  category: coverage
+  fatal: false
+  text: After delivering the output, the agent offers follow-ups including tracing another provision and a stakeholder summary of the key changes.
+  anchor: Closing message of the final output.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: stakeholder summary
+    llm:
+      question: After delivering the output, the agent offers follow-ups including tracing another provision and a stakeholder summary of the key changes.
+      evidence: Closing message of the final output.
+      source: output
+      needle: stakeholder summary
+- id: C26
+  category: coverage
+  fatal: false
+  text: The output closes with a next-steps decision tree customized to the analysis just produced.
+  anchor: End of the final output.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: decision tree
+    llm:
+      question: The output closes with a next-steps decision tree customized to the analysis just produced.
+      evidence: End of the final output.
+      source: output
+      needle: decision tree
+- id: C27
+  category: negative
+  fatal: false
+  text: The agent does not ask the user to choose between Mode 1 and Mode 2, because the request explicitly asks for both a summary and a provision trace.
+  anchor: Agent's opening response and clarifying questions — no unnecessary mode-selection prompt.
+  judge: llm
+  check:
+    question: The agent does not ask the user to choose between Mode 1 and Mode 2, because the request explicitly asks for both a summary and a provision trace.
+    evidence: Agent's opening response and clarifying questions — no unnecessary mode-selection prompt.
+- id: C29
+  category: process
+  fatal: false
+  text: The agent prepends the work-product header and treats the output as privileged/confidential (distributed only within the privilege circle).
+  anchor: Top of the final output — a work-product/privilege header line.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Attorney Work Product
+    llm:
+      question: The agent prepends the work-product header and treats the output as privileged/confidential (distributed only within the privilege circle).
+      evidence: Top of the final output — a work-product/privilege header line.
+      source: output
+      needle: Attorney Work Product
+- id: C30
+  category: process
+  fatal: false
+  text: The agent builds a working index (document type, execution date, parties, provisions modified/added/deleted) and uses it internally rather than presenting it as the deliverable.
+  anchor: Agent workflow description; the deliverable is the report, not the raw index.
+  judge: llm
+  check:
+    question: The agent builds a working index (document type, execution date, parties, provisions modified/added/deleted) and uses it internally rather than presenting it as the deliverable.
+    evidence: Agent workflow description; the deliverable is the report, not the raw index.

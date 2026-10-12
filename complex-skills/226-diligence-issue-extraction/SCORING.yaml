@@ -1,0 +1,620 @@
+skill: 226-diligence-issue-extraction
+version: 2
+total_items: 40
+criteria:
+- id: C01
+  category: process
+  fatal: false
+  text: Before extracting issues, the agent loads the deal context by reading deal-context.md (for deal AUR-2026).
+  anchor: 'tool_log: a Read call referencing deal-context.md under deals/AUR-2026'
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_contains
+      cmd: deals/AUR-2026/deal-context.md
+    llm:
+      question: Before extracting issues, the agent loads the deal context by reading deal-context.md (for deal AUR-2026).
+      evidence: 'tool_log: a Read call referencing deal-context.md under deals/AUR-2026'
+      source: tool_log
+      pattern: deals/AUR-2026/deal-context.md
+- id: C02
+  category: process
+  fatal: false
+  text: Before extracting issues, the agent loads the house practice config by reading the corporate-legal CLAUDE.md (categories, thresholds, memo format).
+  anchor: 'tool_log: a Read call referencing corporate-legal/CLAUDE.md'
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_contains
+      cmd: corporate-legal/CLAUDE.md
+    llm:
+      question: Before extracting issues, the agent loads the house practice config by reading the corporate-legal CLAUDE.md (categories, thresholds, memo format).
+      evidence: 'tool_log: a Read call referencing corporate-legal/CLAUDE.md'
+      source: tool_log
+      pattern: corporate-legal/CLAUDE.md
+- id: C03
+  category: process
+  fatal: false
+  text: The deal-context load occurs before any VDR document extraction begins.
+  anchor: 'tool_log ordering: deal-context entry appears before the contract-01 read entry'
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_order
+      cmds:
+      - deals/AUR-2026/deal-context.md
+      - contract-01-client-northwind-2M
+    llm:
+      question: The deal-context load occurs before any VDR document extraction begins.
+      evidence: 'tool_log ordering: deal-context entry appears before the contract-01 read entry'
+      source: tool_log
+      pattern: deals/AUR-2026/deal-context.md|contract-01-client-northwind-2M
+- id: C05
+  category: process
+  fatal: false
+  text: The agent builds a VDR inventory mapping request-list categories to VDR folders with document counts, per the 'VDR Inventory' step.
+  anchor: final output inventory section listing category-to-folder mapping (e.g., 01-Corporate)
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: 01-Corporate
+    llm:
+      question: The agent builds a VDR inventory mapping request-list categories to VDR folders with document counts, per the 'VDR Inventory' step.
+      evidence: final output inventory section listing category-to-folder mapping (e.g., 01-Corporate)
+      source: output
+      needle: 01-Corporate
+- id: C06
+  category: coverage
+  fatal: false
+  text: The inventory covers all five request categories (01-Corporate through 05-Litigation), none omitted.
+  anchor: final output inventory lists category 05-Litigation (last of the five)
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: 05-Litigation
+    llm:
+      question: The inventory covers all five request categories (01-Corporate through 05-Litigation), none omitted.
+      evidence: final output inventory lists category 05-Litigation (last of the five)
+      source: output
+      needle: 05-Litigation
+- id: C07
+  category: content
+  fatal: false
+  text: The report flags the 04-Employment request category as having no corresponding VDR content (empty folder).
+  anchor: final output inventory/gaps notes 04-Employment has no documents
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: 04-Employment
+    llm:
+      question: The report flags the 04-Employment request category as having no corresponding VDR content (empty folder).
+      evidence: final output inventory/gaps notes 04-Employment has no documents
+      source: output
+      needle: 04-Employment
+- id: C08
+  category: content
+  fatal: false
+  text: The report flags the 05-Litigation request category as having no corresponding VDR content (empty folder).
+  anchor: final output inventory/gaps notes 05-Litigation has no documents
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: 05-Litigation
+    llm:
+      question: The report flags the 05-Litigation request category as having no corresponding VDR content (empty folder).
+      evidence: final output inventory/gaps notes 05-Litigation has no documents
+      source: output
+      needle: 05-Litigation
+- id: C09
+  category: process
+  fatal: true
+  text: The agent applies the materiality filter (contracts >= $100,000 reviewed top-down by value) instead of reviewing every document.
+  anchor: final output review-scope statement citing the $100,000 threshold
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: 100,000
+    llm:
+      question: The agent applies the materiality filter (contracts >= $100,000 reviewed top-down by value) instead of reviewing every document.
+      evidence: final output review-scope statement citing the $100,000 threshold
+      source: output
+      needle: 100,000
+- id: C10
+  category: boundary
+  fatal: false
+  text: The sub-threshold Harborline contract (contract-10, $80,000) is treated as below the materiality threshold (skimmed/noted), not deep-reviewed.
+  anchor: final output contracts section mentions contract-10 / Harborline as below threshold
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Harborline
+    llm:
+      question: The sub-threshold Harborline contract (contract-10, $80,000) is treated as below the materiality threshold (skimmed/noted), not deep-reviewed.
+      evidence: final output contracts section mentions contract-10 / Harborline as below threshold
+      source: output
+      needle: Harborline
+- id: C11
+  category: termination
+  fatal: false
+  text: Contract review proceeds top-down by stated value and stops once the threshold is reached or the category is exhausted, rather than exhaustively reading the whole category.
+  anchor: semantic — review scope and stop point for the contracts category
+  judge: llm
+  check:
+    question: Contract review proceeds top-down by stated value and stops once the threshold is reached or the category is exhausted, rather than exhaustively reading the whole category.
+    evidence: semantic — review scope and stop point for the contracts category
+- id: C12
+  category: evidence
+  fatal: false
+  text: The agent reads the top major-client contract contract-01-client-northwind-2M.md ($2,000,000).
+  anchor: 'tool_log: Read of contract-01-client-northwind-2M.md'
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_contains
+      cmd: contract-01-client-northwind-2M
+    llm:
+      question: The agent reads the top major-client contract contract-01-client-northwind-2M.md ($2,000,000).
+      evidence: 'tool_log: Read of contract-01-client-northwind-2M.md'
+      source: tool_log
+      pattern: contract-01-client-northwind-2M
+- id: C13
+  category: evidence
+  fatal: false
+  text: The agent reads the second major-client contract contract-02-client-lighthouse-1.8M.md ($1,800,000).
+  anchor: 'tool_log: Read of contract-02-client-lighthouse-1.8M.md'
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_contains
+      cmd: contract-02-client-lighthouse-1.8M
+    llm:
+      question: The agent reads the second major-client contract contract-02-client-lighthouse-1.8M.md ($1,800,000).
+      evidence: 'tool_log: Read of contract-02-client-lighthouse-1.8M.md'
+      source: tool_log
+      pattern: contract-02-client-lighthouse-1.8M
+- id: C14
+  category: evidence
+  fatal: false
+  text: The agent reads the IP ownership file 03-IP/ip-assignments.md.
+  anchor: 'tool_log: Read of ip-assignments.md'
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_contains
+      cmd: ip-assignments.md
+    llm:
+      question: The agent reads the IP ownership file 03-IP/ip-assignments.md.
+      evidence: 'tool_log: Read of ip-assignments.md'
+      source: tool_log
+      pattern: ip-assignments.md
+- id: C15
+  category: evidence
+  fatal: false
+  text: The agent reads the cap table / option plan file cap-table-option-plan.md.
+  anchor: 'tool_log: Read of cap-table-option-plan.md'
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_contains
+      cmd: cap-table-option-plan.md
+    llm:
+      question: The agent reads the cap table / option plan file cap-table-option-plan.md.
+      evidence: 'tool_log: Read of cap-table-option-plan.md'
+      source: tool_log
+      pattern: cap-table-option-plan.md
+- id: C16
+  category: evidence
+  fatal: false
+  text: The agent reads at least four of the twelve contracts (consistent with top-down threshold review).
+  anchor: 'tool_log: count of Read entries referencing contract filenames'
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: count
+      what: contract-
+      op: ge
+      n: 4
+    llm:
+      question: The agent reads at least four of the twelve contracts (consistent with top-down threshold review).
+      evidence: 'tool_log: count of Read entries referencing contract filenames'
+      source: tool_log
+      pattern: contract-
+- id: C18
+  category: content
+  fatal: false
+  text: 'Extracts the Northwind change-of-control issue (contract-01): Northwind may terminate without penalty within 30 days of any change of control of Aurora.'
+  anchor: final output finding on contract-01 change-of-control termination right
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Northwind
+    llm:
+      question: 'Extracts the Northwind change-of-control issue (contract-01): Northwind may terminate without penalty within 30 days of any change of control of Aurora.'
+      evidence: final output finding on contract-01 change-of-control termination right
+      source: output
+      needle: Northwind
+- id: C19
+  category: content
+  fatal: false
+  text: 'Flags the Lighthouse situation (contract-02): the agreement expired 2026-03-31 with no signed renewal in the VDR.'
+  anchor: final output finding on contract-02 expiry / missing renewal
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Lighthouse
+    llm:
+      question: 'Flags the Lighthouse situation (contract-02): the agreement expired 2026-03-31 with no signed renewal in the VDR.'
+      evidence: final output finding on contract-02 expiry / missing renewal
+      source: output
+      needle: Lighthouse
+- id: C20
+  category: content
+  fatal: false
+  text: Extracts the MFN clause issue (Brightpath contract-04 retroactive pricing constraint).
+  anchor: final output finding on contract-04 MFN clause
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: MFN
+    llm:
+      question: Extracts the MFN clause issue (Brightpath contract-04 retroactive pricing constraint).
+      evidence: final output finding on contract-04 MFN clause
+      source: output
+      needle: MFN
+- id: C21
+  category: content
+  fatal: false
+  text: Extracts the exclusivity issue (Vertex contract-03 non-standard exclusivity grant to a competitor).
+  anchor: final output finding on contract-03 exclusivity
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Vertex
+    llm:
+      question: Extracts the exclusivity issue (Vertex contract-03 non-standard exclusivity grant to a competitor).
+      evidence: final output finding on contract-03 exclusivity
+      source: output
+      needle: Vertex
+- id: C22
+  category: content
+  fatal: false
+  text: 'Flags the Westfield issue (contract-09): the required SOC 2 Type II report expired 2026-05 and is not in the VDR.'
+  anchor: final output finding on contract-09 expired SOC 2 report
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: SOC 2
+    llm:
+      question: 'Flags the Westfield issue (contract-09): the required SOC 2 Type II report expired 2026-05 and is not in the VDR.'
+      evidence: final output finding on contract-09 expired SOC 2 report
+      source: output
+      needle: SOC 2
+- id: C23
+  category: content
+  fatal: false
+  text: 'Flags the DataCo issue (contract-12): the data license expired 2026-03-31 while data use in production appears to continue.'
+  anchor: final output finding on contract-12 expired data license
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: DataCo
+    llm:
+      question: 'Flags the DataCo issue (contract-12): the data license expired 2026-03-31 while data use in production appears to continue.'
+      evidence: final output finding on contract-12 expired data license
+      source: output
+      needle: DataCo
+- id: C24
+  category: content
+  fatal: false
+  text: 'Flags the IP ownership gap: founder S. Patel''s IP assignment is not in the VDR although he is an inventor on US Patent 11,254,301.'
+  anchor: final output finding on Patel founder assignment gap
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Patel
+    llm:
+      question: 'Flags the IP ownership gap: founder S. Patel''s IP assignment is not in the VDR although he is an inventor on US Patent 11,254,301.'
+      evidence: final output finding on Patel founder assignment gap
+      source: output
+      needle: Patel
+- id: C25
+  category: content
+  fatal: false
+  text: Flags the contractor IP-assignment gap (three contractors' signed assignments not located in the VDR).
+  anchor: final output finding on contractor IP assignments
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: contractor
+    llm:
+      question: Flags the contractor IP-assignment gap (three contractors' signed assignments not located in the VDR).
+      evidence: final output finding on contractor IP assignments
+      source: output
+      needle: contractor
+- id: C26
+  category: content
+  fatal: false
+  text: Flags the UCC security interest in favor of Valley Capital with no release on file (confirm payoff at closing).
+  anchor: final output finding on Valley Capital UCC filing
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Valley Capital
+    llm:
+      question: Flags the UCC security interest in favor of Valley Capital with no release on file (confirm payoff at closing).
+      evidence: final output finding on Valley Capital UCC filing
+      source: output
+      needle: Valley Capital
+- id: C27
+  category: content
+  fatal: false
+  text: 'Flags the 2020 Equity Incentive Plan gap: shareholder approval documentation is not found in the VDR.'
+  anchor: final output finding on option plan shareholder approval gap
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: option plan|option-plan
+    llm:
+      question: 'Flags the 2020 Equity Incentive Plan gap: shareholder approval documentation is not found in the VDR.'
+      evidence: final output finding on option plan shareholder approval gap
+      source: output
+      needle: option plan|option-plan
+- id: C28
+  category: content
+  fatal: false
+  text: Flags that the independent 409A valuation report (last dated 2024-11) is not in the VDR.
+  anchor: final output finding on missing 409A report
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: 409A
+    llm:
+      question: Flags that the independent 409A valuation report (last dated 2024-11) is not in the VDR.
+      evidence: final output finding on missing 409A report
+      source: output
+      needle: 409A
+- id: C29
+  category: content
+  fatal: false
+  text: 'Flags the shareholders-agreement gap: no written consent requirement for a sale of all or substantially all assets is noted (check bylaws for approval mechanics).'
+  anchor: final output finding on asset-sale consent mechanics in the shareholders agreement
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: shareholders-agreement
+    llm:
+      question: 'Flags the shareholders-agreement gap: no written consent requirement for a sale of all or substantially all assets is noted (check bylaws for approval mechanics).'
+      evidence: final output finding on asset-sale consent mechanics in the shareholders agreement
+      source: output
+      needle: shareholders-agreement
+- id: C30
+  category: content
+  fatal: false
+  text: Performs the successor-liability analysis for the asset deal (seller's post-closing dissolution plan, bulk-sale/fraudulent-transfer exposure, assumed/excluded liabilities schedule coverage).
+  anchor: final output successor-liability section for the asset deal
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: successor
+    llm:
+      question: Performs the successor-liability analysis for the asset deal (seller's post-closing dissolution plan, bulk-sale/fraudulent-transfer exposure, assumed/excluded liabilities schedule coverage).
+      evidence: final output successor-liability section for the asset deal
+      source: output
+      needle: successor
+- id: C31
+  category: format
+  fatal: false
+  text: 'Findings are stated in the house memo format with the fields Issue #N, Category, Severity, Documents, Finding, Recommendation.'
+  anchor: final output findings contain the Recommendation field (and the other memo fields)
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Recommendation
+    llm:
+      question: 'Findings are stated in the house memo format with the fields Issue #N, Category, Severity, Documents, Finding, Recommendation.'
+      evidence: final output findings contain the Recommendation field (and the other memo fields)
+      source: output
+      needle: Recommendation
+- id: C32
+  category: format
+  fatal: false
+  text: 'The output is organized as per-category memos headed ''Diligence Issues: [Deal code] — [Category]''.'
+  anchor: final output per-category memo headers
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Diligence Issues
+    llm:
+      question: 'The output is organized as per-category memos headed ''Diligence Issues: [Deal code] — [Category]''.'
+      evidence: final output per-category memo headers
+      source: output
+      needle: Diligence Issues
+- id: C33
+  category: format
+  fatal: false
+  text: 'Each category memo header states ''Documents reviewed: N of M'', a coverage statement, and findings counts by severity.'
+  anchor: final output memo headers with Documents reviewed line
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Documents reviewed
+    llm:
+      question: 'Each category memo header states ''Documents reviewed: N of M'', a coverage statement, and findings counts by severity.'
+      evidence: final output memo headers with Documents reviewed line
+      source: output
+      needle: Documents reviewed
+- id: C34
+  category: format
+  fatal: false
+  text: The output includes a Bottom line section summarizing severity counts and the single most important deal-team message.
+  anchor: final output Bottom line section
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Bottom line
+    llm:
+      question: The output includes a Bottom line section summarizing severity counts and the single most important deal-team message.
+      evidence: final output Bottom line section
+      source: output
+      needle: Bottom line
+- id: C35
+  category: format
+  fatal: false
+  text: The output includes a Gaps section listing request-list items with no responsive document and documents referenced but not in the VDR.
+  anchor: final output Gaps section
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Gaps
+    llm:
+      question: The output includes a Gaps section listing request-list items with no responsive document and documents referenced but not in the VDR.
+      evidence: final output Gaps section
+      source: output
+      needle: Gaps
+- id: C36
+  category: format
+  fatal: false
+  text: The output ends with a next-steps decision tree customized to the extraction results.
+  anchor: final output closing section (decision tree branches)
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: decision tree
+    llm:
+      question: The output ends with a next-steps decision tree customized to the extraction results.
+      evidence: final output closing section (decision tree branches)
+      source: output
+      needle: decision tree
+- id: C37
+  category: content
+  fatal: false
+  text: Each finding cites its source document by VDR path or filename (e.g., contract-01-client-northwind-2M.md).
+  anchor: final output Document-source citations per finding
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: contract-01-client-northwind-2M
+    llm:
+      question: Each finding cites its source document by VDR path or filename (e.g., contract-01-client-northwind-2M.md).
+      evidence: final output Document-source citations per finding
+      source: output
+      needle: contract-01-client-northwind-2M
+- id: C38
+  category: process
+  fatal: false
+  text: Pre-closing actions surfaced during extraction (consents, shareholder votes, filings, releases, escrow mechanics) are handed off to the closing checklist.
+  anchor: final output references the closing-checklist handoff
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: closing-checklist|closing checklist
+    llm:
+      question: Pre-closing actions surfaced during extraction (consents, shareholder votes, filings, releases, escrow mechanics) are handed off to the closing checklist.
+      evidence: final output references the closing-checklist handoff
+      source: output
+      needle: closing-checklist|closing checklist
+- id: C39
+  category: coverage
+  fatal: false
+  text: Because the extraction surfaces more than ~10 issues, the agent offers the dashboard (counts by severity, counts by category, sortable issue grid).
+  anchor: final output dashboard offer
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: dashboard
+    llm:
+      question: Because the extraction surfaces more than ~10 issues, the agent offers the dashboard (counts by severity, counts by category, sortable issue grid).
+      evidence: final output dashboard offer
+      source: output
+      needle: dashboard
+- id: C40
+  category: negative
+  fatal: true
+  text: The agent does not fabricate findings or citations for VDR documents it did not read, and does not invent a description of any statute.
+  anchor: cross-check each finding against tool_log reads; a finding with no read source indicates fabrication
+  judge: llm
+  check:
+    question: The agent does not fabricate findings or citations for VDR documents it did not read, and does not invent a description of any statute.
+    evidence: cross-check each finding against tool_log reads; a finding with no read source indicates fabrication
+- id: C41
+  category: negative
+  fatal: false
+  text: The agent does not offload bulk contract review to Luminance/Kira, because the house config states no AI review tool is configured for this matter.
+  anchor: semantic — agent keeps bulk review in-process per config; no phantom tool handoff
+  judge: llm
+  check:
+    question: The agent does not offload bulk contract review to Luminance/Kira, because the house config states no AI review tool is configured for this matter.
+    evidence: semantic — agent keeps bulk review in-process per config; no phantom tool handoff
+- id: C42
+  category: content
+  fatal: false
+  text: Severity is calibrated per the house three-level scheme (R/Y/G), with red reserved for deal-value/structure issues such as the change-of-control termination and the IP ownership gap.
+  anchor: semantic — severity values across the findings are consistent with the house scheme
+  judge: llm
+  check:
+    question: Severity is calibrated per the house three-level scheme (R/Y/G), with red reserved for deal-value/structure issues such as the change-of-control termination and the IP ownership gap.
+    evidence: semantic — severity values across the findings are consistent with the house scheme

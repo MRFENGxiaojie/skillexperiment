@@ -1,0 +1,345 @@
+skill: 257-social-content
+version: 2
+total_items: 24
+criteria:
+- id: C02
+  category: content
+  fatal: false
+  text: The output names X (Twitter) as a second target platform alongside LinkedIn.
+  anchor: Check the agent's final output for Twitter.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Twitter
+    llm:
+      question: The output names X (Twitter) as a second target platform alongside LinkedIn.
+      evidence: Check the agent's final output for Twitter.
+      source: output
+      needle: Twitter
+- id: C03
+  category: tool
+  fatal: false
+  text: The agent checks for the file .claude/product-marketing-context.md before creating content.
+  anchor: Look in the tool call log for a Read or Glob referencing .claude/product-marketing-context.md.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_contains
+      cmd: product-marketing-context.md
+    llm:
+      question: The agent checks for the file .claude/product-marketing-context.md before creating content.
+      evidence: Look in the tool call log for a Read or Glob referencing .claude/product-marketing-context.md.
+      source: tool_log
+      pattern: product-marketing-context.md
+- id: C04
+  category: evidence
+  fatal: false
+  text: The agent reads the provided long-form source task/blog_post.md before producing the repurposing plan.
+  anchor: Look in the tool call log for a Read of the blog post file.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_contains
+      cmd: blog_post.md
+    llm:
+      question: The agent reads the provided long-form source task/blog_post.md before producing the repurposing plan.
+      evidence: Look in the tool call log for a Read of the blog post file.
+      source: tool_log
+      pattern: blog_post.md
+- id: C05
+  category: process
+  fatal: false
+  text: The agent consults the bundled post-templates reference when drafting the posts.
+  anchor: Look in the tool call log for a Read of references/post-templates.md.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_contains
+      cmd: post-templates.md
+    llm:
+      question: The agent consults the bundled post-templates reference when drafting the posts.
+      evidence: Look in the tool call log for a Read of references/post-templates.md.
+      source: tool_log
+      pattern: post-templates.md
+- id: C06
+  category: content
+  fatal: false
+  text: The output defines at least 3 distinct content pillars.
+  anchor: Search the strategy section of the final output for a pillar count of 3 or more.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: numeric_threshold
+      in: output
+      key: pillar
+      op: ge
+      n: 3
+    llm:
+      question: The output defines at least 3 distinct content pillars.
+      evidence: Search the strategy section of the final output for a pillar count of 3 or more.
+      source: output
+      needle: pillar
+- id: C09
+  category: boundary
+  fatal: false
+  text: The posting-frequency recommendation is tailored to the user's roughly 3-hour-per-week time budget.
+  anchor: Search the final output's frequency recommendation for a reference to the 3-hour weekly budget.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: 3 hours|3h
+    llm:
+      question: The posting-frequency recommendation is tailored to the user's roughly 3-hour-per-week time budget.
+      evidence: Search the final output's frequency recommendation for a reference to the 3-hour weekly budget.
+      source: output
+      needle: 3 hours|3h
+- id: C10
+  category: content
+  fatal: false
+  text: The output recommends a focused, sustainable weekly cadence for LinkedIn (around 3-5 posts/week as the platform reference states).
+  anchor: Search the final output's frequency section for the 3-5 LinkedIn cadence.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: 3-5
+    llm:
+      question: The output recommends a focused, sustainable weekly cadence for LinkedIn (around 3-5 posts/week as the platform reference states).
+      evidence: Search the final output's frequency section for the 3-5 LinkedIn cadence.
+      source: output
+      needle: 3-5
+- id: C11
+  category: content
+  fatal: false
+  text: The output flags burnout risk or unsustainability when the reference posting frequency exceeds the user's capacity, recommending a focused strategy with batching.
+  anchor: Search the final output for a flag about unsustainable frequency or batching.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: burnout|sustainable|batching
+    llm:
+      question: The output flags burnout risk or unsustainability when the reference posting frequency exceeds the user's capacity, recommending a focused strategy with batching.
+      evidence: Search the final output for a flag about unsustainable frequency or batching.
+      source: output
+      needle: burnout|sustainable|batching
+- id: C12
+  category: format
+  fatal: false
+  text: The output includes a two-week editorial calendar spanning Week 1 and Week 2.
+  anchor: Look for a Week 1 / Week 2 structure in the final output's calendar section.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Week 1
+    llm:
+      question: The output includes a two-week editorial calendar spanning Week 1 and Week 2.
+      evidence: Look for a Week 1 / Week 2 structure in the final output's calendar section.
+      source: output
+      needle: Week 1
+- id: C13
+  category: format
+  fatal: false
+  text: Calendar entries flag each post as Evergreen or Timely.
+  anchor: Search the final output's calendar section for the Evergreen/Timely markers.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Evergreen|Timely
+    llm:
+      question: Calendar entries flag each post as Evergreen or Timely.
+      evidence: Search the final output's calendar section for the Evergreen/Timely markers.
+      source: output
+      needle: Evergreen|Timely
+- id: C14
+  category: content
+  fatal: false
+  text: Each ready-to-use first post ends with a call to action.
+  anchor: Search the delivered posts in the final output for a CTA element.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: CTA
+    llm:
+      question: Each ready-to-use first post ends with a call to action.
+      evidence: Search the delivered posts in the final output for a CTA element.
+      source: output
+      needle: CTA
+- id: C15
+  category: content
+  fatal: false
+  text: The delivered posts include hashtag recommendations.
+  anchor: Search the final output for the word hashtag.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: '[Hh]ashtag'
+    llm:
+      question: The delivered posts include hashtag recommendations.
+      evidence: Search the final output for the word hashtag.
+      source: output
+      needle: '[Hh]ashtag'
+- id: C16
+  category: content
+  fatal: true
+  text: Every delivered post opens with a hook as its first element rather than body copy.
+  anchor: Read the first line of each delivered post in the final output and confirm a hook opens it.
+  judge: llm
+  check:
+    question: Every delivered post opens with a hook as its first element rather than body copy.
+    evidence: Read the first line of each delivered post in the final output and confirm a hook opens it.
+- id: C17
+  category: negative
+  fatal: true
+  text: The LinkedIn and X versions of the first posts are separately adapted in length and tone, not identical generic copy.
+  anchor: Compare the LinkedIn and X post sections in the final output for distinct adaptation.
+  judge: llm
+  check:
+    question: The LinkedIn and X versions of the first posts are separately adapted in length and tone, not identical generic copy.
+    evidence: Compare the LinkedIn and X post sections in the final output for distinct adaptation.
+- id: C19
+  category: coverage
+  fatal: false
+  text: The repurposing plan maps the blog post into 5-8 derivative social formats.
+  anchor: Search the repurposing section of the final output for a derivative count of at least 5.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: numeric_threshold
+      in: output
+      key: derivative
+      op: ge
+      n: 5
+    llm:
+      question: The repurposing plan maps the blog post into 5-8 derivative social formats.
+      evidence: Search the repurposing section of the final output for a derivative count of at least 5.
+      source: output
+      needle: derivative
+- id: C20
+  category: content
+  fatal: false
+  text: The repurposed content reuses the user-provided figures from the blog (the 50% speedup and/or the 3 custom commands).
+  anchor: Search the derived posts in the final output for the 50% figure from the blog.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: 50%|50 %
+    llm:
+      question: The repurposed content reuses the user-provided figures from the blog (the 50% speedup and/or the 3 custom commands).
+      evidence: Search the derived posts in the final output for the 50% figure from the blog.
+      source: output
+      needle: 50%|50 %
+- id: C21
+  category: negative
+  fatal: true
+  text: The output does not fabricate statistics; numbers are limited to the user-provided 50% figure and 3 commands, or explicitly flagged as unverified.
+  anchor: Scan all hooks, posts, and calendar claims in the final output for any invented number beyond the blog's figures.
+  judge: llm
+  check:
+    question: The output does not fabricate statistics; numbers are limited to the user-provided 50% figure and 3 commands, or explicitly flagged as unverified.
+    evidence: Scan all hooks, posts, and calendar claims in the final output for any invented number beyond the blog's figures.
+- id: C22
+  category: termination
+  fatal: false
+  text: Data hooks are used only when a real user-provided number exists; otherwise the agent asks for the number or chooses a non-data hook.
+  anchor: Check the hook strategy in the final output for a gate on data availability.
+  judge: llm
+  check:
+    question: Data hooks are used only when a real user-provided number exists; otherwise the agent asks for the number or chooses a non-data hook.
+    evidence: Check the hook strategy in the final output for a gate on data availability.
+- id: C23
+  category: coverage
+  fatal: false
+  text: The output includes engagement strategy guidance suited to an account starting from zero (daily commenting routine, quality comments, building relationships).
+  anchor: Search the final output for engagement guidance tokens such as target accounts or quality comments.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: 20-50|DMs|quality comment
+    llm:
+      question: The output includes engagement strategy guidance suited to an account starting from zero (daily commenting routine, quality comments, building relationships).
+      evidence: Search the final output for engagement guidance tokens such as target accounts or quality comments.
+      source: output
+      needle: 20-50|DMs|quality comment
+- id: C24
+  category: coverage
+  fatal: false
+  text: The output includes analytics guidance covering metrics by stage and a weekly review.
+  anchor: Search the final output for analytics tokens such as impressions, reach, or engagement rate.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: impressions|reach|engagement rate
+    llm:
+      question: The output includes analytics guidance covering metrics by stage and a weekly review.
+      evidence: Search the final output for analytics tokens such as impressions, reach, or engagement rate.
+      source: output
+      needle: impressions|reach|engagement rate
+- id: C25
+  category: coverage
+  fatal: false
+  text: The output includes scheduling guidance distinguishing scheduled vs post-live content and queue management.
+  anchor: Search the final output for scheduling tokens such as a 1-2 week queue or post-live.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: 1-2 weeks|post live
+    llm:
+      question: The output includes scheduling guidance distinguishing scheduled vs post-live content and queue management.
+      evidence: Search the final output for scheduling tokens such as a 1-2 week queue or post-live.
+      source: output
+      needle: 1-2 weeks|post live
+- id: C27
+  category: negative
+  fatal: false
+  text: Confidence markers appear only in the agent's advice and explanations, never inside the delivered social copy.
+  anchor: Check that the delivered posts/calendar in the final output contain no green/yellow/red markers.
+  judge: llm
+  check:
+    question: Confidence markers appear only in the agent's advice and explanations, never inside the delivered social copy.
+    evidence: Check that the delivered posts/calendar in the final output contain no green/yellow/red markers.
+- id: C28
+  category: format
+  fatal: false
+  text: The output delivers content conclusion-first, with format and platform decisions explained afterward (What + Why + How).
+  anchor: 'Read the ordering of the final output: deliverables first, strategy rationale following.'
+  judge: llm
+  check:
+    question: The output delivers content conclusion-first, with format and platform decisions explained afterward (What + Why + How).
+    evidence: 'Read the ordering of the final output: deliverables first, strategy rationale following.'
+- id: C30
+  category: negative
+  fatal: false
+  text: The agent stays in content-production scope and does not attempt to post, publish, manage accounts, or connect to platform APIs.
+  anchor: Review the tool call log and output for any posting, publishing, or API integration actions.
+  judge: llm
+  check:
+    question: The agent stays in content-production scope and does not attempt to post, publish, manage accounts, or connect to platform APIs.
+    evidence: Review the tool call log and output for any posting, publishing, or API integration actions.

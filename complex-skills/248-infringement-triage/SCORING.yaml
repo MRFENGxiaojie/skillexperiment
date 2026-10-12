@@ -1,0 +1,77 @@
+skill: 248-infringement-triage
+version: 2
+total_items: 5
+criteria:
+- id: C07
+  category: process
+  fatal: false
+  text: The triage addresses the intake dimensions — party posture, jurisdiction, timing, and available exhibits — before walking the factors.
+  anchor: Intake/framing section of the final output or memo.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: jurisdiction
+    llm:
+      question: The triage addresses the intake dimensions — party posture, jurisdiction, timing, and available exhibits — before walking the factors.
+      evidence: Intake/framing section of the final output or memo.
+      source: output
+      needle: jurisdiction
+- id: C14
+  category: content
+  fatal: false
+  text: The memo addresses timing — NUTRIVITA launched in March 2026 and is actively selling — and any limitations/laches considerations.
+  anchor: Facts / timing discussion in the memo.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: '2026'
+    llm:
+      question: The memo addresses timing — NUTRIVITA launched in March 2026 and is actively selling — and any limitations/laches considerations.
+      evidence: Facts / timing discussion in the memo.
+      source: output
+      needle: '2026'
+- id: C20
+  category: boundary
+  fatal: false
+  text: The triage flags that Chinese trademark law governs this non-US matter and does not present the US analysis as controlling.
+  anchor: Jurisdiction note in the memo.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: China|Chinese|PRC|domestic jurisdiction|domestic trademark
+    llm:
+      question: The triage flags that Chinese trademark law governs this non-US matter and does not present the US analysis as controlling.
+      evidence: Jurisdiction note in the memo.
+      source: output
+      needle: China|Chinese|PRC|domestic jurisdiction|domestic trademark
+- id: C27
+  category: coverage
+  fatal: false
+  text: The memo covers the remaining trademark confusion factors beyond marks/goods/strength/intent — channels of trade, consumer sophistication, actual confusion, and likelihood of expansion.
+  anchor: Trademark factors section of the memo.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Consumer sophistication
+    llm:
+      question: The memo covers the remaining trademark confusion factors beyond marks/goods/strength/intent — channels of trade, consumer sophistication, actual confusion, and likelihood of expansion.
+      evidence: Trademark factors section of the memo.
+      source: output
+      needle: Consumer sophistication
+- id: C28
+  category: boundary
+  fatal: false
+  text: If the practice role is non-lawyer, the memo includes the non-lawyer gate directing that decisions require attorney review.
+  anchor: Closing of the memo, per the role in the practice profile.
+  judge: llm
+  check:
+    question: If the practice role is non-lawyer, the memo includes the non-lawyer gate directing that decisions require attorney review.
+    evidence: Closing of the memo, per the role in the practice profile.

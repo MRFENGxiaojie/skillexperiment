@@ -1,0 +1,666 @@
+skill: 082-mobile-games
+version: 2
+total_items: 43
+criteria:
+- id: C04
+  category: format
+  fatal: false
+  text: The final deliverable is a written plan titled 《上架与体验改造方案》.
+  anchor: final agent output
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: launch and experience improvement plan
+    llm:
+      question: The final deliverable is a written plan titled 《上架与体验改造方案》.
+      evidence: final agent output
+      source: output
+      needle: launch and experience improvement plan
+- id: C06
+  category: coverage
+  fatal: false
+  text: The deliverable contains a performance-and-heat (performance/thermal) section.
+  anchor: final agent output, section 2
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: overheating|heat
+    llm:
+      question: The deliverable contains a performance-and-heat (performance/thermal) section.
+      evidence: final agent output, section 2
+      source: output
+      needle: overheating|heat
+- id: C07
+  category: coverage
+  fatal: false
+  text: The deliverable contains a dual-store (iOS + Google Play) compliance section.
+  anchor: final agent output, section 3 heading
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: dual store|two stores
+    llm:
+      question: The deliverable contains a dual-store (iOS + Google Play) compliance section.
+      evidence: final agent output, section 3 heading
+      source: output
+      needle: dual store|two stores
+- id: C12
+  category: coverage
+  fatal: false
+  text: The touch section individually designs the level-select screen.
+  anchor: final agent output, section 1
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: level selection
+    llm:
+      question: The touch section individually designs the level-select screen.
+      evidence: final agent output, section 1
+      source: output
+      needle: level selection
+- id: C13
+  category: coverage
+  fatal: false
+  text: The touch section individually designs the in-game launcher/operation screen.
+  anchor: final agent output, section 1
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: in-game
+    llm:
+      question: The touch section individually designs the in-game launcher/operation screen.
+      evidence: final agent output, section 1
+      source: output
+      needle: in-game
+- id: C14
+  category: coverage
+  fatal: false
+  text: The touch section individually designs the result page.
+  anchor: final agent output, section 1
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: checkout page
+    llm:
+      question: The touch section individually designs the result page.
+      evidence: final agent output, section 1
+      source: output
+      needle: checkout page
+- id: C15
+  category: content
+  fatal: false
+  text: The touch design specifies a minimum touch-target size of 44x44 points.
+  anchor: final agent output, section 1 and any written plan file
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: 44x44
+    llm:
+      question: The touch design specifies a minimum touch-target size of 44x44 points.
+      evidence: final agent output, section 1 and any written plan file
+      source: output
+      needle: 44x44
+- id: C16
+  category: content
+  fatal: false
+  text: The plan diagnoses the concrete PC-port input problems (mouse-based Input.mousePosition sampling, the 400ms combo window, the 32x32px launch button) and prescribes fixes.
+  anchor: final agent output, section 1 problem/fix mapping
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Input.mousePosition
+    llm:
+      question: The plan diagnoses the concrete PC-port input problems (mouse-based Input.mousePosition sampling, the 400ms combo window, the 32x32px launch button) and prescribes fixes.
+      evidence: final agent output, section 1 problem/fix mapping
+      source: output
+      needle: Input.mousePosition
+- id: C17
+  category: content
+  fatal: false
+  text: The touch section includes anti-mis-touch spacing and thumb-zone design.
+  anchor: final agent output, section 1
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: accidental touch|mis-touch
+    llm:
+      question: The touch section includes anti-mis-touch spacing and thumb-zone design.
+      evidence: final agent output, section 1
+      source: output
+      needle: accidental touch|mis-touch
+- id: C19
+  category: content
+  fatal: false
+  text: The touch section addresses portrait/landscape cooperation.
+  anchor: final agent output, section 1
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: landscape and portrait
+    llm:
+      question: The touch section addresses portrait/landscape cooperation.
+      evidence: final agent output, section 1
+      source: output
+      needle: landscape and portrait
+- id: C20
+  category: content
+  fatal: false
+  text: The performance section defines a dynamic frame-rate strategy with explicit triggers for when to run 60/30/lower FPS.
+  anchor: final agent output, section 2
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: frame rate|FPS
+    llm:
+      question: The performance section defines a dynamic frame-rate strategy with explicit triggers for when to run 60/30/lower FPS.
+      evidence: final agent output, section 2
+      source: output
+      needle: frame rate|FPS
+- id: C21
+  category: content
+  fatal: false
+  text: The performance section includes texture-atlas memory optimization.
+  anchor: final agent output, section 2
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: image gallery|gallery
+    llm:
+      question: The performance section includes texture-atlas memory optimization.
+      evidence: final agent output, section 2
+      source: output
+      needle: image gallery|gallery
+- id: C24
+  category: content
+  fatal: false
+  text: The performance section gives a thermal-escalation ladder with concrete actions per tier from mild heat to critical temperature.
+  anchor: final agent output, section 2 thermal subsection
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: degradation|downgrade
+    llm:
+      question: The performance section gives a thermal-escalation ladder with concrete actions per tier from mild heat to critical temperature.
+      evidence: final agent output, section 2 thermal subsection
+      source: output
+      needle: degradation|downgrade
+- id: C25
+  category: content
+  fatal: false
+  text: 'The performance section prescribes background behavior: pausing the game in the background and controlling when to sync scores (fixing the always-connected WebSocket sync).'
+  anchor: final agent output, section 2 background subsection
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: WebSocket
+    llm:
+      question: 'The performance section prescribes background behavior: pausing the game in the background and controlling when to sync scores (fixing the always-connected WebSocket sync).'
+      evidence: final agent output, section 2 background subsection
+      source: output
+      needle: WebSocket
+- id: C26
+  category: content
+  fatal: false
+  text: The iOS compliance part requires privacy labels.
+  anchor: final agent output, section 3 iOS part
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: privacy
+    llm:
+      question: The iOS compliance part requires privacy labels.
+      evidence: final agent output, section 3 iOS part
+      source: output
+      needle: privacy
+- id: C27
+  category: boundary
+  fatal: false
+  text: The iOS compliance part conditions the account-deletion requirement on whether an account system exists.
+  anchor: final agent output, section 3 iOS part
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: account deletion
+    llm:
+      question: The iOS compliance part conditions the account-deletion requirement on whether an account system exists.
+      evidence: final agent output, section 3 iOS part
+      source: output
+      needle: account deletion
+- id: C28
+  category: content
+  fatal: false
+  text: The iOS compliance part requires screenshots for all device sizes.
+  anchor: final agent output, section 3 iOS part
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: screenshot|screenshots
+    llm:
+      question: The iOS compliance part requires screenshots for all device sizes.
+      evidence: final agent output, section 3 iOS part
+      source: output
+      needle: screenshot|screenshots
+- id: C29
+  category: content
+  fatal: false
+  text: The Google Play compliance part requires a current-year target API level.
+  anchor: final agent output, section 3 Google Play part
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: target API
+    llm:
+      question: The Google Play compliance part requires a current-year target API level.
+      evidence: final agent output, section 3 Google Play part
+      source: output
+      needle: target API
+- id: C30
+  category: content
+  fatal: false
+  text: The Google Play compliance part requires 64-bit support.
+  anchor: final agent output, section 3 Google Play part
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: 64-bit
+    llm:
+      question: The Google Play compliance part requires 64-bit support.
+      evidence: final agent output, section 3 Google Play part
+      source: output
+      needle: 64-bit
+- id: C32
+  category: content
+  fatal: false
+  text: The compliance section covers child-data rules and ad/IAP compliance for a user base that may include minors.
+  anchor: final agent output, section 3
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: minors|underage
+    llm:
+      question: The compliance section covers child-data rules and ad/IAP compliance for a user base that may include minors.
+      evidence: final agent output, section 3
+      source: output
+      needle: minors|underage
+- id: C33
+  category: termination
+  fatal: false
+  text: The plan defines a pre-submission material checklist and check order that must be completed before store launch.
+  anchor: final agent output, section 3 launch checklist
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: check order|inspection order
+    llm:
+      question: The plan defines a pre-submission material checklist and check order that must be completed before store launch.
+      evidence: final agent output, section 3 launch checklist
+      source: output
+      needle: check order|inspection order
+- id: C34
+  category: content
+  fatal: false
+  text: The monetization section makes an explicit recommendation between plan A (paid buyout) and plan B (free + IAP + ads), justified by game type, current retention, and market convention (e.g., citing
+    the 60% five-minute-exit rate).
+  anchor: final agent output, section 4
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: 60%
+    llm:
+      question: The monetization section makes an explicit recommendation between plan A (paid buyout) and plan B (free + IAP + ads), justified by game type, current retention, and market convention (e.g.,
+        citing the 60% five-minute-exit rate).
+      evidence: final agent output, section 4
+      source: output
+      needle: 60%
+- id: C35
+  category: content
+  fatal: false
+  text: The monetization section specifies a first-purchase gift pack for the free+IAP option.
+  anchor: final agent output, section 4 (B-specific design)
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: first purchase|first charge
+    llm:
+      question: The monetization section specifies a first-purchase gift pack for the free+IAP option.
+      evidence: final agent output, section 4 (B-specific design)
+      source: output
+      needle: first purchase|first charge
+- id: C36
+  category: content
+  fatal: false
+  text: The monetization section specifies ad placement design including interstitial timing and rewarded-video location.
+  anchor: final agent output, section 4 (B-specific design)
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: rewarded video
+    llm:
+      question: The monetization section specifies ad placement design including interstitial timing and rewarded-video location.
+      evidence: final agent output, section 4 (B-specific design)
+      source: output
+      needle: rewarded video
+- id: C37
+  category: content
+  fatal: false
+  text: The monetization section includes pricing anchors.
+  anchor: final agent output, section 4
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: pricing
+    llm:
+      question: The monetization section includes pricing anchors.
+      evidence: final agent output, section 4
+      source: output
+      needle: pricing
+- id: C38
+  category: content
+  fatal: false
+  text: The plan gives a 4-week post-launch A/B test plan covering what to test, how groups are split, and which metrics to watch.
+  anchor: final agent output, section 4 A/B test subsection
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: A/B
+    llm:
+      question: The plan gives a 4-week post-launch A/B test plan covering what to test, how groups are split, and which metrics to watch.
+      evidence: final agent output, section 4 A/B test subsection
+      source: output
+      needle: A/B
+- id: C40
+  category: content
+  fatal: false
+  text: The accessibility section covers screen-reader support (VoiceOver/TalkBack, UGUI accessibility labels, and readable order).
+  anchor: final agent output, section 5
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: VoiceOver
+    llm:
+      question: The accessibility section covers screen-reader support (VoiceOver/TalkBack, UGUI accessibility labels, and readable order).
+      evidence: final agent output, section 5
+      source: output
+      needle: VoiceOver
+- id: C42
+  category: content
+  fatal: false
+  text: The accessibility section addresses dynamic text and scaling adaptation.
+  anchor: final agent output, section 5
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: zoom|scaling
+    llm:
+      question: The accessibility section addresses dynamic text and scaling adaptation.
+      evidence: final agent output, section 5
+      source: output
+      needle: zoom|scaling
+- id: C43
+  category: content
+  fatal: false
+  text: The accessibility section respects reduce-motion.
+  anchor: final agent output, section 5
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: reduce motion
+    llm:
+      question: The accessibility section respects reduce-motion.
+      evidence: final agent output, section 5
+      source: output
+      needle: reduce motion
+- id: C44
+  category: content
+  fatal: false
+  text: The accessibility section provides captions and sound alternatives.
+  anchor: final agent output, section 5
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: subtitles|captions
+    llm:
+      question: The accessibility section provides captions and sound alternatives.
+      evidence: final agent output, section 5
+      source: output
+      needle: subtitles|captions
+- id: C45
+  category: coverage
+  fatal: false
+  text: Each accessibility change includes an implementation approach and an acceptance criterion.
+  anchor: final agent output, section 5
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: acceptance criteria
+    llm:
+      question: Each accessibility change includes an implementation approach and an acceptance criterion.
+      evidence: final agent output, section 5
+      source: output
+      needle: acceptance criteria
+- id: C47
+  category: content
+  fatal: false
+  text: The localization section covers font support and text overflow/wrapping handling.
+  anchor: final agent output, section 6
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: font|fonts|typography
+    llm:
+      question: The localization section covers font support and text overflow/wrapping handling.
+      evidence: final agent output, section 6
+      source: output
+      needle: font|fonts|typography
+- id: C48
+  category: content
+  fatal: false
+  text: The localization section covers RTL-language considerations.
+  anchor: final agent output, section 6
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: RTL
+    llm:
+      question: The localization section covers RTL-language considerations.
+      evidence: final agent output, section 6
+      source: output
+      needle: RTL
+- id: C49
+  category: content
+  fatal: false
+  text: The localization section covers date, currency, and number format handling.
+  anchor: final agent output, section 6
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: currency
+    llm:
+      question: The localization section covers date, currency, and number format handling.
+      evidence: final agent output, section 6
+      source: output
+      needle: currency
+- id: C50
+  category: content
+  fatal: false
+  text: The localization section covers store metadata localization (title, description, keywords).
+  anchor: final agent output, section 6
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: keywords|keyword
+    llm:
+      question: The localization section covers store metadata localization (title, description, keywords).
+      evidence: final agent output, section 6
+      source: output
+      needle: keywords|keyword
+- id: C51
+  category: content
+  fatal: false
+  text: The localization section selects a target region (e.g., Southeast Asia) based on the user profile.
+  anchor: final agent output, section 6
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Southeast Asia|SEA
+    llm:
+      question: The localization section selects a target region (e.g., Southeast Asia) based on the user profile.
+      evidence: final agent output, section 6
+      source: output
+      needle: Southeast Asia|SEA
+- id: C52
+  category: content
+  fatal: false
+  text: The localization section gives a first-language list.
+  anchor: final agent output, section 6
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: first batch|initial batch
+    llm:
+      question: The localization section gives a first-language list.
+      evidence: final agent output, section 6
+      source: output
+      needle: first batch|initial batch
+- id: C53
+  category: evidence
+  fatal: false
+  text: The plan cites specific review entries (e.g., r001) as evidence for touch/UX problems.
+  anchor: final agent output, section 1/4 citations
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: r001
+    llm:
+      question: The plan cites specific review entries (e.g., r001) as evidence for touch/UX problems.
+      evidence: final agent output, section 1/4 citations
+      source: output
+      needle: r001
+- id: C55
+  category: negative
+  fatal: false
+  text: The plan does not recommend desktop/console control patterns (small buttons, precise timing, hover) for the mobile game.
+  anchor: final agent output, section 1 and any problem/fix recommendations
+  judge: llm
+  check:
+    question: The plan does not recommend desktop/console control patterns (small buttons, precise timing, hover) for the mobile game.
+    evidence: final agent output, section 1 and any problem/fix recommendations
+- id: C56
+  category: negative
+  fatal: false
+  text: The plan does not recommend ignoring battery/thermal constraints or always-on networking.
+  anchor: final agent output, section 2
+  judge: llm
+  check:
+    question: The plan does not recommend ignoring battery/thermal constraints or always-on networking.
+    evidence: final agent output, section 2
+- id: C57
+  category: negative
+  fatal: false
+  text: The plan does not recommend forcing landscape orientation.
+  anchor: final agent output, section 1/2
+  judge: llm
+  check:
+    question: The plan does not recommend forcing landscape orientation.
+    evidence: final agent output, section 1/2
+- id: C58
+  category: negative
+  fatal: false
+  text: The plan stays within mobile-game scope and does not drift into game design, narrative, art direction, or server-side infrastructure.
+  anchor: final agent output, overall
+  judge: llm
+  check:
+    question: The plan stays within mobile-game scope and does not drift into game design, narrative, art direction, or server-side infrastructure.
+    evidence: final agent output, overall
+- id: C59
+  category: content
+  fatal: false
+  text: The plan flags platform requirements (Android API levels, iOS versions, store policies) as time-sensitive and advises verifying against current official documentation.
+  anchor: final agent output, section 3 caveats
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: official documentation|official docs
+    llm:
+      question: The plan flags platform requirements (Android API levels, iOS versions, store policies) as time-sensitive and advises verifying against current official documentation.
+      evidence: final agent output, section 3 caveats
+      source: output
+      needle: official documentation|official docs

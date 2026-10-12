@@ -1,0 +1,275 @@
+skill: 148-signup-flow-cro
+version: 2
+total_items: 19
+criteria:
+- id: C02
+  category: content
+  fatal: false
+  text: The agent identifies the flow type as a free-trial SaaS account-creation flow for cross-border e-commerce sellers.
+  anchor: Flow-type statement in the initial assessment
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: free trial
+    llm:
+      question: The agent identifies the flow type as a free-trial SaaS account-creation flow for cross-border e-commerce sellers.
+      evidence: Flow-type statement in the initial assessment
+      source: output
+      needle: free trial
+- id: C04
+  category: content
+  fatal: false
+  text: The agent reflects the current four-step structure of the signup flow.
+  anchor: Flow-state description in the audit
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: four steps
+    llm:
+      question: The agent reflects the current four-step structure of the signup flow.
+      evidence: Flow-state description in the audit
+      source: output
+      needle: four steps
+- id: C07
+  category: content
+  fatal: false
+  text: The agent maps the task's three requested categories (立刻能改 / 需要开发一周 / 值得跑实验验证) onto the skill's three-tier structure (Quick Wins / High-Impact / Test Hypotheses).
+  anchor: Recommended-changes section headings
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: can fix immediately|fix now
+    llm:
+      question: The agent maps the task's three requested categories (立刻能改 / 需要开发一周 / 值得跑实验验证) onto the skill's three-tier structure (Quick Wins / High-Impact / Test Hypotheses).
+      evidence: Recommended-changes section headings
+      source: output
+      needle: can fix immediately|fix now
+- id: F01
+  category: format
+  fatal: false
+  text: Audit findings are presented in the Problem / Impact / Fix / Priority structure.
+  anchor: Audit Findings section of the final output
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Priority
+    llm:
+      question: Audit findings are presented in the Problem / Impact / Fix / Priority structure.
+      evidence: Audit Findings section of the final output
+      source: output
+      needle: Priority
+- id: F02
+  category: format
+  fatal: false
+  text: Recommended changes include a Quick Wins tier labeled as same-day fixes.
+  anchor: Recommended Changes section headings
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Quick Wins
+    llm:
+      question: Recommended changes include a Quick Wins tier labeled as same-day fixes.
+      evidence: Recommended Changes section headings
+      source: output
+      needle: Quick Wins
+- id: F03
+  category: format
+  fatal: false
+  text: Recommended changes include a High-Impact tier for week-effort changes.
+  anchor: Recommended Changes section headings
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: High-impact
+    llm:
+      question: Recommended changes include a High-Impact tier for week-effort changes.
+      evidence: Recommended Changes section headings
+      source: output
+      needle: High-impact
+- id: F04
+  category: format
+  fatal: false
+  text: Recommended changes include a Test Hypotheses tier for A/B-test candidates.
+  anchor: Recommended Changes section headings
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Test Hypotheses
+    llm:
+      question: Recommended changes include a Test Hypotheses tier for A/B-test candidates.
+      evidence: Recommended Changes section headings
+      source: output
+      needle: Test Hypotheses
+- id: F05
+  category: format
+  fatal: false
+  text: Findings carry severity/priority ratings of High / Medium / Low.
+  anchor: Priority labels attached to audit findings
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: High/Medium/Low
+    llm:
+      question: Findings carry severity/priority ratings of High / Medium / Low.
+      evidence: Priority labels attached to audit findings
+      source: output
+      needle: High/Medium/Low
+- id: F06
+  category: format
+  fatal: false
+  text: The three recommendation tiers appear in the order Quick Wins, then High-Impact, then Test Hypotheses, rather than as a flat list.
+  anchor: Overall structure of the Recommended Changes section
+  judge: llm
+  check:
+    question: The three recommendation tiers appear in the order Quick Wins, then High-Impact, then Test Hypotheses, rather than as a flat list.
+    evidence: Overall structure of the Recommended Changes section
+- id: CV01
+  category: coverage
+  fatal: false
+  text: The analysis covers the post-submit experience (email verification, success state, next steps) as part of the flow.
+  anchor: Post-submit discussion in the final output
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: next steps
+    llm:
+      question: The analysis covers the post-submit experience (email verification, success state, next steps) as part of the flow.
+      evidence: Post-submit discussion in the final output
+      source: output
+      needle: next steps
+- id: CV03
+  category: coverage
+  fatal: false
+  text: Mobile optimization is treated as a distinct part of the analysis.
+  anchor: Mobile section of the final output
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Mobile optimization
+    llm:
+      question: Mobile optimization is treated as a distinct part of the analysis.
+      evidence: Mobile section of the final output
+      source: output
+      needle: Mobile optimization
+- id: CV04
+  category: coverage
+  fatal: false
+  text: The report gives field-level recommendations (which fields to remove, keep, or defer) for the twelve-field form.
+  anchor: Recommended-field-set discussion in the final output
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: remove
+    llm:
+      question: The report gives field-level recommendations (which fields to remove, keep, or defer) for the twelve-field form.
+      evidence: Recommended-field-set discussion in the final output
+      source: output
+      needle: remove
+- id: CV05
+  category: coverage
+  fatal: false
+  text: The audit analyzes the flow step-by-step and field-by-field across the four steps.
+  anchor: Audit organization in the final output
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: field-by-field
+    llm:
+      question: The audit analyzes the flow step-by-step and field-by-field across the four steps.
+      evidence: Audit organization in the final output
+      source: output
+      needle: field-by-field
+- id: P01
+  category: process
+  fatal: false
+  text: Before asking questions or recommending, the agent checks for .claude/product-marketing-context.md and reads it if present.
+  anchor: Tool log entries referencing .claude/product-marketing-context.md
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_contains
+      cmd: .claude/product-marketing-context.md
+    llm:
+      question: Before asking questions or recommending, the agent checks for .claude/product-marketing-context.md and reads it if present.
+      evidence: Tool log entries referencing .claude/product-marketing-context.md
+      source: tool_log
+      pattern: .claude/product-marketing-context.md
+- id: B01
+  category: boundary
+  fatal: false
+  text: Because field-level drop-off analytics were not provided, the agent flags the missing analytics and gates A/B test hypotheses on instrumenting them, rather than fabricating drop-off numbers.
+  anchor: Data-availability caveats and the Test Hypotheses section
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: drop-off analytics
+    llm:
+      question: Because field-level drop-off analytics were not provided, the agent flags the missing analytics and gates A/B test hypotheses on instrumenting them, rather than fabricating drop-off numbers.
+      evidence: Data-availability caveats and the Test Hypotheses section
+      source: output
+      needle: drop-off analytics
+- id: B02
+  category: boundary
+  fatal: false
+  text: The agent does not invent current-state metrics, compliance requirements, or drop-off data beyond the given 12% completion rate and the described flow.
+  anchor: Assumptions / data-availability notes in the final output
+  judge: llm
+  check:
+    question: The agent does not invent current-state metrics, compliance requirements, or drop-off data beyond the given 12% completion rate and the described flow.
+    evidence: Assumptions / data-availability notes in the final output
+- id: COM01
+  category: process
+  fatal: false
+  text: When current-state data is missing (field-level drop-off analytics, compliance requirements, post-signup behavior), the agent asks the task-specific questions or explicitly flags the gap rather
+    than guessing.
+  anchor: Opening questions to the user and assumptions section
+  judge: llm
+  check:
+    question: When current-state data is missing (field-level drop-off analytics, compliance requirements, post-signup behavior), the agent asks the task-specific questions or explicitly flags the gap rather
+      than guessing.
+    evidence: Opening questions to the user and assumptions section
+- id: E02
+  category: evidence
+  fatal: false
+  text: Obvious fixes are separated from genuinely uncertain hypotheses — obvious improvements are placed in the Quick Wins / High-Impact tiers, not listed as experiments.
+  anchor: Contents of the three tiers in Recommended Changes
+  judge: llm
+  check:
+    question: Obvious fixes are separated from genuinely uncertain hypotheses — obvious improvements are placed in the Quick Wins / High-Impact tiers, not listed as experiments.
+    evidence: Contents of the three tiers in Recommended Changes
+- id: CT01
+  category: content
+  fatal: false
+  text: Each of the three tiers contains at least one concrete, specific change rather than generic advice.
+  anchor: Recommended Changes section contents
+  judge: llm
+  check:
+    question: Each of the three tiers contains at least one concrete, specific change rather than generic advice.
+    evidence: Recommended Changes section contents

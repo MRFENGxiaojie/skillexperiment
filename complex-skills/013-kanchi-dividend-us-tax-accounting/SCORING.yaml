@@ -1,0 +1,401 @@
+skill: 013-kanchi-dividend-us-tax-accounting
+version: 2
+total_items: 25
+criteria:
+- id: C01
+  category: content
+  fatal: false
+  text: The agent's opening message frames the task as US dividend tax classification and account-location planning.
+  anchor: agent's first response text in the conversation transcript
+  judge: llm
+  check:
+    question: The agent's opening message frames the task as US dividend tax classification and account-location planning.
+    evidence: agent's first response text in the conversation transcript
+- id: C02
+  category: content
+  fatal: false
+  text: The agent states that the output is planning support, not a substitute for licensed tax/legal advice.
+  anchor: agent's final output (guardrail sentence)
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: not a substitute
+    llm:
+      question: The agent states that the output is planning support, not a substitute for licensed tax/legal advice.
+      evidence: agent's final output (guardrail sentence)
+      source: output
+      needle: not a substitute
+- id: C04
+  category: process
+  fatal: true
+  text: The agent runs the packaged generator script build_tax_planning_sheet.py to produce the standardized planning artifacts.
+  anchor: tool_log — the generator invocation
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: command_succeeded
+      cmd: build_tax_planning_sheet.py
+      expect: success
+    llm:
+      question: The agent runs the packaged generator script build_tax_planning_sheet.py to produce the standardized planning artifacts.
+      evidence: tool_log — the generator invocation
+      source: tool_log
+      pattern: build_tax_planning_sheet.py
+- id: C08
+  category: content
+  fatal: false
+  text: The REIT holding O and the BDC holding ARCC are classified as ordinary_likely (ordinary-income style distributions).
+  anchor: final output / generated sheet classification column
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: ordinary_likely
+    llm:
+      question: The REIT holding O and the BDC holding ARCC are classified as ordinary_likely (ordinary-income style distributions).
+      evidence: final output / generated sheet classification column
+      source: output
+      needle: ordinary_likely
+- id: C09
+  category: content
+  fatal: false
+  text: The stock holding COST is classified as qualified_likely because its hold_days_in_window (70) meets the 61-day common-stock threshold.
+  anchor: final output / generated sheet classification column
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: qualified_likely
+    llm:
+      question: The stock holding COST is classified as qualified_likely because its hold_days_in_window (70) meets the 61-day common-stock threshold.
+      evidence: final output / generated sheet classification column
+      source: output
+      needle: qualified_likely
+- id: C10
+  category: content
+  fatal: false
+  text: The MLP holding ET is marked OUT-OF-SCOPE (out_of_scope_mlp) rather than treated as a normal dividend stock.
+  anchor: final output / generated sheet classification column
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: OUT-OF-SCOPE|OUT OF SCOPE
+    llm:
+      question: The MLP holding ET is marked OUT-OF-SCOPE (out_of_scope_mlp) rather than treated as a normal dividend stock.
+      evidence: final output / generated sheet classification column
+      source: output
+      needle: OUT-OF-SCOPE|OUT OF SCOPE
+- id: C11
+  category: boundary
+  fatal: true
+  text: The stock holding JPM, which lacks hold_days_in_window, is marked ASSUMPTION-REQUIRED (assumption_required) instead of being given a classification.
+  anchor: final output / generated sheet classification column for JPM
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: assumption_required
+    llm:
+      question: The stock holding JPM, which lacks hold_days_in_window, is marked ASSUMPTION-REQUIRED (assumption_required) instead of being given a classification.
+      evidence: final output / generated sheet classification column for JPM
+      source: output
+      needle: assumption_required
+- id: C12
+  category: evidence
+  fatal: false
+  text: The agent cites IRS Publication 550 (or current IRS guidance) as the source for qualified-dividend holding-period rules.
+  anchor: final output citations
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Publication 550
+    llm:
+      question: The agent cites IRS Publication 550 (or current IRS guidance) as the source for qualified-dividend holding-period rules.
+      evidence: final output citations
+      source: output
+      needle: Publication 550
+- id: C13
+  category: evidence
+  fatal: false
+  text: The agent references IRS Form 1099-DIV for reconciling final classification.
+  anchor: final output citations
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: 1099-DIV
+    llm:
+      question: The agent references IRS Form 1099-DIV for reconciling final classification.
+      evidence: final output citations
+      source: output
+      needle: 1099-DIV
+- id: C14
+  category: content
+  fatal: false
+  text: O and ARCC receive tax-advantaged account placement preference (tax_advantaged_preferred) because their distributions carry ordinary-income components.
+  anchor: account-location output / generated sheet Location Hint column
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: tax_advantaged_preferred
+    llm:
+      question: O and ARCC receive tax-advantaged account placement preference (tax_advantaged_preferred) because their distributions carry ordinary-income components.
+      evidence: account-location output / generated sheet Location Hint column
+      source: output
+      needle: tax_advantaged_preferred
+- id: C15
+  category: content
+  fatal: false
+  text: COST receives taxable-account placement preference (taxable_preferred).
+  anchor: account-location output / generated sheet Location Hint column
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: taxable_preferred
+    llm:
+      question: COST receives taxable-account placement preference (taxable_preferred).
+      evidence: account-location output / generated sheet Location Hint column
+      source: output
+      needle: taxable_preferred
+- id: C16
+  category: content
+  fatal: false
+  text: The MLP holding ET gets case-by-case placement (case_by_case) due to K-1 and UBTI complexity.
+  anchor: account-location output / generated sheet Location Hint column
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: case_by_case
+    llm:
+      question: The MLP holding ET gets case-by-case placement (case_by_case) due to K-1 and UBTI complexity.
+      evidence: account-location output / generated sheet Location Hint column
+      source: output
+      needle: case_by_case
+- id: C17
+  category: content
+  fatal: false
+  text: Each account-location recommendation includes an explicit rationale.
+  anchor: account-location recommendation table in final output
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: rationale
+    llm:
+      question: Each account-location recommendation includes an explicit rationale.
+      evidence: account-location recommendation table in final output
+      source: output
+      needle: rationale
+- id: C18
+  category: format
+  fatal: false
+  text: The annual memo follows the template and includes an Assumptions section.
+  anchor: annual memo in final output
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Assumptions
+    llm:
+      question: The annual memo follows the template and includes an Assumptions section.
+      evidence: annual memo in final output
+      source: output
+      needle: Assumptions
+- id: C19
+  category: content
+  fatal: false
+  text: The annual memo includes a Distribution Classification Summary.
+  anchor: annual memo in final output
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Distribution Classification
+    llm:
+      question: The annual memo includes a Distribution Classification Summary.
+      evidence: annual memo in final output
+      source: output
+      needle: Distribution Classification
+- id: C20
+  category: content
+  fatal: false
+  text: The annual memo includes Account-Location Actions / placement decisions.
+  anchor: annual memo in final output
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Account-Location
+    llm:
+      question: The annual memo includes Account-Location Actions / placement decisions.
+      evidence: annual memo in final output
+      source: output
+      needle: Account-Location
+- id: C21
+  category: content
+  fatal: false
+  text: The annual memo includes an Open Risks / Follow-Ups section.
+  anchor: annual memo in final output
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Open Risks
+    llm:
+      question: The annual memo includes an Open Risks / Follow-Ups section.
+      evidence: annual memo in final output
+      source: output
+      needle: Open Risks
+- id: C22
+  category: content
+  fatal: false
+  text: The annual memo includes an Advisor Questions list for CPA/tax-advisor review.
+  anchor: annual memo in final output
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Advisor Questions
+    llm:
+      question: The annual memo includes an Advisor Questions list for CPA/tax-advisor review.
+      evidence: annual memo in final output
+      source: output
+      needle: Advisor Questions
+- id: C23
+  category: boundary
+  fatal: false
+  text: Unresolved assumptions (such as JPM's missing holding-period data) are escalated to a CPA or tax advisor.
+  anchor: open-risk checklist / memo open items
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: CPA
+    llm:
+      question: Unresolved assumptions (such as JPM's missing holding-period data) are escalated to a CPA or tax advisor.
+      evidence: open-risk checklist / memo open items
+      source: output
+      needle: CPA
+- id: C24
+  category: content
+  fatal: false
+  text: COST's special_dividend flag is treated as lumpy/non-recurring rather than steady recurring income.
+  anchor: classification discussion of COST in final output
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: special_dividend
+    llm:
+      question: COST's special_dividend flag is treated as lumpy/non-recurring rather than steady recurring income.
+      evidence: classification discussion of COST in final output
+      source: output
+      needle: special_dividend
+- id: C27
+  category: termination
+  fatal: false
+  text: The MLP holding is gated OUT-OF-SCOPE and escalated for separate human evaluation instead of being placed within the standard model.
+  anchor: MLP handling in final output
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: escalate
+    llm:
+      question: The MLP holding is gated OUT-OF-SCOPE and escalated for separate human evaluation instead of being placed within the standard model.
+      evidence: MLP handling in final output
+      source: output
+      needle: escalate
+- id: C28
+  category: evidence
+  fatal: false
+  text: The agent runs the packaged test suite test_build_tax_planning_sheet.py to verify the generator.
+  anchor: tool_log — pytest invocation
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: command_succeeded
+      cmd: test_build_tax_planning_sheet
+      expect: success
+    llm:
+      question: The agent runs the packaged test suite test_build_tax_planning_sheet.py to verify the generator.
+      evidence: tool_log — pytest invocation
+      source: tool_log
+      pattern: test_build_tax_planning_sheet
+- id: C29
+  category: process
+  fatal: false
+  text: Generating the planning sheet via build_tax_planning_sheet.py precedes running the verification tests.
+  anchor: tool_log command ordering
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_order
+      cmds:
+      - build_tax_planning_sheet.py
+      - test_build_tax_planning_sheet
+    llm:
+      question: Generating the planning sheet via build_tax_planning_sheet.py precedes running the verification tests.
+      evidence: tool_log command ordering
+      source: tool_log
+      pattern: build_tax_planning_sheet.py|test_build_tax_planning_sheet
+- id: C30
+  category: content
+  fatal: false
+  text: The agent states that tax outcomes depend on individual facts and jurisdiction.
+  anchor: guardrail statement in final output
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: jurisdiction
+    llm:
+      question: The agent states that tax outcomes depend on individual facts and jurisdiction.
+      evidence: guardrail statement in final output
+      source: output
+      needle: jurisdiction
+- id: C32
+  category: format
+  fatal: false
+  text: The classification table reproduces the planning-sheet columns including Location Hint.
+  anchor: classification table in final output
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Location Hint
+    llm:
+      question: The classification table reproduces the planning-sheet columns including Location Hint.
+      evidence: classification table in final output
+      source: output
+      needle: Location Hint

@@ -1,0 +1,458 @@
+skill: 229-exam-forecast
+version: 2
+total_items: 26
+criteria:
+- id: C05
+  category: process
+  fatal: false
+  text: The agent attempts to load the law-student plugin context file (~/.claude/plugins/config/claude-for-legal/law-student/CLAUDE.md) before analyzing.
+  anchor: Look in the tool_log for a Read whose path contains law-student or claude-for-legal.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_contains
+      cmd: law-student
+    llm:
+      question: The agent attempts to load the law-student plugin context file (~/.claude/plugins/config/claude-for-legal/law-student/CLAUDE.md) before analyzing.
+      evidence: Look in the tool_log for a Read whose path contains law-student or claude-for-legal.
+      source: tool_log
+      pattern: law-student
+- id: C06
+  category: content
+  fatal: false
+  text: Since the plugin config is absent, the agent states that no course config was found and proceeds from the user-provided materials.
+  anchor: The agent's final output should contain a note like 'no course config found'; the file does not exist at ~/.claude/plugins/config/claude-for-legal/law-student/CLAUDE.md.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: ~/exam-forecasts/**/forecast-*.md
+      needle: no course config|course configuration
+    llm:
+      question: Since the plugin config is absent, the agent states that no course config was found and proceeds from the user-provided materials.
+      evidence: The agent's final output should contain a note like 'no course config found'; the file does not exist at ~/.claude/plugins/config/claude-for-legal/law-student/CLAUDE.md.
+      source: workspace
+      path: ~/exam-forecasts/**/forecast-*.md
+      needle: no course config|course configuration
+- id: C07
+  category: process
+  fatal: false
+  text: 'The per-exam analysis covers the required dimensions: format, subject coverage, question style, fact-pattern density, recurring traps, and policy-vs-doctrine ratio.'
+  anchor: The agent's output should discuss recurring traps (and the other dimensions) as distinct analysis categories.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: ~/exam-forecasts/**/forecast-*.md
+      needle: recurring traps|habitual traps|recurring tested points
+    llm:
+      question: 'The per-exam analysis covers the required dimensions: format, subject coverage, question style, fact-pattern density, recurring traps, and policy-vs-doctrine ratio.'
+      evidence: The agent's output should discuss recurring traps (and the other dimensions) as distinct analysis categories.
+      source: workspace
+      path: ~/exam-forecasts/**/forecast-*.md
+      needle: recurring traps|habitual traps|recurring tested points
+- id: C08
+  category: process
+  fatal: false
+  text: The cross-exam rollup distinguishes stable patterns (in most/all exams), variable patterns (in some), and absent patterns worth noting.
+  anchor: The output should separate what is stable across the three exams from what varies (e.g., question format changed every year).
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: ~/exam-forecasts/**/forecast-*.md
+      needle: Variable patterns|Patterns that vary|vary annually|Historically absent
+    llm:
+      question: The cross-exam rollup distinguishes stable patterns (in most/all exams), variable patterns (in some), and absent patterns worth noting.
+      evidence: The output should separate what is stable across the three exams from what varies (e.g., question format changed every year).
+      source: workspace
+      path: ~/exam-forecasts/**/forecast-*.md
+      needle: Variable patterns|Patterns that vary|vary annually|Historically absent
+- id: C09
+  category: process
+  fatal: false
+  text: The forecast combines the past-exam patterns with the current semester's syllabus coverage rather than relying on past exams alone.
+  anchor: The output should reference the current syllabus (in-syllabus status, covered-to-date) when setting weights.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: ~/exam-forecasts/**/forecast-*.md
+      needle: syllabus coverage|knowledge-point coverage|missing syllabus
+    llm:
+      question: The forecast combines the past-exam patterns with the current semester's syllabus coverage rather than relying on past exams alone.
+      evidence: The output should reference the current syllabus (in-syllabus status, covered-to-date) when setting weights.
+      source: workspace
+      path: ~/exam-forecasts/**/forecast-*.md
+      needle: syllabus coverage|knowledge-point coverage|missing syllabus
+- id: C10
+  category: process
+  fatal: false
+  text: The agent reads the past exams before writing the forecast file.
+  anchor: In the tool_log, calls matching data/past-exams/ appear before any call matching exam-forecasts.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_order
+      cmds:
+      - data/past-exams/
+      - Write.*file_path
+    llm:
+      question: The agent reads the past exams before writing the forecast file.
+      evidence: In the tool_log, calls matching data/past-exams/ appear before any call matching exam-forecasts.
+      source: tool_log
+      pattern: data/past-exams/|Write.*file_path
+- id: C11
+  category: format
+  fatal: false
+  text: The forecast is written to the ~/exam-forecasts/[class]/ output location.
+  anchor: Look in the tool_log for a Write whose file_path contains exam-forecasts.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_contains
+      cmd: exam-forecasts
+    llm:
+      question: The forecast is written to the ~/exam-forecasts/[class]/ output location.
+      evidence: Look in the tool_log for a Write whose file_path contains exam-forecasts.
+      source: tool_log
+      pattern: exam-forecasts
+- id: C12
+  category: format
+  fatal: false
+  text: The forecast filename carries today's date in the required YYYY-MM-DD form (forecast-YYYY-MM-DD.md).
+  anchor: Look in the tool_log for a Write whose file_path contains a dated forecast-YYYY-MM-DD.md.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_contains
+      cmd: forecast-\d{4}-\d{2}-\d{2}\.md
+    llm:
+      question: The forecast filename carries today's date in the required YYYY-MM-DD form (forecast-YYYY-MM-DD.md).
+      evidence: Look in the tool_log for a Write whose file_path contains a dated forecast-YYYY-MM-DD.md.
+      source: tool_log
+      pattern: forecast-\d{4}-\d{2}-\d{2}\.md
+- id: C13
+  category: format
+  fatal: true
+  text: The forecast carries the verbatim study-notes header 'STUDY NOTES — NOT LEGAL ADVICE' as its opening line, both in the chat response and in the saved file.
+  anchor: The agent's final output must begin with 'STUDY NOTES — NOT LEGAL ADVICE'; the same line must be the first line of the saved file at ~/exam-forecasts/[class]/forecast-2026-08-16.md.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: STUDY NOTES — NOT LEGAL ADVICE
+    llm:
+      question: The forecast carries the verbatim study-notes header 'STUDY NOTES — NOT LEGAL ADVICE' as its opening line, both in the chat response and in the saved file.
+      evidence: The agent's final output must begin with 'STUDY NOTES — NOT LEGAL ADVICE'; the same line must be the first line of the saved file at ~/exam-forecasts/[class]/forecast-2026-08-16.md.
+      source: output
+      needle: STUDY NOTES — NOT LEGAL ADVICE
+- id: C14
+  category: format
+  fatal: false
+  text: 'The forecast states the number of past exams analyzed: 3.'
+  anchor: The output should include a 'Past exams analyzed:' field reporting 3.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: numeric_threshold
+      in: file:~/exam-forecasts/**/forecast-*.md
+      key: Past exams analyzed[^\d]*(\d+)
+      op: eq
+      n: 3
+    llm:
+      question: 'The forecast states the number of past exams analyzed: 3.'
+      evidence: The output should include a 'Past exams analyzed:' field reporting 3.
+      source: workspace
+      path: ~/exam-forecasts/**/forecast-*.md
+      needle: Past exams analyzed
+- id: C15
+  category: format
+  fatal: false
+  text: With exactly 3 past exams, the forecast labels sample confidence as moderate (3-5), not thin and not strong.
+  anchor: The output should include a 'Sample confidence:' field marked moderate.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: ~/exam-forecasts/**/forecast-*.md
+      needle: moderate (3-5)|Sample confidence|Moderate
+    llm:
+      question: With exactly 3 past exams, the forecast labels sample confidence as moderate (3-5), not thin and not strong.
+      evidence: The output should include a 'Sample confidence:' field marked moderate.
+      source: workspace
+      path: ~/exam-forecasts/**/forecast-*.md
+      needle: moderate (3-5)|Sample confidence|Moderate
+- id: C17
+  category: format
+  fatal: false
+  text: The forecast includes a subject weighting section listing topics with past-exam weight, in-syllabus status, and forecast weight.
+  anchor: The output should contain a 'Subject weighting' section.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: ~/exam-forecasts/**/forecast-*.md
+      needle: Subject weighting|Subject-weight|subject weight
+    llm:
+      question: The forecast includes a subject weighting section listing topics with past-exam weight, in-syllabus status, and forecast weight.
+      evidence: The output should contain a 'Subject weighting' section.
+      source: workspace
+      path: ~/exam-forecasts/**/forecast-*.md
+      needle: Subject weighting|Subject-weight|subject weight
+- id: C18
+  category: format
+  fatal: false
+  text: The forecast includes a question-style forecast covering likely format, fact-pattern density, and call style.
+  anchor: The output should contain a 'Question-style forecast' section discussing fact-pattern density.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: fact-pattern density
+    llm:
+      question: The forecast includes a question-style forecast covering likely format, fact-pattern density, and call style.
+      evidence: The output should contain a 'Question-style forecast' section discussing fact-pattern density.
+      source: output
+      needle: fact-pattern density
+- id: C19
+  category: format
+  fatal: false
+  text: The forecast includes a professor hobby-horses section listing recurring topics with appearance counts.
+  anchor: The output should contain a hobby-horses section (topics that recur in M of N exams).
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: ~/exam-forecasts/**/forecast-*.md
+      needle: hobby horse|repeatedly tests|appears every year|appear every year
+    llm:
+      question: The forecast includes a professor hobby-horses section listing recurring topics with appearance counts.
+      evidence: The output should contain a hobby-horses section (topics that recur in M of N exams).
+      source: workspace
+      path: ~/exam-forecasts/**/forecast-*.md
+      needle: hobby horse|repeatedly tests|appears every year|appear every year
+- id: C20
+  category: format
+  fatal: false
+  text: The forecast lists topics covered this semester but rarely tested, without over-weighting them.
+  anchor: The output should contain a section on covered-but-rarely-tested topics.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: ~/exam-forecasts/**/forecast-*.md
+      needle: rarely tested|historically absent|sparse points
+    llm:
+      question: The forecast lists topics covered this semester but rarely tested, without over-weighting them.
+      evidence: The output should contain a section on covered-but-rarely-tested topics.
+      source: workspace
+      path: ~/exam-forecasts/**/forecast-*.md
+      needle: rarely tested|historically absent|sparse points
+- id: C21
+  category: format
+  fatal: false
+  text: The forecast ends with a study emphasis recommendation split into heavy, moderate, and sanity-check allocations.
+  anchor: The output should contain a study emphasis recommendation with a sanity-check bucket.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: ~/exam-forecasts/**/forecast-*.md
+      needle: sanity check
+    llm:
+      question: The forecast ends with a study emphasis recommendation split into heavy, moderate, and sanity-check allocations.
+      evidence: The output should contain a study emphasis recommendation with a sanity-check bucket.
+      source: workspace
+      path: ~/exam-forecasts/**/forecast-*.md
+      needle: sanity check
+- id: C22
+  category: content
+  fatal: false
+  text: The study emphasis recommendation uses the template's percentage ranges (heavy 40-50%, moderate 30-40%, sanity check 10-20%).
+  anchor: The output should contain at least one of the template percentages, e.g. 40-50%.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: ~/exam-forecasts/**/forecast-*.md
+      needle: \d+%
+    llm:
+      question: The study emphasis recommendation uses the template's percentage ranges (heavy 40-50%, moderate 30-40%, sanity check 10-20%).
+      evidence: The output should contain at least one of the template percentages, e.g. 40-50%.
+      source: workspace
+      path: ~/exam-forecasts/**/forecast-*.md
+      needle: Revision-time allocation|20%|30%|40%
+- id: C23
+  category: format
+  fatal: false
+  text: The forecast includes an uncertainty-framing block containing the [UNCERTAIN] marker.
+  anchor: The output should contain the [UNCERTAIN] marker within the uncertainty framing section.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: UNCERTAIN
+    llm:
+      question: The forecast includes an uncertainty-framing block containing the [UNCERTAIN] marker.
+      evidence: The output should contain the [UNCERTAIN] marker within the uncertainty framing section.
+      source: output
+      needle: UNCERTAIN
+- id: C24
+  category: content
+  fatal: false
+  text: The forecast explicitly frames itself as a weighting heuristic for study time rather than a prediction.
+  anchor: The output should contain the phrase 'weighting heuristic'.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: weighting heuristic
+    llm:
+      question: The forecast explicitly frames itself as a weighting heuristic for study time rather than a prediction.
+      evidence: The output should contain the phrase 'weighting heuristic'.
+      source: output
+      needle: weighting heuristic
+- id: C25
+  category: content
+  fatal: false
+  text: The forecast explicitly states it is not a prediction of the exam (professors vary and rotate; exams include surprises).
+  anchor: The output should contain 'not a prediction' or equivalent.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: not a prediction
+    llm:
+      question: The forecast explicitly states it is not a prediction of the exam (professors vary and rotate; exams include surprises).
+      evidence: The output should contain 'not a prediction' or equivalent.
+      source: output
+      needle: not a prediction
+- id: C26
+  category: evidence
+  fatal: false
+  text: Pattern claims are anchored to the actual sample with explicit counts, e.g. 'appeared in M of N past exams'.
+  anchor: The output should contain 'appeared in' followed by counts (e.g., 2 of 3).
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: ~/exam-forecasts/**/forecast-*.md
+      needle: appeared in|appears every year|appear every year|all three
+    llm:
+      question: Pattern claims are anchored to the actual sample with explicit counts, e.g. 'appeared in M of N past exams'.
+      evidence: The output should contain 'appeared in' followed by counts (e.g., 2 of 3).
+      source: workspace
+      path: ~/exam-forecasts/**/forecast-*.md
+      needle: appeared in|appears every year|appear every year|all three
+- id: C27
+  category: format
+  fatal: false
+  text: The forecast closes with a next-steps decision tree customized to what was produced.
+  anchor: The output should contain a decision-tree of next steps (draft outline, find more exams, etc.).
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: ~/exam-forecasts/**/forecast-*.md
+      needle: decision tree
+    llm:
+      question: The forecast closes with a next-steps decision tree customized to what was produced.
+      evidence: The output should contain a decision-tree of next steps (draft outline, find more exams, etc.).
+      source: workspace
+      path: ~/exam-forecasts/**/forecast-*.md
+      needle: decision tree
+- id: C29
+  category: negative
+  fatal: false
+  text: The agent does not prompt the user to type in the professor's name; it derives 陈教授 / Professor Chen from the exam materials themselves.
+  anchor: 'Judge intake behavior: no question asking for the professor''s name; the materials name 陈教授 on every exam.'
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Professor Chen
+    llm:
+      question: The agent does not prompt the user to type in the professor's name; it derives 陈教授 / Professor Chen from the exam materials themselves.
+      evidence: 'Judge intake behavior: no question asking for the professor''s name; the materials name 陈教授 on every exam.'
+      source: output
+      needle: Professor Chen
+- id: C30
+  category: process
+  fatal: false
+  text: Intake establishes that all three exams are from the same professor and the same course (Contracts), the highest-signal input for the forecast.
+  anchor: The output should note the exams are all from the same professor/course, e.g. 'same course'.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: ~/exam-forecasts/**/forecast-*.md
+      needle: same course|same professor|Professor Chen
+    llm:
+      question: Intake establishes that all three exams are from the same professor and the same course (Contracts), the highest-signal input for the forecast.
+      evidence: The output should note the exams are all from the same professor/course, e.g. 'same course'.
+      source: workspace
+      path: ~/exam-forecasts/**/forecast-*.md
+      needle: same course|same professor|Professor Chen
+- id: C31
+  category: content
+  fatal: false
+  text: The subject weighting names the concrete recurring topics actually present in the three exams (e.g., standard-form/format clauses, change of circumstances, culpa in contrahendo, liquidated damages).
+  anchor: 'Judge the weighting table: topics must be the real ones from the exams, not generic categories; 格式条款 appears in all three exams, 情势变更 in 2023+2024.'
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: ~/exam-forecasts/**/forecast-*.md
+      needle: standard form terms|boilerplate terms|standard terms
+    llm:
+      question: The subject weighting names the concrete recurring topics actually present in the three exams (e.g., standard-form/format clauses, change of circumstances, culpa in contrahendo, liquidated
+        damages).
+      evidence: 'Judge the weighting table: topics must be the real ones from the exams, not generic categories; 格式条款 appears in all three exams, 情势变更 in 2023+2024.'
+      source: workspace
+      path: ~/exam-forecasts/**/forecast-*.md
+      needle: standard form terms|boilerplate terms|standard terms
+- id: C32
+  category: content
+  fatal: false
+  text: The forecast identifies at least one recurring trap pattern drawn from the exams (e.g., fine-print clause rules, exception-over-rule, or factual-chain reconstruction in the 2025 open-book exam).
+  anchor: 'Judge the hobby-horses/traps section: it should name a concrete trap pattern visible in the past exams.'
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: ~/exam-forecasts/**/forecast-*.md
+      needle: fine print|fine-print
+    llm:
+      question: The forecast identifies at least one recurring trap pattern drawn from the exams (e.g., fine-print clause rules, exception-over-rule, or factual-chain reconstruction in the 2025 open-book
+        exam).
+      evidence: 'Judge the hobby-horses/traps section: it should name a concrete trap pattern visible in the past exams.'
+      source: workspace
+      path: ~/exam-forecasts/**/forecast-*.md
+      needle: fine print|fine-print

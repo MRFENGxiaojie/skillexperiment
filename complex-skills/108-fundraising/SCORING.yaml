@@ -1,0 +1,452 @@
+skill: 108-fundraising
+version: 2
+total_items: 28
+criteria:
+- id: C01
+  category: tool
+  fatal: false
+  text: The agent reads the provided company snapshot company-snapshot.md before producing the pack.
+  anchor: Look in the tool_log for a Read call whose file path contains company-snapshot.md.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_contains
+      cmd: company-snapshot.md
+    llm:
+      question: The agent reads the provided company snapshot company-snapshot.md before producing the pack.
+      evidence: Look in the tool_log for a Read call whose file path contains company-snapshot.md.
+      source: tool_log
+      pattern: company-snapshot.md
+- id: C02
+  category: tool
+  fatal: false
+  text: The agent reads the burn data file burn.csv to ground runway and burn numbers.
+  anchor: Look in the tool_log for a Read call on burn.csv.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_contains
+      cmd: burn.csv
+    llm:
+      question: The agent reads the burn data file burn.csv to ground runway and burn numbers.
+      evidence: Look in the tool_log for a Read call on burn.csv.
+      source: tool_log
+      pattern: burn.csv
+- id: C03
+  category: tool
+  fatal: false
+  text: The agent reads the deliverable templates references/TEMPLATES.md to structure the Fundraising Pack.
+  anchor: Look in the tool_log for a Read call on references/TEMPLATES.md.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_contains
+      cmd: references/TEMPLATES.md
+    llm:
+      question: The agent reads the deliverable templates references/TEMPLATES.md to structure the Fundraising Pack.
+      evidence: Look in the tool_log for a Read call on references/TEMPLATES.md.
+      source: tool_log
+      pattern: references/TEMPLATES.md
+- id: C04
+  category: evidence
+  fatal: false
+  text: The agent runs the Step-8 quality gate by reading the checklists references/CHECKLISTS.md.
+  anchor: Look in the tool_log for a Read call on references/CHECKLISTS.md.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_contains
+      cmd: references/CHECKLISTS.md
+    llm:
+      question: The agent runs the Step-8 quality gate by reading the checklists references/CHECKLISTS.md.
+      evidence: Look in the tool_log for a Read call on references/CHECKLISTS.md.
+      source: tool_log
+      pattern: references/CHECKLISTS.md
+- id: C05
+  category: evidence
+  fatal: false
+  text: The agent scores the draft pack against references/RUBRIC.md before finalizing.
+  anchor: Look in the tool_log for a Read call on references/RUBRIC.md.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_contains
+      cmd: references/RUBRIC.md
+    llm:
+      question: The agent scores the draft pack against references/RUBRIC.md before finalizing.
+      evidence: Look in the tool_log for a Read call on references/RUBRIC.md.
+      source: tool_log
+      pattern: references/RUBRIC.md
+- id: C08
+  category: content
+  fatal: false
+  text: The Raise Decision Memo includes a falsifiable decision criterion of the form 'we raise if …'.
+  anchor: In the recommendation subsection, check for a conditional 'we raise if' criterion.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: raise if|Raise if|we raise|We raise
+    llm:
+      question: The Raise Decision Memo includes a falsifiable decision criterion of the form 'we raise if …'.
+      evidence: In the recommendation subsection, check for a conditional 'we raise if' criterion.
+      source: output
+      needle: raise if|Raise if|we raise|We raise
+- id: C10
+  category: content
+  fatal: false
+  text: The round design uses the target amount range of $1.0–1.5M (100–150 万美元) from the task materials.
+  anchor: In the Round Design Brief, check the amount range $1.0–1.5M appears.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: 1.5M|1.0–1.5|1.0-1.5
+    llm:
+      question: The round design uses the target amount range of $1.0–1.5M (100–150 万美元) from the task materials.
+      evidence: In the Round Design Brief, check the amount range $1.0–1.5M appears.
+      source: output
+      needle: 1.5M|1.0–1.5|1.0-1.5
+- id: C11
+  category: content
+  fatal: false
+  text: The round design ties the raise to the first $10k MRR milestone from the materials.
+  anchor: Check the milestone framing references 'first $10k MRR'.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: 10k MRR|10K MRR|10,000
+    llm:
+      question: The round design ties the raise to the first $10k MRR milestone from the materials.
+      evidence: Check the milestone framing references 'first $10k MRR'.
+      source: output
+      needle: 10k MRR|10K MRR|10,000
+- id: C12
+  category: content
+  fatal: false
+  text: The pack states the ~6-month runway from the materials.
+  anchor: Check the pack references the 6-month runway.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: 6 months|six-month
+    llm:
+      question: The pack states the ~6-month runway from the materials.
+      evidence: Check the pack references the 6-month runway.
+      source: output
+      needle: 6 months|six-month
+- id: C13
+  category: content
+  fatal: false
+  text: The round design specifies the 12–16 week close window from the materials.
+  anchor: Check the timing/pace section uses the 12–16 week close window.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: 12–16|12-16|16 weeks
+    llm:
+      question: The round design specifies the 12–16 week close window from the materials.
+      evidence: Check the timing/pace section uses the 12–16 week close window.
+      source: output
+      needle: 12–16|12-16|16 weeks
+- id: C14
+  category: content
+  fatal: false
+  text: The round design specifies the target investor profile (stage/check size/thesis/geography).
+  anchor: Check the round design or ICP section for a target investor profile.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: investor profile|check size
+    llm:
+      question: The round design specifies the target investor profile (stage/check size/thesis/geography).
+      evidence: Check the round design or ICP section for a target investor profile.
+      source: output
+      needle: investor profile|check size
+- id: C15
+  category: content
+  fatal: false
+  text: The pitch narrative includes a crisp one-liner (what / for whom / outcome).
+  anchor: In the pitch-narrative section, check for a one-liner.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: One-liner|one-liner
+    llm:
+      question: The pitch narrative includes a crisp one-liner (what / for whom / outcome).
+      evidence: In the pitch-narrative section, check for a one-liner.
+      source: output
+      needle: One-liner|one-liner
+- id: C16
+  category: content
+  fatal: false
+  text: The pitch includes a deck outline with an explicit first slide (Slide 1).
+  anchor: In the deck outline, check for a first-slide entry.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Slide 1|slide 1|First slide
+    llm:
+      question: The pitch includes a deck outline with an explicit first slide (Slide 1).
+      evidence: In the deck outline, check for a first-slide entry.
+      source: output
+      needle: Slide 1|slide 1|First slide
+- id: C17
+  category: content
+  fatal: false
+  text: The first slide is designed to pass the 10-second test required by the skill.
+  anchor: Check the first-slide guidance references the 10-second test.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: 10-second|10 second|ten-second
+    llm:
+      question: The first slide is designed to pass the 10-second test required by the skill.
+      evidence: Check the first-slide guidance references the 10-second test.
+      source: output
+      needle: 10-second|10 second|ten-second
+- id: C18
+  category: content
+  fatal: false
+  text: The pipeline section defines an investor ICP with fit filters.
+  anchor: Check the pipeline section for an 'ICP' definition.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: ICP
+    llm:
+      question: The pipeline section defines an investor ICP with fit filters.
+      evidence: Check the pipeline section for an 'ICP' definition.
+      source: output
+      needle: ICP
+- id: C19
+  category: content
+  fatal: false
+  text: The pipeline includes a prioritized target investor list.
+  anchor: Check the pipeline section for a target list.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: target list|Target list
+    llm:
+      question: The pipeline includes a prioritized target investor list.
+      evidence: Check the pipeline section for a target list.
+      source: output
+      needle: target list|Target list
+- id: C20
+  category: content
+  fatal: false
+  text: The pipeline sets weekly outreach/meeting targets grounded in the founders' ~2 meetings/week availability.
+  anchor: Check the pipeline math for per-week intros/meetings targets.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: meetings/week|meetings per week|intros|per week
+    llm:
+      question: The pipeline sets weekly outreach/meeting targets grounded in the founders' ~2 meetings/week availability.
+      evidence: Check the pipeline math for per-week intros/meetings targets.
+      source: output
+      needle: meetings/week|meetings per week|intros|per week
+- id: C22
+  category: content
+  fatal: false
+  text: The outreach scripts include a cold-email variant for investors without a warm path.
+  anchor: Check the outreach section for a cold-email script.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Cold email|cold email|cold outreach
+    llm:
+      question: The outreach scripts include a cold-email variant for investors without a warm path.
+      evidence: Check the outreach section for a cold-email script.
+      source: output
+      needle: Cold email|cold email|cold outreach
+- id: C23
+  category: content
+  fatal: false
+  text: The outreach scripts include a post-meeting follow-up with the within-24-hours rule.
+  anchor: Check the follow-up script mentions following up within 24 hours.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: 24 hours|within 24|24h
+    llm:
+      question: The outreach scripts include a post-meeting follow-up with the within-24-hours rule.
+      evidence: Check the follow-up script mentions following up within 24 hours.
+      source: output
+      needle: 24 hours|within 24|24h
+- id: C28
+  category: content
+  fatal: false
+  text: The pack includes a next-14-days action plan with concrete outreach tasks.
+  anchor: Check for a next-14-days action plan.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: 14 days|14-day|Next 14
+    llm:
+      question: The pack includes a next-14-days action plan with concrete outreach tasks.
+      evidence: Check for a next-14-days action plan.
+      source: output
+      needle: 14 days|14-day|Next 14
+- id: C30
+  category: content
+  fatal: false
+  text: The pack represents the company as pre-revenue with 5 design-partner pilots and no paying customers (matching the materials, not invented traction).
+  anchor: Check traction statements say 5 design partners / no paying customers.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: 5 design partners|design partner|no paying
+    llm:
+      question: The pack represents the company as pre-revenue with 5 design-partner pilots and no paying customers (matching the materials, not invented traction).
+      evidence: Check traction statements say 5 design partners / no paying customers.
+      source: output
+      needle: 5 design partners|design partner|no paying
+- id: C31
+  category: content
+  fatal: false
+  text: The pack reflects the prior $50k angel investment from the materials.
+  anchor: Check the narrative or cap-table context mentions the $50k angel note.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: 50k|angel
+    llm:
+      question: The pack reflects the prior $50k angel investment from the materials.
+      evidence: Check the narrative or cap-table context mentions the $50k angel note.
+      source: output
+      needle: 50k|angel
+- id: C32
+  category: content
+  fatal: false
+  text: The pack uses the ~$28k/month burn from the materials in its runway/round math.
+  anchor: Check the burn figure ~$28k/month appears in the round design or memo.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: 28k|28K
+    llm:
+      question: The pack uses the ~$28k/month burn from the materials in its runway/round math.
+      evidence: Check the burn figure ~$28k/month appears in the round design or memo.
+      source: output
+      needle: 28k|28K
+- id: C33
+  category: boundary
+  fatal: false
+  text: The valuation discussion proposes a comps/proxy approach and defers the actual valuation figure to professionals rather than asserting a number.
+  anchor: In the response to the valuation request, check for a comps/proxy approach and deferral.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: comps|comparable|proxy|questions for counsel
+    llm:
+      question: The valuation discussion proposes a comps/proxy approach and defers the actual valuation figure to professionals rather than asserting a number.
+      evidence: In the response to the valuation request, check for a comps/proxy approach and deferral.
+      source: output
+      needle: comps|comparable|proxy|questions for counsel
+- id: C34
+  category: negative
+  fatal: true
+  text: The agent does not draft a SAFE/term sheet or give legal/tax/securities advice; such matters are deferred to qualified professionals.
+  anchor: Scan the full output for any term-sheet/SAFE/legal advice; positive evidence is a deferral marker such as 'questions for counsel'.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: questions for counsel|counsel|qualified professionals
+    llm:
+      question: The agent does not draft a SAFE/term sheet or give legal/tax/securities advice; such matters are deferred to qualified professionals.
+      evidence: Scan the full output for any term-sheet/SAFE/legal advice; positive evidence is a deferral marker such as 'questions for counsel'.
+      source: output
+      needle: questions for counsel|counsel|qualified professionals
+- id: C35
+  category: negative
+  fatal: true
+  text: The agent does not invent financial metrics, traction, or round numbers; figures beyond the provided materials are labeled as assumptions.
+  anchor: Verify every number is sourced from the materials or explicitly labeled as an assumption.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: assumption|Assumption
+    llm:
+      question: The agent does not invent financial metrics, traction, or round numbers; figures beyond the provided materials are labeled as assumptions.
+      evidence: Verify every number is sourced from the materials or explicitly labeled as an assumption.
+      source: output
+      needle: assumption|Assumption
+- id: C36
+  category: coverage
+  fatal: false
+  text: The Fundraising Pack covers all eight deliverables with none omitted (decision memo, round design, pitch narrative + deck, pipeline, scripts, diligence, cadence, risks section).
+  anchor: Confirm all eight sections appear in the final output.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: (?=[\s\S]*Raise Decision Memo)(?=[\s\S]*Round Design Brief)(?=[\s\S]*Pitch Narrative)(?=[\s\S]*Pipeline)(?=[\s\S]*Outreach)(?=[\s\S]*Diligence)(?=[\s\S]*Cadence)(?=[\s\S]*Risks)
+    llm:
+      question: The Fundraising Pack covers all eight deliverables with none omitted (decision memo, round design, pitch narrative + deck, pipeline, scripts, diligence, cadence, risks section).
+      evidence: Confirm all eight sections appear in the final output.
+      source: output
+      needle: (?=[\s\S]*Raise Decision Memo)(?=[\s\S]*Round Design Brief)(?=[\s\S]*Pitch Narrative)(?=[\s\S]*Pipeline)(?=[\s\S]*Outreach)(?=[\s\S]*Diligence)(?=[\s\S]*Cadence)(?=[\s\S]*Risks)
+- id: C37
+  category: process
+  fatal: false
+  text: 'The deliverables appear in the SKILL.md order: decision memo → round design → pitch narrative → pipeline → outreach scripts → diligence → cadence → risks.'
+  anchor: Confirm the output sections are ordered as the workflow specifies.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Raise Decision Memo[\s\S]*Round Design Brief[\s\S]*Pitch Narrative[\s\S]*Pipeline[\s\S]*Outreach[\s\S]*Diligence[\s\S]*Cadence[\s\S]*Risks
+    llm:
+      question: 'The deliverables appear in the SKILL.md order: decision memo → round design → pitch narrative → pipeline → outreach scripts → diligence → cadence → risks.'
+      evidence: Confirm the output sections are ordered as the workflow specifies.
+      source: output
+      needle: Raise Decision Memo[\s\S]*Round Design Brief[\s\S]*Pitch Narrative[\s\S]*Pipeline[\s\S]*Outreach[\s\S]*Diligence[\s\S]*Cadence[\s\S]*Risks

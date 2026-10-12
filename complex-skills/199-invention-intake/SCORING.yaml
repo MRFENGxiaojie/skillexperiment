@@ -1,0 +1,283 @@
+skill: 199-invention-intake
+version: 2
+total_items: 18
+criteria:
+- id: C02
+  category: process
+  fatal: false
+  text: The agent reads the ip-legal practice profile (CLAUDE.md) before reading the invention disclosure.
+  anchor: In the tool log, the Read of CLAUDE.md must precede the Read of disclosure-form.md.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_order
+      cmds:
+      - CLAUDE.md
+      - disclosure-form.md
+    llm:
+      question: The agent reads the ip-legal practice profile (CLAUDE.md) before reading the invention disclosure.
+      evidence: In the tool log, the Read of CLAUDE.md must precede the Read of disclosure-form.md.
+      source: tool_log
+      pattern: CLAUDE.md|disclosure-form.md
+- id: C04
+  category: negative
+  fatal: false
+  text: The agent does not fabricate missing intake facts (conception date, inventor identity beyond the form, disclosure dates, commercial plans); anything unknown is listed as an open question in the memo.
+  anchor: Compare stated facts in the memo against the filled/blank fields of task/docs/disclosure-form.md.
+  judge: llm
+  check:
+    question: The agent does not fabricate missing intake facts (conception date, inventor identity beyond the form, disclosure dates, commercial plans); anything unknown is listed as an open question in the memo.
+    evidence: Compare stated facts in the memo against the filled/blank fields of task/docs/disclosure-form.md.
+- id: C05
+  category: content
+  fatal: false
+  text: The output opens with the disclaimer that this is a first-pass screen by a non-specialist, not a patentability opinion.
+  anchor: Opening lines of the agent's memo/output.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: first-pass screen by a non-specialist
+    llm:
+      question: The output opens with the disclaimer that this is a first-pass screen by a non-specialist, not a patentability opinion.
+      evidence: Opening lines of the agent's memo/output.
+      source: output
+      needle: first-pass screen by a non-specialist
+- id: C06
+  category: content
+  fatal: false
+  text: The memo flags the disclosure as time-sensitive at the top, because the company tech-blog disclosure (May, this year) is within the US one-year grace period and implicates foreign rights.
+  anchor: Top of the memo, before the screen-results table.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: time-sensitive
+    llm:
+      question: The memo flags the disclosure as time-sensitive at the top, because the company tech-blog disclosure (May, this year) is within the US one-year grace period and implicates foreign rights.
+      evidence: Top of the memo, before the screen-results table.
+      source: output
+      needle: time-sensitive
+- id: C07
+  category: format
+  fatal: false
+  text: The memo uses the header line 'Invention screen memo — [invention title]'.
+  anchor: Top of the memo body, after the time-sensitive flag.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Invention screen memo
+    llm:
+      question: The memo uses the header line 'Invention screen memo — [invention title]'.
+      evidence: Top of the memo body, after the time-sensitive flag.
+      source: output
+      needle: Invention screen memo
+- id: C11
+  category: coverage
+  fatal: false
+  text: The memo screens novelty signals with a verdict.
+  anchor: Screen-results table row for Novelty.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Novelty
+    llm:
+      question: The memo screens novelty signals with a verdict.
+      evidence: Screen-results table row for Novelty.
+      source: output
+      needle: Novelty
+- id: C16
+  category: coverage
+  fatal: false
+  text: The memo screens strategic value with a verdict referenced to the practice profile.
+  anchor: Screen-results table row for Strategic value.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Strategic value
+    llm:
+      question: The memo screens strategic value with a verdict referenced to the practice profile.
+      evidence: Screen-results table row for Strategic value.
+      source: output
+      needle: Strategic value
+- id: C17
+  category: boundary
+  fatal: false
+  text: For the borderline § 101 question on the AI/ML cache algorithm, the memo routes to a specialist for Alice/Mayo analysis rather than deciding the eligibility question itself.
+  anchor: The § 101 row's notes or the Open questions section.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Alice/Mayo
+    llm:
+      question: For the borderline § 101 question on the AI/ML cache algorithm, the memo routes to a specialist for Alice/Mayo analysis rather than deciding the eligibility question itself.
+      evidence: The § 101 row's notes or the Open questions section.
+      source: output
+      needle: Alice/Mayo
+- id: C18
+  category: content
+  fatal: false
+  text: The detectability screen flags the server-side cache algorithm as low-detectability and raises the patent-vs-trade-secret decision.
+  anchor: Detectability row notes, or Open questions / Next steps.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: patent-vs-trade-secret
+    llm:
+      question: The detectability screen flags the server-side cache algorithm as low-detectability and raises the patent-vs-trade-secret decision.
+      evidence: Detectability row notes, or Open questions / Next steps.
+      source: output
+      needle: patent-vs-trade-secret
+- id: C19
+  category: content
+  fatal: false
+  text: The public-disclosure screen states that the tech-blog disclosure falls within the US one-year window (clock running, urgent) and that foreign rights may already be at risk.
+  anchor: Public disclosure / bar dates row notes, or the time-sensitive line at top.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: foreign rights
+    llm:
+      question: The public-disclosure screen states that the tech-blog disclosure falls within the US one-year window (clock running, urgent) and that foreign rights may already be at risk.
+      evidence: Public disclosure / bar dates row notes, or the time-sensitive line at top.
+      source: output
+      needle: foreign rights
+- id: C21
+  category: content
+  fatal: false
+  text: The bottom-line verdict is INVESTIGATE, naming the specific open items (conception date, § 101 specialist review, patent-vs-trade-secret decision) that must be resolved before a pursue/decline call.
+  anchor: The 'Bottom line:' line of the memo.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: INVESTIGATE
+    llm:
+      question: The bottom-line verdict is INVESTIGATE, naming the specific open items (conception date, § 101 specialist review, patent-vs-trade-secret decision) that must be resolved before a pursue/decline
+        call.
+      evidence: The 'Bottom line:' line of the memo.
+      source: output
+      needle: INVESTIGATE
+- id: C22
+  category: coverage
+  fatal: false
+  text: The next-steps decision tree offers multiple routing options, including commissioning a prior-art search.
+  anchor: The 'Next steps' decision-tree list.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: prior-art search
+    llm:
+      question: The next-steps decision tree offers multiple routing options, including commissioning a prior-art search.
+      evidence: The 'Next steps' decision-tree list.
+      source: output
+      needle: prior-art search
+- id: C23
+  category: negative
+  fatal: false
+  text: The agent never concludes that the invention is patentable; the strongest verdict used is 'passes the initial screen / investigation warranted', never 'is patentable' or 'not patentable'.
+  anchor: Scan the Bottom line, decision tree, and closing paragraphs.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: passes the initial screen
+    llm:
+      question: The agent never concludes that the invention is patentable; the strongest verdict used is 'passes the initial screen / investigation warranted', never 'is patentable' or 'not patentable'.
+      evidence: Scan the Bottom line, decision tree, and closing paragraphs.
+      source: output
+      needle: passes the initial screen
+- id: C25
+  category: termination
+  fatal: false
+  text: The agent stops and routes to cold-start-interview if the practice profile is missing or still contains [PLACEHOLDER], and routes the user elsewhere if the profile shows trademark- or copyright-only
+    practice.
+  anchor: Opening messages when the profile gate fails; if the profile is valid and patent-practice, no stop is required.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: cold-start-interview
+    llm:
+      question: The agent stops and routes to cold-start-interview if the practice profile is missing or still contains [PLACEHOLDER], and routes the user elsewhere if the profile shows trademark- or copyright-only
+        practice.
+      evidence: Opening messages when the profile gate fails; if the profile is valid and patent-practice, no stop is required.
+      source: output
+      needle: cold-start-interview
+- id: C26
+  category: format
+  fatal: false
+  text: 'The six screens are presented in the prescribed order: Novelty signals, Obviousness flags, § 101, Public disclosure / bar dates, Detectability, Strategic value.'
+  anchor: Screen-results table read top to bottom.
+  judge: llm
+  check:
+    question: 'The six screens are presented in the prescribed order: Novelty signals, Obviousness flags, § 101, Public disclosure / bar dates, Detectability, Strategic value.'
+    evidence: Screen-results table read top to bottom.
+- id: C27
+  category: content
+  fatal: false
+  text: The memo correctly identifies the invention as a learned-model-based cache-eviction algorithm that replaces LRU/LFU fixed-priority policies.
+  anchor: Memo header title and screen notes.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: LRU/LFU
+    llm:
+      question: The memo correctly identifies the invention as a learned-model-based cache-eviction algorithm that replaces LRU/LFU fixed-priority policies.
+      evidence: Memo header title and screen notes.
+      source: output
+      needle: LRU/LFU
+- id: C28
+  category: format
+  fatal: false
+  text: Each screen's verdict uses the ✓ / 🟡 / 🔴 scale with one-line reasoning.
+  anchor: Screen-results table verdict cells.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: 🟡
+    llm:
+      question: Each screen's verdict uses the ✓ / 🟡 / 🔴 scale with one-line reasoning.
+      evidence: Screen-results table verdict cells.
+      source: output
+      needle: 🟡
+- id: C29
+  category: content
+  fatal: false
+  text: If the practice profile includes non-US jurisdictions, the § 101 screen notes that EPO/JPO/CNIPA eligibility standards differ from US § 101 and cautions against declining on US § 101 alone.
+  anchor: § 101 row notes or a callout in the memo.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: EPO
+    llm:
+      question: If the practice profile includes non-US jurisdictions, the § 101 screen notes that EPO/JPO/CNIPA eligibility standards differ from US § 101 and cautions against declining on US § 101 alone.
+      evidence: § 101 row notes or a callout in the memo.
+      source: output
+      needle: EPO

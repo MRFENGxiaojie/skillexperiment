@@ -1,0 +1,351 @@
+skill: 077-takedown
+version: 2
+total_items: 22
+criteria:
+- id: C01
+  category: content
+  fatal: true
+  text: The final deliverable is a §512(c)(3) takedown notice to the service provider (not a triage memo or counter-notice), evidenced by a subject line on the order of 'Notice of Copyright Infringement
+    pursuant to 17 U.S.C. §512(c)'.
+  anchor: Check the agent's final output / written notice file for a takedown-notice title and the §512(c) reference.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: 'Notice of Copyright Infringement|Notification of Claimed Copyright Infringement'
+    llm:
+      question: The final deliverable is a §512(c)(3) takedown notice to the service provider (not a triage memo or counter-notice), evidenced by a subject line on the order of 'Notice of Copyright Infringement
+        pursuant to 17 U.S.C. §512(c)'.
+      evidence: Check the agent's final output / written notice file for a takedown-notice title and the §512(c) reference.
+      source: output
+      needle: 'Notice of Copyright Infringement|Notification of Claimed Copyright Infringement'
+- id: C03
+  category: termination
+  fatal: true
+  text: If the practice profile is missing or contains [PLACEHOLDER] markers, the run proceeds with default approval matrix and practice-profile values and notes 'Practice profile not loaded' in the output instead of stopping.
+  anchor: If the profile was unconfigured, the trace should still draft the notice and record the default-profile note rather than routing to a setup command.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_contains
+      cmd: ip-legal/CLAUDE.md
+    llm:
+      question: If the practice profile is missing or contains [PLACEHOLDER] markers, the run proceeds with default approval matrix and practice-profile values and notes 'Practice profile not loaded' in the output instead of stopping.
+      evidence: If the profile was unconfigured, the trace should still draft the notice and record the default-profile note rather than routing to a setup command.
+      source: output
+      needle: Practice profile not loaded
+- id: C08
+  category: content
+  fatal: true
+  text: The notice identifies the copyrighted work, including the original work URL https://www.youtube.com/watch?v=MYORIGINAL1.
+  anchor: Look in the written notice and the in-chat plain-text preview for the original work identifier/URL.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: https://www.youtube.com/watch?v=MYORIGINAL1
+    llm:
+      question: The notice identifies the copyrighted work, including the original work URL https://www.youtube.com/watch?v=MYORIGINAL1.
+      evidence: Look in the written notice and the in-chat plain-text preview for the original work identifier/URL.
+      source: output
+      needle: https://www.youtube.com/watch?v=MYORIGINAL1
+- id: C10
+  category: content
+  fatal: true
+  text: The notice includes the good-faith belief statement that use of the copyrighted material is not authorized by the copyright owner, its agent, or the law.
+  anchor: Look for the verbatim/adapted good-faith belief sentence in the notice text.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: not authorized by the copyright owner
+    llm:
+      question: The notice includes the good-faith belief statement that use of the copyrighted material is not authorized by the copyright owner, its agent, or the law.
+      evidence: Look for the verbatim/adapted good-faith belief sentence in the notice text.
+      source: output
+      needle: not authorized by the copyright owner
+- id: C11
+  category: content
+  fatal: true
+  text: The notice includes the accuracy-and-authority statement made under penalty of perjury.
+  anchor: Look for the perjury statement in the notice text (element 6).
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: under penalty of perjury
+    llm:
+      question: The notice includes the accuracy-and-authority statement made under penalty of perjury.
+      evidence: Look for the perjury statement in the notice text (element 6).
+      source: output
+      needle: under penalty of perjury
+- id: C12
+  category: content
+  fatal: false
+  text: The notice includes a contact-information block (address, phone, email) for the complaining party or authorized agent.
+  anchor: Look for the contact block among the six elements in the notice.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: email
+    llm:
+      question: The notice includes a contact-information block (address, phone, email) for the complaining party or authorized agent.
+      evidence: Look for the contact block among the six elements in the notice.
+      source: output
+      needle: email
+- id: C13
+  category: content
+  fatal: false
+  text: The notice includes a signature line for the rights holder or authorized agent.
+  anchor: Look for a signature line in the notice structure.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Signature
+    llm:
+      question: The notice includes a signature line for the rights holder or authorized agent.
+      evidence: Look for a signature line in the notice structure.
+      source: output
+      needle: Signature
+- id: C14
+  category: format
+  fatal: false
+  text: The notice is addressed to YouTube as the service provider and includes the designated-DMCA-agent recipient block.
+  anchor: Look in the notice header/recipient block for the service provider and designated agent.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: YouTube Legal / Copyright Agent
+    llm:
+      question: The notice is addressed to YouTube as the service provider and includes the designated-DMCA-agent recipient block.
+      evidence: Look in the notice header/recipient block for the service provider and designated agent.
+      source: output
+      needle: YouTube Legal / Copyright Agent
+- id: C15
+  category: content
+  fatal: false
+  text: The notice or its supporting record includes the first-discovery date 2026-08-05 from the evidence timeline.
+  anchor: Look in the notice, the in-chat narrative, or the record for the discovery date.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: '2026-08-05|August 5, 2026'
+    llm:
+      question: The notice or its supporting record includes the first-discovery date 2026-08-05 from the evidence timeline.
+      evidence: Look in the notice, the in-chat narrative, or the record for the discovery date.
+      source: output
+      needle: '2026-08-05|August 5, 2026'
+- id: C16
+  category: process
+  fatal: false
+  text: Before drafting, the run walks the Lenz fair-use gate with the four factors and records a fair-use conclusion.
+  anchor: Look in the chat/draft for the fair-use consideration step (purpose, nature, amount, market) and its conclusion.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Lenz
+    llm:
+      question: Before drafting, the run walks the Lenz fair-use gate with the four factors and records a fair-use conclusion.
+      evidence: Look in the chat/draft for the fair-use consideration step (purpose, nature, amount, market) and its conclusion.
+      source: output
+      needle: Lenz
+- id: C17
+  category: process
+  fatal: true
+  text: Before any final output is written, the run presents the loud gate headed 'BEFORE THIS TAKEDOWN GOES ANYWHERE' and records engagement with its confirmations (assessed from the materials; no user interaction needed).
+  anchor: Look for the loud-gate block immediately before the final notice is written/sent.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: BEFORE THIS TAKEDOWN GOES ANYWHERE
+    llm:
+      question: Before any final output is written, the run presents the loud gate headed 'BEFORE THIS TAKEDOWN GOES ANYWHERE' and records engagement with its confirmations (assessed from the materials; no user interaction needed).
+      evidence: Look for the loud-gate block immediately before the final notice is written/sent.
+      source: output
+      needle: BEFORE THIS TAKEDOWN GOES ANYWHERE
+- id: C18
+  category: content
+  fatal: false
+  text: 'The run records the items that must be confirmed before the notice is sent (copyright ownership or exclusive-license authority, checked authorization/licenses, fair-use conclusion on the record, and
+    signer approval) in the gate or pre-send checklist.'
+  anchor: Look in the gate or the pre-send checklist for the four confirmation items.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: 'attorney approval|approves sending'
+    llm:
+      question: 'The run records the items that must be confirmed before the notice is sent (copyright ownership or exclusive-license authority, checked authorization/licenses, fair-use conclusion on the record,
+        and signer approval) in the gate or pre-send checklist.'
+      evidence: Look in the gate or the pre-send checklist for the four confirmation items.
+      source: output
+      needle: 'attorney approval|approves sending'
+- id: C19
+  category: content
+  fatal: false
+  text: 'The run reminds the user of the legal risk: the notice is sworn under penalty of perjury and §512(f) creates liability for knowing misrepresentations.'
+  anchor: Look in the risk warning / gate text for the §512(f) liability reference.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: 512(f)
+    llm:
+      question: 'The run reminds the user of the legal risk: the notice is sworn under penalty of perjury and §512(f) creates liability for knowing misrepresentations.'
+      evidence: Look in the risk warning / gate text for the §512(f) liability reference.
+      source: output
+      needle: 512(f)
+- id: C20
+  category: boundary
+  fatal: false
+  text: For a non-lawyer user, the run includes an attorney-review brief (work, ownership, accused use, licensing check, fair-use analysis, signer, service provider) and referral resources before the gate
+    clears.
+  anchor: Check takedown/pre-send-brief.md and the chat for the non-lawyer attorney-conversation brief and referral resources; the draft brief file is in the workspace.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: 'reviewed this with an attorney|licensed attorney should review|counsel to review'
+    llm:
+      path: takedown/pre-send-brief.md
+      source: workspace
+      needle: 'One-page attorney conversation brief|referral'
+      question: 'For a non-lawyer user, the run includes an attorney-review brief (work, ownership, accused use, licensing check, fair-use analysis, signer, service provider) and referral resources (e.g., bar referral, law-school IP clinic) before the gate clears.'
+      evidence: 'Check takedown/pre-send-brief.md and the chat for the non-lawyer attorney-conversation brief and referral resources; the draft brief file is in the workspace.'
+- id: C21
+  category: evidence
+  fatal: false
+  text: Any case or statutory citation is source-tagged and flagged for verification (e.g., [Westlaw], [model knowledge — verify]); the run does not silently supplement from model knowledge.
+  anchor: Check takedown/pre-send-brief.md (citation verification status section) and the chat for verification tags next to citations; the draft brief file is in the workspace.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: 'verify]|verify'
+    llm:
+      path: takedown/pre-send-brief.md
+      source: workspace
+      needle: 'verify against'
+      question: 'Any case or statutory citation is source-tagged and flagged for verification (e.g., [model knowledge - verify]); the run does not silently supplement from model knowledge.'
+      evidence: 'Check takedown/pre-send-brief.md (citation verification status section) and the chat for verification tags next to citations; the draft brief file is in the workspace.'
+- id: C22
+  category: format
+  fatal: false
+  text: The run writes the notice to a versioned file named notice-v<N>.md in the takedown output folder.
+  anchor: Search the tool_log for a Write of a notice-v* file.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_contains
+      cmd: notice-v
+    llm:
+      question: The run writes the notice to a versioned file named notice-v<N>.md in the takedown output folder.
+      evidence: Search the tool_log for a Write of a notice-v* file.
+      source: tool_log
+      pattern: notice-v
+- id: C23
+  category: negative
+  fatal: true
+  text: The outgoing notice does not carry the 'PRIVILEGED & CONFIDENTIAL — ATTORNEY WORK PRODUCT' header.
+  anchor: Open the written notice file and verify the top has no work-product header (internal drafts keep it, the outgoing notice must not).
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: 'no work-product header|without a work-product header|without the work-product header'
+    llm:
+      question: The outgoing notice does not carry the 'PRIVILEGED & CONFIDENTIAL — ATTORNEY WORK PRODUCT' header.
+      evidence: Open the written notice file and verify the top has no work-product header (internal drafts keep it, the outgoing notice must not).
+      source: output
+      needle: 'no work-product header|without a work-product header|without the work-product header'
+- id: C25
+  category: negative
+  fatal: false
+  text: The run does not itself submit the notice to the service provider; submission is left to the user through the provider's designated channel.
+  anchor: Scan the trace for any actual submission action (API call, form POST, send) — there should be none.
+  judge: llm
+  check:
+    question: The run does not itself submit the notice to the service provider; submission is left to the user through the provider's designated channel.
+    evidence: Scan the trace for any actual submission action (API call, form POST, send) — there should be none.
+- id: C26
+  category: boundary
+  fatal: false
+  text: The run's notice or analysis invokes US federal law (17 U.S.C. section 512) for the DMCA takedown, and flags a non-US regime only if the service provider, content, or infringer sits outside US jurisdiction.
+  anchor: 'Look for the statutory citation (17 U.S.C. 512(c)(3)) or a US federal law note in the notice/draft or chat.'
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: 'U.S.C.|US federal law'
+    llm:
+      question: 'The run''s notice or analysis invokes US federal law (17 U.S.C. section 512) for the DMCA takedown, and flags a non-US regime only if the service provider, content, or infringer sits outside US jurisdiction.'
+      evidence: 'Look for the statutory citation (17 U.S.C. 512(c)(3)) or a US federal law note in the notice/draft or chat.'
+      source: output
+      needle: 'U.S.C.|US federal law'
+- id: C27
+  category: negative
+  fatal: true
+  text: Where the task does not provide the sender's identity, contact details, or registration numbers, the run uses placeholders (never fabricating them and never stopping to ask).
+  anchor: Scan the notice for invented names/addresses/registration numbers; missing data should be placeholder or requested.
+  judge: llm
+  check:
+    question: Where the task does not provide the sender's identity, contact details, or registration numbers, the run uses placeholders (never fabricating them and never stopping to ask).
+    evidence: Scan the notice for invented names/addresses/registration numbers; missing data should be placeholder or requested.
+- id: C29
+  category: process
+  fatal: false
+  text: The practice-profile check occurs before the notice file is written, following the skill's prescribed step order.
+  anchor: 'Check tool_log ordering: the CLAUDE.md read precedes the notice-v file write.'
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_order
+      cmds:
+      - CLAUDE.md
+      - notice-v
+    llm:
+      question: The practice-profile check occurs before the notice file is written, following the skill's prescribed step order.
+      evidence: 'Check tool_log ordering: the CLAUDE.md read precedes the notice-v file write.'
+      source: tool_log
+      pattern: CLAUDE.md|notice-v
+- id: C30
+  category: process
+  fatal: false
+  text: If matter workspaces are enabled in the practice profile and no active matter exists, the run works at practice level and notes it in the output before writing.
+  anchor: If matter workspaces are enabled, look for a practice-level note before any output is written.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: practice-level
+    llm:
+      question: If matter workspaces are enabled in the practice profile and no active matter exists, the run works at practice level and notes it in the output before writing.
+      evidence: If matter workspaces are enabled, look for a practice-level note before any output is written.
+      source: output
+      needle: practice-level

@@ -1,0 +1,260 @@
+skill: 031-tailwind-patterns
+version: 2
+total_items: 16
+criteria:
+- id: C07
+  category: content
+  fatal: false
+  text: A separate dark-theme block remaps the semantic token values so the palette supports both light and dark themes.
+  anchor: Look for a .dark selector that overrides the --color-* tokens in styles.css.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: styles.css
+      needle: .dark
+    llm:
+      question: A separate dark-theme block remaps the semantic token values so the palette supports both light and dark themes.
+      evidence: Look for a .dark selector that overrides the --color-* tokens in styles.css.
+      source: workspace
+      path: styles.css
+      needle: .dark
+- id: C11
+  category: content
+  fatal: false
+  text: The card element declares itself a container using the named container @container/card.
+  anchor: Look for @container/card in the card rule in styles.css.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: styles.css
+      needle: '@container/card'
+    llm:
+      question: The card element declares itself a container using the named container @container/card.
+      evidence: Look for @container/card in the card rule in styles.css.
+      source: workspace
+      path: styles.css
+      needle: '@container/card'
+- id: C12
+  category: content
+  fatal: false
+  text: 'Card-internal responsive behavior (stat size, chart height) uses container-query variants such as @sm/card: rather than viewport breakpoints.'
+  anchor: 'Look for @sm/card: or @md/card: variants on the stat and chart rules in styles.css.'
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: styles.css
+      needle: '@sm/card:'
+    llm:
+      question: 'Card-internal responsive behavior (stat size, chart height) uses container-query variants such as @sm/card: rather than viewport breakpoints.'
+      evidence: 'Look for @sm/card: or @md/card: variants on the stat and chart rules in styles.css.'
+      source: workspace
+      path: styles.css
+      needle: '@sm/card:'
+- id: C13
+  category: content
+  fatal: false
+  text: Repeated card class combinations are extracted into a @layer components block.
+  anchor: Look for @layer components in styles.css.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: styles.css
+      needle: '@layer components'
+    llm:
+      question: Repeated card class combinations are extracted into a @layer components block.
+      evidence: Look for @layer components in styles.css.
+      source: workspace
+      path: styles.css
+      needle: '@layer components'
+- id: C14
+  category: content
+  fatal: false
+  text: The extracted component classes are written with @apply.
+  anchor: Look for @apply inside the component definitions in styles.css.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: styles.css
+      needle: '@apply'
+    llm:
+      question: The extracted component classes are written with @apply.
+      evidence: Look for @apply inside the component definitions in styles.css.
+      source: workspace
+      path: styles.css
+      needle: '@apply'
+- id: C15
+  category: format
+  fatal: false
+  text: The rewritten card.html applies the extracted grid component class card-grid.
+  anchor: Open the workspace card.html and look for the card-grid class on the grid container.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: card.html
+      needle: card-grid
+    llm:
+      question: The rewritten card.html applies the extracted grid component class card-grid.
+      evidence: Open the workspace card.html and look for the card-grid class on the grid container.
+      source: workspace
+      path: card.html
+      needle: card-grid
+- id: C16
+  category: coverage
+  fatal: false
+  text: The rewritten card.html restyles every card element type (header, stat, chart, footer) with the extracted component classes.
+  anchor: Look for card-chart (and the sibling card-header/card-stat/card-footer classes) on the cards in card.html.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: card.html
+      needle: card-chart
+    llm:
+      question: The rewritten card.html restyles every card element type (header, stat, chart, footer) with the extracted component classes.
+      evidence: Look for card-chart (and the sibling card-header/card-stat/card-footer classes) on the cards in card.html.
+      source: workspace
+      path: card.html
+      needle: card-chart
+- id: C17
+  category: content
+  fatal: false
+  text: The chart placeholder is rendered as a concrete inline element (e.g., an SVG with h-full w-full) that scales with the card.
+  anchor: Look inside the card-chart block in card.html for an SVG with h-full w-full.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: card.html
+      needle: h-full w-full
+    llm:
+      question: The chart placeholder is rendered as a concrete inline element (e.g., an SVG with h-full w-full) that scales with the card.
+      evidence: Look inside the card-chart block in card.html for an SVG with h-full w-full.
+      source: workspace
+      path: card.html
+      needle: h-full w-full
+- id: C18
+  category: content
+  fatal: false
+  text: A manual theme switch is included that toggles the .dark class on the document element.
+  anchor: Look in card.html for JS that toggles the dark class on the document.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: api_call_check
+      path: card.html
+      api: classList.toggle
+      require_args:
+      - dark
+    llm:
+      question: A manual theme switch is included that toggles the .dark class on the document element.
+      evidence: Look in card.html for JS that toggles the dark class on the document.
+      source: workspace
+      path: card.html
+- id: C19
+  category: content
+  fatal: false
+  text: The final response includes the token definition (the @theme block).
+  anchor: Search the agent's final output for the @theme directive.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: '@theme'
+    llm:
+      question: The final response includes the token definition (the @theme block).
+      evidence: Search the agent's final output for the @theme directive.
+      source: output
+      needle: '@theme'
+- id: C20
+  category: content
+  fatal: false
+  text: The final response includes the extracted component definitions.
+  anchor: Search the agent's final output for the @layer components block.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: '@layer components'
+    llm:
+      question: The final response includes the extracted component definitions.
+      evidence: Search the agent's final output for the @layer components block.
+      source: output
+      needle: '@layer components'
+- id: C21
+  category: content
+  fatal: false
+  text: The final response provides the complete copy-pasteable class string for the grid (e.g., the sm:grid-cols-2 / lg:grid-cols-3 variants).
+  anchor: Search the agent's final output for a breakpoint-prefixed grid class string.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: sm:grid-cols-2
+    llm:
+      question: The final response provides the complete copy-pasteable class string for the grid (e.g., the sm:grid-cols-2 / lg:grid-cols-3 variants).
+      evidence: Search the agent's final output for a breakpoint-prefixed grid class string.
+      source: output
+      needle: sm:grid-cols-2
+- id: C23
+  category: boundary
+  fatal: false
+  text: The rationale covers the edge case where card width and viewport width diverge (a card can be narrow in a wide layout or wide in a narrow layout), which is why container queries are used inside
+    cards.
+  anchor: Search the agent's final output for reasoning about card width being independent of viewport width.
+  judge: llm
+  check:
+    question: The rationale covers the edge case where card width and viewport width diverge (a card can be narrow in a wide layout or wide in a narrow layout), which is why container queries are used inside
+      cards.
+    evidence: Search the agent's final output for reasoning about card width being independent of viewport width.
+- id: C25
+  category: tool
+  fatal: false
+  text: The agent writes the CSS configuration as styles.css using the Write tool.
+  anchor: Search the tool log for a Write call whose target path includes styles.css.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_contains
+      cmd: styles.css
+    llm:
+      question: The agent writes the CSS configuration as styles.css using the Write tool.
+      evidence: Search the tool log for a Write call whose target path includes styles.css.
+      source: tool_log
+      pattern: styles.css
+- id: C27
+  category: negative
+  fatal: true
+  text: No !important is used anywhere in the styling deliverables; specificity is fixed properly instead.
+  anchor: A judge must inspect styles.css and card.html for the literal token !important.
+  judge: llm
+  check:
+    question: No !important is used anywhere in the styling deliverables; specificity is fixed properly instead.
+    evidence: A judge must inspect styles.css and card.html for the literal token !important.
+- id: C28
+  category: negative
+  fatal: false
+  text: The deliverables avoid arbitrary-value utility classes (such as h-[32px]) everywhere and rely on the design-system scale and tokens.
+  anchor: A judge must scan styles.css and card.html for arbitrary-value bracket class patterns.
+  judge: llm
+  check:
+    question: The deliverables avoid arbitrary-value utility classes (such as h-[32px]) everywhere and rely on the design-system scale and tokens.
+    evidence: A judge must scan styles.css and card.html for arbitrary-value bracket class patterns.

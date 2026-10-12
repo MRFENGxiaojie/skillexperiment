@@ -1,0 +1,67 @@
+skill: 241-readme-i18n
+version: 2
+total_items: 4
+criteria:
+- id: C02
+  category: content
+  fatal: false
+  text: README.zh.md contains Chinese-language prose — the human-language content is translated rather than left in English.
+  anchor: Open README.zh.md and confirm CJK text (e.g., the character 的) appears in the translated paragraphs and headings.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: README.zh.md
+      needle: of|the
+    llm:
+      question: README.zh.md contains Chinese-language prose — the human-language content is translated rather than left in English.
+      evidence: Open README.zh.md and confirm CJK text (e.g., the character 的) appears in the translated paragraphs and headings.
+      source: workspace
+      path: README.zh.md
+      needle: of|the
+- id: C19
+  category: process
+  fatal: false
+  text: Before translating, the agent opens the preservation checklist reference file references/preservation-checklist.md to inventory fragile Markdown elements.
+  anchor: In the tool log, find a Read call whose path contains `preservation-checklist.md`.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_contains
+      cmd: preservation-checklist.md
+    llm:
+      question: Before translating, the agent opens the preservation checklist reference file references/preservation-checklist.md to inventory fragile Markdown elements.
+      evidence: In the tool log, find a Read call whose path contains `preservation-checklist.md`.
+      source: tool_log
+      pattern: preservation-checklist.md
+- id: C24
+  category: content
+  fatal: false
+  text: The final response explicitly reports which terms were intentionally left untranslated (e.g., the project name pymo-cli, commands, badge URLs, config tokens).
+  anchor: Read the final output for an explicit statement naming preserved/untranslated terms rather than only summarizing files.
+  judge: llm
+  check:
+    question: The final response explicitly reports which terms were intentionally left untranslated (e.g., the project name pymo-cli, commands, badge URLs, config tokens).
+    evidence: Read the final output for an explicit statement naming preserved/untranslated terms rather than only summarizing files.
+- id: C25
+  category: evidence
+  fatal: false
+  text: Before reporting completion, the agent performs final verification — checking selector uniqueness per variant, code-fence counts, badge/link targets, and that every (#...) link resolves in its own
+    file.
+  anchor: Look in the tool log for post-write verification actions (re-reading localized files, grepping for `](#` or fence counts) prior to the final message.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_order
+      cmds:
+      - README.zh.md
+      - '](#'
+    llm:
+      question: Before reporting completion, the agent performs final verification — checking selector uniqueness per variant, code-fence counts, badge/link targets, and that every (#...) link resolves
+        in its own file.
+      evidence: Look in the tool log for post-write verification actions (re-reading localized files, grepping for `](#` or fence counts) prior to the final message.
+      source: tool_log
+      pattern: README.zh.md|](#

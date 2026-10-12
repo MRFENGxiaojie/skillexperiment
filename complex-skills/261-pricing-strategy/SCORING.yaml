@@ -1,0 +1,159 @@
+skill: 261-pricing-strategy
+version: 2
+total_items: 11
+criteria:
+- id: C03
+  category: content
+  fatal: false
+  text: The deliverable evaluates message/usage-based (消息量) as a candidate value metric.
+  anchor: In the value-metric section of the final output.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: message|messages
+    llm:
+      question: The deliverable evaluates message/usage-based (消息量) as a candidate value metric.
+      evidence: In the value-metric section of the final output.
+      source: output
+      needle: message|messages
+- id: C06
+  category: content
+  fatal: false
+  text: Unknown metrics (trial-to-paid conversion, churn, ARPU) are given as industry-estimate ranges rather than single precise figures.
+  anchor: In the data/assumptions section of the final output, where the missing metrics are handled.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: range|interval
+    llm:
+      question: Unknown metrics (trial-to-paid conversion, churn, ARPU) are given as industry-estimate ranges rather than single precise figures.
+      evidence: In the data/assumptions section of the final output, where the missing metrics are handled.
+      source: output
+      needle: range|interval
+- id: C10
+  category: content
+  fatal: false
+  text: The deliverable includes pricing-page display essentials (定价页), as explicitly requested in the task.
+  anchor: In the pricing-page section of the final output.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: pricing page
+    llm:
+      question: The deliverable includes pricing-page display essentials (定价页), as explicitly requested in the task.
+      evidence: In the pricing-page section of the final output.
+      source: output
+      needle: pricing page
+- id: C11
+  category: content
+  fatal: false
+  text: The pricing-page spec includes a monthly/annual billing toggle that shows the annual savings.
+  anchor: In the above-the-fold pricing-page section of the final output.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: annual payment|yearly
+    llm:
+      question: The pricing-page spec includes a monthly/annual billing toggle that shows the annual savings.
+      evidence: In the above-the-fold pricing-page section of the final output.
+      source: output
+      needle: annual payment|yearly
+- id: C15
+  category: format
+  fatal: false
+  text: The deliverable leads with the bottom-line conclusion before presenting rationale.
+  anchor: At the start of the final output.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: conclusion|conclusions
+    llm:
+      question: The deliverable leads with the bottom-line conclusion before presenting rationale.
+      evidence: At the start of the final output.
+      source: output
+      needle: conclusion|conclusions
+- id: C16
+  category: content
+  fatal: false
+  text: The price rationale identifies the next-best alternative and sets the price relative to it.
+  anchor: In the price-rationale section of the final output.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: alternative|replace|substitute
+    llm:
+      question: The price rationale identifies the next-best alternative and sets the price relative to it.
+      evidence: In the price-rationale section of the final output.
+      source: output
+      needle: alternative|replace|substitute
+- id: C17
+  category: content
+  fatal: false
+  text: The top tier includes enterprise features such as SSO, audit logs, or SLA.
+  anchor: In the tier-table / top-tier description of the final output.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: SSO
+    llm:
+      question: The top tier includes enterprise features such as SSO, audit logs, or SLA.
+      evidence: In the tier-table / top-tier description of the final output.
+      source: output
+      needle: SSO
+- id: C18
+  category: process
+  fatal: false
+  text: The agent checks for marketing-context.md in the user's workspace before asking questions.
+  anchor: 'In the tool log: a Glob/Read reference to marketing-context.md.'
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_contains
+      cmd: marketing-context
+    llm:
+      question: The agent checks for marketing-context.md in the user's workspace before asking questions.
+      evidence: 'In the tool log: a Glob/Read reference to marketing-context.md.'
+      source: tool_log
+      pattern: marketing-context
+- id: C20
+  category: negative
+  fatal: true
+  text: The agent does not invent precise figures or silently assume a number for the unknown metrics (conversion, churn, ARPU); any estimate is labeled or ranged.
+  anchor: 'In the final output: no single unhedged precise number presented as fact for the untracked metrics.'
+  judge: llm
+  check:
+    question: The agent does not invent precise figures or silently assume a number for the unknown metrics (conversion, churn, ARPU); any estimate is labeled or ranged.
+    evidence: 'In the final output: no single unhedged precise number presented as fact for the untracked metrics.'
+- id: C24
+  category: format
+  fatal: false
+  text: 'The deliverable follows the design skeleton: bottom line, value metric, tier table, price rationale, pricing page essentials, confidence.'
+  anchor: In the overall structure of the final output.
+  judge: llm
+  check:
+    question: 'The deliverable follows the design skeleton: bottom line, value metric, tier table, price rationale, pricing page essentials, confidence.'
+    evidence: In the overall structure of the final output.
+- id: C26
+  category: process
+  fatal: false
+  text: The agent confirms the scenario is design-from-scratch before proposing pricing.
+  anchor: In the agent's first response, before any recommendation.
+  judge: llm
+  check:
+    question: The agent confirms the scenario is design-from-scratch before proposing pricing.
+    evidence: In the agent's first response, before any recommendation.

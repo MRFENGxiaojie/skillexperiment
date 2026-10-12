@@ -1,0 +1,289 @@
+skill: 228-enterprise-artifact-search
+version: 2
+total_items: 18
+criteria:
+- id: C07
+  category: format
+  fatal: false
+  text: The final answer JSON object includes the field target_product.
+  anchor: Look for the key name target_product in the final output JSON.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: target_product
+    llm:
+      question: The final answer JSON object includes the field target_product.
+      evidence: Look for the key name target_product in the final output JSON.
+      source: output
+      needle: target_product
+- id: C08
+  category: format
+  fatal: false
+  text: The final answer JSON object includes the field report_doc_id.
+  anchor: Look for the key name report_doc_id in the final output JSON.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: report_doc_id
+    llm:
+      question: The final answer JSON object includes the field report_doc_id.
+      evidence: Look for the key name report_doc_id in the final output JSON.
+      source: output
+      needle: report_doc_id
+- id: C09
+  category: format
+  fatal: false
+  text: The final answer JSON object includes the field author_employee_ids.
+  anchor: Look for the key name author_employee_ids in the final output JSON.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: author_employee_ids
+    llm:
+      question: The final answer JSON object includes the field author_employee_ids.
+      evidence: Look for the key name author_employee_ids in the final output JSON.
+      source: output
+      needle: author_employee_ids
+- id: C10
+  category: format
+  fatal: false
+  text: The final answer JSON object includes the field key_reviewer_employee_ids.
+  anchor: Look for the key name key_reviewer_employee_ids in the final output JSON.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: key_reviewer_employee_ids
+    llm:
+      question: The final answer JSON object includes the field key_reviewer_employee_ids.
+      evidence: Look for the key name key_reviewer_employee_ids in the final output JSON.
+      source: output
+      needle: key_reviewer_employee_ids
+- id: C11
+  category: format
+  fatal: false
+  text: The final answer JSON object includes the field all_employee_ids_union.
+  anchor: Look for the key name all_employee_ids_union in the final output JSON.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: all_employee_ids_union
+    llm:
+      question: The final answer JSON object includes the field all_employee_ids_union.
+      evidence: Look for the key name all_employee_ids_union in the final output JSON.
+      source: output
+      needle: all_employee_ids_union
+- id: C12
+  category: format
+  fatal: false
+  text: The final answer JSON object includes the field recommendation.
+  anchor: Look for the key name recommendation in the final output JSON.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: recommendation
+    llm:
+      question: The final answer JSON object includes the field recommendation.
+      evidence: Look for the key name recommendation in the final output JSON.
+      source: output
+      needle: recommendation
+- id: C13
+  category: format
+  fatal: false
+  text: Every evidence-map record includes an artifact_type field.
+  anchor: Look for artifact_type in the evidence map of the final output.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: artifact_type
+    llm:
+      question: Every evidence-map record includes an artifact_type field.
+      evidence: Look for artifact_type in the evidence map of the final output.
+      source: output
+      needle: artifact_type
+- id: C14
+  category: format
+  fatal: false
+  text: Every evidence-map record includes an artifact_id field.
+  anchor: Look for artifact_id in the evidence map of the final output.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: artifact_id
+    llm:
+      question: Every evidence-map record includes an artifact_id field.
+      evidence: Look for artifact_id in the evidence map of the final output.
+      source: output
+      needle: artifact_id
+- id: C15
+  category: format
+  fatal: false
+  text: Every evidence-map record includes a supporting snippet field.
+  anchor: Look for snippet in the evidence map of the final output.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: snippet
+    llm:
+      question: Every evidence-map record includes a supporting snippet field.
+      evidence: Look for snippet in the evidence map of the final output.
+      source: output
+      needle: snippet
+- id: C19
+  category: process
+  fatal: false
+  text: The trace reads the CoachForce draft report files (draft v1 / draft v2) as candidates.
+  anchor: Look in the tool_log for Read commands containing market-research-report-draft.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_contains
+      cmd: market-research-report-draft
+    llm:
+      question: The trace reads the CoachForce draft report files (draft v1 / draft v2) as candidates.
+      evidence: Look in the tool_log for Read commands containing market-research-report-draft.
+      source: tool_log
+      pattern: market-research-report-draft
+- id: C20
+  category: process
+  fatal: false
+  text: The trace examines the same-named Atlas report products/atlas/market-research-report.md as a cross-product candidate during the global sweep.
+  anchor: Look in the tool_log for a Read command on the Atlas report path.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_contains
+      cmd: products/atlas/market-research-report.md
+    llm:
+      question: The trace examines the same-named Atlas report products/atlas/market-research-report.md as a cross-product candidate during the global sweep.
+      evidence: Look in the tool_log for a Read command on the Atlas report path.
+      source: tool_log
+      pattern: products/atlas/market-research-report.md
+- id: C25
+  category: process
+  fatal: false
+  text: The trace builds the report candidate set from the product files before examining the meeting transcript, following Step 1's product-file-first search order.
+  anchor: 'Inspect tool_log ordering of Read commands: the final report file must be read before the meeting transcript.'
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_order
+      cmds:
+      - market-research-report-final.md
+      - coachforce-market-research-review-2026-04-02
+    llm:
+      question: The trace builds the report candidate set from the product files before examining the meeting transcript, following Step 1's product-file-first search order.
+      evidence: 'Inspect tool_log ordering of Read commands: the final report file must be read before the meeting transcript.'
+      source: tool_log
+      pattern: market-research-report-final.md|coachforce-market-research-review-2026-04-02
+- id: C26
+  category: process
+  fatal: false
+  text: The multi-hop search is delegated to the enterprise-artifact-search subagent (or the Core Procedure is attached as the Task prompt); the main agent does not run the search steps itself.
+  anchor: Look in the tool_log for a Task/subagent invocation, or judge from the trace's structure whether search was delegated.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_contains
+      cmd: subagent_type
+    llm:
+      question: The multi-hop search is delegated to the enterprise-artifact-search subagent (or the Core Procedure is attached as the Task prompt); the main agent does not run the search steps itself.
+      evidence: Look in the tool_log for a Task/subagent invocation, or judge from the trace's structure whether search was delegated.
+      source: tool_log
+      pattern: subagent_type
+- id: C27
+  category: evidence
+  fatal: false
+  text: The evidence for the key reviewers cites the review meeting transcript (coachforce-market-research-review-2026-04-02) as the source of their substantive feedback.
+  anchor: Look in the evidence map for the meeting transcript artifact_id.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: coachforce-market-research-review-2026-04-02
+    llm:
+      question: The evidence for the key reviewers cites the review meeting transcript (coachforce-market-research-review-2026-04-02) as the source of their substantive feedback.
+      evidence: Look in the evidence map for the meeting transcript artifact_id.
+      source: output
+      needle: coachforce-market-research-review-2026-04-02
+- id: C28
+  category: evidence
+  fatal: false
+  text: The evidence map is keyed per employee with a role label distinguishing author from key_reviewer.
+  anchor: Look in the evidence map for per-employee records carrying employee_id and role.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: employee_id
+    llm:
+      question: The evidence map is keyed per employee with a role label distinguishing author from key_reviewer.
+      evidence: Look in the evidence map for per-employee records carrying employee_id and role.
+      source: output
+      needle: employee_id
+- id: C33
+  category: negative
+  fatal: false
+  text: Every output employee ID exists in employees.csv and is backed by an evidence pointer (no fabricated or unverifiable IDs).
+  anchor: Cross-check all eid_ tokens in the output against employees.csv and the evidence map.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: task/data/enterprise/employees.csv
+      needle: eid_
+    llm:
+      question: Every output employee ID exists in employees.csv and is backed by an evidence pointer (no fabricated or unverifiable IDs).
+      evidence: Cross-check all eid_ tokens in the output against employees.csv and the evidence map.
+      source: workspace
+      path: task/data/enterprise/employees.csv
+      needle: eid_
+- id: C34
+  category: negative
+  fatal: false
+  text: The agent returns extracted entities, evidence pointers, and a recommendation only, without adding conclusions beyond the dataset.
+  anchor: Review the final output for out-of-scope business analysis beyond the requested extraction.
+  judge: llm
+  check:
+    question: The agent returns extracted entities, evidence pointers, and a recommendation only, without adding conclusions beyond the dataset.
+    evidence: Review the final output for out-of-scope business analysis beyond the requested extraction.
+- id: C35
+  category: boundary
+  fatal: false
+  text: Draft versions COACH-MR-2026-0306-D1 and COACH-MR-2026-0324-D2 are identified as drafts and not selected as the answer report.
+  anchor: Confirm the trace distinguishes draft from final status and anchors on the final doc ID.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: COACH-MR-2026-0408-F
+    llm:
+      question: Draft versions COACH-MR-2026-0306-D1 and COACH-MR-2026-0324-D2 are identified as drafts and not selected as the answer report.
+      evidence: Confirm the trace distinguishes draft from final status and anchors on the final doc ID.
+      source: output
+      needle: COACH-MR-2026-0408-F

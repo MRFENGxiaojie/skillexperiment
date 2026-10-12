@@ -1,0 +1,310 @@
+skill: 061-web-games
+version: 2
+total_items: 19
+criteria:
+- id: C01
+  category: format
+  fatal: false
+  text: A standalone HTML entry file named index.html or game.html is created at the workspace root.
+  anchor: Look at the workspace root; check.py PROC-01 accepts index.html or game.html, SCORING PROC-01 resolves ${WORKSPACE}/index.html.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: count
+      what: '*.html'
+      op: ge
+      n: 1
+    llm:
+      question: A standalone HTML entry file named index.html or game.html is created at the workspace root.
+      evidence: Look at the workspace root; check.py PROC-01 accepts index.html or game.html, SCORING PROC-01 resolves ${WORKSPACE}/index.html.
+      source: tool_log
+      pattern: '*.html'
+- id: C02
+  category: format
+  fatal: false
+  text: An assets/ directory exists in the workspace and holds the game's asset files.
+  anchor: SCORING OUT-01 and check.py run file_exists(workspace/assets/**).
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_exists
+      path: assets/**
+    llm:
+      question: An assets/ directory exists in the workspace and holds the game's asset files.
+      evidence: SCORING OUT-01 and check.py run file_exists(workspace/assets/**).
+      source: workspace
+      path: assets/**
+- id: C03
+  category: format
+  fatal: false
+  text: The entry HTML is self-contained and references its assets through local relative paths beginning with assets/, so it runs by double-clicking the file with no build step or server.
+  anchor: Inspect index.html for asset paths starting with assets/ (SKILL.md Output Format; task.txt double-click requirement).
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: index.html
+      needle: assets/
+    llm:
+      question: The entry HTML is self-contained and references its assets through local relative paths beginning with assets/, so it runs by double-clicking the file with no build step or server.
+      evidence: Inspect index.html for asset paths starting with assets/ (SKILL.md Output Format; task.txt double-click requirement).
+      source: workspace
+      path: index.html
+      needle: assets/
+- id: C04
+  category: content
+  fatal: false
+  text: The game implements the 2D snake variant where the snake eats coins and grows longer.
+  anchor: Search index.html for the coin-grow mechanic (task/task.txt).
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: index.html
+      needle: coin
+    llm:
+      question: The game implements the 2D snake variant where the snake eats coins and grows longer.
+      evidence: Search index.html for the coin-grow mechanic (task/task.txt).
+      source: workspace
+      path: index.html
+      needle: coin
+- id: C05
+  category: content
+  fatal: false
+  text: The game includes obstacles the snake must avoid.
+  anchor: Search index.html for obstacle handling (task/task.txt).
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: index.html
+      needle: obstacle
+    llm:
+      question: The game includes obstacles the snake must avoid.
+      evidence: Search index.html for obstacle handling (task/task.txt).
+      source: workspace
+      path: index.html
+      needle: obstacle
+- id: C06
+  category: content
+  fatal: false
+  text: The game has a score that increases when coins are collected and is shown to the player.
+  anchor: Search index.html for scoring logic (task/task.txt).
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: index.html
+      needle: score
+    llm:
+      question: The game has a score that increases when coins are collected and is shown to the player.
+      evidence: Search index.html for scoring logic (task/task.txt).
+      source: workspace
+      path: index.html
+      needle: score
+- id: C07
+  category: content
+  fatal: false
+  text: The game produces simple sound effects using the Web Audio API (AudioContext).
+  anchor: Search index.html for AudioContext (SKILL.md section 6; check.py PROC-04).
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: index.html
+      needle: AudioContext
+    llm:
+      question: The game produces simple sound effects using the Web Audio API (AudioContext).
+      evidence: Search index.html for AudioContext (SKILL.md section 6; check.py PROC-04).
+      source: workspace
+      path: index.html
+      needle: AudioContext
+- id: C08
+  category: content
+  fatal: false
+  text: The game loop pauses when the tab is hidden using the Page Visibility API (visibilitychange / document.hidden).
+  anchor: Search index.html for a visibilitychange listener (SKILL.md Output Format; REVIEW fix F-5 names the API).
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: api_call_check
+      path: index.html
+      api: addEventListener
+      require_args:
+      - visibilitychange
+    llm:
+      question: The game loop pauses when the tab is hidden using the Page Visibility API (visibilitychange / document.hidden).
+      evidence: Search index.html for a visibilitychange listener (SKILL.md Output Format; REVIEW fix F-5 names the API).
+      source: workspace
+      path: index.html
+- id: C09
+  category: negative
+  fatal: false
+  text: The agent does not load all game assets in a single upfront request; audio and assets load lazily or on demand.
+  anchor: Review index.html for on-demand loading vs one all-upfront load (SKILL.md section 7 Anti-Patterns; task.txt).
+  judge: llm
+  check:
+    question: The agent does not load all game assets in a single upfront request; audio and assets load lazily or on demand.
+    evidence: Review index.html for on-demand loading vs one all-upfront load (SKILL.md section 7 Anti-Patterns; task.txt).
+- id: C10
+  category: content
+  fatal: false
+  text: Audio playback respects the browser autoplay policy, resuming the audio context when it is suspended.
+  anchor: Search index.html for a resume() call on the audio context (SKILL.md section 6).
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: api_call_check
+      path: index.html
+      api: resume
+      require_args: []
+    llm:
+      question: Audio playback respects the browser autoplay policy, resuming the audio context when it is suspended.
+      evidence: Search index.html for a resume() call on the audio context (SKILL.md section 6).
+      source: workspace
+      path: index.html
+- id: C11
+  category: content
+  fatal: false
+  text: The game contains a real rendering/game loop (requestAnimationFrame or canvas rendering) rather than a static stub.
+  anchor: Search index.html for requestAnimationFrame (check.py QA-01 regex).
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: api_call_check
+      path: index.html
+      api: requestAnimationFrame
+      require_args: []
+    llm:
+      question: The game contains a real rendering/game loop (requestAnimationFrame or canvas rendering) rather than a static stub.
+      evidence: Search index.html for requestAnimationFrame (check.py QA-01 regex).
+      source: workspace
+      path: index.html
+- id: C12
+  category: process
+  fatal: false
+  text: The agent discusses the rendering-API decision (Canvas 2D vs WebGL/WebGPU with feature detection) during the run.
+  anchor: Scan the tool_log for a WebGL mention (check.py PROC-05 token).
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_contains
+      cmd: WebGL
+    llm:
+      question: The agent discusses the rendering-API decision (Canvas 2D vs WebGL/WebGPU with feature detection) during the run.
+      evidence: Scan the tool_log for a WebGL mention (check.py PROC-05 token).
+      source: tool_log
+      pattern: WebGL
+- id: C13
+  category: process
+  fatal: false
+  text: The agent selects the stack via the framework decision tree, explicitly weighing at least one named framework such as PixiJS.
+  anchor: Scan the tool_log for a framework name (check.py SCOPE-01 / PROC-02 token PixiJS).
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_contains
+      cmd: PixiJS
+    llm:
+      question: The agent selects the stack via the framework decision tree, explicitly weighing at least one named framework such as PixiJS.
+      evidence: Scan the tool_log for a framework name (check.py SCOPE-01 / PROC-02 token PixiJS).
+      source: tool_log
+      pattern: PixiJS
+- id: C16
+  category: content
+  fatal: false
+  text: The agent addresses asset types (audio/textures/models) appropriate to the game during the run.
+  anchor: Scan the tool_log for asset-type tokens (check.py OUT-02.s pattern textures|audio|models).
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_contains
+      cmd: audio
+    llm:
+      question: The agent addresses asset types (audio/textures/models) appropriate to the game during the run.
+      evidence: Scan the tool_log for asset-type tokens (check.py OUT-02.s pattern textures|audio|models).
+      source: tool_log
+      pattern: audio
+- id: C17
+  category: evidence
+  fatal: false
+  text: The agent verifies the game loads with no console errors before delivering (self-review of the code or a browser check).
+  anchor: Look in the tool_log or final output for an explicit verification statement (SKILL.md Output Format).
+  judge: llm
+  check:
+    question: The agent verifies the game loads with no console errors before delivering (self-review of the code or a browser check).
+    evidence: Look in the tool_log or final output for an explicit verification statement (SKILL.md Output Format).
+- id: C18
+  category: boundary
+  fatal: false
+  text: Collision with an obstacle or wall triggers a defined game-over/penalty path rather than an unhandled error.
+  anchor: Search index.html for collision detection and its consequence (task.txt obstacles; SKILL.md section 3).
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: index.html
+      needle: collision
+    llm:
+      question: Collision with an obstacle or wall triggers a defined game-over/penalty path rather than an unhandled error.
+      evidence: Search index.html for collision detection and its consequence (task.txt obstacles; SKILL.md section 3).
+      source: workspace
+      path: index.html
+      needle: collision
+- id: C19
+  category: tool
+  fatal: false
+  text: The agent authors the game using the allowed file tools (Write/Edit) on the HTML entry file, with no build or package step.
+  anchor: Scan the tool_log for file operations referencing index.html (SKILL.md allowed-tools; Output Format no-build requirement).
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_contains
+      cmd: index.html
+    llm:
+      question: The agent authors the game using the allowed file tools (Write/Edit) on the HTML entry file, with no build or package step.
+      evidence: Scan the tool_log for file operations referencing index.html (SKILL.md allowed-tools; Output Format no-build requirement).
+      source: tool_log
+      pattern: index.html
+- id: C21
+  category: boundary
+  fatal: false
+  text: The game defines behavior for the snake leaving the play area (wrap-around or game over) instead of crashing.
+  anchor: Inspect index.html for wall/bounds handling (SKILL.md section 3 browser constraints).
+  judge: llm
+  check:
+    question: The game defines behavior for the snake leaving the play area (wrap-around or game over) instead of crashing.
+    evidence: Inspect index.html for wall/bounds handling (SKILL.md section 3 browser constraints).
+- id: C22
+  category: content
+  fatal: false
+  text: The game accepts touch input in addition to keyboard so it is playable on both mobile and desktop.
+  anchor: Search index.html for touch handling (task.txt '手机和电脑上都能玩').
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: index.html
+      needle: touchstart
+    llm:
+      question: The game accepts touch input in addition to keyboard so it is playable on both mobile and desktop.
+      evidence: Search index.html for touch handling (task.txt '手机和电脑上都能玩').
+      source: workspace
+      path: index.html
+      needle: touchstart

@@ -1,0 +1,324 @@
+skill: 019-discovery-interviews-surveys
+version: 2
+total_items: 18
+criteria:
+- id: C03
+  category: content
+  fatal: false
+  text: The deliverable lists the hypotheses the study will test.
+  anchor: Deliverable section 1.3 (假设, pre-registered hypotheses H1-H6).
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: section_nonempty
+      path: discovery-interviews-surveys.md
+      headers:
+      - 假设
+      min_chars: 20
+    llm:
+      question: The deliverable lists the hypotheses the study will test.
+      evidence: Deliverable section 1.3 (假设, pre-registered hypotheses H1-H6).
+      source: workspace
+      path: discovery-interviews-surveys.md
+      needle: hypotheses|hypothesis
+- id: C05
+  category: content
+  fatal: false
+  text: The deliverable addresses the automatic-invoicing feature concept (the paid feature under test).
+  anchor: Deliverable concept-test module E (3.7) and survey Q11.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: discovery-interviews-surveys.md
+      needle: automatic invoicing|auto-invoicing
+    llm:
+      question: The deliverable addresses the automatic-invoicing feature concept (the paid feature under test).
+      evidence: Deliverable concept-test module E (3.7) and survey Q11.
+      source: workspace
+      path: discovery-interviews-surveys.md
+      needle: automatic invoicing|auto-invoicing
+- id: C08
+  category: content
+  fatal: false
+  text: The deliverable specifies a survey target of about 200 responses.
+  anchor: Deliverable section on the survey target (about 200 responses).
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: section_nonempty
+      path: discovery-interviews-surveys.md
+      headers:
+      - 200 responses
+      min_chars: 20
+    llm:
+      question: The deliverable specifies a survey target of about 200 responses.
+      evidence: Deliverable section on the survey target (about 200 responses).
+      source: workspace
+      path: discovery-interviews-surveys.md
+      needle: 200 responses
+- id: C11
+  category: content
+  fatal: false
+  text: The deliverable contains a complete interview guide.
+  anchor: Deliverable section 三 (完整访谈提纲).
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: section_nonempty
+      path: discovery-interviews-surveys.md
+      headers:
+      - 访谈提纲
+      min_chars: 20
+    llm:
+      question: The deliverable contains a complete interview guide with actual interview questions,
+        not merely a heading or a one-line placeholder.
+      evidence: In discovery-interviews-surveys.md, look for the 访谈提纲 (interview guide) section and
+        check that it lists real questions.
+      source: workspace
+      path: discovery-interviews-surveys.md
+      needle: 访谈提纲
+- id: C12
+  category: content
+  fatal: false
+  text: The deliverable contains the survey instrument (question set).
+  anchor: Deliverable section 四 (问卷题目).
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: section_nonempty
+      path: discovery-interviews-surveys.md
+      headers:
+      - 问卷
+      min_chars: 20
+    llm:
+      question: The deliverable contains the survey instrument (question set).
+      evidence: Deliverable section 四 (问卷题目).
+      source: workspace
+      path: discovery-interviews-surveys.md
+      needle: A. Recent behavior and workflow
+- id: C16
+  category: content
+  fatal: false
+  text: The deliverable includes a findings record template for post-research documentation.
+  anchor: Deliverable findings record template section.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: section_nonempty
+      path: discovery-interviews-surveys.md
+      headers:
+      - findings document template|findings template|findings.md
+      min_chars: 20
+    llm:
+      question: The deliverable includes a findings record template for post-research documentation.
+      evidence: Deliverable findings record template section.
+      source: workspace
+      path: discovery-interviews-surveys.md
+      needle: findings document template|findings template|findings.md
+- id: C17
+  category: content
+  fatal: false
+  text: The findings template captures evidence for each finding.
+  anchor: Deliverable section 六 part 3 (关键发现, 证据).
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: discovery-interviews-surveys.md
+      needle: evidence
+    llm:
+      question: The findings template captures evidence for each finding.
+      evidence: Deliverable section 六 part 3 (关键发现, 证据).
+      source: workspace
+      path: discovery-interviews-surveys.md
+      needle: Finding record
+- id: C18
+  category: content
+  fatal: false
+  text: The findings template captures surprises or contradictions.
+  anchor: Deliverable findings template surprises section.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: discovery-interviews-surveys.md
+      needle: surprises|unexpected findings
+    llm:
+      question: The findings template captures surprises or contradictions.
+      evidence: Deliverable findings template surprises section.
+      source: workspace
+      path: discovery-interviews-surveys.md
+      needle: surprises|unexpected findings
+- id: C19
+  category: content
+  fatal: false
+  text: The findings template captures confidence levels.
+  anchor: Deliverable section 六 part 5 (可信度评估).
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: section_nonempty
+      path: discovery-interviews-surveys.md
+      headers:
+      - 可信度
+      min_chars: 20
+    llm:
+      question: The findings template captures confidence levels.
+      evidence: Deliverable section 六 part 5 (可信度评估).
+      source: workspace
+      path: discovery-interviews-surveys.md
+      needle: credibility|confidence
+- id: C20
+  category: content
+  fatal: false
+  text: The findings template captures limitations.
+  anchor: Deliverable section 六 part 6 (局限性).
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: section_nonempty
+      path: discovery-interviews-surveys.md
+      headers:
+      - 局限
+      min_chars: 20
+    llm:
+      question: The findings template captures limitations.
+      evidence: Deliverable section 六 part 6 (局限性).
+      source: workspace
+      path: discovery-interviews-surveys.md
+      needle: limitations|limits
+- id: C21
+  category: content
+  fatal: false
+  text: The interview questions focus on real past events rather than hypothetical 'would you use' questions.
+  anchor: Deliverable interview-guide design principle (real past events).
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: discovery-interviews-surveys.md
+      needle: actually do it|show me
+    llm:
+      question: The interview questions focus on real past events rather than hypothetical 'would you use' questions.
+      evidence: Deliverable interview-guide design principle (real past events).
+      source: workspace
+      path: discovery-interviews-surveys.md
+      needle: Recent payment timeline
+- id: C23
+  category: boundary
+  fatal: false
+  text: The plan defines when thematic saturation is reached for interview themes and keeps interview and survey statistics separate.
+  anchor: Deliverable analysis-plan sections (theme counts and saturation).
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: discovery-interviews-surveys.md
+      needle: thematic saturation
+    llm:
+      question: The plan reports interview findings as theme counts (X/10), not percentages, and keeps interview and survey statistics separate.
+      evidence: Deliverable analysis-plan sections (theme counts and saturation).
+      source: workspace
+      path: discovery-interviews-surveys.md
+      needle: thematic saturation
+- id: C24
+  category: boundary
+  fatal: false
+  text: The survey analysis enforces at least 30 responses (n≥30) per segment before subgroup statistics are run.
+  anchor: Deliverable section on survey cross-tabulation rules (n≥30).
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: discovery-interviews-surveys.md
+      needle: ≥30
+    llm:
+      question: The survey analysis enforces n >= 30 per segment before subgroup statistics are run.
+      evidence: Deliverable section on survey cross-tabulation rules (n≥30).
+      source: workspace
+      path: discovery-interviews-surveys.md
+      needle: ≥30
+- id: C26
+  category: termination
+  fatal: false
+  text: The deliverable includes a self-assessment against the skill rubric meeting the minimum average of 3.5.
+  anchor: Deliverable section 七 self-assessment (平均分 4.6/5, ≥ 3.5).
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: discovery-interviews-surveys.md
+      needle: '3.5'
+    llm:
+      question: The deliverable includes a self-assessment against the skill rubric meeting the minimum average of 3.5.
+      evidence: Deliverable section 七 self-assessment (平均分 4.6/5, ≥ 3.5).
+      source: workspace
+      path: discovery-interviews-surveys.md
+      needle: '3.5'
+- id: C32
+  category: content
+  fatal: false
+  text: The agent's final message reports the deliverable file and its completion to the user.
+  anchor: Agent final output text (output.txt).
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: discovery-interviews-surveys.md
+    llm:
+      question: The agent's final message reports the deliverable file and its completion to the user.
+      evidence: Agent final output text (output.txt).
+      source: output
+      needle: discovery-interviews-surveys.md
+- id: C33
+  category: negative
+  fatal: true
+  text: The instrument avoids leading questions that telegraph the desired answer.
+  anchor: Question wording throughout the interview guide and survey.
+  judge: llm
+  check:
+    question: The instrument avoids leading questions that telegraph the desired answer.
+    evidence: Question wording throughout the interview guide and survey.
+    source: workspace
+    path: discovery-interviews-surveys.md
+    needle: interview guide
+- id: C34
+  category: negative
+  fatal: true
+  text: The instrument is not dominated by hypothetical 'would you' / 'if we built' questions.
+  anchor: Core question style across the instrument.
+  judge: llm
+  check:
+    question: The instrument is not dominated by hypothetical 'would you' / 'if we built' questions.
+    evidence: Core question style across the instrument.
+    source: workspace
+    path: discovery-interviews-surveys.md
+    needle: interview guide
+- id: C36
+  category: negative
+  fatal: false
+  text: The interview guide, survey, and screening questions are complete with concrete wording, free of unfilled placeholders such as '[Hypothesis 1]' or '[Feature 1]'.
+  anchor: Instrument sections (interview guide, survey, screening questions).
+  judge: llm
+  check:
+    question: The interview guide, survey, and screening questions are complete with concrete wording, free of unfilled placeholders such as '[Hypothesis 1]' or '[Feature 1]'.
+    evidence: Instrument sections (interview guide, survey, screening questions).
+    source: workspace
+    path: discovery-interviews-surveys.md
+    needle: interview guide

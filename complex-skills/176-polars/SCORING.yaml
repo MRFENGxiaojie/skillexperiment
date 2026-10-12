@@ -1,0 +1,262 @@
+skill: 176-polars
+version: 2
+total_items: 17
+criteria:
+- id: C03
+  category: content
+  fatal: false
+  text: The agent converts the amount column to a numeric type during cleaning.
+  anchor: Cleaning description/code must reference a numeric cast such as cast(pl.Float64).
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: cast(pl.Float64
+    llm:
+      question: The agent converts the amount column to a numeric type during cleaning.
+      evidence: Cleaning description/code must reference a numeric cast such as cast(pl.Float64).
+      source: output
+      needle: cast(pl.Float64
+- id: C04
+  category: content
+  fatal: false
+  text: The agent parses the date column into a date type during cleaning.
+  anchor: Cleaning description/code must reference a date-parsing call such as str.to_date.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: str.to_date
+    llm:
+      question: The agent parses the date column into a date type during cleaning.
+      evidence: Cleaning description/code must reference a date-parsing call such as str.to_date.
+      source: output
+      needle: str.to_date
+- id: C05
+  category: content
+  fatal: false
+  text: The agent handles null values during cleaning (fill or drop).
+  anchor: Cleaning description/code must reference null handling such as fill_null or drop_nulls.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: fill_null
+    llm:
+      question: The agent handles null values during cleaning (fill or drop).
+      evidence: Cleaning description/code must reference null handling such as fill_null or drop_nulls.
+      source: output
+      needle: fill_null
+- id: C07
+  category: process
+  fatal: false
+  text: The agent groups the data by region and month to build the sales summary.
+  anchor: Aggregation code must use group_by (with region and a month expression).
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: group_by
+    llm:
+      question: The agent groups the data by region and month to build the sales summary.
+      evidence: Aggregation code must use group_by (with region and a month expression).
+      source: output
+      needle: group_by
+- id: C09
+  category: content
+  fatal: false
+  text: The summary aggregation computes the order count.
+  anchor: Aggregation code must count rows, e.g. pl.len() or a count expression.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: pl.len()
+    llm:
+      question: The summary aggregation computes the order count.
+      evidence: Aggregation code must count rows, e.g. pl.len() or a count expression.
+      source: output
+      needle: pl.len()
+- id: C10
+  category: process
+  fatal: false
+  text: The agent computes per-customer statistics within each region using a window function (.over()).
+  anchor: Window-function code must use .over("region").
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: .over("region")
+    llm:
+      question: The agent computes per-customer statistics within each region using a window function (.over()).
+      evidence: Window-function code must use .over("region").
+      source: output
+      needle: .over("region")
+- id: C13
+  category: content
+  fatal: false
+  text: The conditional column labels orders as 大单 (big order) or 普通单 (normal order).
+  anchor: Code must contain the 大单/普通单 label strings from the task.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: regular orders|normal orders
+    llm:
+      question: The conditional column labels orders as 大单 (big order) or 普通单 (normal order).
+      evidence: Code must contain the 大单/普通单 label strings from the task.
+      source: output
+      needle: regular orders|normal orders
+- id: C14
+  category: format
+  fatal: false
+  text: The run produces at least one Parquet file for the aggregated summary.
+  anchor: Workspace must contain a .parquet output artifact (any name/subdirectory).
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: count
+      what: '**/*.parquet'
+      op: ge
+      n: 1
+    llm:
+      question: The run produces at least one Parquet file for the aggregated summary.
+      evidence: Workspace must contain a .parquet output artifact (any name/subdirectory).
+      source: workspace
+      path: '**/*.parquet'
+- id: C15
+  category: format
+  fatal: false
+  text: The delivered solution includes a Python script file implementing the pipeline.
+  anchor: Workspace must contain a .py script the agent wrote.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: count
+      what: '**/*.py'
+      op: ge
+      n: 1
+    llm:
+      question: The delivered solution includes a Python script file implementing the pipeline.
+      evidence: Workspace must contain a .py script the agent wrote.
+      source: workspace
+      path: '**/*.py'
+- id: C16
+  category: format
+  fatal: false
+  text: The run exports an order-level detail file as CSV (CSV 明细).
+  anchor: Final output must describe the CSV detail deliverable.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: details|line items
+    llm:
+      question: The run exports an order-level detail file as CSV (CSV 明细).
+      evidence: Final output must describe the CSV detail deliverable.
+      source: output
+      needle: details|line items
+- id: C18
+  category: content
+  fatal: false
+  text: The agent explains why lazy evaluation is appropriate for the large 2GB / 8-million-row dataset.
+  anchor: Final output must state the lazy-execution rationale for the large CSV.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: lazy execution|lazy loading
+    llm:
+      question: The agent explains why lazy evaluation is appropriate for the large 2GB / 8-million-row dataset.
+      evidence: Final output must state the lazy-execution rationale for the large CSV.
+      source: output
+      needle: lazy execution|lazy loading
+- id: C19
+  category: evidence
+  fatal: false
+  text: The agent executes a Python script to run the pipeline (not just write theory/code).
+  anchor: Tool log must show python commands, e.g. running the written script.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: command_succeeded
+      cmd: python
+      expect: success
+    llm:
+      question: The agent executes a Python script to run the pipeline (not just write theory/code).
+      evidence: Tool log must show python commands, e.g. running the written script.
+      source: tool_log
+      pattern: python
+- id: C21
+  category: evidence
+  fatal: false
+  text: The agent verifies the produced Parquet output after running the script by reading it back.
+  anchor: Tool log must show a python verification command using pl.read_parquet after the script run.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_order
+      cmds:
+      - python
+      - pl.read_parquet
+    llm:
+      question: The agent verifies the produced Parquet output after running the script by reading it back.
+      evidence: Tool log must show a python verification command using pl.read_parquet after the script run.
+      source: tool_log
+      pattern: python|pl.read_parquet
+- id: C23
+  category: boundary
+  fatal: false
+  text: The run's analytics explicitly exclude non-completed statuses (cancelled/pending/refunded) rather than counting all rows.
+  anchor: Verification write-up must show the non-completed statuses were excluded from the counts.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: cancelled
+    llm:
+      question: The run's analytics explicitly exclude non-completed statuses (cancelled/pending/refunded) rather than counting all rows.
+      evidence: Verification write-up must show the non-completed statuses were excluded from the counts.
+      source: output
+      needle: cancelled
+- id: C24
+  category: negative
+  fatal: false
+  text: The critical data path avoids row-wise Python functions (iterrows, row-wise apply, map_elements) where vectorized Polars expressions exist.
+  anchor: Judge the delivered pipeline code and explanation for per-row Python loops in the hot path.
+  judge: llm
+  check:
+    question: The critical data path avoids row-wise Python functions (iterrows, row-wise apply, map_elements) where vectorized Polars expressions exist.
+    evidence: Judge the delivered pipeline code and explanation for per-row Python loops in the hot path.
+- id: C25
+  category: negative
+  fatal: false
+  text: The pipeline does not apply pandas-style operations (df['col'] indexing, .loc/.iloc, .groupby, .assign) to Polars objects.
+  anchor: Judge that pandas syntax only appears in the migration-mapping table, never as the main pipeline implementation.
+  judge: llm
+  check:
+    question: The pipeline does not apply pandas-style operations (df['col'] indexing, .loc/.iloc, .groupby, .assign) to Polars objects.
+    evidence: Judge that pandas syntax only appears in the migration-mapping table, never as the main pipeline implementation.
+- id: C26
+  category: coverage
+  fatal: false
+  text: 'The delivered solution covers all six required stages: lazy read, cleaning, region+month aggregation, window ranking, conditional column, and Parquet+CSV export.'
+  anchor: Cross-check the final output and workspace artifacts against each of the six required stages.
+  judge: llm
+  check:
+    question: 'The delivered solution covers all six required stages: lazy read, cleaning, region+month aggregation, window ranking, conditional column, and Parquet+CSV export.'
+    evidence: Cross-check the final output and workspace artifacts against each of the six required stages.

@@ -1,0 +1,305 @@
+skill: 087-copy
+version: 2
+total_items: 21
+criteria:
+- id: C01
+  category: content
+  fatal: false
+  text: The rewritten copy uses the verbatim support-ticket quote '每天早上一睁眼就是先看库存后台' (T-1042) to express the seller's core daily pain, not a paraphrase.
+  anchor: Search the agent's final output / delivered copy for the exact quote string.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Every morning the first thing is checking the inventory backend
+    llm:
+      question: The rewritten copy uses the verbatim support-ticket quote '每天早上一睁眼就是先看库存后台' (T-1042) to express the seller's core daily pain, not a paraphrase.
+      evidence: Search the agent's final output / delivered copy for the exact quote string.
+      source: output
+      needle: Every morning the first thing is checking the inventory backend
+- id: C02
+  category: content
+  fatal: false
+  text: The rewritten copy uses the verbatim support-ticket quote '上次大促断货直接亏了两万' (T-1097) to quantify the cost of stockouts.
+  anchor: Search the agent's final output / delivered copy for the exact quote string.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Last big-sale stockout directly cost us 20K
+    llm:
+      question: The rewritten copy uses the verbatim support-ticket quote '上次大促断货直接亏了两万' (T-1097) to quantify the cost of stockouts.
+      evidence: Search the agent's final output / delivered copy for the exact quote string.
+      source: output
+      needle: Last big-sale stockout directly cost us 20K
+- id: C03
+  category: content
+  fatal: false
+  text: The rewritten copy uses the verbatim 5-star review quote '凌晨断货也能收到报警邮件' as social proof.
+  anchor: Search the agent's final output / delivered copy for the exact quote string.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: I get the alert email even for a midnight stockout
+    llm:
+      question: The rewritten copy uses the verbatim 5-star review quote '凌晨断货也能收到报警邮件' as social proof.
+      evidence: Search the agent's final output / delivered copy for the exact quote string.
+      source: output
+      needle: I get the alert email even for a midnight stockout
+- id: C04
+  category: content
+  fatal: false
+  text: The rewritten copy uses the verbatim 4-star review quote '希望设置再简单点' to address the setup-complexity objection.
+  anchor: Search the agent's final output / delivered copy for the exact quote string.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Hope the settings are simpler
+    llm:
+      question: The rewritten copy uses the verbatim 4-star review quote '希望设置再简单点' to address the setup-complexity objection.
+      evidence: Search the agent's final output / delivered copy for the exact quote string.
+      source: output
+      needle: Hope the settings are simpler
+- id: C05
+  category: coverage
+  fatal: false
+  text: The copy draws on at least one additional verbatim customer phrase beyond the four quotes cited in the task prompt, mined from the fuller material files (e.g., '大促前用它盯了三个仓' or '至少睡觉能踏实').
+  anchor: Look in the delivered copy for verbatim phrases matching other lines of task/materials/support_tickets.txt or task/materials/user_reviews.txt beyond the four given in task.txt.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: three warehouses
+    llm:
+      question: The copy draws on at least one additional verbatim customer phrase beyond the four quotes cited in the task prompt, mined from the fuller material files (e.g., '大促前用它盯了三个仓' or '至少睡觉能踏实').
+      evidence: Look in the delivered copy for verbatim phrases matching other lines of task/materials/support_tickets.txt or task/materials/user_reviews.txt beyond the four given in task.txt.
+      source: output
+      needle: three warehouses
+- id: C06
+  category: coverage
+  fatal: false
+  text: The deliverable includes a headline (主标题) section.
+  anchor: Look in the agent's final output / delivered copy for the label '主标题'.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: main title|H1
+    llm:
+      question: The deliverable includes a headline (主标题) section.
+      evidence: Look in the agent's final output / delivered copy for the label '主标题'.
+      source: output
+      needle: main title|H1
+- id: C07
+  category: coverage
+  fatal: false
+  text: The deliverable includes a subhead (副标题) section.
+  anchor: Look in the agent's final output / delivered copy for the label '副标题'.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: subtitle
+    llm:
+      question: The deliverable includes a subhead (副标题) section.
+      evidence: Look in the agent's final output / delivered copy for the label '副标题'.
+      source: output
+      needle: subtitle
+- id: C08
+  category: coverage
+  fatal: false
+  text: The deliverable includes a pain-points (痛点) section.
+  anchor: Look in the agent's final output / delivered copy for the label '痛点'.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: pain points|pain point
+    llm:
+      question: The deliverable includes a pain-points (痛点) section.
+      evidence: Look in the agent's final output / delivered copy for the label '痛点'.
+      source: output
+      needle: pain points|pain point
+- id: C09
+  category: coverage
+  fatal: false
+  text: The deliverable includes a selling-points (卖点) section.
+  anchor: Look in the agent's final output / delivered copy for the label '卖点'.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: selling points|value proposition
+    llm:
+      question: The deliverable includes a selling-points (卖点) section.
+      evidence: Look in the agent's final output / delivered copy for the label '卖点'.
+      source: output
+      needle: selling points|value proposition
+- id: C10
+  category: coverage
+  fatal: false
+  text: The deliverable includes a social-proof (社会证明) section.
+  anchor: Look in the agent's final output / delivered copy for the label '社会证明'.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: social proof
+    llm:
+      question: The deliverable includes a social-proof (社会证明) section.
+      evidence: Look in the agent's final output / delivered copy for the label '社会证明'.
+      source: output
+      needle: social proof
+- id: C12
+  category: coverage
+  fatal: false
+  text: The deliverable addresses the pricing-page button copy (定价页按钮) that must be changed.
+  anchor: Look in the agent's final output / delivered copy for the token '定价'.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: pricing
+    llm:
+      question: The deliverable addresses the pricing-page button copy (定价页按钮) that must be changed.
+      evidence: Look in the agent's final output / delivered copy for the token '定价'.
+      source: output
+      needle: pricing
+- id: P01
+  category: process
+  fatal: false
+  text: The agent reads the support-tickets material file (task/materials/support_tickets.txt) during the run.
+  anchor: Search the tool_log for any Read/cat command referencing 'support_tickets.txt'.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_contains
+      cmd: support_tickets.txt
+    llm:
+      question: The agent reads the support-tickets material file (task/materials/support_tickets.txt) during the run.
+      evidence: Search the tool_log for any Read/cat command referencing 'support_tickets.txt'.
+      source: tool_log
+      pattern: support_tickets.txt
+- id: P02
+  category: process
+  fatal: false
+  text: The agent reads the user-reviews material file (task/materials/user_reviews.txt) during the run.
+  anchor: Search the tool_log for any Read/cat command referencing 'user_reviews.txt'.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_contains
+      cmd: user_reviews.txt
+    llm:
+      question: The agent reads the user-reviews material file (task/materials/user_reviews.txt) during the run.
+      evidence: Search the tool_log for any Read/cat command referencing 'user_reviews.txt'.
+      source: tool_log
+      pattern: user_reviews.txt
+- id: P03
+  category: process
+  fatal: false
+  text: The agent reads the current landing page (task/materials/current_landing_page.md) to know what to rewrite.
+  anchor: Search the tool_log for any Read/cat command referencing 'current_landing_page.md'.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_contains
+      cmd: current_landing_page.md
+    llm:
+      question: The agent reads the current landing page (task/materials/current_landing_page.md) to know what to rewrite.
+      evidence: Search the tool_log for any Read/cat command referencing 'current_landing_page.md'.
+      source: tool_log
+      pattern: current_landing_page.md
+- id: P05
+  category: process
+  fatal: false
+  text: The agent establishes positioning first — target persona (中小卖家), core pain (不想天天盯库存/断货了才知道), and desired outcome — before finalizing the copy.
+  anchor: Look in the agent's output for a positioning/strategy statement covering who it's for, the exact pain, and the desired outcome.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: small and medium sellers|SMB sellers
+    llm:
+      question: The agent establishes positioning first — target persona (中小卖家), core pain (不想天天盯库存/断货了才知道), and desired outcome — before finalizing the copy.
+      evidence: Look in the agent's output for a positioning/strategy statement covering who it's for, the exact pain, and the desired outcome.
+      source: output
+      needle: small and medium sellers|SMB sellers
+- id: E01
+  category: evidence
+  fatal: false
+  text: The agent attributes the verbatim quotes to their sources, distinguishing support-ticket quotes (客服工单) from user-review quotes (用户评价).
+  anchor: Look in the agent's output for the token '工单' (or a message-bank/source-notes section labeling where each quote came from).
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: tickets|ticket
+    llm:
+      question: The agent attributes the verbatim quotes to their sources, distinguishing support-ticket quotes (客服工单) from user-review quotes (用户评价).
+      evidence: Look in the agent's output for the token '工单' (or a message-bank/source-notes section labeling where each quote came from).
+      source: output
+      needle: tickets|ticket
+- id: N01
+  category: negative
+  fatal: false
+  text: The copy drops the old page's generic feature-first selling points (功能强大/技术领先/安全可靠/全球服务) and does not keep them as the primary messaging.
+  anchor: Look in the delivered selling-points section for outcome/benefit language instead of the old generic claims.
+  judge: llm
+  check:
+    question: The copy drops the old page's generic feature-first selling points (功能强大/技术领先/安全可靠/全球服务) and does not keep them as the primary messaging.
+    evidence: Look in the delivered selling-points section for outcome/benefit language instead of the old generic claims.
+- id: N02
+  category: negative
+  fatal: false
+  text: The copy does not fabricate customer quotes, testimonials, or metrics — every customer voice and figure traces to the provided materials.
+  anchor: Cross-check every quoted customer phrase and number in the copy against task/materials/support_tickets.txt and task/materials/user_reviews.txt.
+  judge: llm
+  check:
+    question: The copy does not fabricate customer quotes, testimonials, or metrics — every customer voice and figure traces to the provided materials.
+    evidence: Cross-check every quoted customer phrase and number in the copy against task/materials/support_tickets.txt and task/materials/user_reviews.txt.
+- id: N03
+  category: negative
+  fatal: false
+  text: The primary CTA (and the pricing-page button) is rewritten from the weak '立即开始'/'立即购买' to an action + benefit CTA with friction removed.
+  anchor: Look at the CTA and pricing-button copy in the deliverable for action-oriented, benefit-driven wording instead of the old generic buttons.
+  judge: llm
+  check:
+    question: The primary CTA (and the pricing-page button) is rewritten from the weak '立即开始'/'立即购买' to an action + benefit CTA with friction removed.
+    evidence: Look at the CTA and pricing-button copy in the deliverable for action-oriented, benefit-driven wording instead of the old generic buttons.
+- id: N04
+  category: negative
+  fatal: false
+  text: The copy avoids slogans, jargon, and unproven superlatives (e.g., '智能', '行业领先', 'Best', 'top') without supporting proof.
+  anchor: Scan the deliverable for unsubstantiated superlative or jargon phrases.
+  judge: llm
+  check:
+    question: The copy avoids slogans, jargon, and unproven superlatives (e.g., '智能', '行业领先', 'Best', 'top') without supporting proof.
+    evidence: Scan the deliverable for unsubstantiated superlative or jargon phrases.
+- id: N05
+  category: negative
+  fatal: false
+  text: The copy avoids fake scarcity or pressure-based urgency; urgency is created through value and social proof, not pressure.
+  anchor: Scan the CTA and offer copy for pressure tactics such as artificial countdowns or invented scarcity.
+  judge: llm
+  check:
+    question: The copy avoids fake scarcity or pressure-based urgency; urgency is created through value and social proof, not pressure.
+    evidence: Scan the CTA and offer copy for pressure tactics such as artificial countdowns or invented scarcity.

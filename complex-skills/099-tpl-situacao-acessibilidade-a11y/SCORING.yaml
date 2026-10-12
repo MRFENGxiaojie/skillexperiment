@@ -1,0 +1,570 @@
+skill: 099-tpl-situacao-acessibilidade-a11y
+version: 2
+total_items: 36
+criteria:
+- id: C01
+  category: format
+  fatal: false
+  text: The agent's final output includes the audit report with the exact header '## Accessibility Audit Report'.
+  anchor: Look in the agent's final output (or the report file it wrote) for the report header from the OUTPUT FORMAT template.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: '## Accessibility Audit Report'
+    llm:
+      question: The agent's final output includes the audit report with the exact header '## Accessibility Audit Report'.
+      evidence: Look in the agent's final output (or the report file it wrote) for the report header from the OUTPUT FORMAT template.
+      source: output
+      needle: '## Accessibility Audit Report'
+- id: C02
+  category: format
+  fatal: false
+  text: The report declares the audit scope with a '**Scope:**' line naming the checkout flow as the target.
+  anchor: Check the report's Scope metadata line in the final output; the SKILL.md template formats it as '**Scope:** Checkout flow (...)'.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: '**Scope:** Checkout flow'
+    llm:
+      question: The report declares the audit scope with a '**Scope:**' line naming the checkout flow as the target.
+      evidence: Check the report's Scope metadata line in the final output; the SKILL.md template formats it as '**Scope:** Checkout flow (...)'.
+      source: output
+      needle: '**Scope:** Checkout flow'
+- id: C03
+  category: content
+  fatal: false
+  text: The report states the WCAG target level as 2.1 AA.
+  anchor: Look for '2.1 AA' in the report metadata (the template shows '**WCAG Level:** 2.1 AA').
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: '**WCAG Level:** 2.1 AA'
+    llm:
+      question: The report states the WCAG target level as 2.1 AA.
+      evidence: Look for '2.1 AA' in the report metadata (the template shows '**WCAG Level:** 2.1 AA').
+      source: output
+      needle: '**WCAG Level:** 2.1 AA'
+- id: C04
+  category: format
+  fatal: false
+  text: The report lists the tools used with a '**Tools Used:**' metadata line.
+  anchor: Check the report metadata in the final output for the '**Tools Used:**' line from the OUTPUT FORMAT template.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: '**Tools Used:**'
+    llm:
+      question: The report lists the tools used with a '**Tools Used:**' metadata line.
+      evidence: Check the report metadata in the final output for the '**Tools Used:**' line from the OUTPUT FORMAT template.
+      source: output
+      needle: '**Tools Used:**'
+- id: C05
+  category: tool
+  fatal: false
+  text: The trace records an automated accessibility scan (axe or Lighthouse) performed on the checkout flow.
+  anchor: Look in the report's Tools Used line or the trace narrative for the automated scanner; 'axe' is the template default, Lighthouse is an acceptable alternative.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: axe
+    llm:
+      question: The trace records an automated accessibility scan (axe or Lighthouse) performed on the checkout flow.
+      evidence: Look in the report's Tools Used line or the trace narrative for the automated scanner; 'axe' is the template default, Lighthouse is an acceptable alternative.
+      source: output
+      needle: axe
+- id: C06
+  category: process
+  fatal: false
+  text: The trace includes a manual keyboard walk-through of the critical checkout flows.
+  anchor: Look for 'keyboard' in the report narrative or Keyboard Navigation section of the final output.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: keyboard
+    llm:
+      question: The trace includes a manual keyboard walk-through of the critical checkout flows.
+      evidence: Look for 'keyboard' in the report narrative or Keyboard Navigation section of the final output.
+      source: output
+      needle: keyboard
+- id: C07
+  category: evidence
+  fatal: false
+  text: The report records contrast verification against the WCAG thresholds (>= 4.5:1 normal text, >= 3:1 large/UI), with measured ratios rather than guesswork.
+  anchor: Look in the Color Contrast Failures section for the required 4.5:1 threshold and actual ratios.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: actual contrast ratio
+    llm:
+      question: The report records contrast verification against the WCAG thresholds (>= 4.5:1 normal text, >= 3:1 large/UI), with measured ratios rather than guesswork.
+      evidence: Look in the Color Contrast Failures section for the required 4.5:1 threshold and actual ratios.
+      source: output
+      needle: actual contrast ratio
+- id: C08
+  category: termination
+  fatal: false
+  text: Because the Windows environment has no screen reader installed, the report explicitly states that screen-reader testing could not be run and marks the report as degraded on that axis.
+  anchor: Look for an explicit statement that screen-reader verification was skipped (NVDA/VoiceOver unavailable) rather than silently omitted.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: degraded
+    llm:
+      question: Because the Windows environment has no screen reader installed, the report explicitly states that screen-reader testing could not be run and marks the report as degraded on that axis.
+      evidence: Look for an explicit statement that screen-reader verification was skipped (NVDA/VoiceOver unavailable) rather than silently omitted.
+      source: output
+      needle: degraded
+- id: C09
+  category: negative
+  fatal: false
+  text: The agent does not fabricate screen-reader verification results when no screen reader is installed; it reports the limitation instead.
+  anchor: Read the screen-reader portion of the report/final output for honesty about the missing tool rather than invented pass results.
+  judge: llm
+  check:
+    question: The agent does not fabricate screen-reader verification results when no screen reader is installed; it reports the limitation instead.
+    evidence: Read the screen-reader portion of the report/final output for honesty about the missing tool rather than invented pass results.
+- id: C10
+  category: format
+  fatal: false
+  text: The report includes a '### Summary' section.
+  anchor: Check the final output for the Summary heading from the OUTPUT FORMAT template.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: '### Summary'
+    llm:
+      question: The report includes a '### Summary' section.
+      evidence: Check the final output for the Summary heading from the OUTPUT FORMAT template.
+      source: output
+      needle: '### Summary'
+- id: C11
+  category: content
+  fatal: false
+  text: The Summary breaks down issue counts by severity class (Critical, Serious, Moderate, Minor).
+  anchor: 'Look for the severity count lines in the Summary, e.g. ''- Critical: 3''.'
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: 'Critical:'
+    llm:
+      question: The Summary breaks down issue counts by severity class (Critical, Serious, Moderate, Minor).
+      evidence: 'Look for the severity count lines in the Summary, e.g. ''- Critical: 3''.'
+      source: output
+      needle: 'Critical:'
+- id: C12
+  category: format
+  fatal: false
+  text: The report lists issues in per-severity sections, e.g. '### Critical Issues (Must Fix)'.
+  anchor: Check for the severity-section heading in the final output (or an equivalent per-severity breakdown).
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: '### Critical Issues (Must Fix)'
+    llm:
+      question: The report lists issues in per-severity sections, e.g. '### Critical Issues (Must Fix)'.
+      evidence: Check for the severity-section heading in the final output (or an equivalent per-severity breakdown).
+      source: output
+      needle: '### Critical Issues (Must Fix)'
+- id: C13
+  category: content
+  fatal: false
+  text: Each issue entry cites its WCAG criterion (e.g., 1.3.1, 2.4.1) rather than describing the problem without a standard reference.
+  anchor: Look for 'WCAG Criterion' inside per-issue entries in the report.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: WCAG Criterion
+    llm:
+      question: Each issue entry cites its WCAG criterion (e.g., 1.3.1, 2.4.1) rather than describing the problem without a standard reference.
+      evidence: Look for 'WCAG Criterion' inside per-issue entries in the report.
+      source: output
+      needle: WCAG Criterion
+- id: C14
+  category: content
+  fatal: false
+  text: Each issue entry states the impact of the issue.
+  anchor: Look for 'Impact:' in per-issue entries in the report.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: 'Impact:'
+    llm:
+      question: Each issue entry states the impact of the issue.
+      evidence: Look for 'Impact:' in per-issue entries in the report.
+      source: output
+      needle: 'Impact:'
+- id: C15
+  category: content
+  fatal: false
+  text: Each issue entry states the remediation/fix for the issue.
+  anchor: Look for 'Fix:' in per-issue entries in the report.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: 'Fix:'
+    llm:
+      question: Each issue entry states the remediation/fix for the issue.
+      evidence: Look for 'Fix:' in per-issue entries in the report.
+      source: output
+      needle: 'Fix:'
+- id: C16
+  category: content
+  fatal: false
+  text: Each issue entry cites the affected file and line number (e.g., CheckoutPage.tsx:34).
+  anchor: Look for the 'Files:' field in per-issue entries in the report.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: 'Files:'
+    llm:
+      question: Each issue entry cites the affected file and line number (e.g., CheckoutPage.tsx:34).
+      evidence: Look for the 'Files:' field in per-issue entries in the report.
+      source: output
+      needle: 'Files:'
+- id: C17
+  category: format
+  fatal: false
+  text: The report includes a '### Keyboard Navigation' section with checklist items.
+  anchor: Check the final output for the Keyboard Navigation heading from the template.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: '### Keyboard Navigation'
+    llm:
+      question: The report includes a '### Keyboard Navigation' section with checklist items.
+      evidence: Check the final output for the Keyboard Navigation heading from the template.
+      source: output
+      needle: '### Keyboard Navigation'
+- id: C18
+  category: content
+  fatal: false
+  text: The Keyboard Navigation section records modal focus behavior and skip-link status.
+  anchor: 'Look in the Keyboard Navigation section for items covering modal focus and the skip link (template shows ''- [ ] Skip link: Missing'').'
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: 'Skip link: Missing'
+    llm:
+      question: The Keyboard Navigation section records modal focus behavior and skip-link status.
+      evidence: 'Look in the Keyboard Navigation section for items covering modal focus and the skip link (template shows ''- [ ] Skip link: Missing'').'
+      source: output
+      needle: 'Skip link: Missing'
+- id: C19
+  category: format
+  fatal: false
+  text: The report includes a '### Color Contrast Failures' section.
+  anchor: Check the final output for the Color Contrast Failures heading from the template.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: '### Color Contrast Failures'
+    llm:
+      question: The report includes a '### Color Contrast Failures' section.
+      evidence: Check the final output for the Color Contrast Failures heading from the template.
+      source: output
+      needle: '### Color Contrast Failures'
+- id: C20
+  category: content
+  fatal: false
+  text: The report includes the quality-gate checklist with pass/fail results (the task requires attaching quality-gate check results).
+  anchor: Look for a Quality Gates section in the report listing each gate's status.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Quality Gates
+    llm:
+      question: The report includes the quality-gate checklist with pass/fail results (the task requires attaching quality-gate check results).
+      evidence: Look for a Quality Gates section in the report listing each gate's status.
+      source: output
+      needle: Quality Gates
+- id: C21
+  category: content
+  fatal: false
+  text: The report identifies the missing form labels on the address form (inputs rely on placeholder, which is not a label).
+  anchor: Look in the report's issue entries for the placeholder-not-a-label problem from the materials.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Missing form labels
+    llm:
+      question: The report identifies the missing form labels on the address form (inputs rely on placeholder, which is not a label).
+      evidence: Look in the report's issue entries for the placeholder-not-a-label problem from the materials.
+      source: output
+      needle: Missing form labels
+- id: C23
+  category: content
+  fatal: false
+  text: The report identifies the order-confirmation modal's missing focus management.
+  anchor: Look in the report's issue entries for the modal focus-management defect from the materials.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Modal focus
+    llm:
+      question: The report identifies the order-confirmation modal's missing focus management.
+      evidence: Look in the report's issue entries for the modal focus-management defect from the materials.
+      source: output
+      needle: Modal focus
+- id: C25
+  category: content
+  fatal: false
+  text: The report identifies the hero image with placeholder alt text alt="image".
+  anchor: Look in the report for the hero image's non-descriptive alt attribute.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: alt="image"
+    llm:
+      question: The report identifies the hero image with placeholder alt text alt="image".
+      evidence: Look in the report for the hero image's non-descriptive alt attribute.
+      source: output
+      needle: alt="image"
+- id: C28
+  category: content
+  fatal: false
+  text: The report identifies the auto-rotating banner and its need for a pause control and reduced-motion support.
+  anchor: Look in the report for the carousel/banner issue from the materials.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: banner
+    llm:
+      question: The report identifies the auto-rotating banner and its need for a pause control and reduced-motion support.
+      evidence: Look in the report for the carousel/banner issue from the materials.
+      source: output
+      needle: banner
+- id: C29
+  category: content
+  fatal: false
+  text: The address form fields are given real <label> elements associated with their inputs in the fixed code.
+  anchor: Read task/CheckoutPage.tsx for <label htmlFor=...> associations added to the address form inputs.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: task/CheckoutPage.tsx
+      needle: <label htmlFor=
+    llm:
+      question: The address form fields are given real <label> elements associated with their inputs in the fixed code.
+      evidence: Read task/CheckoutPage.tsx for <label htmlFor=...> associations added to the address form inputs.
+      source: workspace
+      path: task/CheckoutPage.tsx
+      needle: <label htmlFor=
+- id: C30
+  category: content
+  fatal: false
+  text: The order-submit control is replaced with a semantic <button type="submit"> (keyboard-accessible) instead of the div onClick.
+  anchor: Read task/CheckoutPage.tsx for the submit button now rendered as a native submit button.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: task/CheckoutPage.tsx
+      needle: type="submit"
+    llm:
+      question: The order-submit control is replaced with a semantic <button type="submit"> (keyboard-accessible) instead of the div onClick.
+      evidence: Read task/CheckoutPage.tsx for the submit button now rendered as a native submit button.
+      source: workspace
+      path: task/CheckoutPage.tsx
+      needle: type="submit"
+- id: C31
+  category: content
+  fatal: false
+  text: The modal fix moves focus into the dialog when it opens (e.g., focusing the first focusable element).
+  anchor: Read task/CheckoutPage.tsx for the focus-into-modal implementation (the SKILL.md pattern uses firstFocusable).
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: task/CheckoutPage.tsx
+      needle: firstFocusable
+    llm:
+      question: The modal fix moves focus into the dialog when it opens (e.g., focusing the first focusable element).
+      evidence: Read task/CheckoutPage.tsx for the focus-into-modal implementation (the SKILL.md pattern uses firstFocusable).
+      source: workspace
+      path: task/CheckoutPage.tsx
+      needle: firstFocusable
+- id: C32
+  category: content
+  fatal: false
+  text: The modal fix returns focus to the triggering element when the modal closes.
+  anchor: Read task/CheckoutPage.tsx for the return-focus-to-trigger logic (the SKILL.md pattern uses triggerRef).
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: task/CheckoutPage.tsx
+      needle: triggerRef
+    llm:
+      question: The modal fix returns focus to the triggering element when the modal closes.
+      evidence: Read task/CheckoutPage.tsx for the return-focus-to-trigger logic (the SKILL.md pattern uses triggerRef).
+      source: workspace
+      path: task/CheckoutPage.tsx
+      needle: triggerRef
+- id: C33
+  category: content
+  fatal: false
+  text: The cart table now includes header cells with scope attributes (<th scope="col"> / <th scope="row">).
+  anchor: Read task/CheckoutPage.tsx for th elements with scope attributes in the cart table.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: task/CheckoutPage.tsx
+      needle: <th scope
+    llm:
+      question: The cart table now includes header cells with scope attributes (<th scope="col"> / <th scope="row">).
+      evidence: Read task/CheckoutPage.tsx for th elements with scope attributes in the cart table.
+      source: workspace
+      path: task/CheckoutPage.tsx
+      needle: <th scope
+- id: C34
+  category: content
+  fatal: false
+  text: 'A skip link to #main-content is added as the first focusable element.'
+  anchor: Read task/CheckoutPage.tsx for the skip-link anchor (the SKILL.md pattern uses className="skip-link").
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: task/CheckoutPage.tsx
+      needle: skip-link
+    llm:
+      question: 'A skip link to #main-content is added as the first focusable element.'
+      evidence: Read task/CheckoutPage.tsx for the skip-link anchor (the SKILL.md pattern uses className="skip-link").
+      source: workspace
+      path: task/CheckoutPage.tsx
+      needle: skip-link
+- id: C35
+  category: content
+  fatal: false
+  text: The auto-rotating banner respects the prefers-reduced-motion media query (and/or gains a pause/stop control).
+  anchor: Read task/CheckoutPage.tsx for prefers-reduced-motion handling on the banner animation.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      path: task/CheckoutPage.tsx
+      needle: prefers-reduced-motion
+    llm:
+      question: The auto-rotating banner respects the prefers-reduced-motion media query (and/or gains a pause/stop control).
+      evidence: Read task/CheckoutPage.tsx for prefers-reduced-motion handling on the banner animation.
+      source: workspace
+      path: task/CheckoutPage.tsx
+      needle: prefers-reduced-motion
+- id: C36
+  category: content
+  fatal: false
+  text: The help-text color is darkened so it meets the >= 4.5:1 contrast ratio on the white background.
+  anchor: 'Read task/CheckoutPage.tsx to confirm the help-text color was changed away from #999999 toward a passing ratio.'
+  judge: llm
+  check:
+    question: The help-text color is darkened so it meets the >= 4.5:1 contrast ratio on the white background.
+    evidence: 'Read task/CheckoutPage.tsx to confirm the help-text color was changed away from #999999 toward a passing ratio.'
+- id: C37
+  category: content
+  fatal: false
+  text: The hero image alt attribute is replaced with descriptive text rather than the placeholder "image".
+  anchor: Read task/CheckoutPage.tsx to confirm the hero image alt no longer equals "image".
+  judge: llm
+  check:
+    question: The hero image alt attribute is replaced with descriptive text rather than the placeholder "image".
+    evidence: Read task/CheckoutPage.tsx to confirm the hero image alt no longer equals "image".
+- id: C38
+  category: negative
+  fatal: false
+  text: The remediation does not use outline:none / outline:0 without a replacement visible focus indicator.
+  anchor: Inspect task/CheckoutPage.tsx (and any CSS it defines) for removed focus outlines that lack an alternative indicator.
+  judge: llm
+  check:
+    question: The remediation does not use outline:none / outline:0 without a replacement visible focus indicator.
+    evidence: Inspect task/CheckoutPage.tsx (and any CSS it defines) for removed focus outlines that lack an alternative indicator.
+- id: C39
+  category: process
+  fatal: false
+  text: The agent completes the audit report (scope, scan, findings, quality gates) before applying code fixes, per the task's stated order (report first, then fix).
+  anchor: 'Review the trace ordering: the report/audit phase precedes edits to task/CheckoutPage.tsx.'
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_order
+      cmds:
+      - axe
+      - type="submit"
+    llm:
+      question: The agent completes the audit report (scope, scan, findings, quality gates) before applying code fixes, per the task's stated order (report first, then fix).
+      evidence: 'Review the trace ordering: the report/audit phase precedes edits to task/CheckoutPage.tsx.'
+      source: tool_log
+      pattern: axe|type="submit"
+- id: C40
+  category: evidence
+  fatal: false
+  text: After applying the code fixes, the agent re-verifies the changes (re-reads the edited file, re-runs a check, or re-tests the flows).
+  anchor: Look in the final output or tool log for a post-fix verification step.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_order
+      cmds:
+      - type="submit"
+      - CheckoutPage.tsx
+    llm:
+      question: After applying the code fixes, the agent re-verifies the changes (re-reads the edited file, re-runs a check, or re-tests the flows).
+      evidence: Look in the final output or tool log for a post-fix verification step.
+      source: tool_log
+      pattern: type="submit"|CheckoutPage.tsx

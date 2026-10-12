@@ -1,0 +1,186 @@
+skill: 216-command-creator
+version: 2
+total_items: 12
+criteria:
+- id: C01
+  category: content
+  fatal: false
+  text: The agent's opening response identifies the request as creating a Claude Code slash command (a reusable agent-executable markdown command), not as writing a standalone script.
+  anchor: Agent's first response text.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: slash command
+    llm:
+      question: The agent's opening response identifies the request as creating a Claude Code slash command (a reusable agent-executable markdown command), not as writing a standalone script.
+      evidence: Agent's first response text.
+      source: output
+      needle: slash command
+- id: C02
+  category: tool
+  fatal: false
+  text: The agent runs a git repository check to auto-detect whether the command belongs at project or global level.
+  anchor: tool_log — Bash call containing 'git rev-parse'.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_contains
+      cmd: git rev-parse
+    llm:
+      question: The agent runs a git repository check to auto-detect whether the command belongs at project or global level.
+      evidence: tool_log — Bash call containing 'git rev-parse'.
+      source: tool_log
+      pattern: git rev-parse
+- id: C03
+  category: content
+  fatal: false
+  text: The agent reports the chosen location (project .claude/commands/ vs global ~/.claude/commands/) to the user before creating the command file.
+  anchor: tool_log — assistant message stating the chosen location.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: .claude/commands
+    llm:
+      question: The agent reports the chosen location (project .claude/commands/ vs global ~/.claude/commands/) to the user before creating the command file.
+      evidence: tool_log — assistant message stating the chosen location.
+      source: output
+      needle: .claude/commands
+- id: C04
+  category: content
+  fatal: false
+  text: The agent references the global command location (~/.claude/commands/) when discussing placement, accounting for the user's stated multi-repo usage (including non-git repos).
+  anchor: tool_log — assistant text mentioning the global path.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: ~/.claude/commands/
+    llm:
+      question: The agent references the global command location (~/.claude/commands/) when discussing placement, accounting for the user's stated multi-repo usage (including non-git repos).
+      evidence: tool_log — assistant text mentioning the global path.
+      source: output
+      needle: ~/.claude/commands/
+- id: C07
+  category: process
+  fatal: false
+  text: The agent detects the location (git rev-parse) before the command's check-sequence content is written, following the skill's workflow order.
+  anchor: tool_log — ordering of 'git rev-parse' before the command content tokens.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_order
+      cmds:
+      - git rev-parse
+      - prettier
+    llm:
+      question: The agent detects the location (git rev-parse) before the command's check-sequence content is written, following the skill's workflow order.
+      evidence: tool_log — ordering of 'git rev-parse' before the command content tokens.
+      source: tool_log
+      pattern: git rev-parse|prettier
+- id: C11
+  category: content
+  fatal: false
+  text: The command's first step checks for uncommitted changes in the working tree using git status before running any checks.
+  anchor: tool_log — command file content containing 'git status'.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_contains
+      cmd: git status
+    llm:
+      question: The command's first step checks for uncommitted changes in the working tree using git status before running any checks.
+      evidence: tool_log — command file content containing 'git status'.
+      source: tool_log
+      pattern: git status
+- id: C20
+  category: boundary
+  fatal: false
+  text: The command handles the clean-working-tree edge case (no uncommitted changes) by reporting it and exiting gracefully instead of running the checks on nothing.
+  anchor: tool_log — command instructions for the no-changes case.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_contains
+      cmd: clean
+    llm:
+      question: The command handles the clean-working-tree edge case (no uncommitted changes) by reporting it and exiting gracefully instead of running the checks on nothing.
+      evidence: tool_log — command instructions for the no-changes case.
+      source: tool_log
+      pattern: clean
+- id: C21
+  category: format
+  fatal: false
+  text: The command file includes a Usage section showing how the user invokes it (e.g., /command-name).
+  anchor: tool_log — 'Usage' section header in the command content.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_contains
+      cmd: Usage
+    llm:
+      question: The command file includes a Usage section showing how the user invokes it (e.g., /command-name).
+      evidence: tool_log — 'Usage' section header in the command content.
+      source: tool_log
+      pattern: Usage
+- id: C22
+  category: content
+  fatal: false
+  text: The agent's final response confirms the created command's file location and how to invoke it.
+  anchor: Agent final output — mention of the commands directory path.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: .claude/commands
+    llm:
+      question: The agent's final response confirms the created command's file location and how to invoke it.
+      evidence: Agent final output — mention of the commands directory path.
+      source: output
+      needle: .claude/commands
+- id: C23
+  category: content
+  fatal: false
+  text: The command body is written as imperative, agent-executable instructions (verb-first directives, explicit steps, expected outcomes) rather than descriptive prose addressed to the user.
+  anchor: Command file body wording.
+  judge: llm
+  check:
+    question: The command body is written as imperative, agent-executable instructions (verb-first directives, explicit steps, expected outcomes) rather than descriptive prose addressed to the user.
+    evidence: Command file body wording.
+- id: C24
+  category: negative
+  fatal: false
+  text: The command is delivered as a markdown file only; no shell script (.sh) file is created under the commands directory.
+  anchor: filesystem — absence of .sh files under .claude/commands/.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: count
+      what: .claude/commands/*.sh
+      op: eq
+      n: 0
+    llm:
+      question: The command is delivered as a markdown file only; no shell script (.sh) file is created under the commands directory.
+      evidence: filesystem — absence of .sh files under .claude/commands/.
+      source: workspace
+      path: .claude/commands/*.sh
+- id: C25
+  category: content
+  fatal: false
+  text: The agent gives the user suggestions for organizing the command (step structure) and for a command name, as explicitly requested in the task.
+  anchor: Agent final output — proposed name and organization rationale.
+  judge: llm
+  check:
+    question: The agent gives the user suggestions for organizing the command (step structure) and for a command name, as explicitly requested in the task.
+    evidence: Agent final output — proposed name and organization rationale.

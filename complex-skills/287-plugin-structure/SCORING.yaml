@@ -1,0 +1,118 @@
+skill: 287-plugin-structure
+version: 2
+total_items: 7
+criteria:
+- id: C15
+  category: negative
+  fatal: true
+  text: No hardcoded absolute paths or home-directory shortcuts (C:\..., /Users/..., /home/..., ~/...) appear anywhere in the run's tool log.
+  anchor: Scan the tool_log for Windows drive-letter, Unix absolute, or tilde path patterns; the constraint passes only if none match.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_not_contains
+      pattern: ([A-Za-z]:\\|/Users/|/home/|~/)
+    llm:
+      question: No hardcoded absolute paths or home-directory shortcuts (C:\..., /Users/..., /home/..., ~/...) appear anywhere in the run's tool log.
+      evidence: Scan the tool_log for Windows drive-letter, Unix absolute, or tilde path patterns; the constraint passes only if none match.
+      source: tool_log
+      pattern: ([A-Za-z]:\\|/Users/|/home/|~/)
+- id: C19
+  category: tool
+  fatal: false
+  text: The agent physically creates the plugin directory tree before writing files (evidenced by a Bash mkdir command in the tool log).
+  anchor: Search the tool_log for a 'mkdir' command creating workspace/my-plugin/.claude-plugin, commands, and skills.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_contains
+      cmd: mkdir
+    llm:
+      question: The agent physically creates the plugin directory tree before writing files (evidenced by a Bash mkdir command in the tool log).
+      evidence: Search the tool_log for a 'mkdir' command creating workspace/my-plugin/.claude-plugin, commands, and skills.
+      source: tool_log
+      pattern: mkdir
+- id: C20
+  category: process
+  fatal: false
+  text: The plugin.json manifest is written before the component files, following the workflow order (manifest first, then commands/skills).
+  anchor: In the tool_log, a write of plugin.json must occur before a write of standup.md.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_order
+      cmds:
+      - plugin.json
+      - standup.md
+    llm:
+      question: The plugin.json manifest is written before the component files, following the workflow order (manifest first, then commands/skills).
+      evidence: In the tool_log, a write of plugin.json must occur before a write of standup.md.
+      source: tool_log
+      pattern: plugin.json|standup.md
+- id: C21
+  category: process
+  fatal: false
+  text: The agent confirms/declares the plugin name and component scope and names the chosen pattern (Minimal, Full, or Skills-focused) before building, per workflow step 1.
+  anchor: Look in the initial planning text / final output for one of the pattern names.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Minimal|Full
+    llm:
+      question: The agent confirms/declares the plugin name and component scope and names the chosen pattern (Minimal, Full, or Skills-focused) before building, per workflow step 1.
+      evidence: Look in the initial planning text / final output for one of the pattern names.
+      source: output
+      needle: Minimal|Full
+- id: C22
+  category: evidence
+  fatal: false
+  text: The agent self-checks the created structure (e.g., lists the generated tree) rather than ending immediately after writing files.
+  anchor: Search the tool_log for a listing command such as 'ls' issued on the plugin tree.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_contains
+      cmd: ls
+    llm:
+      question: The agent self-checks the created structure (e.g., lists the generated tree) rather than ending immediately after writing files.
+      evidence: Search the tool_log for a listing command such as 'ls' issued on the plugin tree.
+      source: tool_log
+      pattern: ls
+- id: C23
+  category: format
+  fatal: false
+  text: The final output presents the plugin directory tree as a code block rooted at the given workspace/my-plugin directory.
+  anchor: Look in the final output for the tree listing showing workspace/my-plugin (with .claude-plugin, commands, skills).
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: workspace/my-plugin
+    llm:
+      question: The final output presents the plugin directory tree as a code block rooted at the given workspace/my-plugin directory.
+      evidence: Look in the final output for the tree listing showing workspace/my-plugin (with .claude-plugin, commands, skills).
+      source: output
+      needle: workspace/my-plugin
+- id: C26
+  category: content
+  fatal: false
+  text: The final output explains the purpose of each created file (the plugin.json manifest, the standup.md command, and the SKILL.md skill).
+  anchor: Look in the final output for per-file explanations, evidenced by the command filename being discussed.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: standup\.md
+    llm:
+      question: The final output explains the purpose of each created file (the plugin.json manifest, the standup.md command, and the SKILL.md skill).
+      evidence: Look in the final output for per-file explanations, evidenced by the command filename being discussed.
+      source: output
+      needle: standup\.md

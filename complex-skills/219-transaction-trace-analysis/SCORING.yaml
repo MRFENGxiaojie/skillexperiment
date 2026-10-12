@@ -1,0 +1,386 @@
+skill: 219-transaction-trace-analysis
+version: 2
+total_items: 26
+criteria:
+- id: C01
+  category: tool
+  fatal: false
+  text: The run opens task/trace.tsv and reads its transaction records (the trace data file is required input).
+  anchor: Inspect tool_log.jsonl for a Read/Bash call whose argument contains the path task/trace.tsv.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_contains
+      cmd: task/trace.tsv
+    llm:
+      question: The run opens task/trace.tsv and reads its transaction records (the trace data file is required input).
+      evidence: Inspect tool_log.jsonl for a Read/Bash call whose argument contains the path task/trace.tsv.
+      source: tool_log
+      pattern: task/trace.tsv
+- id: C02
+  category: tool
+  fatal: false
+  text: The run reads the task specification task/task.txt before analyzing.
+  anchor: Inspect tool_log.jsonl for a Read of task/task.txt.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_contains
+      cmd: task/task.txt
+    llm:
+      question: The run reads the task specification task/task.txt before analyzing.
+      evidence: Inspect tool_log.jsonl for a Read of task/task.txt.
+      source: tool_log
+      pattern: task/task.txt
+- id: C03
+  category: tool
+  fatal: false
+  text: The run reads at least one reference document from the references/ directory.
+  anchor: Inspect tool_log.jsonl for any path under references/.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_contains
+      cmd: references/
+    llm:
+      question: The run reads at least one reference document from the references/ directory.
+      evidence: Inspect tool_log.jsonl for any path under references/.
+      source: tool_log
+      pattern: references/
+- id: C04
+  category: tool
+  fatal: false
+  text: The run reads references/validation-and-abort-records.md to interpret validation-failure and abort semantics.
+  anchor: Inspect tool_log.jsonl for the filename validation-and-abort-records.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_contains
+      cmd: validation-and-abort-records
+    llm:
+      question: The run reads references/validation-and-abort-records.md to interpret validation-failure and abort semantics.
+      evidence: Inspect tool_log.jsonl for the filename validation-and-abort-records.
+      source: tool_log
+      pattern: validation-and-abort-records
+- id: C05
+  category: tool
+  fatal: false
+  text: The run reads references/evidence-quality-and-uncertainty.md to handle partial evidence.
+  anchor: Inspect tool_log.jsonl for the filename evidence-quality-and-uncertainty.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_contains
+      cmd: evidence-quality-and-uncertainty
+    llm:
+      question: The run reads references/evidence-quality-and-uncertainty.md to handle partial evidence.
+      evidence: Inspect tool_log.jsonl for the filename evidence-quality-and-uncertainty.
+      source: tool_log
+      pattern: evidence-quality-and-uncertainty
+- id: C06
+  category: tool
+  fatal: false
+  text: The run reads references/output-classification-patterns.md to format the id-list output.
+  anchor: Inspect tool_log.jsonl for the filename output-classification-patterns.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_contains
+      cmd: output-classification-patterns
+    llm:
+      question: The run reads references/output-classification-patterns.md to format the id-list output.
+      evidence: Inspect tool_log.jsonl for the filename output-classification-patterns.
+      source: tool_log
+      pattern: output-classification-patterns
+- id: C07
+  category: process
+  fatal: false
+  text: The run builds the Trace Ledger — a transaction ledger (seen keys, read/write/validation/abort evidence, candidate commit fields) and an object ledger (per-key event timeline) — before drawing conclusions.
+  anchor: Working notes or any written intermediate file; tool log if the agent writes the ledger using the SKILL vocabulary.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_contains
+      cmd: seen keys|candidate commit fields|event timeline
+    llm:
+      question: The run builds the Trace Ledger — a transaction ledger (seen keys, read/write/validation/abort evidence, candidate commit fields) and an object ledger (per-key event timeline) — before drawing
+        conclusions.
+      evidence: Working notes or any written intermediate file; tool log if the agent writes the ledger using the SKILL vocabulary.
+      source: tool_log
+      pattern: seen keys|candidate commit fields|event timeline
+- id: C08
+  category: process
+  fatal: false
+  text: The run performs per-transaction reconstruction, summarizing each transaction's evidence and candidate serialization-point fields, before classifying.
+  anchor: Working notes or tool log for the phrase per-txn reconstruction.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_contains
+      cmd: per-txn reconstruction
+    llm:
+      question: The run performs per-transaction reconstruction, summarizing each transaction's evidence and candidate serialization-point fields, before classifying.
+      evidence: Working notes or tool log for the phrase per-txn reconstruction.
+      source: tool_log
+      pattern: per-txn reconstruction
+- id: C10
+  category: content
+  fatal: false
+  text: The final output labels the transactions that hold abort records as aborted (e.g., 'aborted' or 'must abort').
+  anchor: Final output classification table.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: aborted|must abort
+    llm:
+      question: The final output labels the transactions that hold abort records as aborted (e.g., 'aborted' or 'must abort').
+      evidence: Final output classification table.
+      source: output
+      needle: aborted|must abort
+- id: C12
+  category: content
+  fatal: false
+  text: The final output uses at least one of the skill's verdict phrases 'must abort', 'could commit', or 'unknown from evidence'.
+  anchor: Final output text (this mirrors check.py's FMT-02 requirement).
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: must abort|could commit|unknown from evidence
+    llm:
+      question: The final output uses at least one of the skill's verdict phrases 'must abort', 'could commit', or 'unknown from evidence'.
+      evidence: Final output text (this mirrors check.py's FMT-02 requirement).
+      source: output
+      needle: must abort|could commit|unknown from evidence
+- id: C14
+  category: content
+  fatal: false
+  text: T103, which has an explicit abort record, is classified as aborted.
+  anchor: Final output row for T103.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: T103
+    llm:
+      question: T103, which has an explicit abort record, is classified as aborted.
+      evidence: Final output row for T103.
+      source: output
+      needle: T103
+- id: C16
+  category: content
+  fatal: false
+  text: T102, whose validation failed with no commit or abort record, is classified as insufficient evidence and flagged for manual review.
+  anchor: Final output row for T102 and the review list.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: T102
+    llm:
+      question: T102, whose validation failed with no commit or abort record, is classified as insufficient evidence and flagged for manual review.
+      evidence: Final output row for T102 and the review list.
+      source: output
+      needle: T102
+- id: C17
+  category: content
+  fatal: false
+  text: T109, which has only a failed validation record and no terminal record, is classified as insufficient evidence.
+  anchor: Final output row for T109.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: T109
+    llm:
+      question: T109, which has only a failed validation record and no terminal record, is classified as insufficient evidence.
+      evidence: Final output row for T109.
+      source: output
+      needle: T109
+- id: C19
+  category: content
+  fatal: false
+  text: T113, which has only a write record with no commit or abort, is classified as insufficient evidence, not committed.
+  anchor: Final output row for T113.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: T113
+    llm:
+      question: T113, which has only a write record with no commit or abort, is classified as insufficient evidence, not committed.
+      evidence: Final output row for T113.
+      source: output
+      needle: T113
+- id: C20
+  category: content
+  fatal: false
+  text: T119, whose write is followed by a failed validation with no commit or abort, is classified as insufficient evidence.
+  anchor: Final output row for T119.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: T119
+    llm:
+      question: T119, whose write is followed by a failed validation with no commit or abort, is classified as insufficient evidence.
+      evidence: Final output row for T119.
+      source: output
+      needle: T119
+- id: C21
+  category: content
+  fatal: false
+  text: The final output includes a manual-review list of order IDs needing human verification, as the task requires.
+  anchor: Final output review-list section.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: manual review
+    llm:
+      question: The final output includes a manual-review list of order IDs needing human verification, as the task requires.
+      evidence: Final output review-list section.
+      source: output
+      needle: manual review
+- id: C22
+  category: content
+  fatal: false
+  text: The manual-review list includes order:10, the order touched by the unresolved T119.
+  anchor: Review-list section of the final output.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: order:10
+    llm:
+      question: The manual-review list includes order:10, the order touched by the unresolved T119.
+      evidence: Review-list section of the final output.
+      source: output
+      needle: order:10
+- id: C23
+  category: content
+  fatal: false
+  text: The manual-review list includes order:1, the order touched by the unresolved T102.
+  anchor: Review-list section of the final output.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: order:1
+    llm:
+      question: The manual-review list includes order:1, the order touched by the unresolved T102.
+      evidence: Review-list section of the final output.
+      source: output
+      needle: order:1
+- id: C24
+  category: format
+  fatal: false
+  text: The manual-review list contains no duplicate order IDs.
+  anchor: Review-list section of the final output; compare against the set of insufficient-evidence orders.
+  judge: llm
+  check:
+    question: The manual-review list contains no duplicate order IDs.
+    evidence: Review-list section of the final output; compare against the set of insufficient-evidence orders.
+- id: C25
+  category: format
+  fatal: false
+  text: The manual-review list is uniformly formatted (consistent delimiter or one id per line).
+  anchor: Review-list section of the final output.
+  judge: llm
+  check:
+    question: The manual-review list is uniformly formatted (consistent delimiter or one id per line).
+    evidence: Review-list section of the final output.
+- id: C26
+  category: coverage
+  fatal: false
+  text: The final classification covers all 19 transactions in task/trace.tsv, from T101 through T119, with none omitted.
+  anchor: Final output classification table; count rows against trace.tsv.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: T119
+    llm:
+      question: The final classification covers all 19 transactions in task/trace.tsv, from T101 through T119, with none omitted.
+      evidence: Final output classification table; count rows against trace.tsv.
+      source: output
+      needle: T119
+- id: C27
+  category: evidence
+  fatal: false
+  text: Each classification verdict is accompanied by a judgment basis (判定依据) tied to specific trace evidence.
+  anchor: Final output, per-verdict justification lines.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: because
+    llm:
+      question: Each classification verdict is accompanied by a judgment basis (判定依据) tied to specific trace evidence.
+      evidence: Final output, per-verdict justification lines.
+      source: output
+      needle: because
+- id: C29
+  category: negative
+  fatal: true
+  text: The run does not treat the per-key counter column as a global transaction order.
+  anchor: Working notes and ordering statements in the final output.
+  judge: llm
+  check:
+    question: The run does not treat the per-key counter column as a global transaction order.
+    evidence: Working notes and ordering statements in the final output.
+- id: C31
+  category: termination
+  fatal: false
+  text: Where the trace cannot establish a verdict, the analysis halts at 'unknown from evidence' instead of forcing a confident committed/aborted label.
+  anchor: Final output classification of the unresolved transactions (T102, T109, T110, T113, T119).
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: unknown from evidence
+    llm:
+      question: Where the trace cannot establish a verdict, the analysis halts at 'unknown from evidence' instead of forcing a confident committed/aborted label.
+      evidence: Final output classification of the unresolved transactions (T102, T109, T110, T113, T119).
+      source: output
+      needle: unknown from evidence
+- id: C32
+  category: boundary
+  fatal: false
+  text: A failed validation record without a matching abort record is treated as insufficient evidence, not as a confirmed abort.
+  anchor: Final output reasoning for T102, T109, T119.
+  judge: llm
+  check:
+    question: A failed validation record without a matching abort record is treated as insufficient evidence, not as a confirmed abort.
+    evidence: Final output reasoning for T102, T109, T119.
+- id: C33
+  category: negative
+  fatal: false
+  text: The manual-review list omits orders whose transactions all reached a terminal record (order:2, order:3, order:4, order:8, order:9).
+  anchor: Review-list section vs the classification table.
+  judge: llm
+  check:
+    question: The manual-review list omits orders whose transactions all reached a terminal record (order:2, order:3, order:4, order:8, order:9).
+    evidence: Review-list section vs the classification table.

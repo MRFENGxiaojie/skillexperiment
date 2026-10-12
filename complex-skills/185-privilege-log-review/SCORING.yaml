@@ -1,0 +1,543 @@
+skill: 185-privilege-log-review
+version: 2
+total_items: 31
+criteria:
+- id: C07
+  category: content
+  fatal: false
+  text: The output cites the local-rule variant C.D. Cal. Local Rule 26-2.
+  anchor: final output — 'Applicable rule' line / forum-rules discussion
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Local Rule 26-2
+    llm:
+      question: The output cites the local-rule variant C.D. Cal. Local Rule 26-2.
+      evidence: final output — 'Applicable rule' line / forum-rules discussion
+      source: output
+      needle: Local Rule 26-2
+- id: C08
+  category: content
+  fatal: false
+  text: Every rule or authority cited in the output carries a source-attribution tag ([user provided], [model knowledge — verify], [web search — verify], or a research-tool tag).
+  anchor: final output — citations and their tags
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: \[user provided\]|\[model knowledge|\[web search|\[Westlaw\]|\[CourtListener\]|\[Trellis\]
+    llm:
+      question: Every rule or authority cited in the output carries a source-attribution tag ([user provided], [model knowledge — verify], [web search — verify], or a research-tool tag).
+      evidence: final output — citations and their tags
+      source: output
+      needle: \[user provided\]|\[model knowledge|\[web search|\[Westlaw\]|\[CourtListener\]|\[Trellis\]
+- id: C09
+  category: process
+  fatal: false
+  text: The output reports a Step 1 format check covering the six required fields (date, author, recipients, document type, privilege claimed, description).
+  anchor: final output — format-check section
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      needle: (?is)(?=.*format check)(?=.*(date|author|recipients|document type|privilege claimed|description))
+      path: '**/privilege-log-review.md'
+    llm:
+      question: The output reports a Step 1 format check covering the six required fields (date, author, recipients, document type, privilege claimed, description).
+      evidence: final output — format-check section
+      source: workspace
+      needle: (?is)(?=.*format check)(?=.*(date|author|recipients|document type|privilege claimed|description))
+      path: '**/privilege-log-review.md'
+- id: C10
+  category: format
+  fatal: false
+  text: The output is a structured review titled '## Privilege Log Review:' for the matter, matching the skill's output template.
+  anchor: final output — title line
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      needle: '# Privilege Log Review|## Privilege Log Review'
+      path: '**/privilege-log-review.md'
+    llm:
+      question: The output is a structured review titled '## Privilege Log Review:' for the matter, matching the skill's output template.
+      evidence: final output — title line
+      source: workspace
+      needle: '# Privilege Log Review|## Privilege Log Review'
+      path: '**/privilege-log-review.md'
+- id: C11
+  category: content
+  fatal: false
+  text: 'The output reports the number of entries reviewed (''Entries reviewed: 10'').'
+  anchor: final output — 'Entries reviewed' line
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: numeric_threshold
+      in: output
+      key: Entries reviewed:[^0-9]*(\d+)
+      op: eq
+      n: 10
+    llm:
+      question: 'The output reports the number of entries reviewed (''Entries reviewed: 10'').'
+      evidence: final output — 'Entries reviewed' line
+      source: output
+      needle: Entries reviewed:[^0-9]*(\d+)
+- id: C12
+  category: content
+  fatal: false
+  text: The output reports results counts for all three tiers (✅ confident priv / ✅+⚠️ priv kept & flagged / ❌ recommend remove).
+  anchor: final output — 'Results:' line
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      needle: (?is)(?=.*(confident priv|confidently privileged))(?=.*(privilege designation kept|kept.{0,5}flagged))(?=.*recommend (remove|removal))
+      path: '**/privilege-log-review.md'
+    llm:
+      question: The output reports results counts for all three tiers (✅ confident priv / ✅+⚠️ priv kept & flagged / ❌ recommend remove).
+      evidence: final output — 'Results:' line
+      source: workspace
+      needle: (?is)(?=.*(confident priv|confidently privileged))(?=.*(privilege designation kept|kept.{0,5}flagged))(?=.*recommend (remove|removal))
+      path: '**/privilege-log-review.md'
+- id: C13
+  category: coverage
+  fatal: false
+  text: The review covers all ten log entries A-0001 through A-0010 (the last Bates number appears in the output).
+  anchor: final output — entry-by-entry section / Bates references
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: (?s)(?=.*A-0001)(?=.*A-0010)
+    llm:
+      question: The review covers all ten log entries A-0001 through A-0010 (the last Bates number appears in the output).
+      evidence: final output — entry-by-entry section / Bates references
+      source: output
+      needle: (?s)(?=.*A-0001)(?=.*A-0010)
+- id: C14
+  category: content
+  fatal: false
+  text: The output includes a flagged section titled '✅ + ⚠️ Flagged — designation kept, attorney decides'.
+  anchor: final output — flagged-table section header
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      needle: (?is)(?=.*(privilege|privileged) designation kept)(?=.*attorney decides)
+      path: '**/privilege-log-review.md'
+    llm:
+      question: The output includes a flagged section titled '✅ + ⚠️ Flagged — designation kept, attorney decides'.
+      evidence: final output — flagged-table section header
+      source: workspace
+      needle: (?is)(?=.*(privilege|privileged) designation kept)(?=.*attorney decides)
+      path: '**/privilege-log-review.md'
+- id: C15
+  category: content
+  fatal: false
+  text: The third-party-copy entry A-0004 (opposing-party subsidiary employee CC'd) is flagged with the common-interest / privilege-waiver question for the attorney.
+  anchor: final output — A-0004 flag / flagged table
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      needle: (?is)A-0004.{0,800}common[- ]interest
+      path: '**/privilege-log-review.md'
+    llm:
+      question: The third-party-copy entry A-0004 (opposing-party subsidiary employee CC'd) is flagged with the common-interest / privilege-waiver question for the attorney.
+      evidence: final output — A-0004 flag / flagged table
+      source: workspace
+      needle: (?is)A-0004.{0,800}common[- ]interest
+      path: '**/privilege-log-review.md'
+- id: C16
+  category: negative
+  fatal: false
+  text: The in-house mixed legal/business entry A-0002 is kept designated and flagged with the dominant-purpose question — it is not marked confidently privileged.
+  anchor: final output — A-0002 treatment in the flagged section
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      needle: (?is)A-0002.{0,800}dominant purpose
+      path: '**/privilege-log-review.md'
+    llm:
+      question: The in-house mixed legal/business entry A-0002 is kept designated and flagged with the dominant-purpose question — it is not marked confidently privileged.
+      evidence: final output — A-0002 treatment in the flagged section
+      source: workspace
+      needle: (?is)A-0002.{0,800}dominant purpose
+      path: '**/privilege-log-review.md'
+- id: C17
+  category: content
+  fatal: false
+  text: The A-0003 Excel attachment (raw sales data) is analyzed separately and assessed as independently non-privileged, distinct from the privileged email.
+  anchor: final output — A-0003 entry / attachment discussion
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: (?is)(?=.*A-0003)(?=.*attachment)(?=.*(non-privileged|not privileged))
+    llm:
+      question: The A-0003 Excel attachment (raw sales data) is analyzed separately and assessed as independently non-privileged, distinct from the privileged email.
+      evidence: final output — A-0003 entry / attachment discussion
+      source: output
+      needle: (?is)(?=.*A-0003)(?=.*attachment)(?=.*(non-privileged|not privileged))
+- id: C18
+  category: content
+  fatal: false
+  text: The pure-business entry A-0005 is assessed as not privileged (recommend remove, attorney confirms).
+  anchor: final output — A-0005 entry
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      needle: (?is)(?=.*A-0005)(?=.*recommend (remove|removal))
+      path: '**/privilege-log-review.md'
+    llm:
+      question: The pure-business entry A-0005 is assessed as not privileged (recommend remove, attorney confirms).
+      evidence: final output — A-0005 entry
+      source: workspace
+      needle: (?is)(?=.*A-0005)(?=.*recommend (remove|removal))
+      path: '**/privilege-log-review.md'
+- id: C19
+  category: content
+  fatal: false
+  text: The no-attorney customer-communication entries A-0007 through A-0010 are assessed as not privileged / recommended for removal.
+  anchor: final output — A-0007–A-0010 entries
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: (?is)(?=.*no[- ]attorney)(?=.*(A-0007|A-0008|A-0009|A-0010))
+    llm:
+      question: The no-attorney customer-communication entries A-0007 through A-0010 are assessed as not privileged / recommended for removal.
+      evidence: final output — A-0007–A-0010 entries
+      source: output
+      needle: (?is)(?=.*no[- ]attorney)(?=.*(A-0007|A-0008|A-0009|A-0010))
+- id: C20
+  category: process
+  fatal: false
+  text: 'The output surfaces a pattern flag: the same issue recurs across multiple entries (one no-attorney decision resolves the A-0007–A-0010 flags).'
+  anchor: final output — pattern observations section
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: (?is)(?=.*(repeating|same issue|recurring))(?=.*(no[- ]attorney|A-0007|A-0010))
+    llm:
+      question: 'The output surfaces a pattern flag: the same issue recurs across multiple entries (one no-attorney decision resolves the A-0007–A-0010 flags).'
+      evidence: final output — pattern observations section
+      source: output
+      needle: (?is)(?=.*(repeating|same issue|recurring))(?=.*(no[- ]attorney|A-0007|A-0010))
+- id: C21
+  category: content
+  fatal: false
+  text: The output includes a 'Pattern observations' section (repeating issues, over-designation, under-description).
+  anchor: final output — '### Pattern observations' header
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      needle: '## Pattern observations'
+      path: '**/privilege-log-review.md'
+    llm:
+      question: The output includes a 'Pattern observations' section (repeating issues, over-designation, under-description).
+      evidence: final output — '### Pattern observations' header
+      source: workspace
+      needle: '## Pattern observations'
+      path: '**/privilege-log-review.md'
+- id: C22
+  category: content
+  fatal: false
+  text: The output includes a 'Marker discipline' section.
+  anchor: final output — '### Marker discipline' header
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      needle: '## Marker discipline'
+      path: '**/privilege-log-review.md'
+    llm:
+      question: The output includes a 'Marker discipline' section.
+      evidence: final output — '### Marker discipline' header
+      source: workspace
+      needle: '## Marker discipline'
+      path: '**/privilege-log-review.md'
+- id: C23
+  category: evidence
+  fatal: false
+  text: 'The output uses at least one review marker ([VERIFY: ...], [UNCERTAIN: ...], or [CITE NEEDED: ...]).'
+  anchor: final output — marker discipline section
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      needle: \[VERIFY|\[UNCERTAIN|\[CITE NEEDED
+      path: '**/privilege-log-review.md'
+    llm:
+      question: 'The output uses at least one review marker ([VERIFY: ...], [UNCERTAIN: ...], or [CITE NEEDED: ...]).'
+      evidence: final output — marker discipline section
+      source: workspace
+      needle: \[VERIFY|\[UNCERTAIN|\[CITE NEEDED
+      path: '**/privilege-log-review.md'
+- id: C24
+  category: content
+  fatal: false
+  text: For each ⚠️ flag, the output records the specific open question and evidence cutting each way.
+  anchor: final output — flagged-table rows (Question / evidence-for / evidence-against)
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      needle: (?is)(?=.*Question)(?=.*Evidence (?:supporting|for))(?=.*Evidence against)
+      path: '**/privilege-log-review.md'
+    llm:
+      question: For each ⚠️ flag, the output records the specific open question and evidence cutting each way.
+      evidence: final output — flagged-table rows (Question / evidence-for / evidence-against)
+      source: workspace
+      needle: (?is)(?=.*Question)(?=.*Evidence (?:supporting|for))(?=.*Evidence against)
+      path: '**/privilege-log-review.md'
+- id: C25
+  category: negative
+  fatal: true
+  text: ❌ entries are recorded as recommendations only — the output states the designation is recorded, not executed ('Recorded, not executed'), so the run strips no privilege designation itself.
+  anchor: final output — ❌ recommendations table / recorded-not-executed statement
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      needle: Recorded, not executed
+      path: '**/privilege-log-review.md'
+    llm:
+      question: ❌ entries are recorded as recommendations only — the output states the designation is recorded, not executed ('Recorded, not executed'), so the run strips no privilege designation itself.
+      evidence: final output — ❌ recommendations table / recorded-not-executed statement
+      source: workspace
+      needle: Recorded, not executed
+      path: '**/privilege-log-review.md'
+- id: C26
+  category: termination
+  fatal: false
+  text: The output states 'Attorney must review all ⚠️ and ❌ before any action.' (approval gate before any action on flags).
+  anchor: final output — closing declaration
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Attorney must review all
+    llm:
+      question: The output states 'Attorney must review all ⚠️ and ❌ before any action.' (approval gate before any action on flags).
+      evidence: final output — closing declaration
+      source: output
+      needle: Attorney must review all
+- id: C27
+  category: content
+  fatal: false
+  text: The output carries the privileged-source-material notice ('Privileged source material').
+  anchor: final output — closing notice
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      needle: Privileged source material
+      path: '**/privilege-log-review.md'
+    llm:
+      question: The output carries the privileged-source-material notice ('Privileged source material').
+      evidence: final output — closing notice
+      source: workspace
+      needle: Privileged source material
+      path: '**/privilege-log-review.md'
+- id: C28
+  category: evidence
+  fatal: false
+  text: The output reports citation-check coverage in the form 'Checked N of M citations.'
+  anchor: final output — citation-coverage report
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Checked \d+ of \d+ citations
+    llm:
+      question: The output reports citation-check coverage in the form 'Checked N of M citations.'
+      evidence: final output — citation-coverage report
+      source: output
+      needle: Checked \d+ of \d+ citations
+- id: C29
+  category: evidence
+  fatal: false
+  text: The applicable-rule cite carries a verify-currency marker ([UNCERTAIN — verify currency]).
+  anchor: final output — 'Applicable rule' line
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      needle: (?is)(?=.*Applicable rule)(?=.*verify current)
+      path: '**/privilege-log-review.md'
+    llm:
+      question: The applicable-rule cite carries a verify-currency marker ([UNCERTAIN — verify currency]).
+      evidence: final output — 'Applicable rule' line
+      source: workspace
+      needle: (?is)(?=.*Applicable rule)(?=.*verify current)
+      path: '**/privilege-log-review.md'
+- id: C30
+  category: content
+  fatal: false
+  text: The output notes the judge's standing-order requirements for the privilege log (Judge P. Alvarez's required fields).
+  anchor: final output — forum-rules / applicable-rule discussion
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      needle: (?is)(?=.*standing order)(?=.*(Judge P\. Alvarez|required fields))
+      path: '**/privilege-log-review.md'
+    llm:
+      question: The output notes the judge's standing-order requirements for the privilege log (Judge P. Alvarez's required fields).
+      evidence: final output — forum-rules / applicable-rule discussion
+      source: workspace
+      needle: (?is)(?=.*standing order)(?=.*(Judge P\. Alvarez|required fields))
+      path: '**/privilege-log-review.md'
+- id: C31
+  category: format
+  fatal: false
+  text: The output opens with a work-product header per the plugin config (## Outputs).
+  anchor: final output — first line / work-product header
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      needle: (?i)work-product header
+      path: '**/privilege-log-review.md'
+    llm:
+      question: The output opens with a work-product header per the plugin config (## Outputs).
+      evidence: final output — first line / work-product header
+      source: workspace
+      needle: (?i)work-product header
+      path: '**/privilege-log-review.md'
+- id: C32
+  category: content
+  fatal: false
+  text: The output closes with a next-steps decision tree per the skill's closing instruction.
+  anchor: final output — closing section
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      needle: (?is)(?=.*next[- ]?steps)(?=.*decision tree)
+      path: '**/privilege-log-review.md'
+    llm:
+      question: The output closes with a next-steps decision tree per the skill's closing instruction.
+      evidence: final output — closing section
+      source: workspace
+      needle: (?is)(?=.*next[- ]?steps)(?=.*decision tree)
+      path: '**/privilege-log-review.md'
+- id: C33
+  category: tool
+  fatal: false
+  text: The review output is written to the active matter's folder (matters/cal-commercial-dispute/), per the matter-context instruction to write outputs there.
+  anchor: workspace — a second .md file appears in matters/cal-commercial-dispute/ (alongside matter.md)
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: count
+      what: '**/matters/cal-commercial-dispute/*.md'
+      op: ge
+      n: 2
+    llm:
+      question: The review output is written to the active matter's folder (matters/cal-commercial-dispute/), per the matter-context instruction to write outputs there.
+      evidence: workspace — a second .md file appears in matters/cal-commercial-dispute/ (alongside matter.md)
+      source: workspace
+      path: '**/matters/cal-commercial-dispute/*.md'
+- id: C34
+  category: process
+  fatal: false
+  text: The conflicts-gate check (_log.yaml) occurs before the privilege log (privilege-log.csv) is read/reviewed.
+  anchor: tool_log — ordering of the Read calls
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_order
+      cmds:
+      - _log\.yaml
+      - privilege-log\.csv
+    llm:
+      question: The conflicts-gate check (_log.yaml) occurs before the privilege log (privilege-log.csv) is read/reviewed.
+      evidence: tool_log — ordering of the Read calls
+      source: tool_log
+      pattern: _log\.yaml|privilege-log\.csv
+- id: C35
+  category: boundary
+  fatal: false
+  text: For any cited authority whose source text is unavailable, the output says 'could not check' rather than 'confirmed'.
+  anchor: final output — citation-check reporting
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: could not check
+    llm:
+      question: For any cited authority whose source text is unavailable, the output says 'could not check' rather than 'confirmed'.
+      evidence: final output — citation-check reporting
+      source: output
+      needle: could not check
+- id: C36
+  category: content
+  fatal: false
+  text: The outside-counsel litigation-strategy entry A-0001 is classified confidently privileged (✅, no flag).
+  anchor: final output — A-0001 entry line
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: file_contains
+      needle: A-0001[^\n]*✅|✅[^\n]*A-0001
+      path: '**/privilege-log-review.md'
+    llm:
+      question: The outside-counsel litigation-strategy entry A-0001 is classified confidently privileged (✅, no flag).
+      evidence: final output — A-0001 entry line
+      source: workspace
+      needle: A-0001[^\n]*✅|✅[^\n]*A-0001
+      path: '**/privilege-log-review.md'
+- id: C37
+  category: content
+  fatal: false
+  text: The output includes a '❌ Recommend remove designation (attorney confirms before stripping)' section.
+  anchor: final output — ❌ table header
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: (?is)Recommend remove designation.{0,80}attorney confirms before stripping
+    llm:
+      question: The output includes a '❌ Recommend remove designation (attorney confirms before stripping)' section.
+      evidence: final output — ❌ table header
+      source: output
+      needle: (?is)Recommend remove designation.{0,80}attorney confirms before stripping

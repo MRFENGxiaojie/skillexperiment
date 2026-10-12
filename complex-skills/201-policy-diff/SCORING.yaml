@@ -1,0 +1,201 @@
+skill: 201-policy-diff
+version: 2
+total_items: 13
+criteria:
+- id: C05
+  category: content
+  fatal: false
+  text: The output names the regulation under review, 《客户信息保护管理办法》.
+  anchor: 'final output: the regulation name in the header or body.'
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Customer Information Protection Measures
+    llm:
+      question: The output names the regulation under review, 《客户信息保护管理办法》.
+      evidence: 'final output: the regulation name in the header or body.'
+      source: output
+      needle: Customer Information Protection Measures
+- id: C08
+  category: coverage
+  fatal: false
+  text: The output covers all 8 requirement topics from reg-summary.md — 最小必要收集, 告知同意, 敏感信息特别保护, 存储与保存期限, 访问与更正权利, 自动化决策透明, 安全事件报告, 内部制度与培训 — with none omitted.
+  anchor: 'final output: the requirements list / summary table; verify each of the 8 topics appears (the hook is a partial probe on the first topic).'
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: '[Mm]inimal necessary collection'
+    llm:
+      question: The output covers all 8 requirement topics from reg-summary.md — 最小必要收集, 告知同意, 敏感信息特别保护, 存储与保存期限, 访问与更正权利, 自动化决策透明, 安全事件报告, 内部制度与培训 — with none omitted.
+      evidence: 'final output: the requirements list / summary table; verify each of the 8 topics appears (the hook is a partial probe on the first topic).'
+      source: output
+      needle: '[Mm]inimal necessary collection'
+- id: C09
+  category: content
+  fatal: false
+  text: The output carries the prominent scope-limitation banner `⚠️ SCOPE LIMITATION` above the header, because the user excluded vendor management from the diff.
+  anchor: 'final output: the banner text placed above the work-product header.'
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: SCOPE LIMITATION
+    llm:
+      question: The output carries the prominent scope-limitation banner `⚠️ SCOPE LIMITATION` above the header, because the user excluded vendor management from the diff.
+      evidence: 'final output: the banner text placed above the work-product header.'
+      source: output
+      needle: SCOPE LIMITATION
+- id: C10
+  category: content
+  fatal: false
+  text: The output states that vendor-management (供应商管理) requirements are excluded from the comparison scope at the user's request.
+  anchor: 'final output: the banner or scope note mentioning 供应商管理.'
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: 'vendor[- ]management|supplier management'
+    llm:
+      question: The output states that vendor-management (供应商管理) requirements are excluded from the comparison scope at the user's request.
+      evidence: 'final output: the banner or scope note mentioning 供应商管理.'
+      source: output
+      needle: 'vendor[- ]management|supplier management'
+- id: C11
+  category: content
+  fatal: false
+  text: Citations in the output carry source tags, and the reg summary — supplied by the user — is tagged `[user provided]`, with tags not stripped or collapsed.
+  anchor: 'final output: citation/source-tag annotations on requirements.'
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: '[user provided]'
+    llm:
+      question: Citations in the output carry source tags, and the reg summary — supplied by the user — is tagged `[user provided]`, with tags not stripped or collapsed.
+      evidence: 'final output: citation/source-tag annotations on requirements.'
+      source: output
+      needle: '[user provided]'
+- id: C12
+  category: process
+  fatal: false
+  text: Because the reg text is a non-official summary, the agent flags the missing information (the official full text and details such as definition, penalty, and applicability clauses) before completing
+    the diff, rather than silently filling the gap.
+  anchor: 'final output / conversation: a note naming 官方全文 or the missing clause types.'
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: 'official (?:full )?text'
+    llm:
+      question: Because the reg text is a non-official summary, the agent flags the missing information (the official full text and details such as definition, penalty, and applicability clauses) before
+        completing the diff, rather than silently filling the gap.
+      evidence: 'final output / conversation: a note naming 官方全文 or the missing clause types.'
+      source: output
+      needle: 'official (?:full )?text'
+- id: C14
+  category: format
+  fatal: false
+  text: The output includes a `### Summary` table with one row per requirement.
+  anchor: 'final output: the Summary section.'
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: '### Summary|## Summary'
+    llm:
+      question: The output includes a `### Summary` table with one row per requirement.
+      evidence: 'final output: the Summary section.'
+      source: output
+      needle: '### Summary|## Summary'
+- id: C18
+  category: content
+  fatal: false
+  text: Each detailed diff block states the gap (None/Partial/Full), names specific changes needed, and lists the responsible policy owner.
+  anchor: 'final output: the Detailed diffs / Detailed comparison requirement blocks (gap + concrete changes + owner).'
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: '**Change needed:**|Required action|Concrete changes needed'
+    llm:
+      question: Each detailed diff block states the gap (None/Partial/Full), names specific changes needed, and lists the responsible policy owner.
+      evidence: 'final output: the Detailed diffs / Detailed comparison requirement blocks (gap + concrete changes + owner).'
+      source: output
+      needle: '**Change needed:**|Required action|Concrete changes needed'
+- id: C19
+  category: content
+  fatal: false
+  text: A requirement with no policy match is routed to a new-policy block (e.g., 'New policy needed or new section required') that lists options — that lists options such as drafting a new policy or adding to an existing policy.
+  anchor: 'final output: the new-policy block text (e.g., `New policy needed or new section required`).'
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: 'No existing policy covers this|No substantive policy'
+    llm:
+      question: A requirement with no policy match is routed to a new-policy block (e.g., 'New policy needed or new section required') that lists options — that lists options such as drafting a new policy or adding to an existing policy.
+      evidence: 'final output: the new-policy block text (e.g., `New policy needed or new section required`).'
+      source: output
+      needle: 'No existing policy covers this|No substantive policy'
+- id: C20
+  category: content
+  fatal: false
+  text: The output closes with the next-steps decision tree, customized to what this diff produced.
+  anchor: 'end of final output: the decision-tree closing section.'
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: 'next-steps decision tree|What next? Pick one'
+    llm:
+      question: The output closes with the next-steps decision tree, customized to what this diff produced.
+      evidence: 'end of final output: the decision-tree closing section.'
+      source: output
+      needle: 'next-steps decision tree|What next? Pick one'
+- id: C22
+  category: negative
+  fatal: false
+  text: The agent identifies what needs updating with specific change descriptions ('Change needed' / 'Required action' lists) and does NOT draft full replacement policy documents.
+  anchor: 'Review the final chat message for change-needed descriptions (Change needed / Required action lists) and confirm it contains no full replacement policy text.'
+  judge: llm
+  check:
+    question: The agent identifies what needs updating with specific change descriptions ('Change needed' / 'Required action' lists) and does NOT draft full replacement policy documents.
+    evidence: 'Review the final chat message for change-needed descriptions (Change needed / Required action lists) and confirm it contains no full replacement policy text.'
+- id: C24
+  category: boundary
+  fatal: false
+  text: When the policy library index is empty or still [PLACEHOLDER], the agent flags every requirement as a no-policy-match gap and appends the note 'The policy library in your configuration is empty...'.
+  anchor: 'final output: the empty-library fallback note; applies only if the index was empty at run time.'
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_contains
+      cmd: regulatory-legal/CLAUDE.md
+    llm:
+      question: When the policy library index is empty or still [PLACEHOLDER], the agent flags every requirement as a no-policy-match gap and appends the note 'The policy library in your configuration is
+        empty...'.
+      evidence: 'final output: the empty-library fallback note; applies only if the index was empty at run time.'
+      source: output
+      needle: The policy library in your configuration is empty
+- id: C26
+  category: process
+  fatal: false
+  text: The agent performs the Step 0 rule-status check before diffing, treating 2026-10-01 as a prospective (future) effective date rather than presenting any compliance date as already binding.
+  anchor: 'final output: how the Effective date and due dates are phrased.'
+  judge: llm
+  check:
+    question: The agent performs the Step 0 rule-status check before diffing, treating 2026-10-01 as a prospective (future) effective date rather than presenting any compliance date as already binding.
+    evidence: 'final output: how the Effective date and due dates are phrased.'

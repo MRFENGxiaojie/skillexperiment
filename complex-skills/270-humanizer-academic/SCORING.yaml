@@ -1,0 +1,177 @@
+skill: 270-humanizer-academic
+version: 2
+total_items: 11
+criteria:
+- id: C02
+  category: process
+  fatal: false
+  text: In the agent's tool sequence, a Read tool call precedes the first Write tool call, so the manuscript is read before any file is written.
+  anchor: Check the tool log ordering of the first Read versus the first Write.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_order
+      cmds:
+      - Read
+      - Write
+    llm:
+      question: In the agent's tool sequence, a Read tool call precedes the first Write tool call, so the manuscript is read before any file is written.
+      evidence: Check the tool log ordering of the first Read versus the first Write.
+      source: tool_log
+      pattern: Read|Write
+- id: C06
+  category: process
+  fatal: false
+  text: The agent restructures sentence rhythm first (Pattern 34) before vocabulary-level edits, evidenced by process narration mentioning sentence rhythm.
+  anchor: Search the tool log for the phrase 'sentence rhythm' (the Pattern 34 step in SKILL.md and the process reference).
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_contains
+      cmd: sentence rhythm
+    llm:
+      question: The agent restructures sentence rhythm first (Pattern 34) before vocabulary-level edits, evidenced by process narration mentioning sentence rhythm.
+      evidence: Search the tool log for the phrase 'sentence rhythm' (the Pattern 34 step in SKILL.md and the process reference).
+      source: tool_log
+      pattern: sentence rhythm
+- id: C07
+  category: process
+  fatal: false
+  text: 'The agent follows the two-pass draft-audit process: a Pass 1 draft rewrite followed by a Pass 2 self-audit, evidenced by narration mentioning the self-audit step.'
+  anchor: Search the tool log for the phrase 'self-audit' (Pass 2 of the process reference).
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_contains
+      cmd: self-audit
+    llm:
+      question: 'The agent follows the two-pass draft-audit process: a Pass 1 draft rewrite followed by a Pass 2 self-audit, evidenced by narration mentioning the self-audit step.'
+      evidence: Search the tool log for the phrase 'self-audit' (Pass 2 of the process reference).
+      source: tool_log
+      pattern: self-audit
+- id: C08
+  category: format
+  fatal: false
+  text: The final output presents the full rewritten manuscript, evidenced by the abstract section heading appearing in the output.
+  anchor: In the agent's final output text, confirm the abstract heading 摘要 appears.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: summary|abstract
+    llm:
+      question: The final output presents the full rewritten manuscript, evidenced by the abstract section heading appearing in the output.
+      evidence: In the agent's final output text, confirm the abstract heading 摘要 appears.
+      source: output
+      needle: summary|abstract
+- id: C12
+  category: content
+  fatal: false
+  text: The output preserves the HOMA-IR between-group difference of -0.9 unchanged.
+  anchor: In the agent's final output, search for the value -0.9.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: '-0.9'
+    llm:
+      question: The output preserves the HOMA-IR between-group difference of -0.9 unchanged.
+      evidence: In the agent's final output, search for the value -0.9.
+      source: output
+      needle: '-0.9'
+- id: C13
+  category: content
+  fatal: false
+  text: The output preserves the IMT between-group difference of -0.03 mm unchanged.
+  anchor: In the agent's final output, search for the string -0.03 mm.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: -0.03 mm
+    llm:
+      question: The output preserves the IMT between-group difference of -0.03 mm unchanged.
+      evidence: In the agent's final output, search for the string -0.03 mm.
+      source: output
+      needle: -0.03 mm
+- id: C17
+  category: format
+  fatal: false
+  text: The change summary lists applied patterns by number, specifically including Pattern 13 (em dash elimination).
+  anchor: In the agent's final output, search for 'Pattern 13' in the change-summary section.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Pattern 13
+    llm:
+      question: The change summary lists applied patterns by number, specifically including Pattern 13 (em dash elimination).
+      evidence: In the agent's final output, search for 'Pattern 13' in the change-summary section.
+      source: output
+      needle: Pattern 13
+- id: C19
+  category: negative
+  fatal: true
+  text: The final output contains zero em dash characters (—); every one of the manuscript's 8 em dashes is replaced per Pattern 13's zero-tolerance rule.
+  anchor: Scan the agent's final output for the character '—' (U+2014); the check passes only when it is entirely absent.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_not_contains
+      needle: —
+- id: C20
+  category: evidence
+  fatal: false
+  text: The agent explicitly confirms that no em dashes remain in the full text, using the term 破折号 in its report.
+  anchor: In the agent's final output or closing summary, search for the term 破折号.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: em dash|dash
+    llm:
+      question: The agent explicitly confirms that no em dashes remain in the full text, using the term 破折号 in its report.
+      evidence: In the agent's final output or closing summary, search for the term 破折号.
+      source: output
+      needle: em dash|dash
+- id: C22
+  category: evidence
+  fatal: false
+  text: The change summary notes that rhythm restructuring was performed, as the output format requires.
+  anchor: In the agent's final output change summary, search for the word 'rhythm'.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: rhythm
+    llm:
+      question: The change summary notes that rhythm restructuring was performed, as the output format requires.
+      evidence: In the agent's final output change summary, search for the word 'rhythm'.
+      source: output
+      needle: rhythm
+- id: C23
+  category: evidence
+  fatal: false
+  text: The agent performs and reports the mandatory final rhythm check described in the two-pass process reference.
+  anchor: Search the tool log for the phrase 'rhythm check' (the mandatory final check in the process reference).
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: tool_log_contains
+      cmd: rhythm check
+    llm:
+      question: The agent performs and reports the mandatory final rhythm check described in the two-pass process reference.
+      evidence: Search the tool log for the phrase 'rhythm check' (the mandatory final check in the process reference).
+      source: tool_log
+      pattern: rhythm check

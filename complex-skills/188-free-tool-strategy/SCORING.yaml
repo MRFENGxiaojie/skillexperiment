@@ -1,0 +1,556 @@
+skill: 188-free-tool-strategy
+version: 2
+total_items: 35
+criteria:
+- id: C02
+  category: content
+  fatal: false
+  text: The output anchors goals to the provided targets of 200 MQLs and 30 organic backlinks per quarter.
+  anchor: final output, Goals/Measurement section.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: numeric_threshold
+      in: output
+      key: MQL
+      op: ge
+      n: 200
+    llm:
+      question: The output anchors goals to the provided targets of 200 MQLs and 30 organic backlinks per quarter.
+      evidence: final output, Goals/Measurement section.
+      source: output
+      needle: MQL
+- id: C03
+  category: content
+  fatal: false
+  text: The output uses the $15k/yr contract value in lead-value or break-even reasoning.
+  anchor: final output, ROI/break-even or lead-value section.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: 15k
+    llm:
+      question: The output uses the $15k/yr contract value in lead-value or break-even reasoning.
+      evidence: final output, ROI/break-even or lead-value section.
+      source: output
+      needle: 15k
+- id: C04
+  category: content
+  fatal: false
+  text: The output evaluates the US salary calculator idea (美国薪资计算器) against the framework.
+  anchor: scoring matrix row/column for the salary calculator.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: US salary calculator
+    llm:
+      question: The output evaluates the US salary calculator idea (美国薪资计算器) against the framework.
+      evidence: scoring matrix row/column for the salary calculator.
+      source: output
+      needle: US salary calculator
+- id: C05
+  category: content
+  fatal: false
+  text: The output evaluates the company benefits cost comparator idea (公司福利成本对比器).
+  anchor: scoring matrix row/column for the benefits comparator.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: benefit cost comparator
+    llm:
+      question: The output evaluates the company benefits cost comparator idea (公司福利成本对比器).
+      evidence: scoring matrix row/column for the benefits comparator.
+      source: output
+      needle: benefit cost comparator
+- id: C06
+  category: content
+  fatal: false
+  text: The output evaluates the HR compliance checklist generator idea (HR 合规检查表生成器).
+  anchor: scoring matrix row/column for the compliance checklist generator.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: compliance checklist generator
+    llm:
+      question: The output evaluates the HR compliance checklist generator idea (HR 合规检查表生成器).
+      evidence: scoring matrix row/column for the compliance checklist generator.
+      source: output
+      needle: compliance checklist generator
+- id: C10
+  category: content
+  fatal: false
+  text: The evaluation includes the Lead Capture Potential factor with a score and rationale.
+  anchor: evaluation matrix, factor row.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Lead Capture Potential
+    llm:
+      question: The evaluation includes the Lead Capture Potential factor with a score and rationale.
+      evidence: evaluation matrix, factor row.
+      source: output
+      needle: Lead Capture Potential
+- id: C12
+  category: content
+  fatal: false
+  text: The evaluation includes the Viral Potential factor with a score and rationale.
+  anchor: evaluation matrix, factor row.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Viral Potential
+    llm:
+      question: The evaluation includes the Viral Potential factor with a score and rationale.
+      evidence: evaluation matrix, factor row.
+      source: output
+      needle: Viral Potential
+- id: C13
+  category: format
+  fatal: false
+  text: The evaluation is presented as a scored comparison matrix spanning the 6 factors across the 3 ideas.
+  anchor: 'evaluation section: a matrix/table with factor rows and idea columns.'
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: scored comparison matrix
+    llm:
+      question: The evaluation is presented as a scored comparison matrix spanning the 6 factors across the 3 ideas.
+      evidence: 'evaluation section: a matrix/table with factor rows and idea columns.'
+      source: output
+      needle: scored comparison matrix
+- id: C14
+  category: content
+  fatal: false
+  text: The output applies the scoring guide thresholds (25-30 build now / 18-24 validate / 12-17 maybe / <12 pass) to the idea totals.
+  anchor: scoring/recommendation section where totals are interpreted.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: 25-30
+    llm:
+      question: The output applies the scoring guide thresholds (25-30 build now / 18-24 validate / 12-17 maybe / <12 pass) to the idea totals.
+      evidence: scoring/recommendation section where totals are interpreted.
+      source: output
+      needle: 25-30
+- id: C15
+  category: content
+  fatal: false
+  text: The output gives a ranked recommendation identifying the highest-scoring idea to build first, with rationale.
+  anchor: recommendation section of the evaluation.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: build first
+    llm:
+      question: The output gives a ranked recommendation identifying the highest-scoring idea to build first, with rationale.
+      evidence: recommendation section of the evaluation.
+      source: output
+      needle: build first
+- id: C16
+  category: termination
+  fatal: false
+  text: The output applies the '10x better or don't build' bar to the salary calculator because well-established free competitors exist, flagging it as a pass/risk.
+  anchor: evaluation of the salary calculator's competition factor.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: 10x
+    llm:
+      question: The output applies the '10x better or don't build' bar to the salary calculator because well-established free competitors exist, flagging it as a pass/risk.
+      evidence: evaluation of the salary calculator's competition factor.
+      source: output
+      needle: 10x
+- id: C17
+  category: content
+  fatal: false
+  text: The output names PaycheckCity as an existing free salary-calculator competitor.
+  anchor: competition factor rationale or competitive-risk flag.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: PaycheckCity
+    llm:
+      question: The output names PaycheckCity as an existing free salary-calculator competitor.
+      evidence: competition factor rationale or competitive-risk flag.
+      source: output
+      needle: PaycheckCity
+- id: C18
+  category: format
+  fatal: false
+  text: The output states each build decision as binary 'build' or 'don't build' with a clear reason.
+  anchor: recommendation section per idea.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: don't build
+    llm:
+      question: The output states each build decision as binary 'build' or 'don't build' with a clear reason.
+      evidence: recommendation section per idea.
+      source: output
+      needle: don't build
+- id: C19
+  category: evidence
+  fatal: false
+  text: The agent validates keyword/search-volume data before committing engineering time, or explicitly flags that keyword volume was not validated.
+  anchor: 'output or tool_log: a validation step or an explicit ''not validated/assumed'' flag.'
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: validated
+    llm:
+      question: The agent validates keyword/search-volume data before committing engineering time, or explicitly flags that keyword volume was not validated.
+      evidence: 'output or tool_log: a validation step or an explicit ''not validated/assumed'' flag.'
+      source: output
+      needle: validated
+- id: C21
+  category: coverage
+  fatal: false
+  text: The UX spec for the selected tool covers the value exchange, inputs, lead capture flow, sharing mechanics, and landing page outline.
+  anchor: UX spec section of the output.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: UX spec
+    llm:
+      question: The UX spec for the selected tool covers the value exchange, inputs, lead capture flow, sharing mechanics, and landing page outline.
+      evidence: UX spec section of the output.
+      source: output
+      needle: UX spec
+- id: C22
+  category: content
+  fatal: false
+  text: The UX design keeps initial results to at most 3 inputs.
+  anchor: UX spec, input/fields section.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: 3 inputs
+    llm:
+      question: The UX design keeps initial results to at most 3 inputs.
+      evidence: UX spec, input/fields section.
+      source: output
+      needle: 3 inputs
+- id: C23
+  category: content
+  fatal: false
+  text: 'The design applies value-before-the-gate: the core result is shown first and only upgrades (deeper report, saved results) are gated.'
+  anchor: UX/gate design section.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: before the gate
+    llm:
+      question: 'The design applies value-before-the-gate: the core result is shown first and only upgrades (deeper report, saved results) are gated.'
+      evidence: UX/gate design section.
+      source: output
+      needle: before the gate
+- id: C24
+  category: content
+  fatal: false
+  text: The design includes shareable results such as a unique result URL, share/copy buttons, embed code or badge, or a downloadable report.
+  anchor: sharing mechanics subsection of the UX spec.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: badge
+    llm:
+      question: The design includes shareable results such as a unique result URL, share/copy buttons, embed code or badge, or a downloadable report.
+      evidence: sharing mechanics subsection of the UX spec.
+      source: output
+      needle: badge
+- id: C25
+  category: content
+  fatal: false
+  text: 'The lead capture plan uses progressive profiling: email only at the first gate, with additional fields (name, company, role) only on re-use or download.'
+  anchor: lead capture / gating section.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: progressive profiling
+    llm:
+      question: 'The lead capture plan uses progressive profiling: email only at the first gate, with additional fields (name, company, role) only on re-use or download.'
+      evidence: lead capture / gating section.
+      source: output
+      needle: progressive profiling
+- id: C26
+  category: content
+  fatal: false
+  text: The UX design is mobile-optimized.
+  anchor: UX spec, mobile/friction section.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: mobile
+    llm:
+      question: The UX design is mobile-optimized.
+      evidence: UX spec, mobile/friction section.
+      source: output
+      needle: mobile
+- id: C27
+  category: coverage
+  fatal: false
+  text: 'The SEO landing page outline follows the template: H1, subheadline, tool above the fold, how-it-works, related questions, and FAQ.'
+  anchor: SEO/landing page section of the output.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: FAQ
+    llm:
+      question: 'The SEO landing page outline follows the template: H1, subheadline, tool above the fold, how-it-works, related questions, and FAQ.'
+      evidence: SEO/landing page section of the output.
+      source: output
+      needle: FAQ
+- id: C28
+  category: content
+  fatal: false
+  text: The landing page plan places the target keyword in the H1, URL slug, title tag, first 100 words, and at least 2 subheadings.
+  anchor: SEO/landing page section, keyword placement.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: title tag
+    llm:
+      question: The landing page plan places the target keyword in the H1, URL slug, title tag, first 100 words, and at least 2 subheadings.
+      evidence: SEO/landing page section, keyword placement.
+      source: output
+      needle: title tag
+- id: C30
+  category: content
+  fatal: false
+  text: The launch plan includes pre-launch steps (SEO landing page, schema markup, directory submission) and channels such as Product Hunt, Hacker News, newsletters, and social.
+  anchor: launch plan section, pre-launch checklist and channel list.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: Product Hunt
+    llm:
+      question: The launch plan includes pre-launch steps (SEO landing page, schema markup, directory submission) and channels such as Product Hunt, Hacker News, newsletters, and social.
+      evidence: launch plan section, pre-launch checklist and channel list.
+      source: output
+      needle: Product Hunt
+- id: C31
+  category: content
+  fatal: false
+  text: The launch plan includes an outreach / link-acquisition target list of who links to similar tools.
+  anchor: launch plan, outreach subsection.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: link acquisition
+    llm:
+      question: The launch plan includes an outreach / link-acquisition target list of who links to similar tools.
+      evidence: launch plan, outreach subsection.
+      source: output
+      needle: link acquisition
+- id: C32
+  category: content
+  fatal: false
+  text: The measurement plan names concrete tools — GA4 (or Plausible) for usage, GSC for organic traffic, CRM for lead conversion.
+  anchor: measurement section.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: GA4
+    llm:
+      question: The measurement plan names concrete tools — GA4 (or Plausible) for usage, GSC for organic traffic, CRM for lead conversion.
+      evidence: measurement section.
+      source: output
+      needle: GA4
+- id: C33
+  category: content
+  fatal: false
+  text: 'The measurement plan states the 90-day targets: 500+ organic sessions/month, 5-15% lead conversion, and 10+ referring domains.'
+  anchor: measurement section, 90-day targets.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: numeric_threshold
+      in: output
+      key: sessions
+      op: ge
+      n: 500
+    llm:
+      question: 'The measurement plan states the 90-day targets: 500+ organic sessions/month, 5-15% lead conversion, and 10+ referring domains.'
+      evidence: measurement section, 90-day targets.
+      source: output
+      needle: sessions
+- id: C34
+  category: content
+  fatal: false
+  text: The output applies the break-even formula (setup cost / (monthly completions x completion-to-lead rate x lead-to-paid rate x lead value)) or references the break-even month.
+  anchor: ROI / build-vs-don't-build justification section.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: break-even
+    llm:
+      question: The output applies the break-even formula (setup cost / (monthly completions x completion-to-lead rate x lead-to-paid rate x lead value)) or references the break-even month.
+      evidence: ROI / build-vs-don't-build justification section.
+      source: output
+      needle: break-even
+- id: C35
+  category: content
+  fatal: false
+  text: The output addresses the maintenance plan — who owns the tool after launch — or flags the missing maintenance owner.
+  anchor: launch plan or proactive-flag section.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: maintenance
+    llm:
+      question: The output addresses the maintenance plan — who owns the tool after launch — or flags the missing maintenance owner.
+      evidence: launch plan or proactive-flag section.
+      source: output
+      needle: maintenance
+- id: C36
+  category: coverage
+  fatal: false
+  text: 'The deliverable covers all four requested parts: scored evaluation with recommendation, UX spec, SEO landing page structure, and launch/measurement plan.'
+  anchor: overall final output structure.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: launch plan
+    llm:
+      question: 'The deliverable covers all four requested parts: scored evaluation with recommendation, UX spec, SEO landing page structure, and launch/measurement plan.'
+      evidence: overall final output structure.
+      source: output
+      needle: launch plan
+- id: C37
+  category: content
+  fatal: false
+  text: The output classifies the tool ideas by type from the skill's table (calculator / generator / checker) and notes build complexity.
+  anchor: evaluation section, tool-type reasoning.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: generator
+    llm:
+      question: The output classifies the tool ideas by type from the skill's table (calculator / generator / checker) and notes build complexity.
+      evidence: evaluation section, tool-type reasoning.
+      source: output
+      needle: generator
+- id: C38
+  category: negative
+  fatal: false
+  text: The design never gates the core result behind an email form ('enter your email to see your results'); the task explicitly forbids this pattern.
+  anchor: lead capture / gate design section.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: value before the gate
+    llm:
+      question: The design never gates the core result behind an email form ('enter your email to see your results'); the task explicitly forbids this pattern.
+      evidence: lead capture / gate design section.
+      source: output
+      needle: value before the gate
+- id: C39
+  category: negative
+  fatal: false
+  text: The agent does not write the tool's implementation code or plan paid ad campaigns — both are excluded by the skill's scope.
+  anchor: full output and tool_log for absence of implementation code and paid-ad plans.
+  judge: llm
+  check:
+    question: The agent does not write the tool's implementation code or plan paid ad campaigns — both are excluded by the skill's scope.
+    evidence: full output and tool_log for absence of implementation code and paid-ad plans.
+- id: C40
+  category: negative
+  fatal: false
+  text: The output does not invent specific search-volume or keyword numbers that were not provided; unvalidated data is marked as assumed rather than fabricated.
+  anchor: keyword/validation discussion in the output.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: assumed
+    llm:
+      question: The output does not invent specific search-volume or keyword numbers that were not provided; unvalidated data is marked as assumed rather than fabricated.
+      evidence: keyword/validation discussion in the output.
+      source: output
+      needle: assumed
+- id: C41
+  category: format
+  fatal: false
+  text: 'The output follows the structured communication standard: conclusion first, number-based, with confidence markers (validated / estimated / assumed).'
+  anchor: overall output style; recommendations tied to input numbers.
+  judge: combo
+  combine: and
+  parts:
+    script:
+      kind: output_contains
+      needle: estimated
+    llm:
+      question: 'The output follows the structured communication standard: conclusion first, number-based, with confidence markers (validated / estimated / assumed).'
+      evidence: overall output style; recommendations tied to input numbers.
+      source: output
+      needle: estimated
+- id: C43
+  category: content
+  fatal: false
+  text: The UX spec is written for the single recommended tool after selection, not for all three ideas.
+  anchor: UX spec section and which tool it names.
+  judge: llm
+  check:
+    question: The UX spec is written for the single recommended tool after selection, not for all three ideas.
+    evidence: UX spec section and which tool it names.
